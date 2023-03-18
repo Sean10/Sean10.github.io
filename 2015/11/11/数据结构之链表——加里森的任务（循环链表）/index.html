@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="题目：加里森的任务 有n个加里森敢死队的队员要炸掉敌人的一个军火库，谁都不想去，队长加里森决定用轮回数数的办法来决定哪个战士去执行任务。规则如下：如果前一个战士没完成任务，则要再派一个战士上去。现给每个战士编一个号，大家围坐成一圈，随便从某一个编号为x的战士开始计数，当数到y时，对应的战士就去执行任务，且此战士不再参加下一轮计数。如果此战士没完成任务，再从下一个战士开始数数，被数到第y时，此战士接">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-11-11T09:45:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.827Z">
+<meta property="article:published_time" content="2015-11-11T17:45:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">数据结构之链表——加里森的任务（循环链表）</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-11-11T09:45:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-11-11T17:45:00.000Z" itemprop="datePublished" class="page-time">
   2015-11-11
 </time>
 
@@ -164,7 +164,7 @@
     <div class="post-card">
         <h1 class="post-card-title">数据结构之链表——加里森的任务（循环链表）</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-11-11 17:45:00" datetime="2015-11-11T09:45:00.000Z"  itemprop="datePublished">2015-11-11</time>
+            <time class="post-time" title="2015-11-11 17:45:00" datetime="2015-11-11T17:45:00.000Z"  itemprop="datePublished">2015-11-11</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -180,10 +180,7 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <p>题目：加里森的任务</p>
-<p>有n个加里森敢死队的队员要炸掉敌人的一个军火库，谁都不想去，队长加里森决定用轮回数数的办法来决定哪个战士去执行任务。规则如下：如果前一个战士没完成任务，则要再派一个战士上去。现给每个战士编一个号，大家围坐成一圈，随便从某一个编号为x的战士开始计数，当数到y时，对应的战士就去执行任务，且此战士不再参加下一轮计数。如果此战士没完成任务，再从下一个战士开始数数，被数到第y时，此战士接着去执行任务。以此类推，直到任务完成为止。
-加里森本人是不愿意去的，假设加里森为1号，请你设计一程序为加里森支招，求出n,x,y满足何种条件时,加里森能留到最后而不用去执行任务;。
-要求： 主要数据结构采用链式结构存储。
-自拟1个实验实例验证程序正确性（即：n,x,y自拟）。</p>
+<p>有n个加里森敢死队的队员要炸掉敌人的一个军火库，谁都不想去，队长加里森决定用轮回数数的办法来决定哪个战士去执行任务。规则如下：如果前一个战士没完成任务，则要再派一个战士上去。现给每个战士编一个号，大家围坐成一圈，随便从某一个编号为x的战士开始计数，当数到y时，对应的战士就去执行任务，且此战士不再参加下一轮计数。如果此战士没完成任务，再从下一个战士开始数数，被数到第y时，此战士接着去执行任务。以此类推，直到任务完成为止。 加里森本人是不愿意去的，假设加里森为1号，请你设计一程序为加里森支招，求出n,x,y满足何种条件时,加里森能留到最后而不用去执行任务;。 要求： 主要数据结构采用链式结构存储。 自拟1个实验实例验证程序正确性（即：n,x,y自拟）。</p>
 <p>循环链表的运用，最常见的一种，时间复杂度是O(n^3). <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">//#include &quot;stdafx.h&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">typedef struct node&#123;			//加里森队员链表结构</span><br><span class="line">	int data;</span><br><span class="line">	struct node* next;</span><br><span class="line">&#125;Linknode, *Link;</span><br><span class="line"></span><br><span class="line">Link ListCreate(int n)&#123;</span><br><span class="line">	Link head = NULL, curr = NULL, last = NULL;</span><br><span class="line">	while (n)&#123;					//对n个成员进行创建链表并编号</span><br><span class="line">		head = (Link)calloc(1, sizeof(Linknode));</span><br><span class="line">		if (NULL == head)</span><br><span class="line">			cout &lt;&lt; &quot;Error in calloc.&quot; &lt;&lt; endl;</span><br><span class="line">		head-&gt;data = n;</span><br><span class="line">		head-&gt;next = curr;</span><br><span class="line">		curr = head;</span><br><span class="line">		if (NULL == last)&#123;//保存最后一个节点的地址</span><br><span class="line">			last = head;</span><br><span class="line">		&#125;</span><br><span class="line">		n--;</span><br><span class="line">	&#125;</span><br><span class="line">	last-&gt;next = head;//进行首尾链接</span><br><span class="line">	return head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Link ListDel(Link prev)&#123;</span><br><span class="line">	if (NULL == prev-&gt;next)&#123;//一种情况执行完毕，进行最后的节点空间释放。</span><br><span class="line">		free(prev);</span><br><span class="line">		return NULL;</span><br><span class="line">	&#125;</span><br><span class="line">	Link curr = prev-&gt;next;</span><br><span class="line">	prev-&gt;next = curr-&gt;next;</span><br><span class="line">	free(curr);</span><br><span class="line">	return prev;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Link Josephus(Link head, int x, int y)&#123;</span><br><span class="line">	Link prev = NULL;</span><br><span class="line">	while (head-&gt;next-&gt;data != x)//进行遍历，直到指针的下一个节点的编号为x</span><br><span class="line">		head = head-&gt;next;</span><br><span class="line">	while (head != head-&gt;next)&#123;//循环直到只剩下一个节点</span><br><span class="line">		for (int i = 0; i &lt; y; i++)&#123;</span><br><span class="line">			prev = head;</span><br><span class="line">			head = head-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">		head = ListDel(prev);</span><br><span class="line">	&#125;</span><br><span class="line">	head-&gt;next = NULL;//将无限循环单节点链表断开</span><br><span class="line">	return head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void ListPrintSol(Link head,int n, int i, int j)&#123;</span><br><span class="line">	if (1 == head-&gt;data)&#123;</span><br><span class="line">		cout &lt;&lt; &quot;The solution of &quot; &lt;&lt; n &lt;&lt; &quot; is: from &quot; &lt;&lt; i &lt;&lt; &quot; by &quot; &lt;&lt; j &lt;&lt; endl;</span><br><span class="line">		//cout &lt;&lt; &quot;The last of the list is: &quot; &lt;&lt; head-&gt;data &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">	int n;</span><br><span class="line">	//FILE *stream;</span><br><span class="line">	//freopen_s(&amp;stream,&quot;op.txt&quot;, &quot;w&quot;, stdout);</span><br><span class="line">	Link head = NULL;</span><br><span class="line">	cout &lt;&lt; &quot;Please input the number of members n:&quot;;</span><br><span class="line">	cin &gt;&gt; n;</span><br><span class="line">	for (int i = 1; i &lt;= n; i++)&#123;</span><br><span class="line">		for (int j = 1; j &lt;= n; j++)&#123;</span><br><span class="line">			head = ListCreate(n);//创建链表</span><br><span class="line">			head = Josephus(head,i,j );//调用约瑟夫函数进行编号计数抽选，派遣队员，直到最后一人</span><br><span class="line">			ListPrintSol(head,n,i,j);//输出使加里森成为最后一人的x,y</span><br><span class="line">			head = ListDel(head);//释放空间</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
         </div>
@@ -193,7 +190,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.827Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

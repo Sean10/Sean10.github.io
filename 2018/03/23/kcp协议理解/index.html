@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="TCP Qos 问题 TCP的流量控制仅针对单条TCP连接，而在网络中UDP、ICMP等包并不遵循这个规则，TCP迫于流量控制，检测到端到端阻塞就会减小自己的窗口，然后被UDP等占据闲置出的带宽，导致饿死。 由于这个TCP在阻塞情况下迫于大环境无法保证传输质量，就有大批转而使用UDP协议加速的方式。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-03-23T06:24:38.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.875Z">
+<meta property="article:published_time" content="2018-03-23T14:24:38.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.786Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="网络">
 <meta property="article:tag" content="kcp">
@@ -140,7 +140,7 @@
         <h1 class="title">kcp协议理解</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-03-23T06:24:38.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-03-23T14:24:38.000Z" itemprop="datePublished" class="page-time">
   2018-03-23
 </time>
 
@@ -162,8 +162,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#tcp-qos-%E9%97%AE%E9%A2%98"><span class="post-toc-number">1.</span> <span class="post-toc-text">TCP Qos 问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#udp-%E5%8A%A0%E9%80%9F"><span class="post-toc-number">2.</span> <span class="post-toc-text">UDP 加速</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#rttround-trip-time-rtoretransmission-timeout"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">RTT(round trip
-time) &amp;&amp; RTO(Retransmission timeout)</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82arq%E4%B8%8E%E4%BC%A0%E8%BE%93%E5%B1%82arq%E5%8C%BA%E5%88%AB"><span class="post-toc-number">3.</span> <span class="post-toc-text">数据链路层ARQ与传输层ARQ区别</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">4.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#tcp-qos-%E9%97%AE%E9%A2%98"><span class="post-toc-number">1.</span> <span class="post-toc-text">TCP Qos 问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#udp-%E5%8A%A0%E9%80%9F"><span class="post-toc-number">2.</span> <span class="post-toc-text">UDP 加速</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#rttround-trip-time-rtoretransmission-timeout"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">RTT(round trip time) &amp;&amp; RTO(Retransmission timeout)</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82arq%E4%B8%8E%E4%BC%A0%E8%BE%93%E5%B1%82arq%E5%8C%BA%E5%88%AB"><span class="post-toc-number">3.</span> <span class="post-toc-text">数据链路层ARQ与传输层ARQ区别</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">4.</span> <span class="post-toc-text">Reference</span></a></li></ol>
         </nav>
     </aside>
 
@@ -174,7 +173,7 @@ time) &amp;&amp; RTO(Retransmission timeout)</span></a></li></ol></li><li class=
     <div class="post-card">
         <h1 class="post-card-title">kcp协议理解</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-03-23 14:24:38" datetime="2018-03-23T06:24:38.000Z"  itemprop="datePublished">2018-03-23</time>
+            <time class="post-time" title="2018-03-23 14:24:38" datetime="2018-03-23T14:24:38.000Z"  itemprop="datePublished">2018-03-23</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -205,15 +204,11 @@ time) &amp;&amp; RTO(Retransmission timeout)</span></a></li></ol></li><li class=
 <li>ACK+UNA VS UNA</li>
 <li>非退让流控
 <ul>
-<li>KCP正常模式同TCP一样使用公平退让法则，即发送窗口大小由：发送缓存大小、接收
-端剩余接收缓存大小、丢包退让及慢启动这四要素决定。但传送及时性要求很高的小
-数据时，可选择通过配置跳过后两步，仅用前两项来控制发送频率。以牺牲部分公平
-性及带宽利用率之代价，换取了开着BT都能流畅传输的效果。</li>
+<li>KCP正常模式同TCP一样使用公平退让法则，即发送窗口大小由：发送缓存大小、接收 端剩余接收缓存大小、丢包退让及慢启动这四要素决定。但传送及时性要求很高的小 数据时，可选择通过配置跳过后两步，仅用前两项来控制发送频率。以牺牲部分公平 性及带宽利用率之代价，换取了开着BT都能流畅传输的效果。</li>
 </ul></li>
 </ul>
 </blockquote>
-<h2 id="rttround-trip-time-rtoretransmission-timeout">RTT(round trip
-time) &amp;&amp; RTO(Retransmission timeout)</h2>
+<h2 id="rttround-trip-time-rtoretransmission-timeout">RTT(round trip time) &amp;&amp; RTO(Retransmission timeout)</h2>
 <p>RTT: 数据包往返时间 RTO: 超时重传时间</p>
 <p>RTO重传间隔是指数增加的。丢包一次后，下一次重传RTO会从1，2，4，8……。叫做指数回避策略。(RTO下限200ms,写在协议里的，无法修改)</p>
 <h1 id="数据链路层arq与传输层arq区别">数据链路层ARQ与传输层ARQ区别</h1>
@@ -222,10 +217,8 @@ time) &amp;&amp; RTO(Retransmission timeout)</h2>
 <h1 id="reference">Reference</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://www.oschina.net/p/kcp">kcp 详解</a></li>
-<li><a target="_blank" rel="noopener" href="http://weakyon.com/2015/07/30/the-impact-fo-rto-to-tcp-timeout.html">RTO
-对TCP超时的影响</a></li>
-<li><a target="_blank" rel="noopener" href="https://sheepbao.github.io/post/tcp_rto_research_and_golang_implement/">TCP
-RTO 计算方法及Go实现验证</a></li>
+<li><a target="_blank" rel="noopener" href="http://weakyon.com/2015/07/30/the-impact-fo-rto-to-tcp-timeout.html">RTO 对TCP超时的影响</a></li>
+<li><a target="_blank" rel="noopener" href="https://sheepbao.github.io/post/tcp_rto_research_and_golang_implement/">TCP RTO 计算方法及Go实现验证</a></li>
 </ol>
 
         </div>
@@ -235,7 +228,7 @@ RTO 计算方法及Go实现验证</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.875Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.786Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

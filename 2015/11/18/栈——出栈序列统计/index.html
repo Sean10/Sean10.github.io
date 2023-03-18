@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="题目链接 总时间限制: 100ms 内存限制: 64kB 描述 栈是常用的一种数据结构，有n个元素在栈顶端一侧等待进栈，栈顶端另一侧是出栈序列。你已经知道栈的操作有两种：push和pop，前者是将一个元素进栈，后者是将栈顶元素弹出。现在要使用这两种操作，由一个操作序列可以得到一系列的输出序列。请你编程求出对于给定的n，计算并输出由操作数序列1，2，…，n，经过一系列操作可能得到的输出序列总数。 输">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-11-18T06:36:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.875Z">
+<meta property="article:published_time" content="2015-11-18T14:36:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="栈">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">栈——出栈序列统计</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-11-18T06:36:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-11-18T14:36:00.000Z" itemprop="datePublished" class="page-time">
   2015-11-18
 </time>
 
@@ -164,7 +164,7 @@
     <div class="post-card">
         <h1 class="post-card-title">栈——出栈序列统计</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-11-18 14:36:00" datetime="2015-11-18T06:36:00.000Z"  itemprop="datePublished">2015-11-18</time>
+            <time class="post-time" title="2015-11-18 14:36:00" datetime="2015-11-18T14:36:00.000Z"  itemprop="datePublished">2015-11-18</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -179,16 +179,8 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p><a target="_blank" rel="noopener" href="http://dsalgo.openjudge.cn/201409week3/2/">题目链接</a>
-总时间限制: 100ms 内存限制: 64kB 描述
-栈是常用的一种数据结构，有n个元素在栈顶端一侧等待进栈，栈顶端另一侧是出栈序列。你已经知道栈的操作有两种：push和pop，前者是将一个元素进栈，后者是将栈顶元素弹出。现在要使用这两种操作，由一个操作序列可以得到一系列的输出序列。请你编程求出对于给定的n，计算并输出由操作数序列1，2，…，n，经过一系列操作可能得到的输出序列总数。
-输入 就一个数n(1≤n≤15)。 输出 一个数，即可能输出序列的总数目。 样例输入
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3</span><br></pre></td></tr></table></figure> 样例输出 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5</span><br></pre></td></tr></table></figure> 提示
-先了解栈的两种基本操作，进栈push就是将元素放入栈顶，栈顶指针上移一位，等待进栈队列也上移一位，出栈pop是将栈顶元素弹出，同时栈顶指针下移一位。
-　　
-用一个过程采模拟进出栈的过程，可以通过循环加递归来实现回溯：重复这样的过程，如果可以进栈则进一个元素，如果可以出栈则出一个元素。就这样一个一个地试探下去，当出栈元素个数达到n时就计数一次(这也是递归调用结束的条件)。</p>
-<p>这道题一开始想到的就是出栈序列公式，即catalan数公式，不过传统的公式中间数过大，在12的时候就爆了。
-网上搜了一下，用了代码里的那个公式。</p>
+            <p><a target="_blank" rel="noopener" href="http://dsalgo.openjudge.cn/201409week3/2/">题目链接</a> 总时间限制: 100ms 内存限制: 64kB 描述 栈是常用的一种数据结构，有n个元素在栈顶端一侧等待进栈，栈顶端另一侧是出栈序列。你已经知道栈的操作有两种：push和pop，前者是将一个元素进栈，后者是将栈顶元素弹出。现在要使用这两种操作，由一个操作序列可以得到一系列的输出序列。请你编程求出对于给定的n，计算并输出由操作数序列1，2，…，n，经过一系列操作可能得到的输出序列总数。 输入 就一个数n(1≤n≤15)。 输出 一个数，即可能输出序列的总数目。 样例输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3</span><br></pre></td></tr></table></figure> 样例输出 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5</span><br></pre></td></tr></table></figure> 提示 先了解栈的两种基本操作，进栈push就是将元素放入栈顶，栈顶指针上移一位，等待进栈队列也上移一位，出栈pop是将栈顶元素弹出，同时栈顶指针下移一位。 　　 用一个过程采模拟进出栈的过程，可以通过循环加递归来实现回溯：重复这样的过程，如果可以进栈则进一个元素，如果可以出栈则出一个元素。就这样一个一个地试探下去，当出栈元素个数达到n时就计数一次(这也是递归调用结束的条件)。</p>
+<p>这道题一开始想到的就是出栈序列公式，即catalan数公式，不过传统的公式中间数过大，在12的时候就爆了。 网上搜了一下，用了代码里的那个公式。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n, a = 1;</span><br><span class="line">    scanf(&quot;%d&quot;, &amp;n);</span><br><span class="line">    for(int i=2; i&lt;=n; i++)</span><br><span class="line">      a = (4 * i - 2) * a / (i + 1);</span><br><span class="line">    printf(&quot;%d\n&quot;, a);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面还有一种用递归模拟进出栈的 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">int num = 0;</span><br><span class="line">int n;</span><br><span class="line">void Stack(int inWait,int outWait,int outs)&#123;</span><br><span class="line">    if(n == outs)&#123;</span><br><span class="line">        num++;</span><br><span class="line">        return ;</span><br><span class="line">    &#125;</span><br><span class="line">    if(inWait &gt; 0)</span><br><span class="line">        Stack(inWait-1,outWait+1,outs);</span><br><span class="line">    if(outWait &gt; 0)</span><br><span class="line">        Stack(inWait,outWait-1,outs+1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    scanf(&quot;%d&quot;,&amp;n);</span><br><span class="line">    Stack(n, 0, 0);</span><br><span class="line">    printf(&quot;%d\n&quot;,num);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
@@ -199,7 +191,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.875Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

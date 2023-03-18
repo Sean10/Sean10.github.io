@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="理解 markdown是有对应的标准的. 似乎这篇可以参考? 下面todo中提到的一些list的识别场景, 其实这篇spec有做一定的边界澄清? CommonMark Spec 中文版CommonMark Spec 单元测试 TODO:针对vscode渲染后的页面, 如何进行单元测试感知? html的识别? TODO:针对vscode提供的API, 如何验证其渲染效果? Issue 搜索, 点到行">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-18T15:11:14.858Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.859Z">
+<meta property="article:published_time" content="2023-03-18T18:56:54.818Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.818Z">
 <meta property="article:author" content="Sean10">
 <meta name="twitter:card" content="summary">
     
@@ -137,7 +137,7 @@
         <h1 class="title"></h1>
         <h5 class="subtitle">
             
-                <time datetime="2023-03-18T15:11:14.858Z" itemprop="datePublished" class="page-time">
+                <time datetime="2023-03-18T18:56:54.818Z" itemprop="datePublished" class="page-time">
   2023-03-18
 </time>
 
@@ -157,54 +157,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%90%86%E8%A7%A3"><span class="post-toc-number">1.</span> <span class="post-toc-text">理解</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="post-toc-number">2.</span> <span class="post-toc-text">单元测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo%E9%92%88%E5%AF%B9vscode%E6%B8%B2%E6%9F%93%E5%90%8E%E7%9A%84%E9%A1%B5%E9%9D%A2-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%84%9F%E7%9F%A5-html%E7%9A%84%E8%AF%86%E5%88%AB"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">TODO:针对vscode渲染后的页面,
-如何进行单元测试感知? html的识别?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo%E9%92%88%E5%AF%B9vscode%E6%8F%90%E4%BE%9B%E7%9A%84api-%E5%A6%82%E4%BD%95%E9%AA%8C%E8%AF%81%E5%85%B6%E6%B8%B2%E6%9F%93%E6%95%88%E6%9E%9C"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">TODO:针对vscode提供的API,
-如何验证其渲染效果?</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#issue"><span class="post-toc-number">3.</span> <span class="post-toc-text">Issue</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%90%9C%E7%B4%A2-%E7%82%B9%E5%88%B0%E8%A1%8C%E5%90%8E-%E6%B8%B2%E6%9F%93%E7%9A%84%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB%E8%B7%B3%E8%BD%AC%E5%A4%AA%E4%B8%A5%E9%87%8D%E4%BA%86."><span class="post-toc-number">3.1.</span> <span class="post-toc-text">搜索, 点到行后,
-渲染的位置偏移跳转太严重了.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A6%82%E4%BD%95%E6%94%AF%E6%8C%81%E7%9B%B4%E6%8E%A5%E5%A4%8D%E5%88%B6%E6%B8%B2%E6%9F%93%E5%90%8E%E7%9A%84%E5%86%85%E5%AE%B9"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">如何支持直接复制渲染后的内容?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#comments-%E7%8E%B0%E5%9C%A8"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">comments 现在</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%95%BF%E6%9C%9F%E8%BF%90%E8%A1%8C%E5%90%8E-%E4%BC%BC%E4%B9%8E%E4%BC%9A%E5%87%BA%E7%8E%B0%E8%B5%84%E6%BA%90%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98-%E5%8D%A1%E9%A1%BF"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">长期运行后,
-似乎会出现资源占用问题, 卡顿</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#comments-%E7%8E%B0%E5%9C%A8%E8%80%81%E6%98%AF%E8%87%AA%E5%8A%A8%E5%BC%B9%E5%87%BA%E6%9D%A5."><span class="post-toc-number">3.5.</span> <span class="post-toc-text">comments 现在老是自动弹出来.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E6%9C%89%E6%8C%81%E4%B9%85%E5%8C%96%E6%B8%B2%E6%9F%93%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">是否有持久化渲染的实现方式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%AF%8F%E6%AC%A1%E5%88%87%E6%8D%A2%E6%96%87%E4%BB%B6-%E4%B8%BA%E4%BB%80%E4%B9%88comment%E9%87%8D%E6%96%B0%E6%B8%B2%E6%9F%93%E6%97%B6-%E7%84%A6%E7%82%B9%E4%BD%8D%E7%BD%AE%E5%B0%B1%E5%8F%98%E4%BA%86%E5%91%A2-%E4%BD%BF%E7%94%A8comment-%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E4%BB%85%E4%BF%AE%E6%94%B9%E7%9A%84%E5%9B%BE%E7%89%87%E5%8F%98%E6%9B%B4%E6%B8%B2%E6%9F%93-%E8%80%8C%E5%85%B6%E4%BB%96%E7%9A%84%E4%B8%8D%E5%8F%98-%E5%BA%94%E8%AF%A5%E5%8F%AF%E4%BB%A5%E5%81%9A%E5%88%B0."><span class="post-toc-number">3.7.</span> <span class="post-toc-text">每次切换文件,
-为什么comment重新渲染时, 焦点位置就变了呢? 使用comment,
-是否可以仅修改的图片变更渲染, 而其他的不变? 应该可以做到.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%8A%A5%E9%94%99-error-setting-up-request-syntaxerror-invalid-regular-expression-.md-nothing-to-repeat-%E5%BF%BD%E7%84%B6%E5%B0%B1%E6%97%A0%E6%B3%95%E6%B8%B2%E6%9F%93%E4%BA%86"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">报错
-Error setting up request: SyntaxError: Invalid regular expression: &#x2F;*.md&#x2F;: Nothing to repeat,
-忽然就无法渲染了</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BC%9A%E5%87%BA%E7%8E%B0%E5%9B%BE%E7%89%87%E9%87%8D%E5%A4%8D%E6%B8%B2%E6%9F%93%E7%9A%84%E6%83%85%E5%86%B5"><span class="post-toc-number">3.9.</span> <span class="post-toc-text">会出现图片重复渲染的情况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E4%BB%8Ecomment%E5%88%87%E6%8D%A2%E6%88%90%E5%85%B6%E4%BB%96%E7%9A%84%E6%9D%A5%E8%BF%9B%E8%A1%8C%E6%B8%B2%E6%9F%93-%E6%97%A2%E7%84%B6html%E9%83%BD%E6%94%AF%E6%8C%81%E7%9A%84%E8%AF%9D."><span class="post-toc-number">3.10.</span> <span class="post-toc-text">是否可以从comment切换成其他的来进行渲染?
-既然html都支持的话.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%81%B6%E5%B0%94%E4%BC%9A%E5%87%BA%E7%8E%B0%E6%9F%90%E4%B8%AA%E5%8D%95%E5%85%83%E6%B2%A1%E6%B8%B2%E6%9F%93%E7%9A%84%E6%83%85%E5%86%B5%E4%BC%BC%E4%B9%8E..."><span class="post-toc-number">3.11.</span> <span class="post-toc-text">偶尔会出现某个单元没渲染的情况似乎...</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo-%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6-%E5%A5%BD%E5%83%8F%E5%A6%82%E6%9E%9C%E4%B8%8D%E7%82%B9%E4%B8%80%E4%B8%8B%E5%85%B6%E4%BB%96%E4%BD%8D%E7%BD%AE-%E5%A5%BD%E5%83%8F%E8%BF%98%E4%B8%8D%E4%BC%9A%E8%A7%A6%E5%8F%91%E6%B8%B2%E6%9F%93"><span class="post-toc-number">3.12.</span> <span class="post-toc-text">TODO:
-打开文件, 好像如果不点一下其他位置, 好像还不会触发渲染?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todosupport-data-src-image-preview"><span class="post-toc-number">3.13.</span> <span class="post-toc-text">TODO:support data src image
-preview</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#page-jump-when-switch-to-other-file-and-back.-maybe-image-previews-problem"><span class="post-toc-number">3.14.</span> <span class="post-toc-text">page
-jump when switch to other file and back. maybe image preview&#39;s
-problem</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9B%BE%E7%89%87%E6%B8%B2%E6%9F%93%E4%B8%8D%E6%94%AF%E6%8C%81webp%E6%A0%BC%E5%BC%8F-%E4%B9%9F%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%AC%E5%9C%B0file%E5%8D%8F%E8%AE%AE%E4%B8%8D%E6%94%AF%E6%8C%81-%E5%AE%98%E6%96%B9%E5%B7%B2%E5%90%88%E5%85%A5%E6%94%AF%E6%8C%81"><span class="post-toc-number">3.15.</span> <span class="post-toc-text">图片渲染不支持webp格式,
-也可能是本地file协议不支持? (官方已合入支持)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%96%91%E4%BC%BC%E6%9F%90%E7%A7%8D%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E4%B8%8B%E7%9A%84bug"><span class="post-toc-number">3.16.</span> <span class="post-toc-text">疑似某种文件格式下的bug</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#performance%E9%97%AE%E9%A2%98-%E6%80%BB%E8%A7%89%E5%BE%97%E8%BE%93%E5%85%A5%E7%9A%84%E6%97%B6%E5%80%99%E7%A8%8D%E5%BE%AE%E6%9C%89%E4%B8%80%E7%82%B9%E5%8D%A1%E9%A1%BF%E7%9A%84%E7%8E%B0%E8%B1%A1"><span class="post-toc-number">3.17.</span> <span class="post-toc-text">performance问题,
-总觉得输入的时候稍微有一点卡顿的现象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#image%E6%B8%B2%E6%9F%93%E5%90%8E%E9%BB%98%E8%AE%A4%E6%98%BE%E7%A4%BA%E5%A4%A7%E5%B0%8F%E4%B8%8D%E6%98%AF%E9%85%8D%E7%BD%AE%E7%9A%84panel-opens-maximized"><span class="post-toc-number">3.18.</span> <span class="post-toc-text">image渲染后默认显示大小不是配置的Panel: Opens Maximized</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#table%E4%B8%8D%E8%AF%86%E5%88%AB%E6%8F%92%E5%85%A5%E7%9A%84br%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.19.</span> <span class="post-toc-text">table不识别插入的&lt;br&#x2F;&gt;问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%90%AF%E7%94%A8%E4%BA%862%E4%B8%AA%E5%8D%B1%E9%99%A9%E5%B1%9E%E6%80%A7%E4%B9%8B%E5%90%8E-%E5%8F%98%E6%88%90%E7%A9%BA%E7%99%BD%E4%BA%86..."><span class="post-toc-number">3.19.1.</span> <span class="post-toc-text">启用了2个危险属性之后,
-变成空白了...</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo-%E5%8E%9F%E7%94%9Fhtml%E7%9A%84%E6%B8%B2%E6%9F%93%E8%83%BD%E5%8A%9B"><span class="post-toc-number">3.20.</span> <span class="post-toc-text">TODO: 原生HTML的渲染能力</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#quote%E4%B9%8B%E5%90%8E%E7%9A%84%E5%86%85%E5%AE%B9%E5%AF%BC%E8%87%B4%E5%8D%A1%E9%A1%BF"><span class="post-toc-number">3.21.</span> <span class="post-toc-text">quote之后的内容导致卡顿</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%8B%86%E5%88%86%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E5%92%8C%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8%E7%9A%84%E6%B8%B2%E6%9F%93"><span class="post-toc-number">3.22.</span> <span class="post-toc-text">拆分无序列表和有序列表的渲染</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%90%86%E8%A7%A3-1"><span class="post-toc-number">3.22.1.</span> <span class="post-toc-text">理解</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A2%9E%E5%8A%A0http%E9%93%BE%E6%8E%A5%E5%9B%BE%E7%89%87%E6%94%AF%E6%8C%81"><span class="post-toc-number">3.23.</span> <span class="post-toc-text">增加http链接图片支持</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BF%AE%E5%A4%8Dlatex%E6%98%BE%E7%A4%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E7%BB%93%E6%9E%9C%E5%A4%AA%E5%B0%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.24.</span> <span class="post-toc-text">修复latex显示的渲染结果太小的问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%86%E6%9E%90lineheight"><span class="post-toc-number">3.24.1.</span> <span class="post-toc-text">分析lineHeight</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%9A%E8%A1%8C%E7%9A%84latex%E9%99%A4%E4%BA%86%E6%8C%89%E8%A1%8C%E6%95%B0%E6%95%B4%E6%AF%94%E6%94%BE%E5%A4%A7%E4%BB%A3%E7%A0%81%E4%B9%8B%E5%A4%96-%E6%98%AF%E5%90%A6%E6%9C%89%E6%AD%A3%E5%B8%B8%E7%9A%84%E6%96%B9%E5%BC%8F%E6%8A%98%E5%8F%A0%E5%88%B0%E9%82%A3%E5%87%A0%E8%A1%8C"><span class="post-toc-number">3.25.</span> <span class="post-toc-text">多行的latex除了按行数整比放大代码之外,
-是否有正常的方式折叠到那几行?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#foldunfolder-api"><span class="post-toc-number">3.26.</span> <span class="post-toc-text">fold&#x2F;unfolder API?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#wrod-wrap%E6%8A%98%E5%8F%A0%E5%90%8E%E7%9A%84%E5%90%8E%E9%9D%A2%E5%87%A0%E8%A1%8C%E5%BC%80%E5%A4%B4%E6%97%A0%E6%B8%B2%E6%9F%93%E6%95%88%E6%9E%9C"><span class="post-toc-number">3.27.</span> <span class="post-toc-text">wrod
-wrap折叠后的后面几行开头无渲染效果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BF%AE%E5%A4%8Dwhen-the-cursor-is-in-the-line-of-heading-should-it-show-at-the-begining-of-the-line-issue-10-sean10markless"><span class="post-toc-number">3.28.</span> <span class="post-toc-text">修复When the cursor is
-in the line of heading, should it show &#39;#&#39; at the begining of the line?
-· Issue #10 · Sean10&#x2F;markless</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#heading%E7%9A%84%E5%AD%97%E4%BD%93%E6%94%BE%E5%A4%A7-%E4%BC%BC%E4%B9%8E%E5%85%B6%E5%AE%9E%E4%B9%9F%E5%8F%AF%E4%BB%A5%E6%8E%A5%E7%9D%80%E6%94%BE%E5%A4%A7.-%E5%A5%BD%E5%83%8F%E8%A1%8C%E7%9A%84%E9%AB%98%E5%BA%A6-%E4%BC%9A%E8%B7%9F%E7%9D%80%E6%88%91%E7%9A%84%E6%8C%87%E5%AE%9A%E7%9A%84%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F%E5%8F%98%E5%A4%A7%E8%80%8C%E5%8F%98%E5%A4%A7"><span class="post-toc-number">3.29.</span> <span class="post-toc-text">heading的字体放大,
-似乎其实也可以接着放大. 好像行的高度,
-会跟着我的指定的字体大小变大而变大</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#heading%E7%9A%84%E9%9A%90%E8%97%8F%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98-%E5%87%A1%E6%98%AF%E5%9C%A8%E6%A0%87%E9%A2%98%E4%B8%8A%E8%A7%A6%E5%8F%91%E7%9A%84%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%B8%B2%E6%9F%93-%E4%BE%9D%E6%97%A7%E4%BC%9A%E5%AD%98%E5%9C%A8%E6%B8%B2%E6%9F%93%E9%94%99%E7%9A%84%E9%97%AE%E9%A2%98-%E6%B8%85%E7%90%86%E5%8F%AF%E8%83%BD%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E5%8F%96%E6%B6%88%E6%89%80%E6%9C%89%E8%AF%A5%E4%BD%8D%E7%BD%AE%E7%9A%84%E6%B8%B2%E6%9F%93."><span class="post-toc-number">3.30.</span> <span class="post-toc-text">heading的隐藏存在一个问题,
-凡是在标题上触发的其他模式的渲染, 依旧会存在渲染错的问题,
-清理可能需要考虑取消所有该位置的渲染.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#block-quote%E5%AD%98%E5%9C%A82%E4%B8%AA%E6%B8%B2%E6%9F%93%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.31.</span> <span class="post-toc-text">block quote存在2个渲染问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BD%8D%E7%BD%AE-%E4%BE%9D%E6%97%A7%E6%98%AF%E6%8C%89%E7%85%A7%E6%9C%AA%E9%9A%90%E8%97%8F%E6%9D%A5%E7%9A%84"><span class="post-toc-number">3.31.1.</span> <span class="post-toc-text">位置,
-依旧是按照未隐藏#来的</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="post-toc-number">3.31.1.1.</span> <span class="post-toc-text">思路</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%A4%A7%E5%B0%8F-%E4%B9%9F%E6%98%AF%E6%8C%89%E7%85%A7%E5%AD%97%E4%BD%93%E7%9A%84%E5%88%9D%E5%A7%8B%E5%A4%A7%E5%B0%8F-%E8%80%8C%E4%B8%8D%E6%98%AF%E6%B8%B2%E6%9F%93%E5%90%8E%E7%9A%84%E5%A4%A7%E5%B0%8F%E6%9D%A5%E7%9A%84."><span class="post-toc-number">3.31.2.</span> <span class="post-toc-text">大小,
-也是按照字体的初始大小, 而不是渲染后的大小来的.</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86%E5%BD%93%E5%89%8D%E8%A1%8C-%E5%8E%BB%E9%99%A4%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E6%95%88%E6%9E%9C"><span class="post-toc-number">3.32.</span> <span class="post-toc-text">批量处理当前行,
-去除装饰器的效果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#f5%E8%B0%83%E8%AF%95%E6%98%BE%E7%A4%BA%E7%9A%84%E6%95%88%E6%9E%9C-%E5%92%8C%E6%9C%AC%E5%9C%B0%E6%89%93%E5%8C%85%E5%AE%89%E8%A3%85%E5%90%8E%E4%B8%8D%E5%90%8C."><span class="post-toc-number">3.33.</span> <span class="post-toc-text">f5调试显示的效果,
-和本地打包安装后不同.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%94%BE%E5%BC%83%E8%AE%A9%E7%B4%A2%E5%BC%95%E4%BD%8D%E7%BD%AE%E4%B8%8E%E5%AD%97%E7%AC%A6%E6%89%80%E5%9C%A8%E4%BD%8D%E7%BD%AE%E5%AF%B9%E5%BA%94%E4%B8%8A-%E4%B8%8D%E8%AE%A9%E5%85%B6%E5%87%BA%E7%8E%B0%E5%88%A0%E9%99%A4%E7%A9%BA%E6%A0%BC-%E5%AE%9E%E9%99%85%E6%98%AF%E5%88%A0%E9%99%A4%E4%BA%86%E6%9C%80%E5%90%8E%E7%9A%84%E6%96%87%E5%AD%97%E7%9A%84%E9%97%AE%E9%A2%98."><span class="post-toc-number">3.33.1.</span> <span class="post-toc-text">(放弃)让索引位置与字符所在位置对应上?
-不让其出现删除空格, 实际是删除了最后的文字的问题.</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%9A%E7%8E%B0%E5%AE%9E2%E4%B8%AA%E7%9A%84%E9%97%AE%E9%A2%98-%E6%84%8F%E6%80%9Dhide%E5%BC%82%E5%B8%B8"><span class="post-toc-number">3.34.</span> <span class="post-toc-text">多现实2个&#39;#&#39;的问题,
-意思hide异常</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A5%E5%BF%97%E9%87%8C%E8%AE%B0%E5%BD%95heading%E7%9A%84%E9%80%BB%E8%BE%91%E9%87%8C%E4%BC%9A%E5%87%BA%E7%8E%B0%E6%99%AE%E9%80%9A%E8%8A%82%E7%82%B9%E7%9A%84%E8%A1%8C..."><span class="post-toc-number">3.35.</span> <span class="post-toc-text">日志里记录heading的逻辑里会出现普通节点的行...</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2-%E7%94%B1%E4%BA%8E%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E4%B8%8D%E6%96%ADnew.-%E6%B8%85%E7%A9%BA%E4%B9%9F%E5%8F%AA%E6%98%AF-%E5%B9%B6%E4%B8%8D%E6%98%AFdispose.-%E6%9C%89%E5%BF%85%E8%A6%81%E5%A2%9E%E5%8A%A0%E5%8D%95%E4%BE%8B"><span class="post-toc-number">3.36.</span> <span class="post-toc-text">可能存在内存泄露,
-由于装饰器的不断new. 清空也只是[], 并不是dispose. 有必要增加单例</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo%E5%AD%98%E5%9C%A8%E5%8D%95%E8%A1%8C%E7%94%B1%E4%BA%8E%E5%AD%97%E4%BD%93%E8%BF%87%E5%A4%A7-%E6%B2%A1%E6%9C%89%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C%E7%9A%84%E9%97%AE%E9%A2%98."><span class="post-toc-number">3.37.</span> <span class="post-toc-text">TODO:存在单行由于字体过大,
-没有自动换行的问题.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#sometimes-%E8%BF%98%E6%98%AF%E4%BC%9A%E5%87%BA%E7%8E%B0%E6%B2%A1%E8%A2%AB%E9%9A%90%E8%97%8F%E7%9A%84%E9%97%AE%E9%A2%98.-1.0.22%E7%89%88%E6%9C%AC."><span class="post-toc-number">3.38.</span> <span class="post-toc-text">sometimes,
-还是会出现#没被隐藏的问题. 1.0.22版本.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#illegal-value-for-line"><span class="post-toc-number">3.38.1.</span> <span class="post-toc-text">Illegal value for line</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9C%A8heading%E5%A4%84%E7%9A%84"><span class="post-toc-number">3.38.2.</span> <span class="post-toc-text">在heading处的</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo%E7%96%91%E4%BC%BC%E5%9B%BE%E7%89%87%E9%BB%98%E8%AE%A4%E4%B8%8D%E4%BC%9A%E5%85%A8%E6%94%BE%E5%A4%A7%E7%8A%B6%E6%80%81-%E9%80%9A%E8%BF%87paste-image%E7%8E%B0%E5%8A%A0%E7%9A%84%E6%B8%B2%E6%9F%93%E7%9A%84%E6%97%B6%E5%80%99-%E9%9C%80%E8%A6%81%E6%94%B6%E7%BC%A9%E4%B8%80%E6%AC%A1%E5%86%8D%E7%82%B9%E5%BC%80%E6%89%8D%E4%BC%9A%E6%8C%89%E7%85%A7%E6%88%91%E7%9A%84%E9%85%8D%E7%BD%AE%E8%BF%9B%E8%A1%8C-%E5%8C%85%E6%8B%AC%E5%88%87%E6%8D%A2editor%E7%9A%84%E6%97%B6%E5%80%99-%E5%88%87%E6%8D%A2%E5%AE%8C%E5%A5%BD%E5%83%8F%E4%B9%9F%E6%9C%89%E9%97%AE%E9%A2%98-%E9%99%A4%E4%BA%86%E5%85%B3%E9%97%AD%E9%87%8D%E6%96%B0%E6%89%93%E5%BC%80%E5%A5%BD%E5%83%8F%E6%98%AF%E6%AD%A3%E5%B8%B8%E7%9A%84"><span class="post-toc-number">3.39.</span> <span class="post-toc-text">TODO:疑似图片默认不会全放大状态,
-通过Paste Image现加的渲染的时候, 需要收缩一次再点开才会按照我的配置进行?
-包括切换editor的时候, 切换完好像也有问题,
-除了关闭重新打开好像是正常的</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E8%A7%A6%E6%8E%A7%E6%9D%BF%E6%BB%9A%E5%8A%A8%E7%9A%84%E6%97%B6%E5%80%99-%E6%9C%89%E8%A7%A6%E5%8F%91selection%E7%9A%84%E5%8F%98%E5%8C%96-%E6%88%96%E8%80%85%E4%BB%80%E4%B9%88%E7%9A%84%E5%8F%98%E5%8C%96%E5%BC%95%E8%B5%B7%E9%87%8D%E6%96%B0%E6%B8%B2%E6%9F%93%E5%90%97"><span class="post-toc-number">3.40.</span> <span class="post-toc-text">TODO:
-性能优化, 触控板滚动的时候, 有触发selection的变化,
-或者什么的变化引起重新渲染吗?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A2%9E%E5%8A%A0%E6%97%A5%E5%BF%97%E5%8A%A8%E6%80%81%E8%B0%83%E6%95%B4%E8%AE%B0%E5%BD%95."><span class="post-toc-number">3.41.</span> <span class="post-toc-text">增加日志动态调整记录.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#config%E4%BF%AE%E6%94%B9%E7%9A%84%E5%90%8C%E6%AD%A5%E6%97%B6%E9%97%B4%E6%98%AF%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%91%A2"><span class="post-toc-number">3.41.1.</span> <span class="post-toc-text">config修改的同步时间是什么时候呢?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%B0%8F%E6%A8%A1%E5%9D%97%E5%B0%B1%E4%B8%8D%E8%80%83%E8%99%91%E6%8C%89%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E6%8B%86%E5%88%86%E6%97%A5%E5%BF%97%E4%BA%86-%E7%9B%B4%E6%8E%A5%E6%89%8B%E5%8A%A8%E8%BF%87%E6%BB%A4%E7%AD%9B%E9%80%89%E5%90%A7."><span class="post-toc-number">3.41.2.</span> <span class="post-toc-text">小模块就不考虑按模块&#x2F;功能拆分日志了,
-直接手动过滤筛选吧.</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#todo-support-env-expose-log-level-and-log-path-to-extensions-issue-40053-microsoftvscode"><span class="post-toc-number">3.41.3.</span> <span class="post-toc-text">TODO:
-support env? Expose log level
-and log path to extensions · Issue #40053 · microsoft&#x2F;vscode</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cleardecotaions%E9%87%8C%E7%9A%84%E5%AF%B9%E8%B1%A1%E6%89%BE%E4%B8%8D%E5%88%B0setdecoration"><span class="post-toc-number">3.42.</span> <span class="post-toc-text">clearDecotaions里的对象找不到setDecoration,</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%83%A8%E5%88%86listitem%E7%9A%84%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E7%9A%84%E9%82%A3%E4%B8%AA%E7%AC%A6%E5%8F%B7%E6%80%8E%E4%B9%88%E5%A5%BD%E5%83%8F%E6%B2%A1%E8%A2%AB%E6%B7%BB%E5%8A%A0%E4%B8%8A%E5%8E%BB-%E9%9A%90%E8%97%8F%E4%BA%86"><span class="post-toc-number">3.42.1.</span> <span class="post-toc-text">部分listItem的无序列表的那个符号怎么好像没被添加上去?
-隐藏了?</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#todo"><span class="post-toc-number">4.</span> <span class="post-toc-text">todo</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BD%9C%E5%BA%9F%E7%9A%84%E6%8A%98%E5%8F%A0%E4%BB%A3%E7%A0%81."><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">作废的折叠代码.</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#todo-%E5%9B%9E%E8%BD%A6%E5%92%8Cbackspace%E6%8C%89%E9%94%AE%E5%8D%A1%E9%A1%BF-%E6%80%80%E7%96%91%E8%B7%9F%E8%BF%99%E4%B8%AAmarkless%E7%9A%84%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%93%E6%9C%89%E5%85%B3.-%E5%A5%BD%E5%83%8F%E7%A6%81%E7%94%A8%E4%BA%86markless%E8%BF%98%E6%98%AF%E5%8D%A1-%E5%BC%80%E4%BA%86%E8%BF%9B%E7%A8%8B%E7%9B%91%E6%8E%A7-%E4%B9%9F%E6%B2%A1%E7%9C%8B%E5%88%B0%E6%98%AF%E5%93%AA%E4%B8%AA%E8%BF%9B%E7%A8%8B%E7%9A%84cpu%E6%98%BE%E8%91%97%E7%9A%84%E9%AB%98-%E9%99%A4%E4%BA%86main%E7%AA%97%E5%8F%A3."><span class="post-toc-number">4.0.2.</span> <span class="post-toc-text">todo:
-回车和backspace按键卡顿, 怀疑跟这个markless的实时渲染有关.
-好像禁用了markless还是卡, 开了进程监控, 也没看到是哪个进程的cpu显著的高,
-除了main窗口.</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo-markless%E6%98%AF%E5%A6%82%E4%BD%95%E9%9A%90%E8%97%8F%E4%B8%80%E9%83%A8%E5%88%86%E6%96%87%E5%AD%97%E7%9A%84-%E4%BD%86%E6%98%AF%E5%AE%9E%E9%99%85%E5%A5%BD%E5%83%8F%E5%8F%88%E8%83%BD%E8%A2%AB%E6%90%9C%E7%B4%A2%E5%88%B0-%E9%80%8F%E6%98%8E%E8%89%B2"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">todo:
-markless是如何隐藏一部分文字的? 但是实际好像又能被搜索到?
-透明色?</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E8%AE%B0%E5%BD%95"><span class="post-toc-number">5.</span> <span class="post-toc-text">数据记录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">无序列表下无序列表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">无序列表下有序列表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">有序列表下有序列表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">有序列表下无序列表下有序列表</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">6.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%90%86%E8%A7%A3"><span class="post-toc-number">1.</span> <span class="post-toc-text">理解</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="post-toc-number">2.</span> <span class="post-toc-text">单元测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo%E9%92%88%E5%AF%B9vscode%E6%B8%B2%E6%9F%93%E5%90%8E%E7%9A%84%E9%A1%B5%E9%9D%A2-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%84%9F%E7%9F%A5-html%E7%9A%84%E8%AF%86%E5%88%AB"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">TODO:针对vscode渲染后的页面, 如何进行单元测试感知? html的识别?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo%E9%92%88%E5%AF%B9vscode%E6%8F%90%E4%BE%9B%E7%9A%84api-%E5%A6%82%E4%BD%95%E9%AA%8C%E8%AF%81%E5%85%B6%E6%B8%B2%E6%9F%93%E6%95%88%E6%9E%9C"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">TODO:针对vscode提供的API, 如何验证其渲染效果?</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#issue"><span class="post-toc-number">3.</span> <span class="post-toc-text">Issue</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%90%9C%E7%B4%A2-%E7%82%B9%E5%88%B0%E8%A1%8C%E5%90%8E-%E6%B8%B2%E6%9F%93%E7%9A%84%E4%BD%8D%E7%BD%AE%E5%81%8F%E7%A7%BB%E8%B7%B3%E8%BD%AC%E5%A4%AA%E4%B8%A5%E9%87%8D%E4%BA%86."><span class="post-toc-number">3.1.</span> <span class="post-toc-text">搜索, 点到行后, 渲染的位置偏移跳转太严重了.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A6%82%E4%BD%95%E6%94%AF%E6%8C%81%E7%9B%B4%E6%8E%A5%E5%A4%8D%E5%88%B6%E6%B8%B2%E6%9F%93%E5%90%8E%E7%9A%84%E5%86%85%E5%AE%B9"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">如何支持直接复制渲染后的内容?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#comments-%E7%8E%B0%E5%9C%A8"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">comments 现在</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%95%BF%E6%9C%9F%E8%BF%90%E8%A1%8C%E5%90%8E-%E4%BC%BC%E4%B9%8E%E4%BC%9A%E5%87%BA%E7%8E%B0%E8%B5%84%E6%BA%90%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98-%E5%8D%A1%E9%A1%BF"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">长期运行后, 似乎会出现资源占用问题, 卡顿</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#comments-%E7%8E%B0%E5%9C%A8%E8%80%81%E6%98%AF%E8%87%AA%E5%8A%A8%E5%BC%B9%E5%87%BA%E6%9D%A5."><span class="post-toc-number">3.5.</span> <span class="post-toc-text">comments 现在老是自动弹出来.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E6%9C%89%E6%8C%81%E4%B9%85%E5%8C%96%E6%B8%B2%E6%9F%93%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">是否有持久化渲染的实现方式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%AF%8F%E6%AC%A1%E5%88%87%E6%8D%A2%E6%96%87%E4%BB%B6-%E4%B8%BA%E4%BB%80%E4%B9%88comment%E9%87%8D%E6%96%B0%E6%B8%B2%E6%9F%93%E6%97%B6-%E7%84%A6%E7%82%B9%E4%BD%8D%E7%BD%AE%E5%B0%B1%E5%8F%98%E4%BA%86%E5%91%A2-%E4%BD%BF%E7%94%A8comment-%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E4%BB%85%E4%BF%AE%E6%94%B9%E7%9A%84%E5%9B%BE%E7%89%87%E5%8F%98%E6%9B%B4%E6%B8%B2%E6%9F%93-%E8%80%8C%E5%85%B6%E4%BB%96%E7%9A%84%E4%B8%8D%E5%8F%98-%E5%BA%94%E8%AF%A5%E5%8F%AF%E4%BB%A5%E5%81%9A%E5%88%B0."><span class="post-toc-number">3.7.</span> <span class="post-toc-text">每次切换文件, 为什么comment重新渲染时, 焦点位置就变了呢? 使用comment, 是否可以仅修改的图片变更渲染, 而其他的不变? 应该可以做到.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%8A%A5%E9%94%99-error-setting-up-request-syntaxerror-invalid-regular-expression-.md-nothing-to-repeat-%E5%BF%BD%E7%84%B6%E5%B0%B1%E6%97%A0%E6%B3%95%E6%B8%B2%E6%9F%93%E4%BA%86"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">报错 Error setting up request: SyntaxError: Invalid regular expression: &#x2F;*.md&#x2F;: Nothing to repeat, 忽然就无法渲染了</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BC%9A%E5%87%BA%E7%8E%B0%E5%9B%BE%E7%89%87%E9%87%8D%E5%A4%8D%E6%B8%B2%E6%9F%93%E7%9A%84%E6%83%85%E5%86%B5"><span class="post-toc-number">3.9.</span> <span class="post-toc-text">会出现图片重复渲染的情况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E4%BB%8Ecomment%E5%88%87%E6%8D%A2%E6%88%90%E5%85%B6%E4%BB%96%E7%9A%84%E6%9D%A5%E8%BF%9B%E8%A1%8C%E6%B8%B2%E6%9F%93-%E6%97%A2%E7%84%B6html%E9%83%BD%E6%94%AF%E6%8C%81%E7%9A%84%E8%AF%9D."><span class="post-toc-number">3.10.</span> <span class="post-toc-text">是否可以从comment切换成其他的来进行渲染? 既然html都支持的话.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%81%B6%E5%B0%94%E4%BC%9A%E5%87%BA%E7%8E%B0%E6%9F%90%E4%B8%AA%E5%8D%95%E5%85%83%E6%B2%A1%E6%B8%B2%E6%9F%93%E7%9A%84%E6%83%85%E5%86%B5%E4%BC%BC%E4%B9%8E..."><span class="post-toc-number">3.11.</span> <span class="post-toc-text">偶尔会出现某个单元没渲染的情况似乎...</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo-%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6-%E5%A5%BD%E5%83%8F%E5%A6%82%E6%9E%9C%E4%B8%8D%E7%82%B9%E4%B8%80%E4%B8%8B%E5%85%B6%E4%BB%96%E4%BD%8D%E7%BD%AE-%E5%A5%BD%E5%83%8F%E8%BF%98%E4%B8%8D%E4%BC%9A%E8%A7%A6%E5%8F%91%E6%B8%B2%E6%9F%93"><span class="post-toc-number">3.12.</span> <span class="post-toc-text">TODO: 打开文件, 好像如果不点一下其他位置, 好像还不会触发渲染?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todosupport-data-src-image-preview"><span class="post-toc-number">3.13.</span> <span class="post-toc-text">TODO:support data src image preview</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#page-jump-when-switch-to-other-file-and-back.-maybe-image-previews-problem"><span class="post-toc-number">3.14.</span> <span class="post-toc-text">page jump when switch to other file and back. maybe image preview&#39;s problem</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9B%BE%E7%89%87%E6%B8%B2%E6%9F%93%E4%B8%8D%E6%94%AF%E6%8C%81webp%E6%A0%BC%E5%BC%8F-%E4%B9%9F%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%AC%E5%9C%B0file%E5%8D%8F%E8%AE%AE%E4%B8%8D%E6%94%AF%E6%8C%81-%E5%AE%98%E6%96%B9%E5%B7%B2%E5%90%88%E5%85%A5%E6%94%AF%E6%8C%81"><span class="post-toc-number">3.15.</span> <span class="post-toc-text">图片渲染不支持webp格式, 也可能是本地file协议不支持? (官方已合入支持)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%96%91%E4%BC%BC%E6%9F%90%E7%A7%8D%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E4%B8%8B%E7%9A%84bug"><span class="post-toc-number">3.16.</span> <span class="post-toc-text">疑似某种文件格式下的bug</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#performance%E9%97%AE%E9%A2%98-%E6%80%BB%E8%A7%89%E5%BE%97%E8%BE%93%E5%85%A5%E7%9A%84%E6%97%B6%E5%80%99%E7%A8%8D%E5%BE%AE%E6%9C%89%E4%B8%80%E7%82%B9%E5%8D%A1%E9%A1%BF%E7%9A%84%E7%8E%B0%E8%B1%A1"><span class="post-toc-number">3.17.</span> <span class="post-toc-text">performance问题, 总觉得输入的时候稍微有一点卡顿的现象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#image%E6%B8%B2%E6%9F%93%E5%90%8E%E9%BB%98%E8%AE%A4%E6%98%BE%E7%A4%BA%E5%A4%A7%E5%B0%8F%E4%B8%8D%E6%98%AF%E9%85%8D%E7%BD%AE%E7%9A%84panel-opens-maximized"><span class="post-toc-number">3.18.</span> <span class="post-toc-text">image渲染后默认显示大小不是配置的Panel: Opens Maximized</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#table%E4%B8%8D%E8%AF%86%E5%88%AB%E6%8F%92%E5%85%A5%E7%9A%84br%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.19.</span> <span class="post-toc-text">table不识别插入的&lt;br&#x2F;&gt;问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%90%AF%E7%94%A8%E4%BA%862%E4%B8%AA%E5%8D%B1%E9%99%A9%E5%B1%9E%E6%80%A7%E4%B9%8B%E5%90%8E-%E5%8F%98%E6%88%90%E7%A9%BA%E7%99%BD%E4%BA%86..."><span class="post-toc-number">3.19.1.</span> <span class="post-toc-text">启用了2个危险属性之后, 变成空白了...</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo-%E5%8E%9F%E7%94%9Fhtml%E7%9A%84%E6%B8%B2%E6%9F%93%E8%83%BD%E5%8A%9B"><span class="post-toc-number">3.20.</span> <span class="post-toc-text">TODO: 原生HTML的渲染能力</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#quote%E4%B9%8B%E5%90%8E%E7%9A%84%E5%86%85%E5%AE%B9%E5%AF%BC%E8%87%B4%E5%8D%A1%E9%A1%BF"><span class="post-toc-number">3.21.</span> <span class="post-toc-text">quote之后的内容导致卡顿</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%8B%86%E5%88%86%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E5%92%8C%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8%E7%9A%84%E6%B8%B2%E6%9F%93"><span class="post-toc-number">3.22.</span> <span class="post-toc-text">拆分无序列表和有序列表的渲染</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%90%86%E8%A7%A3-1"><span class="post-toc-number">3.22.1.</span> <span class="post-toc-text">理解</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A2%9E%E5%8A%A0http%E9%93%BE%E6%8E%A5%E5%9B%BE%E7%89%87%E6%94%AF%E6%8C%81"><span class="post-toc-number">3.23.</span> <span class="post-toc-text">增加http链接图片支持</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BF%AE%E5%A4%8Dlatex%E6%98%BE%E7%A4%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E7%BB%93%E6%9E%9C%E5%A4%AA%E5%B0%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.24.</span> <span class="post-toc-text">修复latex显示的渲染结果太小的问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%86%E6%9E%90lineheight"><span class="post-toc-number">3.24.1.</span> <span class="post-toc-text">分析lineHeight</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%9A%E8%A1%8C%E7%9A%84latex%E9%99%A4%E4%BA%86%E6%8C%89%E8%A1%8C%E6%95%B0%E6%95%B4%E6%AF%94%E6%94%BE%E5%A4%A7%E4%BB%A3%E7%A0%81%E4%B9%8B%E5%A4%96-%E6%98%AF%E5%90%A6%E6%9C%89%E6%AD%A3%E5%B8%B8%E7%9A%84%E6%96%B9%E5%BC%8F%E6%8A%98%E5%8F%A0%E5%88%B0%E9%82%A3%E5%87%A0%E8%A1%8C"><span class="post-toc-number">3.25.</span> <span class="post-toc-text">多行的latex除了按行数整比放大代码之外, 是否有正常的方式折叠到那几行?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#foldunfolder-api"><span class="post-toc-number">3.26.</span> <span class="post-toc-text">fold&#x2F;unfolder API?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#wrod-wrap%E6%8A%98%E5%8F%A0%E5%90%8E%E7%9A%84%E5%90%8E%E9%9D%A2%E5%87%A0%E8%A1%8C%E5%BC%80%E5%A4%B4%E6%97%A0%E6%B8%B2%E6%9F%93%E6%95%88%E6%9E%9C"><span class="post-toc-number">3.27.</span> <span class="post-toc-text">wrod wrap折叠后的后面几行开头无渲染效果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BF%AE%E5%A4%8Dwhen-the-cursor-is-in-the-line-of-heading-should-it-show-at-the-begining-of-the-line-issue-10-sean10markless"><span class="post-toc-number">3.28.</span> <span class="post-toc-text">修复When the cursor is in the line of heading, should it show &#39;#&#39; at the begining of the line? · Issue #10 · Sean10&#x2F;markless</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#heading%E7%9A%84%E5%AD%97%E4%BD%93%E6%94%BE%E5%A4%A7-%E4%BC%BC%E4%B9%8E%E5%85%B6%E5%AE%9E%E4%B9%9F%E5%8F%AF%E4%BB%A5%E6%8E%A5%E7%9D%80%E6%94%BE%E5%A4%A7.-%E5%A5%BD%E5%83%8F%E8%A1%8C%E7%9A%84%E9%AB%98%E5%BA%A6-%E4%BC%9A%E8%B7%9F%E7%9D%80%E6%88%91%E7%9A%84%E6%8C%87%E5%AE%9A%E7%9A%84%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F%E5%8F%98%E5%A4%A7%E8%80%8C%E5%8F%98%E5%A4%A7"><span class="post-toc-number">3.29.</span> <span class="post-toc-text">heading的字体放大, 似乎其实也可以接着放大. 好像行的高度, 会跟着我的指定的字体大小变大而变大</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#heading%E7%9A%84%E9%9A%90%E8%97%8F%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98-%E5%87%A1%E6%98%AF%E5%9C%A8%E6%A0%87%E9%A2%98%E4%B8%8A%E8%A7%A6%E5%8F%91%E7%9A%84%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%B8%B2%E6%9F%93-%E4%BE%9D%E6%97%A7%E4%BC%9A%E5%AD%98%E5%9C%A8%E6%B8%B2%E6%9F%93%E9%94%99%E7%9A%84%E9%97%AE%E9%A2%98-%E6%B8%85%E7%90%86%E5%8F%AF%E8%83%BD%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E5%8F%96%E6%B6%88%E6%89%80%E6%9C%89%E8%AF%A5%E4%BD%8D%E7%BD%AE%E7%9A%84%E6%B8%B2%E6%9F%93."><span class="post-toc-number">3.30.</span> <span class="post-toc-text">heading的隐藏存在一个问题, 凡是在标题上触发的其他模式的渲染, 依旧会存在渲染错的问题, 清理可能需要考虑取消所有该位置的渲染.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#block-quote%E5%AD%98%E5%9C%A82%E4%B8%AA%E6%B8%B2%E6%9F%93%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.31.</span> <span class="post-toc-text">block quote存在2个渲染问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BD%8D%E7%BD%AE-%E4%BE%9D%E6%97%A7%E6%98%AF%E6%8C%89%E7%85%A7%E6%9C%AA%E9%9A%90%E8%97%8F%E6%9D%A5%E7%9A%84"><span class="post-toc-number">3.31.1.</span> <span class="post-toc-text">位置, 依旧是按照未隐藏#来的</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="post-toc-number">3.31.1.1.</span> <span class="post-toc-text">思路</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%A4%A7%E5%B0%8F-%E4%B9%9F%E6%98%AF%E6%8C%89%E7%85%A7%E5%AD%97%E4%BD%93%E7%9A%84%E5%88%9D%E5%A7%8B%E5%A4%A7%E5%B0%8F-%E8%80%8C%E4%B8%8D%E6%98%AF%E6%B8%B2%E6%9F%93%E5%90%8E%E7%9A%84%E5%A4%A7%E5%B0%8F%E6%9D%A5%E7%9A%84."><span class="post-toc-number">3.31.2.</span> <span class="post-toc-text">大小, 也是按照字体的初始大小, 而不是渲染后的大小来的.</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86%E5%BD%93%E5%89%8D%E8%A1%8C-%E5%8E%BB%E9%99%A4%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E6%95%88%E6%9E%9C"><span class="post-toc-number">3.32.</span> <span class="post-toc-text">批量处理当前行, 去除装饰器的效果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#f5%E8%B0%83%E8%AF%95%E6%98%BE%E7%A4%BA%E7%9A%84%E6%95%88%E6%9E%9C-%E5%92%8C%E6%9C%AC%E5%9C%B0%E6%89%93%E5%8C%85%E5%AE%89%E8%A3%85%E5%90%8E%E4%B8%8D%E5%90%8C."><span class="post-toc-number">3.33.</span> <span class="post-toc-text">f5调试显示的效果, 和本地打包安装后不同.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%94%BE%E5%BC%83%E8%AE%A9%E7%B4%A2%E5%BC%95%E4%BD%8D%E7%BD%AE%E4%B8%8E%E5%AD%97%E7%AC%A6%E6%89%80%E5%9C%A8%E4%BD%8D%E7%BD%AE%E5%AF%B9%E5%BA%94%E4%B8%8A-%E4%B8%8D%E8%AE%A9%E5%85%B6%E5%87%BA%E7%8E%B0%E5%88%A0%E9%99%A4%E7%A9%BA%E6%A0%BC-%E5%AE%9E%E9%99%85%E6%98%AF%E5%88%A0%E9%99%A4%E4%BA%86%E6%9C%80%E5%90%8E%E7%9A%84%E6%96%87%E5%AD%97%E7%9A%84%E9%97%AE%E9%A2%98."><span class="post-toc-number">3.33.1.</span> <span class="post-toc-text">(放弃)让索引位置与字符所在位置对应上? 不让其出现删除空格, 实际是删除了最后的文字的问题.</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%9A%E7%8E%B0%E5%AE%9E2%E4%B8%AA%E7%9A%84%E9%97%AE%E9%A2%98-%E6%84%8F%E6%80%9Dhide%E5%BC%82%E5%B8%B8"><span class="post-toc-number">3.34.</span> <span class="post-toc-text">多现实2个&#39;#&#39;的问题, 意思hide异常</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A5%E5%BF%97%E9%87%8C%E8%AE%B0%E5%BD%95heading%E7%9A%84%E9%80%BB%E8%BE%91%E9%87%8C%E4%BC%9A%E5%87%BA%E7%8E%B0%E6%99%AE%E9%80%9A%E8%8A%82%E7%82%B9%E7%9A%84%E8%A1%8C..."><span class="post-toc-number">3.35.</span> <span class="post-toc-text">日志里记录heading的逻辑里会出现普通节点的行...</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2-%E7%94%B1%E4%BA%8E%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E4%B8%8D%E6%96%ADnew.-%E6%B8%85%E7%A9%BA%E4%B9%9F%E5%8F%AA%E6%98%AF-%E5%B9%B6%E4%B8%8D%E6%98%AFdispose.-%E6%9C%89%E5%BF%85%E8%A6%81%E5%A2%9E%E5%8A%A0%E5%8D%95%E4%BE%8B"><span class="post-toc-number">3.36.</span> <span class="post-toc-text">可能存在内存泄露, 由于装饰器的不断new. 清空也只是[], 并不是dispose. 有必要增加单例</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo%E5%AD%98%E5%9C%A8%E5%8D%95%E8%A1%8C%E7%94%B1%E4%BA%8E%E5%AD%97%E4%BD%93%E8%BF%87%E5%A4%A7-%E6%B2%A1%E6%9C%89%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C%E7%9A%84%E9%97%AE%E9%A2%98."><span class="post-toc-number">3.37.</span> <span class="post-toc-text">TODO:存在单行由于字体过大, 没有自动换行的问题.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#sometimes-%E8%BF%98%E6%98%AF%E4%BC%9A%E5%87%BA%E7%8E%B0%E6%B2%A1%E8%A2%AB%E9%9A%90%E8%97%8F%E7%9A%84%E9%97%AE%E9%A2%98.-1.0.22%E7%89%88%E6%9C%AC."><span class="post-toc-number">3.38.</span> <span class="post-toc-text">sometimes, 还是会出现#没被隐藏的问题. 1.0.22版本.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#illegal-value-for-line"><span class="post-toc-number">3.38.1.</span> <span class="post-toc-text">Illegal value for line</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9C%A8heading%E5%A4%84%E7%9A%84"><span class="post-toc-number">3.38.2.</span> <span class="post-toc-text">在heading处的</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo%E7%96%91%E4%BC%BC%E5%9B%BE%E7%89%87%E9%BB%98%E8%AE%A4%E4%B8%8D%E4%BC%9A%E5%85%A8%E6%94%BE%E5%A4%A7%E7%8A%B6%E6%80%81-%E9%80%9A%E8%BF%87paste-image%E7%8E%B0%E5%8A%A0%E7%9A%84%E6%B8%B2%E6%9F%93%E7%9A%84%E6%97%B6%E5%80%99-%E9%9C%80%E8%A6%81%E6%94%B6%E7%BC%A9%E4%B8%80%E6%AC%A1%E5%86%8D%E7%82%B9%E5%BC%80%E6%89%8D%E4%BC%9A%E6%8C%89%E7%85%A7%E6%88%91%E7%9A%84%E9%85%8D%E7%BD%AE%E8%BF%9B%E8%A1%8C-%E5%8C%85%E6%8B%AC%E5%88%87%E6%8D%A2editor%E7%9A%84%E6%97%B6%E5%80%99-%E5%88%87%E6%8D%A2%E5%AE%8C%E5%A5%BD%E5%83%8F%E4%B9%9F%E6%9C%89%E9%97%AE%E9%A2%98-%E9%99%A4%E4%BA%86%E5%85%B3%E9%97%AD%E9%87%8D%E6%96%B0%E6%89%93%E5%BC%80%E5%A5%BD%E5%83%8F%E6%98%AF%E6%AD%A3%E5%B8%B8%E7%9A%84"><span class="post-toc-number">3.39.</span> <span class="post-toc-text">TODO:疑似图片默认不会全放大状态, 通过Paste Image现加的渲染的时候, 需要收缩一次再点开才会按照我的配置进行? 包括切换editor的时候, 切换完好像也有问题, 除了关闭重新打开好像是正常的</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E8%A7%A6%E6%8E%A7%E6%9D%BF%E6%BB%9A%E5%8A%A8%E7%9A%84%E6%97%B6%E5%80%99-%E6%9C%89%E8%A7%A6%E5%8F%91selection%E7%9A%84%E5%8F%98%E5%8C%96-%E6%88%96%E8%80%85%E4%BB%80%E4%B9%88%E7%9A%84%E5%8F%98%E5%8C%96%E5%BC%95%E8%B5%B7%E9%87%8D%E6%96%B0%E6%B8%B2%E6%9F%93%E5%90%97"><span class="post-toc-number">3.40.</span> <span class="post-toc-text">TODO: 性能优化, 触控板滚动的时候, 有触发selection的变化, 或者什么的变化引起重新渲染吗?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A2%9E%E5%8A%A0%E6%97%A5%E5%BF%97%E5%8A%A8%E6%80%81%E8%B0%83%E6%95%B4%E8%AE%B0%E5%BD%95."><span class="post-toc-number">3.41.</span> <span class="post-toc-text">增加日志动态调整记录.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#config%E4%BF%AE%E6%94%B9%E7%9A%84%E5%90%8C%E6%AD%A5%E6%97%B6%E9%97%B4%E6%98%AF%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%91%A2"><span class="post-toc-number">3.41.1.</span> <span class="post-toc-text">config修改的同步时间是什么时候呢?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%B0%8F%E6%A8%A1%E5%9D%97%E5%B0%B1%E4%B8%8D%E8%80%83%E8%99%91%E6%8C%89%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E6%8B%86%E5%88%86%E6%97%A5%E5%BF%97%E4%BA%86-%E7%9B%B4%E6%8E%A5%E6%89%8B%E5%8A%A8%E8%BF%87%E6%BB%A4%E7%AD%9B%E9%80%89%E5%90%A7."><span class="post-toc-number">3.41.2.</span> <span class="post-toc-text">小模块就不考虑按模块&#x2F;功能拆分日志了, 直接手动过滤筛选吧.</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#todo-support-env-expose-log-level-and-log-path-to-extensions-issue-40053-microsoftvscode"><span class="post-toc-number">3.41.3.</span> <span class="post-toc-text">TODO: support env? Expose log level and log path to extensions · Issue #40053 · microsoft&#x2F;vscode</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cleardecotaions%E9%87%8C%E7%9A%84%E5%AF%B9%E8%B1%A1%E6%89%BE%E4%B8%8D%E5%88%B0setdecoration"><span class="post-toc-number">3.42.</span> <span class="post-toc-text">clearDecotaions里的对象找不到setDecoration,</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%83%A8%E5%88%86listitem%E7%9A%84%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E7%9A%84%E9%82%A3%E4%B8%AA%E7%AC%A6%E5%8F%B7%E6%80%8E%E4%B9%88%E5%A5%BD%E5%83%8F%E6%B2%A1%E8%A2%AB%E6%B7%BB%E5%8A%A0%E4%B8%8A%E5%8E%BB-%E9%9A%90%E8%97%8F%E4%BA%86"><span class="post-toc-number">3.42.1.</span> <span class="post-toc-text">部分listItem的无序列表的那个符号怎么好像没被添加上去? 隐藏了?</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#todo"><span class="post-toc-number">4.</span> <span class="post-toc-text">todo</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BD%9C%E5%BA%9F%E7%9A%84%E6%8A%98%E5%8F%A0%E4%BB%A3%E7%A0%81."><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">作废的折叠代码.</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#todo-%E5%9B%9E%E8%BD%A6%E5%92%8Cbackspace%E6%8C%89%E9%94%AE%E5%8D%A1%E9%A1%BF-%E6%80%80%E7%96%91%E8%B7%9F%E8%BF%99%E4%B8%AAmarkless%E7%9A%84%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%93%E6%9C%89%E5%85%B3.-%E5%A5%BD%E5%83%8F%E7%A6%81%E7%94%A8%E4%BA%86markless%E8%BF%98%E6%98%AF%E5%8D%A1-%E5%BC%80%E4%BA%86%E8%BF%9B%E7%A8%8B%E7%9B%91%E6%8E%A7-%E4%B9%9F%E6%B2%A1%E7%9C%8B%E5%88%B0%E6%98%AF%E5%93%AA%E4%B8%AA%E8%BF%9B%E7%A8%8B%E7%9A%84cpu%E6%98%BE%E8%91%97%E7%9A%84%E9%AB%98-%E9%99%A4%E4%BA%86main%E7%AA%97%E5%8F%A3."><span class="post-toc-number">4.0.2.</span> <span class="post-toc-text">todo: 回车和backspace按键卡顿, 怀疑跟这个markless的实时渲染有关. 好像禁用了markless还是卡, 开了进程监控, 也没看到是哪个进程的cpu显著的高, 除了main窗口.</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo-markless%E6%98%AF%E5%A6%82%E4%BD%95%E9%9A%90%E8%97%8F%E4%B8%80%E9%83%A8%E5%88%86%E6%96%87%E5%AD%97%E7%9A%84-%E4%BD%86%E6%98%AF%E5%AE%9E%E9%99%85%E5%A5%BD%E5%83%8F%E5%8F%88%E8%83%BD%E8%A2%AB%E6%90%9C%E7%B4%A2%E5%88%B0-%E9%80%8F%E6%98%8E%E8%89%B2"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">todo: markless是如何隐藏一部分文字的? 但是实际好像又能被搜索到? 透明色?</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E8%AE%B0%E5%BD%95"><span class="post-toc-number">5.</span> <span class="post-toc-text">数据记录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">无序列表下无序列表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">无序列表下有序列表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">有序列表下有序列表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8%E4%B8%8B%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">有序列表下无序列表下有序列表</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">6.</span> <span class="post-toc-text">Reference</span></a></li></ol>
         </nav>
     </aside>
 
@@ -215,7 +168,7 @@ markless是如何隐藏一部分文字的? 但是实际好像又能被搜索到?
     <div class="post-card">
         <h1 class="post-card-title"></h1>
         <div class="post-meta">
-            <time class="post-time" title="2023-03-18 23:11:14" datetime="2023-03-18T15:11:14.858Z"  itemprop="datePublished">2023-03-18</time>
+            <time class="post-time" title="2023-03-18 18:56:54" datetime="2023-03-18T18:56:54.818Z"  itemprop="datePublished">2023-03-18</time>
 
             
 
@@ -230,198 +183,118 @@ markless是如何隐藏一部分文字的? 但是实际好像又能被搜索到?
         <div class="post-content" id="post-content" itemprop="postContent">
             <h1 id="理解">理解</h1>
 <p><code>markdown</code>是有对应的标准的. 似乎这篇可以参考?</p>
-<p>下面todo中提到的一些<code>list</code>的识别场景,
-其实这篇<code>spec</code>有做一定的边界澄清?</p>
+<p>下面todo中提到的一些<code>list</code>的识别场景, 其实这篇<code>spec</code>有做一定的边界澄清?</p>
 <p><a target="_blank" rel="noopener" href="https://spec.commonmark.org/0.30/">CommonMark Spec</a></p>
-<p><a target="_blank" rel="noopener" href="http://yanxyz.github.io/commonmark-spec/">中文版CommonMark
-Spec</a></p>
+<p><a target="_blank" rel="noopener" href="http://yanxyz.github.io/commonmark-spec/">中文版CommonMark Spec</a></p>
 <h1 id="单元测试">单元测试</h1>
-<h2 id="todo针对vscode渲染后的页面-如何进行单元测试感知-html的识别">TODO:针对vscode渲染后的页面,
-如何进行单元测试感知? html的识别?</h2>
-<h2 id="todo针对vscode提供的api-如何验证其渲染效果">TODO:针对vscode提供的API,
-如何验证其渲染效果?</h2>
+<h2 id="todo针对vscode渲染后的页面-如何进行单元测试感知-html的识别">TODO:针对vscode渲染后的页面, 如何进行单元测试感知? html的识别?</h2>
+<h2 id="todo针对vscode提供的api-如何验证其渲染效果">TODO:针对vscode提供的API, 如何验证其渲染效果?</h2>
 <h1 id="issue">Issue</h1>
-<h2 id="搜索-点到行后-渲染的位置偏移跳转太严重了.">搜索, 点到行后,
-渲染的位置偏移跳转太严重了.</h2>
+<h2 id="搜索-点到行后-渲染的位置偏移跳转太严重了.">搜索, 点到行后, 渲染的位置偏移跳转太严重了.</h2>
 <h2 id="如何支持直接复制渲染后的内容">如何支持直接复制渲染后的内容?</h2>
 <h2 id="comments-现在">comments 现在</h2>
-<h2 id="长期运行后-似乎会出现资源占用问题-卡顿">长期运行后,
-似乎会出现资源占用问题, 卡顿</h2>
+<h2 id="长期运行后-似乎会出现资源占用问题-卡顿">长期运行后, 似乎会出现资源占用问题, 卡顿</h2>
 <p>疑似是1.0.25这次这个增加自定义引起的这个问题</p>
 <p>似乎是1.0.25去掉了memoize引起的.</p>
 <h2 id="comments-现在老是自动弹出来.">comments 现在老是自动弹出来.</h2>
-<p>右键了这个弹出来的comments的<code>hide comments</code>了,
-不知道会怎么样. 无效 似乎 跟之前设置的Panel: Opens Maximized
-设置有关</p>
+<p>右键了这个弹出来的comments的<code>hide comments</code>了, 不知道会怎么样. 无效 似乎 跟之前设置的Panel: Opens Maximized 设置有关</p>
 <h2 id="是否有持久化渲染的实现方式">是否有持久化渲染的实现方式</h2>
 <ul>
 <li>vscode-markdown 看看?</li>
 <li>新开的那种to-side的preview 窗口是否是?</li>
 </ul>
-<p>如何区分切换文件和文件内编辑? * onDidChangeActiveTextEditor *
-其实切换文件也不重要, 关键是感知到文件是第一次被打开就行?</p>
+<p>如何区分切换文件和文件内编辑? * onDidChangeActiveTextEditor * 其实切换文件也不重要, 关键是感知到文件是第一次被打开就行?</p>
 <ul>
 <li><p>似乎变量是持久化渲染的, 所以理论上是可以做计数器的?</p></li>
-<li><p>插件的变量是全局的, 所以需要维护一张表, 打开的map, 占用这个内存?
-而不是每次切换就打开一次?</p></li>
-<li><p>TODO: 这个可以作为功能处理吧? 如果需要频繁切换,
-减少图片渲染的代价则处理. 纳入计划中.</p></li>
+<li><p>插件的变量是全局的, 所以需要维护一张表, 打开的map, 占用这个内存? 而不是每次切换就打开一次?</p></li>
+<li><p>TODO: 这个可以作为功能处理吧? 如果需要频繁切换, 减少图片渲染的代价则处理. 纳入计划中.</p></li>
 </ul>
-<h2 id="每次切换文件-为什么comment重新渲染时-焦点位置就变了呢-使用comment-是否可以仅修改的图片变更渲染-而其他的不变-应该可以做到.">每次切换文件,
-为什么comment重新渲染时, 焦点位置就变了呢? 使用comment,
-是否可以仅修改的图片变更渲染, 而其他的不变? 应该可以做到.</h2>
+<h2 id="每次切换文件-为什么comment重新渲染时-焦点位置就变了呢-使用comment-是否可以仅修改的图片变更渲染-而其他的不变-应该可以做到.">每次切换文件, 为什么comment重新渲染时, 焦点位置就变了呢? 使用comment, 是否可以仅修改的图片变更渲染, 而其他的不变? 应该可以做到.</h2>
 <p>即使用内存来减少这部分切换</p>
 <p>判定是文件刚切换带来的行切换事件,从而绕过这种渲染?</p>
-<p>TODO:指针判定里增加哪些位置未渲染的逻辑吧,
-这样仅当指针出现在存在未渲染的页面时,才会对那些位置进行渲染.
-其他情况下指针的迁移, 不触发渲染.</p>
-<h2 id="报错-error-setting-up-request-syntaxerror-invalid-regular-expression-.md-nothing-to-repeat-忽然就无法渲染了">报错
-<code>Error setting up request: SyntaxError: Invalid regular expression: /*.md/: Nothing to repeat</code>,
-忽然就无法渲染了</h2>
+<p>TODO:指针判定里增加哪些位置未渲染的逻辑吧, 这样仅当指针出现在存在未渲染的页面时,才会对那些位置进行渲染. 其他情况下指针的迁移, 不触发渲染.</p>
+<h2 id="报错-error-setting-up-request-syntaxerror-invalid-regular-expression-.md-nothing-to-repeat-忽然就无法渲染了">报错 <code>Error setting up request: SyntaxError: Invalid regular expression: /*.md/: Nothing to repeat</code>, 忽然就无法渲染了</h2>
 <h2 id="会出现图片重复渲染的情况">会出现图片重复渲染的情况</h2>
 <p>好像就是在那几行写新的对象, 那个comment并没有自动被换行符往后推.</p>
-<p>好像就是在图片渲染那行上面, 敲回车, 会逐渐走到图片下面去.
-而不是让图片切换行? 这个所以应该是我这个插件处理的问题吧?</p>
-<h2 id="是否可以从comment切换成其他的来进行渲染-既然html都支持的话.">是否可以从comment切换成其他的来进行渲染?
-既然html都支持的话.</h2>
+<p>好像就是在图片渲染那行上面, 敲回车, 会逐渐走到图片下面去. 而不是让图片切换行? 这个所以应该是我这个插件处理的问题吧?</p>
+<h2 id="是否可以从comment切换成其他的来进行渲染-既然html都支持的话.">是否可以从comment切换成其他的来进行渲染? 既然html都支持的话.</h2>
 <h2 id="偶尔会出现某个单元没渲染的情况似乎...">偶尔会出现某个单元没渲染的情况似乎...</h2>
-<h2 id="todo-打开文件-好像如果不点一下其他位置-好像还不会触发渲染">TODO:
-打开文件, 好像如果不点一下其他位置, 好像还不会触发渲染?</h2>
-<h2 id="todosupport-data-src-image-preview">TODO:support data src image
-preview</h2>
-<h2 id="page-jump-when-switch-to-other-file-and-back.-maybe-image-previews-problem">page
-jump when switch to other file and back. maybe image preview's
-problem</h2>
-<p>可能只要不点到那里, 就不触发图片重新渲染更加合适?
-但是如果是批量位置修改呢? 被选中的时候再重新渲染?</p>
-<p>主要涉及需要重新渲染的时候, 应该是用户点击那行的时候.
-但是每次切换的时候, 实际上会触发一次</p>
-<p>搞个索引存储吧, 每行尽量只渲染一次吧. 渲染完, 如果没有选中,
-就不再触发?</p>
-<p><code>state.activeEditor.document.lineAt</code>来存储, 好像不太行?
-怎么把一行里所有的内容都存储进去呢? 以range为范围? 然后通过一张map记录?
-为了减少时间复杂度?</p>
-<p>如果<code>open</code>触发的不是<code>onDidChangeActiveTextEditor</code>这个的话,
-其实把这个关闭就可以了?</p>
-<p>切换文件的时候,
-<code>onDidChangeTextEditorVisibleRanges</code>这个也被触发了.
-关键问题是, 图片的渲染应该是我在切换页面之后发生的,
-所以导致页面上滑了...</p>
+<h2 id="todo-打开文件-好像如果不点一下其他位置-好像还不会触发渲染">TODO: 打开文件, 好像如果不点一下其他位置, 好像还不会触发渲染?</h2>
+<h2 id="todosupport-data-src-image-preview">TODO:support data src image preview</h2>
+<h2 id="page-jump-when-switch-to-other-file-and-back.-maybe-image-previews-problem">page jump when switch to other file and back. maybe image preview's problem</h2>
+<p>可能只要不点到那里, 就不触发图片重新渲染更加合适? 但是如果是批量位置修改呢? 被选中的时候再重新渲染?</p>
+<p>主要涉及需要重新渲染的时候, 应该是用户点击那行的时候. 但是每次切换的时候, 实际上会触发一次</p>
+<p>搞个索引存储吧, 每行尽量只渲染一次吧. 渲染完, 如果没有选中, 就不再触发?</p>
+<p><code>state.activeEditor.document.lineAt</code>来存储, 好像不太行? 怎么把一行里所有的内容都存储进去呢? 以range为范围? 然后通过一张map记录? 为了减少时间复杂度?</p>
+<p>如果<code>open</code>触发的不是<code>onDidChangeActiveTextEditor</code>这个的话, 其实把这个关闭就可以了?</p>
+<p>切换文件的时候, <code>onDidChangeTextEditorVisibleRanges</code>这个也被触发了. 关键问题是, 图片的渲染应该是我在切换页面之后发生的, 所以导致页面上滑了...</p>
 <p>应该是其中初始化置空那次的问题.</p>
-<p>但是<code>onDidChangeActiveTextEditor</code>感知不到每个文件是第一次打开,
-所以导致其实切换</p>
+<p>但是<code>onDidChangeActiveTextEditor</code>感知不到每个文件是第一次打开, 所以导致其实切换</p>
 <p><code>ImageComment</code>的高度固化有可能不</p>
-<p>到底是因为切换走了, 导致渲染全部没了,
-还是说只是代码里的因素呢?<code>Comment</code></p>
-<p>记错了, 不是以文本为单位的. 还是以进程为单位的,
-也就代表确实需要一个线程处理所有的markdown文件渲染了...这种情况下,
-也就是最好uri也保存一下map...</p>
-<p>TODO: 图片是在线程里, 开了一张map.
-<code>createCommentThread</code></p>
+<p>到底是因为切换走了, 导致渲染全部没了, 还是说只是代码里的因素呢?<code>Comment</code></p>
+<p>记错了, 不是以文本为单位的. 还是以进程为单位的, 也就代表确实需要一个线程处理所有的markdown文件渲染了...这种情况下, 也就是最好uri也保存一下map...</p>
+<p>TODO: 图片是在线程里, 开了一张map. <code>createCommentThread</code></p>
 <p>确实是离开的时候, 触发了dispose图片引起的?</p>
 <p>好像不清理线程, 就会出现图片重复被塞进渲染线程里的情况?</p>
-<p>好像每次都会被push进去的原因是Range对象是不同的? 在string化的时候,
-也是可变的. 是不是因为这个导致不同? 不对啊,
-我维持了一张<code>rangeMap</code>, 那不应该出现那个不匹配的问题才对啊.
-临时变量的地址应该是不同的, 所以最好转换一下成string?</p>
+<p>好像每次都会被push进去的原因是Range对象是不同的? 在string化的时候, 也是可变的. 是不是因为这个导致不同? 不对啊, 我维持了一张<code>rangeMap</code>, 那不应该出现那个不匹配的问题才对啊. 临时变量的地址应该是不同的, 所以最好转换一下成string?</p>
 <p>奇怪, 怎么每次每个对象都触发了2次呢?</p>
-<p>另外, 这个列表应该会触发几次,
-理论上这张map里应该有3个或者以下的对象才对.</p>
-<p>试了下, 官方的<code>comment-sample</code>也会触发这个跳变的情况.
-所以这里其实要解决的历史已经渲染的, 实时渲染的问题?</p>
-<h2 id="图片渲染不支持webp格式-也可能是本地file协议不支持-官方已合入支持">图片渲染不支持<code>webp</code>格式,
-也可能是本地<code>file</code>协议不支持? (官方已合入支持)</h2>
-<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/144188">MarkdownString
-cannot render webp image · Issue #144188 · microsoft/vscode</a></p>
-<p>但是<code>markdown all in one</code>的<code>preview</code>是支持的,
-所以可能我的用法不太对?</p>
-<p>看了下这个库里只是调用了官方的<code>markdown.showPreview</code>command,
-所以可能得看官方的里是怎么渲染webp的</p>
+<p>另外, 这个列表应该会触发几次, 理论上这张map里应该有3个或者以下的对象才对.</p>
+<p>试了下, 官方的<code>comment-sample</code>也会触发这个跳变的情况. 所以这里其实要解决的历史已经渲染的, 实时渲染的问题?</p>
+<h2 id="图片渲染不支持webp格式-也可能是本地file协议不支持-官方已合入支持">图片渲染不支持<code>webp</code>格式, 也可能是本地<code>file</code>协议不支持? (官方已合入支持)</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/144188">MarkdownString cannot render webp image · Issue #144188 · microsoft/vscode</a></p>
+<p>但是<code>markdown all in one</code>的<code>preview</code>是支持的, 所以可能我的用法不太对?</p>
+<p>看了下这个库里只是调用了官方的<code>markdown.showPreview</code>command, 所以可能得看官方的里是怎么渲染webp的</p>
 <p><code>&lt;img src="../imgs/leveldb3.webp" alt="" class="loading" id="image-hash--205375520" data-src="../imgs/leveldb3.webp"&gt;</code></p>
-<p><code>addImageRenderer</code>,
-官方使用的<code>MarkdownIt</code>触发的image渲染应该.</p>
-<p>那问题就是这个,<code>MarkdownString</code>并不是用的<code>MarkdownIt</code>,
-走的两套代码方案实现的? 看官方怎么回复吧.</p>
+<p><code>addImageRenderer</code>, 官方使用的<code>MarkdownIt</code>触发的image渲染应该.</p>
+<p>那问题就是这个,<code>MarkdownString</code>并不是用的<code>MarkdownIt</code>, 走的两套代码方案实现的? 看官方怎么回复吧.</p>
 <p>yes~就是一开始发现的那个<code>private readonly validExtensions = new Set(['.svg', '.png', '.jpg', '.jpeg', '.gif', '.bmp']);</code>这里加上就支持了.</p>
 <h2 id="疑似某种文件格式下的bug">疑似某种文件格式下的bug</h2>
-<p><code>TypeError: Cannot read property 'start' of undefined</code> at
-vscode-file://vscode-app/Users/sean10/.vscode/extensions/sean10.markless-sean10-1.0.24/out/main.js:53
-at Generator.next (<anonymous>) at o
-(vscode-file://vscode-app/Users/sean10/.vscode/extensions/sean10.markless-sean10-1.0.24/out/main.js:1)</anonymous></p>
+<p><code>TypeError: Cannot read property 'start' of undefined</code> at vscode-file://vscode-app/Users/sean10/.vscode/extensions/sean10.markless-sean10-1.0.24/out/main.js:53 at Generator.next (<anonymous>) at o (vscode-file://vscode-app/Users/sean10/.vscode/extensions/sean10.markless-sean10-1.0.24/out/main.js:1)</anonymous></p>
 <p>那个租房的文章里的.</p>
-<h2 id="performance问题-总觉得输入的时候稍微有一点卡顿的现象">performance问题,
-总觉得输入的时候稍微有一点卡顿的现象</h2>
-<p>TODO:有没有能够精确的profile我的插件的实际cpu占用时间呢?
-有点怀疑是我引入的那个log库占用的资源.</p>
+<h2 id="performance问题-总觉得输入的时候稍微有一点卡顿的现象">performance问题, 总觉得输入的时候稍微有一点卡顿的现象</h2>
+<p>TODO:有没有能够精确的profile我的插件的实际cpu占用时间呢? 有点怀疑是我引入的那个log库占用的资源.</p>
 <h2 id="image渲染后默认显示大小不是配置的panel-opens-maximized">image渲染后默认显示大小不是配置的<code>Panel: Opens Maximized</code></h2>
 <p><code>createCommentThread</code>这个接口操作的.</p>
 <p><code>panel</code>应该属于<code>comment</code>的父类的感觉.</p>
-<p><code>collapsibleState</code>目前已经设置了<code>Expand</code>了.
-所以问题是, <code>expand</code>的<code>panel</code>的默认加载模式?</p>
-<p>所以, 其实需要知道的是,
-什么时候他才读取<code>Panel: Opens Maximized</code>里的变量.</p>
+<p><code>collapsibleState</code>目前已经设置了<code>Expand</code>了. 所以问题是, <code>expand</code>的<code>panel</code>的默认加载模式?</p>
+<p>所以, 其实需要知道的是, 什么时候他才读取<code>Panel: Opens Maximized</code>里的变量.</p>
 <p><code>private panelOpensMaximized() &#123;</code>似乎是在这里控制?</p>
-<p><code>toggleMaximizedPanel</code>
-这个函数为什么默认触发的始终是<code>temrinal</code>的呢?</p>
-<p>TODO:这个变量哪次提交引入的呢<code>PANEL_OPENS_MAXIMIZED</code>,
-是不是我用错了?</p>
+<p><code>toggleMaximizedPanel</code> 这个函数为什么默认触发的始终是<code>temrinal</code>的呢?</p>
+<p>TODO:这个变量哪次提交引入的呢<code>PANEL_OPENS_MAXIMIZED</code>, 是不是我用错了?</p>
 <ul>
-<li>是不是可以像人为手动折叠一次一样, 自动完成,
-这样就能放大成最大化的了.
+<li>是不是可以像人为手动折叠一次一样, 自动完成, 这样就能放大成最大化的了.
 <ul>
-<li>不行, 试了下,
-通过属性设置的<code>Expanded</code>依旧是部分图片状态.</li>
+<li>不行, 试了下, 通过属性设置的<code>Expanded</code>依旧是部分图片状态.</li>
 </ul></li>
 </ul>
 <p>所以关键还是在这个手动折叠展开, 用的哪个函数了.</p>
 <blockquote>
-<p>A collection of comments representing a conversation at a particular
-range in a document.</p>
+<p>A collection of comments representing a conversation at a particular range in a document.</p>
 </blockquote>
-<p><code>Comment</code>这个类型似乎还有<code>edit</code>和<code>preview</code>模式.
-不过初步看与这个问题的解决方案无关, 可能如果官方不提供api,
-那就得更换<code>comment</code>以外的方案?</p>
+<p><code>Comment</code>这个类型似乎还有<code>edit</code>和<code>preview</code>模式. 不过初步看与这个问题的解决方案无关, 可能如果官方不提供api, 那就得更换<code>comment</code>以外的方案?</p>
 <h2 id="table不识别插入的br问题">table不识别插入的<code>&lt;br/&gt;</code>问题</h2>
-<p>代码里用的<code>remark-gfm</code>的渲染,
-理论上不应该存在这个问题才对?.</p>
-<p>试了下demo, 似乎是<code>remark-gfm</code>的问题?
-难道是<code>&lt;br/&gt;</code>不符合gfm标准?</p>
+<p>代码里用的<code>remark-gfm</code>的渲染, 理论上不应该存在这个问题才对?.</p>
+<p>试了下demo, 似乎是<code>remark-gfm</code>的问题? 难道是<code>&lt;br/&gt;</code>不符合gfm标准?</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> file = <span class="keyword">await</span> <span class="title function_">unified</span>()</span><br><span class="line">    .<span class="title function_">use</span>(remarkParse)</span><br><span class="line">    .<span class="title function_">use</span>(remarkGfm)</span><br><span class="line">    .<span class="title function_">use</span>(remarkRehype, &#123;<span class="attr">allowDangerousHtml</span>: <span class="literal">true</span>&#125;)</span><br><span class="line">    <span class="comment">// .use(rehypeSanitize)</span></span><br><span class="line">    .<span class="title function_">use</span>(rehypeStringify)</span><br><span class="line">    .<span class="title function_">process</span>(data)</span><br><span class="line">    fs.<span class="title function_">writeFileSync</span>(<span class="string">&quot;output.html&quot;</span>, <span class="title class_">String</span>(file))</span><br><span class="line"></span><br><span class="line">  <span class="comment">// console.log(String(file))</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>根据<a target="_blank" rel="noopener" href="https://github.com/remarkjs/remark-gfm/issues/10">HTML
-blocks inside table cells not treated as blocks · Issue #10 ·
-remarkjs/remark-gfm</a>找到设置允许危险的方式,
-可以渲染<code>html</code></p>
-<p>看来还是那个<code>XSS</code>的风险, 所以导致默认关闭了.
-并不是<code>remarkGfm</code>的问题.</p>
+<p>根据<a target="_blank" rel="noopener" href="https://github.com/remarkjs/remark-gfm/issues/10">HTML blocks inside table cells not treated as blocks · Issue #10 · remarkjs/remark-gfm</a>找到设置允许危险的方式, 可以渲染<code>html</code></p>
+<p>看来还是那个<code>XSS</code>的风险, 所以导致默认关闭了. 并不是<code>remarkGfm</code>的问题.</p>
 <p>所以我也可以增加这个属性, 默认关闭即可.</p>
-<p>这里作者用的不是<code>remark</code>系列的了,
-<code>mdast-util-to-hast</code>和<code>hast-util-to-html</code>应该是<code>remark-rehype</code>的前身.</p>
-<p>在<code>toHast</code>和<code>toHtml</code>处,
-都打开这个<code>&#123;allowDangerousHtml: true&#125;</code>就可以了.
-但是的确危险系数还是比较高的.</p>
+<p>这里作者用的不是<code>remark</code>系列的了, <code>mdast-util-to-hast</code>和<code>hast-util-to-html</code>应该是<code>remark-rehype</code>的前身.</p>
+<p>在<code>toHast</code>和<code>toHtml</code>处, 都打开这个<code>&#123;allowDangerousHtml: true&#125;</code>就可以了. 但是的确危险系数还是比较高的.</p>
 <p>之后考虑直接更换为<code>remark-rehype</code>.</p>
-<h3 id="启用了2个危险属性之后-变成空白了...">启用了2个危险属性之后,
-变成空白了...</h3>
+<h3 id="启用了2个危险属性之后-变成空白了...">启用了2个危险属性之后, 变成空白了...</h3>
 <p>应该是<code>svg</code>没有渲染出来把?</p>
-<p>开了debug之后, 可以看到确实html的AST是有的,
-应该就是<code>svg</code>渲染的问题了.</p>
-<p>确实,
-是<code>&lt;br/&gt;</code>在被转换后变成了<code>&lt;br&gt;</code>,
-导致不符合<code>svg</code>语法了. 符合语法之后就正常了.
-我把这个作为一个选项开启吧.</p>
+<p>开了debug之后, 可以看到确实html的AST是有的, 应该就是<code>svg</code>渲染的问题了.</p>
+<p>确实, 是<code>&lt;br/&gt;</code>在被转换后变成了<code>&lt;br&gt;</code>, 导致不符合<code>svg</code>语法了. 符合语法之后就正常了. 我把这个作为一个选项开启吧.</p>
 <h2 id="todo-原生html的渲染能力">TODO: 原生HTML的渲染能力</h2>
 <p>在打开了这个<code>allowDangerousHtml</code>之后, 也变得可以实现了</p>
-<p>现在遇到的问题是, 理论上<code>&lt;h1&gt;</code>的样例,
-应该能显示出来才对, 但是没进入到<code>html</code>的node解析逻辑里...</p>
-<p>看起来是<code>remark</code>这个解析库拦截掉了? 并没有,
-单独打印出<code>AST</code>还是有的,
-但是的确进不到那个内部逻辑了现在.</p>
+<p>现在遇到的问题是, 理论上<code>&lt;h1&gt;</code>的样例, 应该能显示出来才对, 但是没进入到<code>html</code>的node解析逻辑里...</p>
+<p>看起来是<code>remark</code>这个解析库拦截掉了? 并没有, 单独打印出<code>AST</code>还是有的, 但是的确进不到那个内部逻辑了现在.</p>
 <p>带结局</p>
 <h2 id="quote之后的内容导致卡顿">quote之后的内容导致卡顿</h2>
 <p>疑似是我行的长度过长之后的渲染就会比较卡顿? 至少滚动就不流畅了.</p>
 <p>应该是<code>blockquote</code>这段的.</p>
-<p>但是卡顿这个我怎么排查是哪的呢? 好像是css切换那块的.
-我把<code>filter</code>换掉能不能解决呢?</p>
+<p>但是卡顿这个我怎么排查是哪的呢? 好像是css切换那块的. 我把<code>filter</code>换掉能不能解决呢?</p>
 <p>去掉<code>filter</code>的渲染之后就正常了.</p>
 <h2 id="拆分无序列表和有序列表的渲染">拆分无序列表和有序列表的渲染</h2>
 <h3 id="理解-1">理解</h3>
@@ -431,16 +304,11 @@ remarkjs/remark-gfm</a>找到设置允许危险的方式,
 <p>搜一下.</p>
 <p>疑似是来自这段的.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const parser = require(&#x27;unified&#x27;)()</span><br><span class="line">    .use(require(&#x27;remark-math&#x27;))</span><br><span class="line">    .use(require(&#x27;remark-parse&#x27;))</span><br><span class="line">    .use(require(&#x27;remark-gfm&#x27;))</span><br><span class="line">    .parse;</span><br></pre></td></tr></table></figure>
-<p>嗯, 没错,
-应该是<code>remark</code>这个<code>markdown</code>解析库里的<code>listitem</code>.</p>
+<p>嗯, 没错, 应该是<code>remark</code>这个<code>markdown</code>解析库里的<code>listitem</code>.</p>
 <p>怎么区分有序列表和无序列表呢?</p>
-<p>根据下面这段, 一开始<code>type</code>为<code>list</code>,
-具有<code>ordered</code>属性,
-<code>children</code>中才是具体的列表内容.</p>
-<p>所以如果要改, 预计需要在判断<code>listitem</code>前就进行区分处理.
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">     &quot;type&quot;: &quot;list&quot;,</span><br><span class="line">     &quot;ordered&quot;: true,</span><br><span class="line">     &quot;start&quot;: 1,</span><br><span class="line">     &quot;spread&quot;: true,</span><br><span class="line">     &quot;children&quot;: [</span><br><span class="line">       &#123;</span><br><span class="line">         &quot;type&quot;: &quot;listItem&quot;,</span><br><span class="line">         &quot;spread&quot;: false,</span><br><span class="line">         &quot;checked&quot;: null,</span><br><span class="line">         &quot;children&quot;: [</span><br><span class="line">           &#123;</span><br><span class="line">             &quot;type&quot;: &quot;paragraph&quot;,</span><br><span class="line">             &quot;children&quot;: [</span><br><span class="line">               &#123;</span><br><span class="line">                 &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                 &quot;value&quot;: &quot;First&quot;,</span><br><span class="line">                 &quot;position&quot;: &#123;</span><br><span class="line">                   &quot;start&quot;: &#123;</span><br><span class="line">                     &quot;line&quot;: 71,</span><br><span class="line">                     &quot;column&quot;: 4,</span><br><span class="line">                     &quot;offset&quot;: 437</span><br><span class="line">                   &#125;,</span><br><span class="line">                   &quot;end&quot;: &#123;</span><br><span class="line">                     &quot;line&quot;: 71,</span><br><span class="line">                     &quot;column&quot;: 9,</span><br><span class="line">                     &quot;offset&quot;: 442</span><br><span class="line">                   &#125;</span><br><span class="line">                 &#125;</span><br><span class="line">               &#125;</span><br><span class="line">             ],</span><br><span class="line">             &quot;position&quot;: &#123;</span><br><span class="line">               &quot;start&quot;: &#123;</span><br><span class="line">                 &quot;line&quot;: 71,</span><br><span class="line">                 &quot;column&quot;: 4,</span><br><span class="line">                 &quot;offset&quot;: 437</span><br><span class="line">               &#125;,</span><br><span class="line">               &quot;end&quot;: &#123;</span><br><span class="line">                 &quot;line&quot;: 71,</span><br><span class="line">                 &quot;column&quot;: 9,</span><br><span class="line">                 &quot;offset&quot;: 442</span><br><span class="line">               &#125;</span><br><span class="line">             &#125;</span><br><span class="line">           &#125;</span><br><span class="line">         ],</span><br><span class="line">         &quot;position&quot;: &#123;</span><br><span class="line">           &quot;start&quot;: &#123;</span><br><span class="line">             &quot;line&quot;: 71,</span><br><span class="line">             &quot;column&quot;: 1,</span><br><span class="line">             &quot;offset&quot;: 434</span><br><span class="line">           &#125;,</span><br><span class="line">           &quot;end&quot;: &#123;</span><br><span class="line">             &quot;line&quot;: 71,</span><br><span class="line">             &quot;column&quot;: 9,</span><br><span class="line">             &quot;offset&quot;: 442</span><br><span class="line">           &#125;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;,</span><br><span class="line">       &#123;</span><br><span class="line">         &quot;type&quot;: &quot;listItem&quot;,</span><br><span class="line">         &quot;spread&quot;: false,</span><br><span class="line">         &quot;checked&quot;: null,</span><br><span class="line">         &quot;children&quot;: [</span><br><span class="line">           &#123;</span><br><span class="line">             &quot;type&quot;: &quot;paragraph&quot;,</span><br><span class="line">             &quot;children&quot;: [</span><br><span class="line">               &#123;</span><br><span class="line">                 &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                 &quot;value&quot;: &quot;Second&quot;,</span><br><span class="line">                 &quot;position&quot;: &#123;</span><br><span class="line">                   &quot;start&quot;: &#123;</span><br><span class="line">                     &quot;line&quot;: 73,</span><br><span class="line">                     &quot;column&quot;: 4,</span><br><span class="line">                     &quot;offset&quot;: 447</span><br><span class="line">                   &#125;,</span><br><span class="line">                   &quot;end&quot;: &#123;</span><br><span class="line">                     &quot;line&quot;: 73,</span><br><span class="line">                     &quot;column&quot;: 10,</span><br><span class="line">                     &quot;offset&quot;: 453</span><br><span class="line">                   &#125;</span><br><span class="line">                 &#125;</span><br><span class="line">               &#125;</span><br><span class="line">             ],</span><br><span class="line">             &quot;position&quot;: &#123;</span><br><span class="line">               &quot;start&quot;: &#123;</span><br><span class="line">                 &quot;line&quot;: 73,</span><br><span class="line">                 &quot;column&quot;: 4,</span><br><span class="line">                 &quot;offset&quot;: 447</span><br><span class="line">               &#125;,</span><br><span class="line">               &quot;end&quot;: &#123;</span><br><span class="line">                 &quot;line&quot;: 73,</span><br><span class="line">                 &quot;column&quot;: 10,</span><br><span class="line">                 &quot;offset&quot;: 453</span><br><span class="line">               &#125;</span><br><span class="line">             &#125;</span><br><span class="line">           &#125;</span><br><span class="line">         ],</span><br><span class="line">         &quot;position&quot;: &#123;</span><br><span class="line">           &quot;start&quot;: &#123;</span><br><span class="line">             &quot;line&quot;: 73,</span><br><span class="line">             &quot;column&quot;: 1,</span><br><span class="line">             &quot;offset&quot;: 444</span><br><span class="line">           &#125;,</span><br><span class="line">           &quot;end&quot;: &#123;</span><br><span class="line">             &quot;line&quot;: 73,</span><br><span class="line">             &quot;column&quot;: 10,</span><br><span class="line">             &quot;offset&quot;: 453</span><br><span class="line">           &#125;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;,</span><br></pre></td></tr></table></figure></p>
-<p>todo:
-<code>extension.js</code>里<code>start</code>和<code>end</code>和<code>node</code>这几个参数哪里传进来的呢?</p>
+<p>根据下面这段, 一开始<code>type</code>为<code>list</code>, 具有<code>ordered</code>属性, <code>children</code>中才是具体的列表内容.</p>
+<p>所以如果要改, 预计需要在判断<code>listitem</code>前就进行区分处理. <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">     &quot;type&quot;: &quot;list&quot;,</span><br><span class="line">     &quot;ordered&quot;: true,</span><br><span class="line">     &quot;start&quot;: 1,</span><br><span class="line">     &quot;spread&quot;: true,</span><br><span class="line">     &quot;children&quot;: [</span><br><span class="line">       &#123;</span><br><span class="line">         &quot;type&quot;: &quot;listItem&quot;,</span><br><span class="line">         &quot;spread&quot;: false,</span><br><span class="line">         &quot;checked&quot;: null,</span><br><span class="line">         &quot;children&quot;: [</span><br><span class="line">           &#123;</span><br><span class="line">             &quot;type&quot;: &quot;paragraph&quot;,</span><br><span class="line">             &quot;children&quot;: [</span><br><span class="line">               &#123;</span><br><span class="line">                 &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                 &quot;value&quot;: &quot;First&quot;,</span><br><span class="line">                 &quot;position&quot;: &#123;</span><br><span class="line">                   &quot;start&quot;: &#123;</span><br><span class="line">                     &quot;line&quot;: 71,</span><br><span class="line">                     &quot;column&quot;: 4,</span><br><span class="line">                     &quot;offset&quot;: 437</span><br><span class="line">                   &#125;,</span><br><span class="line">                   &quot;end&quot;: &#123;</span><br><span class="line">                     &quot;line&quot;: 71,</span><br><span class="line">                     &quot;column&quot;: 9,</span><br><span class="line">                     &quot;offset&quot;: 442</span><br><span class="line">                   &#125;</span><br><span class="line">                 &#125;</span><br><span class="line">               &#125;</span><br><span class="line">             ],</span><br><span class="line">             &quot;position&quot;: &#123;</span><br><span class="line">               &quot;start&quot;: &#123;</span><br><span class="line">                 &quot;line&quot;: 71,</span><br><span class="line">                 &quot;column&quot;: 4,</span><br><span class="line">                 &quot;offset&quot;: 437</span><br><span class="line">               &#125;,</span><br><span class="line">               &quot;end&quot;: &#123;</span><br><span class="line">                 &quot;line&quot;: 71,</span><br><span class="line">                 &quot;column&quot;: 9,</span><br><span class="line">                 &quot;offset&quot;: 442</span><br><span class="line">               &#125;</span><br><span class="line">             &#125;</span><br><span class="line">           &#125;</span><br><span class="line">         ],</span><br><span class="line">         &quot;position&quot;: &#123;</span><br><span class="line">           &quot;start&quot;: &#123;</span><br><span class="line">             &quot;line&quot;: 71,</span><br><span class="line">             &quot;column&quot;: 1,</span><br><span class="line">             &quot;offset&quot;: 434</span><br><span class="line">           &#125;,</span><br><span class="line">           &quot;end&quot;: &#123;</span><br><span class="line">             &quot;line&quot;: 71,</span><br><span class="line">             &quot;column&quot;: 9,</span><br><span class="line">             &quot;offset&quot;: 442</span><br><span class="line">           &#125;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;,</span><br><span class="line">       &#123;</span><br><span class="line">         &quot;type&quot;: &quot;listItem&quot;,</span><br><span class="line">         &quot;spread&quot;: false,</span><br><span class="line">         &quot;checked&quot;: null,</span><br><span class="line">         &quot;children&quot;: [</span><br><span class="line">           &#123;</span><br><span class="line">             &quot;type&quot;: &quot;paragraph&quot;,</span><br><span class="line">             &quot;children&quot;: [</span><br><span class="line">               &#123;</span><br><span class="line">                 &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                 &quot;value&quot;: &quot;Second&quot;,</span><br><span class="line">                 &quot;position&quot;: &#123;</span><br><span class="line">                   &quot;start&quot;: &#123;</span><br><span class="line">                     &quot;line&quot;: 73,</span><br><span class="line">                     &quot;column&quot;: 4,</span><br><span class="line">                     &quot;offset&quot;: 447</span><br><span class="line">                   &#125;,</span><br><span class="line">                   &quot;end&quot;: &#123;</span><br><span class="line">                     &quot;line&quot;: 73,</span><br><span class="line">                     &quot;column&quot;: 10,</span><br><span class="line">                     &quot;offset&quot;: 453</span><br><span class="line">                   &#125;</span><br><span class="line">                 &#125;</span><br><span class="line">               &#125;</span><br><span class="line">             ],</span><br><span class="line">             &quot;position&quot;: &#123;</span><br><span class="line">               &quot;start&quot;: &#123;</span><br><span class="line">                 &quot;line&quot;: 73,</span><br><span class="line">                 &quot;column&quot;: 4,</span><br><span class="line">                 &quot;offset&quot;: 447</span><br><span class="line">               &#125;,</span><br><span class="line">               &quot;end&quot;: &#123;</span><br><span class="line">                 &quot;line&quot;: 73,</span><br><span class="line">                 &quot;column&quot;: 10,</span><br><span class="line">                 &quot;offset&quot;: 453</span><br><span class="line">               &#125;</span><br><span class="line">             &#125;</span><br><span class="line">           &#125;</span><br><span class="line">         ],</span><br><span class="line">         &quot;position&quot;: &#123;</span><br><span class="line">           &quot;start&quot;: &#123;</span><br><span class="line">             &quot;line&quot;: 73,</span><br><span class="line">             &quot;column&quot;: 1,</span><br><span class="line">             &quot;offset&quot;: 444</span><br><span class="line">           &#125;,</span><br><span class="line">           &quot;end&quot;: &#123;</span><br><span class="line">             &quot;line&quot;: 73,</span><br><span class="line">             &quot;column&quot;: 10,</span><br><span class="line">             &quot;offset&quot;: 453</span><br><span class="line">           &#125;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>todo: <code>extension.js</code>里<code>start</code>和<code>end</code>和<code>node</code>这几个参数哪里传进来的呢?</p>
 <p>现阶段传入的每个<code>node</code>, ordered属性并不在单个上面.</p>
 <p>预计需要改成三层</p>
 <ul>
@@ -459,47 +327,34 @@ remarkjs/remark-gfm</a>找到设置允许危险的方式,
 </ul></li>
 </ul>
 <p>无序的则是 * listItem * chilren * paragraph</p>
-<p>或者 * listItem * children * paragraph * list * children * listItem *
-children * paragraph</p>
+<p>或者 * listItem * children * paragraph * list * children * listItem * children * paragraph</p>
 <p>存在多层关联的这种.不能直接以node的type来区分了.</p>
 <p>这个节点的遍历关系? 是DFS还是BFS?</p>
 <p>目前并没有找到</p>
 <h2 id="增加http链接图片支持">增加http链接图片支持</h2>
-<p>只是单纯的增加<code>http</code>的<code>schema</code>的透传就可以,
-剩下的交给<code>vscode</code>自身支持</p>
+<p>只是单纯的增加<code>http</code>的<code>schema</code>的透传就可以, 剩下的交给<code>vscode</code>自身支持</p>
 <p>似乎支持了?<code>1.62</code>里?</p>
 <blockquote>
-<p>MarkdownString.supportHtml The new supportHtml property on
-MarkdownString enables rendering of a safe subset of raw HTML that
-appears inside the Markdown text.</p>
-<p>The supportHtml property defaults to false. When disabled, VS Code
-will strip out any raw HTML tags that appear in the Markdown text.</p>
+<p>MarkdownString.supportHtml The new supportHtml property on MarkdownString enables rendering of a safe subset of raw HTML that appears inside the Markdown text.</p>
+<p>The supportHtml property defaults to false. When disabled, VS Code will strip out any raw HTML tags that appear in the Markdown text.</p>
 </blockquote>
 <h2 id="修复latex显示的渲染结果太小的问题">修复<code>latex</code>显示的渲染结果太小的问题</h2>
-<p>用<code>Elements</code>定位了下,
-实际上是<code>svg</code>渲染的图片的渲染尺寸不对.</p>
+<p>用<code>Elements</code>定位了下, 实际上是<code>svg</code>渲染的图片的渲染尺寸不对.</p>
 <p>大致是通过 html/svg+xml base64 渲染 svg.</p>
 <p>通过在ebfore元素里增加<code>url</code>的<code>content</code>.</p>
 <p>把SVG代码直接内联在CSS的url()方法中</p>
-<p>这个逻辑里可能之所以会根据行的数量来决定要渲染的长度,
-应该是为了确保不会点到后面的空行, 结果触发的是这行的内容?</p>
+<p>这个逻辑里可能之所以会根据行的数量来决定要渲染的长度, 应该是为了确保不会点到后面的空行, 结果触发的是这行的内容?</p>
 <p>这个的做法是不是弄成自动收缩这几行更好?</p>
 <p>mermaid的图也有同样的问题.</p>
 <h3 id="分析lineheight">分析lineHeight</h3>
-<p>首先, 我的配置中默认<code>lineHeight</code>是设置为<code>0</code>的,
-所以走的下面这个逻辑</p>
+<p>首先, 我的配置中默认<code>lineHeight</code>是设置为<code>0</code>的, 所以走的下面这个逻辑</p>
 <blockquote>
-<p>Use 0 to automatically compute the line height from the font size.
-Values between 0 and 8 will be used as a multiplier with the font size.
-Values greater than or equal to 8 will be used as effective values.</p>
+<p>Use 0 to automatically compute the line height from the font size. Values between 0 and 8 will be used as a multiplier with the font size. Values greater than or equal to 8 will be used as effective values.</p>
 </blockquote>
 <p>根据这个, 所以跟<code>font size</code>应该是成成比例的.</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> lineHeight = vscode.<span class="property">workspace</span>.<span class="title function_">getConfiguration</span>(<span class="string">&quot;editor&quot;</span>).<span class="title function_">get</span>(<span class="string">&quot;lineHeight&quot;</span>, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// https://github.com/microsoft/vscode/blob/45aafeb326d0d3d56cbc9e2932f87e368dbf652d/src/vs/editor/common/config/fontInfo.ts#L54</span></span><br><span class="line"><span class="keyword">if</span> (lineHeight === <span class="number">0</span>) &#123;</span><br><span class="line">    state.<span class="property">lineHeight</span> = <span class="title class_">Math</span>.<span class="title function_">round</span>(process.<span class="property">platform</span> == <span class="string">&quot;darwin&quot;</span> ? <span class="number">1.5</span> * state.<span class="property">fontSize</span> : <span class="number">1.35</span> * state.<span class="property">fontSize</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (lineHeight &lt; <span class="number">8</span>) &#123;</span><br><span class="line">    state.<span class="property">lineHeight</span> = <span class="number">8</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>的确, 发现这段代码这里<code>lineHeight</code>只得到了2,
-大概是这里写错了. 可能作者不是<code>darwin</code>平台的,
-所以感知不到.</p>
-<h2 id="多行的latex除了按行数整比放大代码之外-是否有正常的方式折叠到那几行">多行的<code>latex</code>除了按行数整比放大代码之外,
-是否有正常的方式折叠到那几行?</h2>
+<p>的确, 发现这段代码这里<code>lineHeight</code>只得到了2, 大概是这里写错了. 可能作者不是<code>darwin</code>平台的, 所以感知不到.</p>
+<h2 id="多行的latex除了按行数整比放大代码之外-是否有正常的方式折叠到那几行">多行的<code>latex</code>除了按行数整比放大代码之外, 是否有正常的方式折叠到那几行?</h2>
 <ul>
 <li><p>collapse</p></li>
 <li><p>folding</p></li>
@@ -509,151 +364,84 @@ Values greater than or equal to 8 will be used as effective values.</p>
 <p>Todo:怎么找不到<code>javascript</code>如何使用<code>FoldingRangeProvider</code>的呢...</p>
 <p>使用方式类似下面这样: <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">context.<span class="property">subscriptions</span>.<span class="title function_">push</span>(vscode.<span class="property">languages</span>.<span class="title function_">registerFoldingRangeProvider</span>(<span class="string">&#x27;markdown&#x27;</span>, &#123;</span><br><span class="line">		<span class="attr">provideFoldingRanges</span>: <span class="function">(<span class="params"><span class="variable language_">document</span>, context, _</span>) =&gt;</span> &#123;</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="property">languageId</span>);</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;try to folding range&quot;</span>);</span><br><span class="line">		<span class="keyword">let</span> ranges = []</span><br><span class="line">		<span class="keyword">const</span> temp = <span class="keyword">new</span> vscode.<span class="title class_">FoldingRange</span>(<span class="number">1</span>, <span class="number">50</span>, vscode.<span class="property">FoldingRangeKind</span>.<span class="property">Comment</span>);</span><br><span class="line">		ranges.<span class="title function_">push</span>(temp);</span><br><span class="line">		<span class="keyword">return</span> ranges</span><br><span class="line">	&#125;&#125;));</span><br></pre></td></tr></table></figure></p>
 <p><code>context.subscriptions.push</code>如何理解?</p>
-<p>是不是这个只是用在当我即将触发<code>folding</code>的时候,
-才会进入这个函数逻辑? 确实,
-比如我设置<code>kind</code>为<code>Comment</code>的时候,
-触发<code>Fold all comments</code>就能够把我标记的范围给圈起来.</p>
+<p>是不是这个只是用在当我即将触发<code>folding</code>的时候, 才会进入这个函数逻辑? 确实, 比如我设置<code>kind</code>为<code>Comment</code>的时候, 触发<code>Fold all comments</code>就能够把我标记的范围给圈起来.</p>
 <p>所以自动圈, 应该不是这个函数</p>
 <h2 id="foldunfolder-api">fold/unfolder API?</h2>
-<p>目前根据这个<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/37682">[folding] API
-for programmatically folding lines · Issue #37682 ·
-microsoft/vscode</a>来看似乎是不存在的.</p>
-<p>根据<a target="_blank" rel="noopener" href="https://code.visualstudio.com/api/references/commands">Built-in
-Commands | Visual Studio Code Extension
-API</a>这篇里的<code>editor.fold</code></p>
-<p>发现还是文档里没写清楚参数的数据结构, 搜代码样例从这里找到的<a target="_blank" rel="noopener" href="https://github.com/TigerGold59/autofold/blob/c721aa8b616060624b107cbdd44c44ec4827adec/src/extension.ts">autofold/extension.ts
-at c721aa8b616060624b107cbdd44c44ec4827adec ·
-TigerGold59/autofold</a></p>
+<p>目前根据这个<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/37682">[folding] API for programmatically folding lines · Issue #37682 · microsoft/vscode</a>来看似乎是不存在的.</p>
+<p>根据<a target="_blank" rel="noopener" href="https://code.visualstudio.com/api/references/commands">Built-in Commands | Visual Studio Code Extension API</a>这篇里的<code>editor.fold</code></p>
+<p>发现还是文档里没写清楚参数的数据结构, 搜代码样例从这里找到的<a target="_blank" rel="noopener" href="https://github.com/TigerGold59/autofold/blob/c721aa8b616060624b107cbdd44c44ec4827adec/src/extension.ts">autofold/extension.ts at c721aa8b616060624b107cbdd44c44ec4827adec · TigerGold59/autofold</a></p>
 <p>实际使用方式是类似这种 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vscode.<span class="property">commands</span>.<span class="title function_">executeCommand</span>(<span class="string">&#x27;editor.fold&#x27;</span>, &#123;<span class="string">&quot;selectionLines&quot;</span>: [<span class="number">1</span>]&#125;);</span><br></pre></td></tr></table></figure></p>
-<h2 id="wrod-wrap折叠后的后面几行开头无渲染效果">wrod
-wrap折叠后的后面几行开头无渲染效果</h2>
+<h2 id="wrod-wrap折叠后的后面几行开头无渲染效果">wrod wrap折叠后的后面几行开头无渲染效果</h2>
 <p>比如<code>quote</code>的特殊符号仅第一行有.</p>
-<h2 id="修复when-the-cursor-is-in-the-line-of-heading-should-it-show-at-the-begining-of-the-line-issue-10-sean10markless">修复<a target="_blank" rel="noopener" href="https://github.com/Sean10/markless/issues/10">When the cursor is
-in the line of heading, should it show '#' at the begining of the line?
-· Issue #10 · Sean10/markless</a></h2>
+<h2 id="修复when-the-cursor-is-in-the-line-of-heading-should-it-show-at-the-begining-of-the-line-issue-10-sean10markless">修复<a target="_blank" rel="noopener" href="https://github.com/Sean10/markless/issues/10">When the cursor is in the line of heading, should it show '#' at the begining of the line? · Issue #10 · Sean10/markless</a></h2>
 <p>2组rangeBehavior目前没有办法合并.</p>
 <p>当处在中间时, 没有办法让左侧的识别到右侧的参与.</p>
 <p>左侧的隐藏, 右侧的需要放大</p>
 <ul>
-<li>鼠标在这行上时, 希望所有效果全部取消.
-直到<code>cursor</code>离开该行</li>
+<li>鼠标在这行上时, 希望所有效果全部取消. 直到<code>cursor</code>离开该行</li>
 <li>目前效果:
 <ul>
-<li>右侧的渲染: 鼠标在行末, 取消了放大效果. 鼠标在heading的左侧离开时,
-重新恢复放大效果</li>
+<li>右侧的渲染: 鼠标在行末, 取消了放大效果. 鼠标在heading的左侧离开时, 重新恢复放大效果</li>
 <li>左侧的渲染: 鼠标在行末甚至<code>heading</code>期间, 依旧不显示
 <ul>
 <li>指针直到接近<code>#</code>的范围, 才取消隐藏.</li>
 </ul></li>
 </ul></li>
-<li>考虑增加一个覆盖的操作, 当鼠标出现在这个范围内, 取消所有的装饰器.
-但是条件必须是这个触发效果在最后. 从而覆盖掉另外俩装饰效果.</li>
+<li>考虑增加一个覆盖的操作, 当鼠标出现在这个范围内, 取消所有的装饰器. 但是条件必须是这个触发效果在最后. 从而覆盖掉另外俩装饰效果.</li>
 </ul>
-<p>考虑咨询下这个的效果<a target="_blank" rel="noopener" href="https://developer.51cto.com/art/202106/668897.htm">兄弟萌，让我们在
-Vscode 里放烟花吧 - 51CTO.COM</a></p>
+<p>考虑咨询下这个的效果<a target="_blank" rel="noopener" href="https://developer.51cto.com/art/202106/668897.htm">兄弟萌，让我们在 Vscode 里放烟花吧 - 51CTO.COM</a></p>
 <p>似乎他对这个range使用比较熟练.</p>
 <p>如果我这个后加, 应该就有效了把?</p>
 <blockquote>
-<p>A TextEditorDecorationType is a disposable which can be
-removed/releaded by calling its dispose-method 好像有清理的逻辑?</p>
+<p>A TextEditorDecorationType is a disposable which can be removed/releaded by calling its dispose-method 好像有清理的逻辑?</p>
 </blockquote>
-<p>我先试试现在这套代码的pop逻辑?pop 不行,
-我需要的是清理掉对应的decoration. 而不是现在的这种.</p>
-<p>可以考虑增加一个清理掉所有的css的装饰, 在鼠标在上面时触发, 离开时,
-这个效果被清理掉.</p>
-<p>如果用dispose, 那所有的装饰器的变量也释放了, 如果要用这个,
-那就必须要把每个heading 维护一个单独的装饰器, 否则就一起被释放了.</p>
-<p>所以最好是有一个disable的方法, 比如从队列里去掉这个. 可能维护一张map,
-或者这个列表里就自带了行号的属性,
-这样就能够比较当前行是不是其中一个了.</p>
-<p>官方的2个方法:<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode-extension-samples/issues/22">Remove
-decoration type · Issue #22 · microsoft/vscode-extension-samples</a>
-&gt; option1 to nuke all uses of a certain decoration type across all
-editors is decType.dispose() &gt; option2 to nuke all uses of a certain
-decoration type in a single editor instance is
-editor.setDecorations(decType, [])</p>
+<p>我先试试现在这套代码的pop逻辑?pop 不行, 我需要的是清理掉对应的decoration. 而不是现在的这种.</p>
+<p>可以考虑增加一个清理掉所有的css的装饰, 在鼠标在上面时触发, 离开时, 这个效果被清理掉.</p>
+<p>如果用dispose, 那所有的装饰器的变量也释放了, 如果要用这个, 那就必须要把每个heading 维护一个单独的装饰器, 否则就一起被释放了.</p>
+<p>所以最好是有一个disable的方法, 比如从队列里去掉这个. 可能维护一张map, 或者这个列表里就自带了行号的属性, 这样就能够比较当前行是不是其中一个了.</p>
+<p>官方的2个方法:<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode-extension-samples/issues/22">Remove decoration type · Issue #22 · microsoft/vscode-extension-samples</a> &gt; option1 to nuke all uses of a certain decoration type across all editors is decType.dispose() &gt; option2 to nuke all uses of a certain decoration type in a single editor instance is editor.setDecorations(decType, [])</p>
 <p>好像<code>memoize</code>这个函数还做了缓存加速.</p>
-<p>好像代码里用的是offset, 而不是Range.
-这样的话的确没有<code>line</code>属性了.</p>
-<p>这是原生的<code>decorationRanges</code>的限制吗?
-之前好像没看到这种要求. <code>Range</code>噢, 2种构造函数而已.</p>
-<p>todo:成功了. 不过好像<code>enlarge</code>那个, 因为指针一移动,
-又加回去了的样子? 这个明天再修一下.</p>
-<h2 id="heading的字体放大-似乎其实也可以接着放大.-好像行的高度-会跟着我的指定的字体大小变大而变大">heading的字体放大,
-似乎其实也可以接着放大. 好像行的高度,
-会跟着我的指定的字体大小变大而变大</h2>
-<p>所以并不是我一开始理解的字体大小默认设置14,
-这个行就只能容纳14的情况.</p>
-<h2 id="heading的隐藏存在一个问题-凡是在标题上触发的其他模式的渲染-依旧会存在渲染错的问题-清理可能需要考虑取消所有该位置的渲染.">heading的隐藏存在一个问题,
-凡是在标题上触发的其他模式的渲染, 依旧会存在渲染错的问题,
-清理可能需要考虑取消所有该位置的渲染.</h2>
+<p>好像代码里用的是offset, 而不是Range. 这样的话的确没有<code>line</code>属性了.</p>
+<p>这是原生的<code>decorationRanges</code>的限制吗? 之前好像没看到这种要求. <code>Range</code>噢, 2种构造函数而已.</p>
+<p>todo:成功了. 不过好像<code>enlarge</code>那个, 因为指针一移动, 又加回去了的样子? 这个明天再修一下.</p>
+<h2 id="heading的字体放大-似乎其实也可以接着放大.-好像行的高度-会跟着我的指定的字体大小变大而变大">heading的字体放大, 似乎其实也可以接着放大. 好像行的高度, 会跟着我的指定的字体大小变大而变大</h2>
+<p>所以并不是我一开始理解的字体大小默认设置14, 这个行就只能容纳14的情况.</p>
+<h2 id="heading的隐藏存在一个问题-凡是在标题上触发的其他模式的渲染-依旧会存在渲染错的问题-清理可能需要考虑取消所有该位置的渲染.">heading的隐藏存在一个问题, 凡是在标题上触发的其他模式的渲染, 依旧会存在渲染错的问题, 清理可能需要考虑取消所有该位置的渲染.</h2>
 <p>是通过反查? 还是通过map出来之后, 检查?</p>
 <h2 id="block-quote存在2个渲染问题"><code>block quote</code>存在2个渲染问题</h2>
-<h3 id="位置-依旧是按照未隐藏来的">位置,
-依旧是按照未隐藏<code>#</code>来的</h3>
+<h3 id="位置-依旧是按照未隐藏来的">位置, 依旧是按照未隐藏<code>#</code>来的</h3>
 <p>可能需要梳理一下, 这种怎么让多种模式能够复用一套清理逻辑?</p>
-<p>怎么获取到对应的字的宽度呢? 毕竟不是以类型来显示<code>node</code>,
-而是反过来拆解的.</p>
-<p>是否可以引入关联性呢? 毕竟本身是存在<code>children</code>的概念的,
-只是在子节点的时候, 不知道怎么访问到父亲节点的内容.</p>
-<p>如果增加父亲节点的访问链接, 那就可以迭代父节点,
-是否存在其他属性需要渲染了 ? 这样的话, 就可以按顺序一个个处理了?
-这个好像其实就是迭代顺序? 只是后接收到的处理的数据依旧是原始数据,
-而不是上级已经处理过后的数据?</p>
-<p>目前是按照<code>visit</code>的顺序. 如果让每次visit之后,
-使用的数据也进行更新呢? 这样的话,
-其实会在原始的数据里增加好几个链接?</p>
+<p>怎么获取到对应的字的宽度呢? 毕竟不是以类型来显示<code>node</code>, 而是反过来拆解的.</p>
+<p>是否可以引入关联性呢? 毕竟本身是存在<code>children</code>的概念的, 只是在子节点的时候, 不知道怎么访问到父亲节点的内容.</p>
+<p>如果增加父亲节点的访问链接, 那就可以迭代父节点, 是否存在其他属性需要渲染了 ? 这样的话, 就可以按顺序一个个处理了? 这个好像其实就是迭代顺序? 只是后接收到的处理的数据依旧是原始数据, 而不是上级已经处理过后的数据?</p>
+<p>目前是按照<code>visit</code>的顺序. 如果让每次visit之后, 使用的数据也进行更新呢? 这样的话, 其实会在原始的数据里增加好几个链接?</p>
 <h4 id="思路">思路</h4>
 <ul>
-<li>修改visit之后, 使用的node数据来源? 或者增加基础属性?
-比如font等?</li>
-<li>修改数据结构? 从map改为链表关系?
-map之间其实是可以营造链表效果的.</li>
-<li>暂时沿用之前那个修改<code>listItem</code>的思路, 直接在visite的时候,
-把上层的<code>depth</code>赋给子节点. ####
-暂时沿用之前那个修改<code>listItem</code>的思路, 直接在visite的时候,
-把上层的<code>depth</code>赋给子节点.</li>
+<li>修改visit之后, 使用的node数据来源? 或者增加基础属性? 比如font等?</li>
+<li>修改数据结构? 从map改为链表关系? map之间其实是可以营造链表效果的.</li>
+<li>暂时沿用之前那个修改<code>listItem</code>的思路, 直接在visite的时候, 把上层的<code>depth</code>赋给子节点. #### 暂时沿用之前那个修改<code>listItem</code>的思路, 直接在visite的时候, 把上层的<code>depth</code>赋给子节点.</li>
 </ul>
-<p>目前存在的问题: 位置是移动了, 但是好像还有一层外圈没跟着移动?
-怀疑不是<code>inlineCode</code>的装饰. 的确, 注释掉这个处理之后, 还存在.
-怀疑是其他插件的. 确实, <code>markdown_all_in_one</code>里的...</p>
-<p>那如果我解决了这个问题, 可能还需要考虑那边如何关闭?
-毕竟挺多快捷键依赖那个的...</p>
+<p>目前存在的问题: 位置是移动了, 但是好像还有一层外圈没跟着移动? 怀疑不是<code>inlineCode</code>的装饰. 的确, 注释掉这个处理之后, 还存在. 怀疑是其他插件的. 确实, <code>markdown_all_in_one</code>里的...</p>
+<p>那如果我解决了这个问题, 可能还需要考虑那边如何关闭? 毕竟挺多快捷键依赖那个的...</p>
 <p>先试试吧.</p>
-<p>另外, 这里如果成功了, 还需要考虑<code>inlineCode</code>在进入该行时,
-自动被消除的操作.</p>
+<p>另外, 这里如果成功了, 还需要考虑<code>inlineCode</code>在进入该行时, 自动被消除的操作.</p>
 <p>另外, 似乎大小也并没有跟着变...</p>
 <p>优先尝试解决border的<code>size</code>的问题吧?</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/leodevbro/vscode-blockman/issues/33">Border do
-not match correctly if the font size if too big or small · Issue #33 ·
-leodevbro/vscode-blockman</a> 根据这个来看,
-好像是根据<code>lineHeight</code>来的?
-虽然<code>fontSize</code>大的时候好像把<code>lineHeight</code>也撑大了,
-但是看起来<code>border</code>没有变. 根据这个的意思,
-好像可以把<code>fontSize</code>调大, 然后影响border. 不过这块有点不理解,
-为啥目前<code>fontSize</code>已经大了, 并没有正常呢?</p>
-<p>试了下,
-直接在元素上加<code>border</code>属性是能够按照字体大小扩大<code>border</code>的.
-所以问题就在于现在背景上显示的<code>border</code>到底绑定在哪个元素上.</p>
-<p>奇怪, 为什么全局搜索, 在<code>html</code>的这个总元素上搜到的呢?
-而且调整一点用都没有...</p>
-<p>todo:现在的核心痛点就是怎么找到这个<code>border</code>的<code>css</code>设置.
-不在默认点击找到的<code>div</code>属性里, 因为删掉该行依旧存在.
-好像确实很难找到. 不知道chrome为啥有的css就找不到呢? 之后再看看</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/leodevbro/vscode-blockman/issues/33">Border do not match correctly if the font size if too big or small · Issue #33 · leodevbro/vscode-blockman</a> 根据这个来看, 好像是根据<code>lineHeight</code>来的? 虽然<code>fontSize</code>大的时候好像把<code>lineHeight</code>也撑大了, 但是看起来<code>border</code>没有变. 根据这个的意思, 好像可以把<code>fontSize</code>调大, 然后影响border. 不过这块有点不理解, 为啥目前<code>fontSize</code>已经大了, 并没有正常呢?</p>
+<p>试了下, 直接在元素上加<code>border</code>属性是能够按照字体大小扩大<code>border</code>的. 所以问题就在于现在背景上显示的<code>border</code>到底绑定在哪个元素上.</p>
+<p>奇怪, 为什么全局搜索, 在<code>html</code>的这个总元素上搜到的呢? 而且调整一点用都没有...</p>
+<p>todo:现在的核心痛点就是怎么找到这个<code>border</code>的<code>css</code>设置. 不在默认点击找到的<code>div</code>属性里, 因为删掉该行依旧存在. 好像确实很难找到. 不知道chrome为啥有的css就找不到呢? 之后再看看</p>
 <p><code>view-overlays</code>?</p>
 <p>终于一个个找找到的<code>&lt;div class="cdr ced-1-TextEditorDecorationType10-0" style="left:0px;width:36px;height:18px;"&gt;&lt;/div&gt;</code></p>
 <p>.monaco-editor .ced-1-TextEditorDecorationType10-0</p>
-<p>ced-1-TextEditorDecorationType10-0 奇怪,
-这个class的<code>css</code>在哪?</p>
+<p>ced-1-TextEditorDecorationType10-0 奇怪, 这个class的<code>css</code>在哪?</p>
 <p>手动逐个删除二分定位是找到了</p>
 <p>但是在哪呢?</p>
 <p><code>vscode createTextEditorDecorationType view-overlays</code></p>
-<p>什么情况下, 装饰器会被添加到一个独立的div里呢?
-为啥不复用文本的那部分呢?</p>
+<p>什么情况下, 装饰器会被添加到一个独立的div里呢? 为啥不复用文本的那部分呢?</p>
 <p><code>export class ViewOverlays extends ViewPart implements IVisibleLinesHost&lt;ViewOverlayLine&gt; &#123;</code></p>
 <p>-&gt; <code>ContentViewOverlays</code></p>
-<p>const contentViewOverlays = new
-ContentViewOverlays(this._context);</p>
+<p>const contentViewOverlays = new ContentViewOverlays(this._context);</p>
 <p>export class View extends ViewEventHandler {</p>
 <p>这里构造的时候就能看到了.</p>
 <pre><code>    contentViewOverlays.addDynamicOverlay(new CurrentLineHighlightOverlay(this._context));
@@ -662,276 +450,161 @@ ContentViewOverlays(this._context);</p>
     contentViewOverlays.addDynamicOverlay(new DecorationsOverlay(this._context));</code></pre>
 <p>怀疑进到不同的渲染里了?</p>
 <p>好像view-overlays是属于标准的?不对</p>
-<p>一个是<code>view-lines</code> 是我之前那几个元素的.
-<code>view-overlays</code>是那几个Css渲染的...基本上目前只看到<code>border</code>会进这里.</p>
-<p>Todo: 忽然想到一个猜测点. 由于html的正文始终只有一份,
-会不会是如果对一个range存在多个css的装饰器,
-则会把新增的装饰器添加到<code>view-overlays</code>里.</p>
-<p>todo: 但是理论上其实是可以做到识别用户插入的多个装饰器,
-然后对Range进行拆分的吧? 拆分到比如以1个字符为单位, 然后重叠装饰器.</p>
+<p>一个是<code>view-lines</code> 是我之前那几个元素的. <code>view-overlays</code>是那几个Css渲染的...基本上目前只看到<code>border</code>会进这里.</p>
+<p>Todo: 忽然想到一个猜测点. 由于html的正文始终只有一份, 会不会是如果对一个range存在多个css的装饰器, 则会把新增的装饰器添加到<code>view-overlays</code>里.</p>
+<p>todo: 但是理论上其实是可以做到识别用户插入的多个装饰器, 然后对Range进行拆分的吧? 拆分到比如以1个字符为单位, 然后重叠装饰器.</p>
 <p>可以验证下, 是哪种. 这块不知道官方文档里有没有提到.</p>
-<p>emm, <code>*</code>和<code>**</code>并没有进入到view-overlays,
-依旧在view-lines</p>
+<p>emm, <code>*</code>和<code>**</code>并没有进入到view-overlays, 依旧在view-lines</p>
 <p>TODO: 还是说仅限于<code>border</code>这种参数才会被放到overlays?</p>
-<p>尝试了, <code>outline</code>也被加到<code>overlays</code>里了,
-而<code>top</code>虽然是同一个装饰器塞入的,
-这个操作被放到了<code>view-lines</code>里. 所以初步怀疑是根据属性划分?
-明明可以把<code>border</code>属性直接绑在对应的位置,
-为啥非得拆到<code>overlays</code>里呢?</p>
-<p>应该是了,
-这行单纯只有<code>border</code>属性,同样也是被加在<code>overlays</code>范畴.</p>
+<p>尝试了, <code>outline</code>也被加到<code>overlays</code>里了, 而<code>top</code>虽然是同一个装饰器塞入的, 这个操作被放到了<code>view-lines</code>里. 所以初步怀疑是根据属性划分? 明明可以把<code>border</code>属性直接绑在对应的位置, 为啥非得拆到<code>overlays</code>里呢?</p>
+<p>应该是了, 这行单纯只有<code>border</code>属性,同样也是被加在<code>overlays</code>范畴.</p>
 <p>目前, 位置对上了. 但是因为和字体大小不匹配, 还是会存在丢失的情况.</p>
 <p>TODO:把判定当前行进入修改的逻辑封装为函数比较好.</p>
-<p>在<code>View</code>构造的时候,
-会构造<code>ViewLines</code>和<code>ViewOverlays</code></p>
+<p>在<code>View</code>构造的时候, 会构造<code>ViewLines</code>和<code>ViewOverlays</code></p>
 <p>好像是在<code>registerThemingParticipant</code>这里触发的?</p>
-<p><code>.monaco-editor .ced-1-TextEditorDecorationType10-0</code>,
-注册时应该是<code>.ced-</code>这个关键词</p>
+<p><code>.monaco-editor .ced-1-TextEditorDecorationType10-0</code>, 注册时应该是<code>.ced-</code>这个关键词</p>
 <p>走的这个<code>CSSNameHelper</code>...这样的话, 就没</p>
-<p><code>cdr</code>呢?
-具体的<code>div</code>上有这个<code>class</code></p>
+<p><code>cdr</code>呢? 具体的<code>div</code>上有这个<code>class</code></p>
 <p>在<code>DecorationsOverlay</code>的<code>_renderNormalDecoration</code></p>
 <p>是这条<code>contentViewOverlays.addDynamicOverlay(new DecorationsOverlay(this._context));</code></p>
 <p><code>ViewOverlays</code>-&gt;<code>prepareRender</code></p>
 <p><code>viewPart.prepareRender(renderingContext);</code></p>
 <p>好像接下来就是<code>ViewImpl</code>里的触发渲染条件调用的了.</p>
-<p>那现在问题就是那个<code>border</code>参数是什么时候被传递进来的了?
-我应该使用的是<code>createTextEditorDecorationType</code>的<code>state.activeEditor.setDecorations</code></p>
+<p>那现在问题就是那个<code>border</code>参数是什么时候被传递进来的了? 我应该使用的是<code>createTextEditorDecorationType</code>的<code>state.activeEditor.setDecorations</code></p>
 <p>一时这个好像没找到到底做了什么</p>
-<p>从这里添加<code>DecorationsOverlay</code>啥都没找到,
-直接用的<code>const className = d.options.className!;</code></p>
+<p>从这里添加<code>DecorationsOverlay</code>啥都没找到, 直接用的<code>const className = d.options.className!;</code></p>
 <p><code>let decorations: ViewModelDecoration[] = [], decorationsLen = 0;</code></p>
 <p><code>const _decorations = ctx.getDecorationsInViewport();</code></p>
-<p>TODO:好像走到了这段<code>_getDecorationsViewportData</code>,
-这里是不是就是我需要知道的区分<code>border</code>和<code>textDecoration</code>的地方?</p>
+<p>TODO:好像走到了这段<code>_getDecorationsViewportData</code>, 这里是不是就是我需要知道的区分<code>border</code>和<code>textDecoration</code>的地方?</p>
 <p><code>const renderingContext = new RenderingContext(this._context.viewLayout, viewportData, this._viewLines);</code></p>
-<h3 id="大小-也是按照字体的初始大小-而不是渲染后的大小来的.">大小,
-也是按照字体的初始大小, 而不是渲染后的大小来的.</h3>
+<h3 id="大小-也是按照字体的初始大小-而不是渲染后的大小来的.">大小, 也是按照字体的初始大小, 而不是渲染后的大小来的.</h3>
 <ul>
-<li>是否能够感知当前行已经渲染的字体大小等参数,
-然后基于这个做二次渲染呢?</li>
+<li>是否能够感知当前行已经渲染的字体大小等参数, 然后基于这个做二次渲染呢?</li>
 </ul>
 <p>毕竟完全是存在特效重叠的情况的.</p>
-<p>翻了下文档, <code>border</code>好像没有<code>size</code>的调整属性.
-那是否这个就是限制呢? 感觉不至于. 那猜测,
-可能是因为<code>decoration</code>没有命中同一个区域.
-所以没能采用到那个较大的size?</p>
-<p>根据这篇<a target="_blank" rel="noopener" href="https://github.com/leodevbro/vscode-blockman/issues/33">Border do
-not match correctly if the font size if too big or small · Issue #33 ·
-leodevbro/vscode-blockman</a>跟我的现象一样</p>
-<p>根据<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/125341#issuecomment-854962933">Get
-editor line height (px) and character space-width (px) by VSCode API ·
-Issue #125341 · microsoft/vscode</a>这个可以知道目前为止,
-这个<code>feature</code>官方暂时不做.</p>
-<h2 id="批量处理当前行-去除装饰器的效果">批量处理当前行,
-去除装饰器的效果</h2>
+<p>翻了下文档, <code>border</code>好像没有<code>size</code>的调整属性. 那是否这个就是限制呢? 感觉不至于. 那猜测, 可能是因为<code>decoration</code>没有命中同一个区域. 所以没能采用到那个较大的size?</p>
+<p>根据这篇<a target="_blank" rel="noopener" href="https://github.com/leodevbro/vscode-blockman/issues/33">Border do not match correctly if the font size if too big or small · Issue #33 · leodevbro/vscode-blockman</a>跟我的现象一样</p>
+<p>根据<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/125341#issuecomment-854962933">Get editor line height (px) and character space-width (px) by VSCode API · Issue #125341 · microsoft/vscode</a>这个可以知道目前为止, 这个<code>feature</code>官方暂时不做.</p>
+<h2 id="批量处理当前行-去除装饰器的效果">批量处理当前行, 去除装饰器的效果</h2>
 <p>本来像统一用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const delDecorationIfCurrentLine = (node, decoration, start=0, end=0, ...others) =&gt; &#123;</span><br><span class="line">	// console.log(&quot;decoration: &quot;, decoration, &quot;others:&quot;, others);</span><br><span class="line"></span><br><span class="line">	if (node.position.start.line - 1 == editor.selection.active.line) &#123;</span><br><span class="line">		delDecoration(state, decoration, editor.selection.active.line);</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		if (others.length &gt; 0)&#123;</span><br><span class="line">			addDecoration(decoration(...others), start, end);</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			addDecoration(decoration, start, end);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>但是遇到一个问题,
-居然有的<code>node</code>没有<code>position</code>属性...</p>
+<p>但是遇到一个问题, 居然有的<code>node</code>没有<code>position</code>属性...</p>
 <ul>
 <li>table</li>
 <li>latex</li>
 <li>img link</li>
 </ul>
-<h2 id="f5调试显示的效果-和本地打包安装后不同.">f5调试显示的效果,
-和本地打包安装后不同.</h2>
-<p>不对, <code>1.0.17</code>版本正常,
-之后的版本和现在开发的版本都有问题.</p>
-<p><code>1.0.18</code>版本是否正常,
-代表了是否我这个修改的思路是正确的...</p>
+<h2 id="f5调试显示的效果-和本地打包安装后不同.">f5调试显示的效果, 和本地打包安装后不同.</h2>
+<p>不对, <code>1.0.17</code>版本正常, 之后的版本和现在开发的版本都有问题.</p>
+<p><code>1.0.18</code>版本是否正常, 代表了是否我这个修改的思路是正确的...</p>
 <p>奇怪, 好像是文件的问题</p>
-<p>我这个文件的, node, 行号始终在400行以内显示.
-而实际上我行已经到2000行了.</p>
+<p>我这个文件的, node, 行号始终在400行以内显示. 而实际上我行已经到2000行了.</p>
 <p>用remark跑了下, 是能到2000行的呀...为啥呢?</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">node:  221 </span><br><span class="line">&#123;type: &quot;heading&quot;, depth: 2, children: Array(1), position: &#123;…&#125;&#125;</span><br><span class="line">children: Array(1)</span><br><span class="line">0: &#123;type: &quot;text&quot;, value: &quot;有序列表下无序列表下有序列表&quot;, position: &#123;…&#125;&#125;</span><br><span class="line">length: 1</span><br><span class="line">__proto__: Array(0)</span><br><span class="line">depth: 2</span><br><span class="line">position:</span><br><span class="line">end: &#123;line: 222, column: 18, offset: 7909&#125;</span><br><span class="line">start: &#123;line: 222, column: 1, offset: 7892&#125;</span><br><span class="line">__proto__: Object</span><br><span class="line">type: &quot;heading&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>实际上是1569行, 为啥显示222行?</p>
-<p>另外, 似乎此时的渲染速度慢了很多, 是不是因为那个遍历的操作?
-是不是得内容优化</p>
+<p>另外, 似乎此时的渲染速度慢了很多, 是不是因为那个遍历的操作? 是不是得内容优化</p>
 <p>目前来看, 这个遍历的资源开销特别大, 达到用户会感知的层级了...</p>
 <p>这块先优化成map再看吧.</p>
-<p>emm, map里最后存的不是地址, 而是这个range对象, 这样的话可能不太行.
-除非我把所有的Range对象都做了单例模式?</p>
-<p>奇怪, 我做了单例, 为啥还找不到呢? 好像一定情况下照不出来是正常的.
-因为如果同一行有多个渲染, 那就找不到.</p>
-<p>是不是因为<code>decoration</code>这个不是单例,
-有好几次会创建新的?</p>
-<p>这样的话, 就会导致我以为是同一个装饰器, 但是实际上这个装饰器是新的,
-里面没有之前的</p>
-<p>其实这样也没太大问题. 至少解释不了为什么第二次进这个函数,
-底下就变成undefined了. 还真是一个全新的.</p>
+<p>emm, map里最后存的不是地址, 而是这个range对象, 这样的话可能不太行. 除非我把所有的Range对象都做了单例模式?</p>
+<p>奇怪, 我做了单例, 为啥还找不到呢? 好像一定情况下照不出来是正常的. 因为如果同一行有多个渲染, 那就找不到.</p>
+<p>是不是因为<code>decoration</code>这个不是单例, 有好几次会创建新的?</p>
+<p>这样的话, 就会导致我以为是同一个装饰器, 但是实际上这个装饰器是新的, 里面没有之前的</p>
+<p>其实这样也没太大问题. 至少解释不了为什么第二次进这个函数, 底下就变成undefined了. 还真是一个全新的.</p>
 <p>基于这个遍历的方案成功是成功了, 但是cpu占用太高.</p>
-<p>而且试验了下,
-<code>onDidChangeTextEditorSelection</code>是可以捕获到当前的行的.
-至于更进一步的思路再想想.</p>
-<p>考虑只处理指定行? 选中范围内会自动触发, 在临界范围内,
-range取消的能力. 这就不存在资源消耗了.</p>
+<p>而且试验了下, <code>onDidChangeTextEditorSelection</code>是可以捕获到当前的行的. 至于更进一步的思路再想想.</p>
+<p>考虑只处理指定行? 选中范围内会自动触发, 在临界范围内, range取消的能力. 这就不存在资源消耗了.</p>
 <p>所以可能得放弃根据行来判断的逻辑.</p>
 <p>好像大佬在<code>setDecorations</code>这里做了实现?</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (state.config.cursorDisables) &#123;</span><br><span class="line">    ranges = ranges.filter((r) =&gt; !state.selection.intersection(r));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>好像是利用这里更新range, 直接去除存在范围内的. 这样的话,
-我只需要把行添加到这里, 也能起到一样的效果.</p>
+<p>好像是利用这里更新range, 直接去除存在范围内的. 这样的话, 我只需要把行添加到这里, 也能起到一样的效果.</p>
 <p>确实, 实现了.</p>
-<p>关键是因为<code>setDecoration</code>这里做了一次循环遍历了,
-所以导致我在那侧做的实现, 完全重复了. 出现了2重循环引起的.</p>
-<p>但是那个<code>##</code>连带着这个一起放大的问题还是存在,
-那就跟性能没关系了.</p>
-<h3 id="放弃让索引位置与字符所在位置对应上-不让其出现删除空格-实际是删除了最后的文字的问题.">(放弃)让索引位置与字符所在位置对应上?
-不让其出现删除空格, 实际是删除了最后的文字的问题.</h3>
-<p>如何实现呢? 一种就是让由于存在被隐藏了空格的部分出现.
-但是由于<code>heading</code>的特性是在于表头, 因此无法复现.</p>
-<h2 id="多现实2个的问题-意思hide异常">多现实2个'#'的问题,
-意思<code>hide</code>异常</h2>
+<p>关键是因为<code>setDecoration</code>这里做了一次循环遍历了, 所以导致我在那侧做的实现, 完全重复了. 出现了2重循环引起的.</p>
+<p>但是那个<code>##</code>连带着这个一起放大的问题还是存在, 那就跟性能没关系了.</p>
+<h3 id="放弃让索引位置与字符所在位置对应上-不让其出现删除空格-实际是删除了最后的文字的问题.">(放弃)让索引位置与字符所在位置对应上? 不让其出现删除空格, 实际是删除了最后的文字的问题.</h3>
+<p>如何实现呢? 一种就是让由于存在被隐藏了空格的部分出现. 但是由于<code>heading</code>的特性是在于表头, 因此无法复现.</p>
+<h2 id="多现实2个的问题-意思hide异常">多现实2个'#'的问题, 意思<code>hide</code>异常</h2>
 <p>398行为什么在<code>node</code>中显示265?</p>
 <p>为什么<code>content</code>打印出了<code>list</code>的项?</p>
-<p>奇怪, 为什么日志里记录的行号, 并不是我当前看的这几行呢?
-所以是渲染的范围有问题?</p>
+<p>奇怪, 为什么日志里记录的行号, 并不是我当前看的这几行呢? 所以是渲染的范围有问题?</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const ms = new vscode.MarkdownString(latexElement);</span><br><span class="line">            ms.isTrusted = true;</span><br></pre></td></tr></table></figure>
 <p>初步怀疑是这块构造部分的<code>markdown</code>这里出的问题.</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">range = new vscode.Range(Math.max(range.start.line - <span class="number">200</span><span class="punctuation">,</span> <span class="number">0</span>)<span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> range.end.line + <span class="number">200</span><span class="punctuation">,</span> <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-<p>好像是这里引起的, 所以按照这段的意思,
-如果把我超过400行的json去掉.是不是就正确了?</p>
+<p>好像是这里引起的, 所以按照这段的意思, 如果把我超过400行的json去掉.是不是就正确了?</p>
 <p>好像还是不对. 还是怀疑这里的range存在问题.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;type: &quot;heading&quot;, depth: 3, children: Array(1), position: &#123;…&#125;&#125;</span><br><span class="line">children: Array(1)</span><br><span class="line">0: &#123;type: &quot;text&quot;, value: &quot;作废的折叠代码.&quot;, position: &#123;…&#125;&#125;</span><br><span class="line">length: 1</span><br><span class="line">__proto__: Array(0)</span><br><span class="line">depth: 3</span><br><span class="line">position:</span><br><span class="line">end: &#123;line: 421, column: 13, offset: 11791&#125;</span><br><span class="line">start: &#123;line: 421, column: 1, offset: 11779&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>噢噢. 忽然意识到问题点了.
-这里<code>construct</code>传入的是个相对路径,
-但是我却去当做真实路径计算引起的问题.</p>
+<p>噢噢. 忽然意识到问题点了. 这里<code>construct</code>传入的是个相对路径, 但是我却去当做真实路径计算引起的问题.</p>
 <p>奇怪, 为什么我必须用<code>node</code>, 而不是直接用</p>
 <h2 id="日志里记录heading的逻辑里会出现普通节点的行...">日志里记录<code>heading</code>的逻辑里会出现普通节点的行...</h2>
-<h2 id="可能存在内存泄露-由于装饰器的不断new.-清空也只是-并不是dispose.-有必要增加单例">可能存在内存泄露,
-由于装饰器的不断new. 清空也只是[], 并不是dispose. 有必要增加单例</h2>
-<h2 id="todo存在单行由于字体过大-没有自动换行的问题.">TODO:存在单行由于字体过大,
-没有自动换行的问题.</h2>
-<p>目前看到的实现,
-是在<code>vscode</code>进入<code>view-line</code>的渲染之前就修改了字体大小等才行.
-如果等到<code>view-line</code>建完之后, wrap已经结束了</p>
-<p>TODO: 所以需要考虑是不是有什么API可以重新指定wrap.
-或者重新根据我的渲染结果重新触发<code>render</code>的<code>view-line</code>.
-可能也得看下wrap的实现代码有没有对应的接口.</p>
-<h2 id="sometimes-还是会出现没被隐藏的问题.-1.0.22版本.">sometimes,
-还是会出现<code>#</code>没被隐藏的问题. 1.0.22版本.</h2>
-<p>依旧存在'#'的复现条件,
-似乎是切换Editor和切换其他文件的时候发生的.</p>
+<h2 id="可能存在内存泄露-由于装饰器的不断new.-清空也只是-并不是dispose.-有必要增加单例">可能存在内存泄露, 由于装饰器的不断new. 清空也只是[], 并不是dispose. 有必要增加单例</h2>
+<h2 id="todo存在单行由于字体过大-没有自动换行的问题.">TODO:存在单行由于字体过大, 没有自动换行的问题.</h2>
+<p>目前看到的实现, 是在<code>vscode</code>进入<code>view-line</code>的渲染之前就修改了字体大小等才行. 如果等到<code>view-line</code>建完之后, wrap已经结束了</p>
+<p>TODO: 所以需要考虑是不是有什么API可以重新指定wrap. 或者重新根据我的渲染结果重新触发<code>render</code>的<code>view-line</code>. 可能也得看下wrap的实现代码有没有对应的接口.</p>
+<h2 id="sometimes-还是会出现没被隐藏的问题.-1.0.22版本.">sometimes, 还是会出现<code>#</code>没被隐藏的问题. 1.0.22版本.</h2>
+<p>依旧存在'#'的复现条件, 似乎是切换Editor和切换其他文件的时候发生的.</p>
 <h3 id="illegal-value-for-line">Illegal value for <code>line</code></h3>
 <p>奇怪, 不是只要是整型就行了吗? <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mainThreadExtensionService.<span class="property">ts</span>:<span class="number">64</span> <span class="title class_">Error</span>: <span class="title class_">Illegal</span> value <span class="keyword">for</span> <span class="string">`line`</span></span><br><span class="line">	at l.<span class="property">_lineAt</span> (vscode-<span class="attr">file</span>:<span class="comment">//vscode-app/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:88)</span></span><br><span class="line">	at <span class="title class_">Object</span>.<span class="property">lineAt</span> (vscode-<span class="attr">file</span>:<span class="comment">//vscode-app/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:88)</span></span><br><span class="line">	at updateSelectionToLine (vscode-<span class="attr">file</span>:<span class="comment">//vscode-app/Users/sean10/Code/markless/out/main.js:55935)</span></span><br><span class="line">	at setDecorations (vscode-<span class="attr">file</span>:<span class="comment">//vscode-app/Users/sean10/Code/markless/out/main.js:55944)</span></span><br><span class="line">	at runNextTicks (internal/process/task_queues.<span class="property">js</span>:<span class="number">58</span>)</span><br><span class="line">	at processTimers (internal/timers.<span class="property">js</span>:<span class="number">494</span>)</span><br></pre></td></tr></table></figure></p>
-<p>最后定位到, 实际上还是<code>editor</code>切换的时候,
-全局变量没有重新更新的问题,用了错误的<code>editor</code>了.
-这样行号肯定是对不上的.</p>
+<p>最后定位到, 实际上还是<code>editor</code>切换的时候, 全局变量没有重新更新的问题,用了错误的<code>editor</code>了. 这样行号肯定是对不上的.</p>
 <h3 id="在heading处的">在<code>heading</code>处的</h3>
-<p>最后发现之前加的<code>const editor = vscode.window.activeTextEditor;</code>在切换<code>editor</code>时没能切换,
-所以访问错文件的line了.</p>
-<h2 id="todo疑似图片默认不会全放大状态-通过paste-image现加的渲染的时候-需要收缩一次再点开才会按照我的配置进行-包括切换editor的时候-切换完好像也有问题-除了关闭重新打开好像是正常的">TODO:疑似图片默认不会全放大状态,
-通过Paste Image现加的渲染的时候, 需要收缩一次再点开才会按照我的配置进行?
-包括切换editor的时候, 切换完好像也有问题,
-除了关闭重新打开好像是正常的</h2>
-<h2 id="todo-性能优化-触控板滚动的时候-有触发selection的变化-或者什么的变化引起重新渲染吗">TODO:
-性能优化, 触控板滚动的时候, 有触发selection的变化,
-或者什么的变化引起重新渲染吗?</h2>
+<p>最后发现之前加的<code>const editor = vscode.window.activeTextEditor;</code>在切换<code>editor</code>时没能切换, 所以访问错文件的line了.</p>
+<h2 id="todo疑似图片默认不会全放大状态-通过paste-image现加的渲染的时候-需要收缩一次再点开才会按照我的配置进行-包括切换editor的时候-切换完好像也有问题-除了关闭重新打开好像是正常的">TODO:疑似图片默认不会全放大状态, 通过Paste Image现加的渲染的时候, 需要收缩一次再点开才会按照我的配置进行? 包括切换editor的时候, 切换完好像也有问题, 除了关闭重新打开好像是正常的</h2>
+<h2 id="todo-性能优化-触控板滚动的时候-有触发selection的变化-或者什么的变化引起重新渲染吗">TODO: 性能优化, 触控板滚动的时候, 有触发selection的变化, 或者什么的变化引起重新渲染吗?</h2>
 <h2 id="增加日志动态调整记录.">增加日志动态调整记录.</h2>
 <h3 id="config修改的同步时间是什么时候呢">config修改的同步时间是什么时候呢?</h3>
 <p>我改完, 再切换回窗口, 我看到触发的还是原来的配置.</p>
 <p>config好像还有<code>active</code>那几个<code>mermaid</code>的逻辑要用到.</p>
 <p>这里的俩<code>registerWebviewViewProvider</code>这个就不注册了把</p>
-<h3 id="小模块就不考虑按模块功能拆分日志了-直接手动过滤筛选吧.">小模块就不考虑按模块/功能拆分日志了,
-直接手动过滤筛选吧.</h3>
-<h3 id="todo-support-env-expose-log-level-and-log-path-to-extensions-issue-40053-microsoftvscode">TODO:
-support env? <a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/40053">Expose log level
-and log path to extensions · Issue #40053 · microsoft/vscode</a></h3>
+<h3 id="小模块就不考虑按模块功能拆分日志了-直接手动过滤筛选吧.">小模块就不考虑按模块/功能拆分日志了, 直接手动过滤筛选吧.</h3>
+<h3 id="todo-support-env-expose-log-level-and-log-path-to-extensions-issue-40053-microsoftvscode">TODO: support env? <a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/40053">Expose log level and log path to extensions · Issue #40053 · microsoft/vscode</a></h3>
 <h2 id="cleardecotaions里的对象找不到setdecoration"><code>clearDecotaions</code>里的对象找不到<code>setDecoration</code>,</h2>
 <p>初步怀疑是切换到非markdown的文件上, 出现的问题. 没能把函数取消掉.</p>
-<h3 id="部分listitem的无序列表的那个符号怎么好像没被添加上去-隐藏了">部分<code>listItem</code>的无序列表的那个符号怎么好像没被添加上去?
-隐藏了?</h3>
+<h3 id="部分listitem的无序列表的那个符号怎么好像没被添加上去-隐藏了">部分<code>listItem</code>的无序列表的那个符号怎么好像没被添加上去? 隐藏了?</h3>
 <p>初步实验, 好像关键点是这行含不含有中文?</p>
 <p>奇怪, 看起来<code>decoration</code>还是生成了的.</p>
-<p>在<code>addDecoration</code>内部失败的,
-目前初步怀疑是<code>vscode</code>版本升级引入的问题?</p>
+<p>在<code>addDecoration</code>内部失败的, 目前初步怀疑是<code>vscode</code>版本升级引入的问题?</p>
 <h1 id="todo">todo</h1>
-<p>TODO:可以通过<code>MarkdownString</code>来完成彻底的渲染html.
-自带了这个能力</p>
-<p>todo:
-第一级有序列表无法被<code>verified</code>库解析出<code>ordered</code>的<code>list</code>属性.
-所以这种得翻一下<code>unified</code>的API, 他的判断逻辑里, 如果只有一层,
-那还具有列表属性吗? listItem应该也有区分前缀才对?</p>
-<p>todo: 遍历一层下述节点时,
-第一级的<code>node</code>中包含了其内的子节点的属性.
-然后会再次遍历其中的子节点. 所以这里会存在一个覆盖的效果.
-目前来看只有<code>text</code>层级的<code>position</code>属性可以作为一个表来判定节点之间的关联.</p>
-<p>todo: 下属节点的遍历能力是否要进行区分? 可能没办法区分,
-因为只有遍历进<code>paragraph</code>层之后才能知道其children是否是<code>list</code>还是<code>listItem</code>.</p>
+<p>TODO:可以通过<code>MarkdownString</code>来完成彻底的渲染html. 自带了这个能力</p>
+<p>todo: 第一级有序列表无法被<code>verified</code>库解析出<code>ordered</code>的<code>list</code>属性. 所以这种得翻一下<code>unified</code>的API, 他的判断逻辑里, 如果只有一层, 那还具有列表属性吗? listItem应该也有区分前缀才对?</p>
+<p>todo: 遍历一层下述节点时, 第一级的<code>node</code>中包含了其内的子节点的属性. 然后会再次遍历其中的子节点. 所以这里会存在一个覆盖的效果. 目前来看只有<code>text</code>层级的<code>position</code>属性可以作为一个表来判定节点之间的关联.</p>
+<p>todo: 下属节点的遍历能力是否要进行区分? 可能没办法区分, 因为只有遍历进<code>paragraph</code>层之后才能知道其children是否是<code>list</code>还是<code>listItem</code>.</p>
 <ul>
-<li>todo: 如果我模拟的有序列表的数字并不连续, 是否还能判定为有序列表?
-得看下unified代码.
-如果这里可以让直接根据在每个node的属性那里就能区分出是<code>ordered</code>与否,
-那就不用考虑状态机转移了. emm, 似乎根据现有代码,
-可以直接利用正则手动处理. 虽然性能低一点.
+<li>todo: 如果我模拟的有序列表的数字并不连续, 是否还能判定为有序列表? 得看下unified代码. 如果这里可以让直接根据在每个node的属性那里就能区分出是<code>ordered</code>与否, 那就不用考虑状态机转移了. emm, 似乎根据现有代码, 可以直接利用正则手动处理. 虽然性能低一点.
 <ul>
-<li>todo: 这里出现一个新问题,
-node的<code>value</code>里只有去掉了列表之后的内容,
-现在导致我无法正则判断了.
-怎么才能从解析后的<code>node</code>反得到对应的完整行呢?
-虽然有<code>range</code>可以手动找到.</li>
-<li>Todo: 我似乎可以找到对应的level层级, 手动得到前面的地址,
-然后通过<code>range</code>提取到值</li>
+<li>todo: 这里出现一个新问题, node的<code>value</code>里只有去掉了列表之后的内容, 现在导致我无法正则判断了. 怎么才能从解析后的<code>node</code>反得到对应的完整行呢? 虽然有<code>range</code>可以手动找到.</li>
+<li>Todo: 我似乎可以找到对应的level层级, 手动得到前面的地址, 然后通过<code>range</code>提取到值</li>
 </ul></li>
 </ul>
-<p>根据上面的<code>spec</code>可知<code>有序列表的开始数字由第一个列表项的数字决定，而不考虑 后面的列表项。</code>
-所以理论上<code>remark</code>应该直接解析出<code>list</code>的<code>ordered</code>属性才对?</p>
-<p><code>remark-parse</code>主要用的<a target="_blank" rel="noopener" href="https://github.com/syntax-tree/mdast#list">syntax-tree/mdast:
-Markdown Abstract Syntax Tree format</a>这个库来进行的解析.</p>
-<p><code>mdast</code>这个库里只是文档?
-那<code>Remark</code>这么多<code>repo</code>之间的关系到底是什么?</p>
+<p>根据上面的<code>spec</code>可知<code>有序列表的开始数字由第一个列表项的数字决定，而不考虑 后面的列表项。</code> 所以理论上<code>remark</code>应该直接解析出<code>list</code>的<code>ordered</code>属性才对?</p>
+<p><code>remark-parse</code>主要用的<a target="_blank" rel="noopener" href="https://github.com/syntax-tree/mdast#list">syntax-tree/mdast: Markdown Abstract Syntax Tree format</a>这个库来进行的解析.</p>
+<p><code>mdast</code>这个库里只是文档? 那<code>Remark</code>这么多<code>repo</code>之间的关系到底是什么?</p>
 <p><code>unified</code>代码里没搜到<code>listItem</code>,</p>
 <p>重新推一下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const parser = require(&#x27;unified&#x27;)()</span><br><span class="line">    .use(require(&#x27;remark-math&#x27;))</span><br><span class="line">    .use(require(&#x27;remark-parse&#x27;))</span><br><span class="line">    .use(require(&#x27;remark-gfm&#x27;))</span><br><span class="line">    .parse;</span><br></pre></td></tr></table></figure>
-<p>所以应该在<code>remark-parse</code>或者<code>remark-gfm</code>里.
-emm,
-<code>remark-gfm</code>下载下来和<code>mdast</code>一样是空的...</p>
-<p><code>unified.js</code>和<code>remark.js</code>是什么关联?
-如果单纯只是API聚合的话, 应该不值得赞助吧?</p>
-<p>噢, 根据这篇<a target="_blank" rel="noopener" href="https://braincoke.fr/blog/2020/03/an-introduction-to-unified-and-remark/#syntax-trees">An
-Introduction to Unified and Remark - Braincoke | Security Blog</a>,
-<code>remark</code>看起来更像是<code>unifed</code>的下属子集能力.
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import &#123;fromMarkdown&#125; from &#x27;mdast-util-from-markdown&#x27;</span><br></pre></td></tr></table></figure> 根据这个, 而这个代码里又写来自于<code>micromark</code>,
-所以说明这个数据来源是这个库.</p>
+<p>所以应该在<code>remark-parse</code>或者<code>remark-gfm</code>里. emm, <code>remark-gfm</code>下载下来和<code>mdast</code>一样是空的...</p>
+<p><code>unified.js</code>和<code>remark.js</code>是什么关联? 如果单纯只是API聚合的话, 应该不值得赞助吧?</p>
+<p>噢, 根据这篇<a target="_blank" rel="noopener" href="https://braincoke.fr/blog/2020/03/an-introduction-to-unified-and-remark/#syntax-trees">An Introduction to Unified and Remark - Braincoke | Security Blog</a>, <code>remark</code>看起来更像是<code>unifed</code>的下属子集能力. <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import &#123;fromMarkdown&#125; from &#x27;mdast-util-from-markdown&#x27;</span><br></pre></td></tr></table></figure> 根据这个, 而这个代码里又写来自于<code>micromark</code>, 所以说明这个数据来源是这个库.</p>
 <p>的确在这个库的代码里搜到了<code>listItem</code>.</p>
 <p>根据<code>micromark</code>里的描述</p>
 <blockquote>
-<p>remark is the most popular markdown parser. It’s built on top of
-micromark and boasts syntax trees. For an analogy, it’s like if Babel,
-ESLint, and more, were one project.</p>
+<p>remark is the most popular markdown parser. It’s built on top of micromark and boasts syntax trees. For an analogy, it’s like if Babel, ESLint, and more, were one project.</p>
 </blockquote>
 <p>不过似乎语法树的部分解析可能还是在其他的代码里的.</p>
-<p>乍看,
-核心逻辑都在对应的<code>compile</code>里的<code>handler</code>那里.</p>
-<p><code>micromark</code>输出的是<code>html</code>, 那之前那些节点信息,
-是哪个插件的呢?</p>
+<p>乍看, 核心逻辑都在对应的<code>compile</code>里的<code>handler</code>那里.</p>
+<p><code>micromark</code>输出的是<code>html</code>, 那之前那些节点信息, 是哪个插件的呢?</p>
 <p>奇怪, 用<code>remark-parse</code>输出的节点结构基本对应上了</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot;: &quot;root&quot;,</span><br><span class="line">    &quot;children&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;type&quot;: &quot;list&quot;,</span><br><span class="line">            &quot;ordered&quot;: true,</span><br><span class="line">            &quot;start&quot;: 1,</span><br><span class="line">            &quot;spread&quot;: false,</span><br><span class="line">            &quot;children&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;listItem&quot;,</span><br><span class="line">                    &quot;spread&quot;: false,</span><br><span class="line">                    &quot;checked&quot;: null,</span><br><span class="line">                    &quot;children&quot;: [</span><br><span class="line">                        &#123;</span><br><span class="line">                            &quot;type&quot;: &quot;paragraph&quot;,</span><br><span class="line">                            &quot;children&quot;: [</span><br><span class="line">                                &#123;</span><br><span class="line">                                    &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                                    &quot;value&quot;: &quot;1&quot;,</span><br><span class="line">                                    &quot;position&quot;: &#123;</span><br><span class="line">                                        &quot;start&quot;: &#123;</span><br><span class="line">                                            &quot;line&quot;: 1,</span><br><span class="line">                                            &quot;column&quot;: 4,</span><br><span class="line">                                            &quot;offset&quot;: 3</span><br><span class="line">                                        &#125;,</span><br><span class="line">                                        &quot;end&quot;: &#123;</span><br><span class="line">                                            &quot;line&quot;: 1,</span><br><span class="line">                                            &quot;column&quot;: 5,</span><br><span class="line">                                            &quot;offset&quot;: 4</span><br><span class="line">                                        &#125;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                            ],</span><br><span class="line">                            &quot;position&quot;: &#123;</span><br><span class="line">                                &quot;start&quot;: &#123;</span><br><span class="line">                                    &quot;line&quot;: 1,</span><br><span class="line">                                    &quot;column&quot;: 4,</span><br><span class="line">                                    &quot;offset&quot;: 3</span><br><span class="line">                                &#125;,</span><br><span class="line">                                &quot;end&quot;: &#123;</span><br><span class="line">                                    &quot;line&quot;: 1,</span><br><span class="line">                                    &quot;column&quot;: 5,</span><br><span class="line">                                    &quot;offset&quot;: 4</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    ],</span><br><span class="line">                    &quot;position&quot;: &#123;</span><br><span class="line">                        &quot;start&quot;: &#123;</span><br><span class="line">                            &quot;line&quot;: 1,</span><br><span class="line">                            &quot;column&quot;: 1,</span><br><span class="line">                            &quot;offset&quot;: 0</span><br><span class="line">                        &#125;,</span><br><span class="line">                        &quot;end&quot;: &#123;</span><br><span class="line">                            &quot;line&quot;: 1,</span><br><span class="line">                            &quot;column&quot;: 5,</span><br><span class="line">                            &quot;offset&quot;: 4</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;listItem&quot;,</span><br><span class="line">                    &quot;spread&quot;: false,</span><br><span class="line">                    &quot;checked&quot;: null,</span><br><span class="line">                    &quot;children&quot;: [</span><br><span class="line">                        &#123;</span><br><span class="line">                            &quot;type&quot;: &quot;paragraph&quot;,</span><br><span class="line">                            &quot;children&quot;: [</span><br><span class="line">                                &#123;</span><br><span class="line">                                    &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                                    &quot;value&quot;: &quot;2&quot;,</span><br><span class="line">                                    &quot;position&quot;: &#123;</span><br><span class="line">                                        &quot;start&quot;: &#123;</span><br><span class="line">                                            &quot;line&quot;: 2,</span><br><span class="line">                                            &quot;column&quot;: 4,</span><br><span class="line">                                            &quot;offset&quot;: 8</span><br><span class="line">                                        &#125;,</span><br><span class="line">                                        &quot;end&quot;: &#123;</span><br><span class="line">                                            &quot;line&quot;: 2,</span><br><span class="line">                                            &quot;column&quot;: 5,</span><br><span class="line">                                            &quot;offset&quot;: 9</span><br><span class="line">                                        &#125;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                            ],</span><br><span class="line">                            &quot;position&quot;: &#123;</span><br><span class="line">                                &quot;start&quot;: &#123;</span><br><span class="line">                                    &quot;line&quot;: 2,</span><br><span class="line">                                    &quot;column&quot;: 4,</span><br><span class="line">                                    &quot;offset&quot;: 8</span><br><span class="line">                                &#125;,</span><br><span class="line">                                &quot;end&quot;: &#123;</span><br><span class="line">                                    &quot;line&quot;: 2,</span><br><span class="line">                                    &quot;column&quot;: 5,</span><br><span class="line">                                    &quot;offset&quot;: 9</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    ],</span><br><span class="line">                    &quot;position&quot;: &#123;</span><br><span class="line">                        &quot;start&quot;: &#123;</span><br><span class="line">                            &quot;line&quot;: 2,</span><br><span class="line">                            &quot;column&quot;: 1,</span><br><span class="line">                            &quot;offset&quot;: 5</span><br><span class="line">                        &#125;,</span><br><span class="line">                        &quot;end&quot;: &#123;</span><br><span class="line">                            &quot;line&quot;: 2,</span><br><span class="line">                            &quot;column&quot;: 5,</span><br><span class="line">                            &quot;offset&quot;: 9</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;listItem&quot;,</span><br><span class="line">                    &quot;spread&quot;: false,</span><br><span class="line">                    &quot;checked&quot;: null,</span><br><span class="line">                    &quot;children&quot;: [</span><br><span class="line">                        &#123;</span><br><span class="line">                            &quot;type&quot;: &quot;paragraph&quot;,</span><br><span class="line">                            &quot;children&quot;: [</span><br><span class="line">                                &#123;</span><br><span class="line">                                    &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                                    &quot;value&quot;: &quot;3&quot;,</span><br><span class="line">                                    &quot;position&quot;: &#123;</span><br><span class="line">                                        &quot;start&quot;: &#123;</span><br><span class="line">                                            &quot;line&quot;: 3,</span><br><span class="line">                                            &quot;column&quot;: 4,</span><br><span class="line">                                            &quot;offset&quot;: 13</span><br><span class="line">                                        &#125;,</span><br><span class="line">                                        &quot;end&quot;: &#123;</span><br><span class="line">                                            &quot;line&quot;: 3,</span><br><span class="line">                                            &quot;column&quot;: 5,</span><br><span class="line">                                            &quot;offset&quot;: 14</span><br><span class="line">                                        &#125;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                            ],</span><br><span class="line">                            &quot;position&quot;: &#123;</span><br><span class="line">                                &quot;start&quot;: &#123;</span><br><span class="line">                                    &quot;line&quot;: 3,</span><br><span class="line">                                    &quot;column&quot;: 4,</span><br><span class="line">                                    &quot;offset&quot;: 13</span><br><span class="line">                                &#125;,</span><br><span class="line">                                &quot;end&quot;: &#123;</span><br><span class="line">                                    &quot;line&quot;: 3,</span><br><span class="line">                                    &quot;column&quot;: 5,</span><br><span class="line">                                    &quot;offset&quot;: 14</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    ],</span><br><span class="line">                    &quot;position&quot;: &#123;</span><br><span class="line">                        &quot;start&quot;: &#123;</span><br><span class="line">                            &quot;line&quot;: 3,</span><br><span class="line">                            &quot;column&quot;: 1,</span><br><span class="line">                            &quot;offset&quot;: 10</span><br><span class="line">                        &#125;,</span><br><span class="line">                        &quot;end&quot;: &#123;</span><br><span class="line">                            &quot;line&quot;: 3,</span><br><span class="line">                            &quot;column&quot;: 5,</span><br><span class="line">                            &quot;offset&quot;: 14</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            &quot;position&quot;: &#123;</span><br><span class="line">                &quot;start&quot;: &#123;</span><br><span class="line">                    &quot;line&quot;: 1,</span><br><span class="line">                    &quot;column&quot;: 1,</span><br><span class="line">                    &quot;offset&quot;: 0</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;end&quot;: &#123;</span><br><span class="line">                    &quot;line&quot;: 3,</span><br><span class="line">                    &quot;column&quot;: 5,</span><br><span class="line">                    &quot;offset&quot;: 14</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;position&quot;: &#123;</span><br><span class="line">        &quot;start&quot;: &#123;</span><br><span class="line">            &quot;line&quot;: 1,</span><br><span class="line">            &quot;column&quot;: 1,</span><br><span class="line">            &quot;offset&quot;: 0</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;end&quot;: &#123;</span><br><span class="line">            &quot;line&quot;: 5,</span><br><span class="line">            &quot;column&quot;: 1,</span><br><span class="line">            &quot;offset&quot;: 16</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>好像跟<code>html</code>的结构一样, 先是外部结构,
-<code>ul</code>还是<code>ol</code>, 然后才是内部的item渲染.</p>
-<p>这样的话, 也得按照<code>html</code>的逻辑去渲染,
-才能区分有序列表和无序列表了把.</p>
-<p>现阶段的实现上, 是按照<code>node</code>迭代去渲染的,
-所以这块当进入子节点的时候就没办法感知了.</p>
-<p>这样的话, 最好是找到内部节点, 然后往上去遍历节点是什么结构,
-然后再渲染?</p>
-<p>那这样的话, 最好渲染一次就不是渲染一个节点, 而是一组节点的.
-这样就可以在<code>ordered</code>变量存在的那层处理了.</p>
-<p>当节点是<code>listItem</code>类型的时候, 这里存一下父节点的信息,
-是不是<code>list</code>,然后<code>type</code>为<code>list</code>的<code>ordered</code>参数作为渲染用参数.</p>
-<p>最好是在得到这个<code>node</code>信息的时候, 就遍历一下,
-然后把这个属性给加到<code>listItem</code>那项里.</p>
+<p>好像跟<code>html</code>的结构一样, 先是外部结构, <code>ul</code>还是<code>ol</code>, 然后才是内部的item渲染.</p>
+<p>这样的话, 也得按照<code>html</code>的逻辑去渲染, 才能区分有序列表和无序列表了把.</p>
+<p>现阶段的实现上, 是按照<code>node</code>迭代去渲染的, 所以这块当进入子节点的时候就没办法感知了.</p>
+<p>这样的话, 最好是找到内部节点, 然后往上去遍历节点是什么结构, 然后再渲染?</p>
+<p>那这样的话, 最好渲染一次就不是渲染一个节点, 而是一组节点的. 这样就可以在<code>ordered</code>变量存在的那层处理了.</p>
+<p>当节点是<code>listItem</code>类型的时候, 这里存一下父节点的信息, 是不是<code>list</code>,然后<code>type</code>为<code>list</code>的<code>ordered</code>参数作为渲染用参数.</p>
+<p>最好是在得到这个<code>node</code>信息的时候, 就遍历一下, 然后把这个属性给加到<code>listItem</code>那项里.</p>
 <p>接下来就是在什么遍历的时候增加这个属性了.</p>
 <p>应该哪种都行. 反正只要type匹配即可. 增加在Visit那里了</p>
 <h3 id="作废的折叠代码.">作废的折叠代码.</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// context.subscriptions.push(vscode.languages.registerFoldingRangeProvider(&#x27;markdown&#x27;, &#123;</span><br><span class="line">// 	provideFoldingRanges: (document, context, _) =&gt; &#123;</span><br><span class="line">// 	console.log(document.languageId);</span><br><span class="line">// 	console.log(&quot;try to folding range&quot;);</span><br><span class="line">// 	let ranges = []s</span><br><span class="line">// 	const temp = new vscode.FoldingRange(1, 50, vscode.FoldingRangeKind.Comment);</span><br><span class="line">// 	ranges.push(temp);</span><br><span class="line">// 	return ranges</span><br><span class="line">// &#125;&#125;));</span><br><span class="line">// vscode.commands.executeCommand(&#x27;editor.fold&#x27;, &#123;&quot;selectionLines&quot;: [1]&#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="todo-回车和backspace按键卡顿-怀疑跟这个markless的实时渲染有关.-好像禁用了markless还是卡-开了进程监控-也没看到是哪个进程的cpu显著的高-除了main窗口.">todo:
-回车和backspace按键卡顿, 怀疑跟这个<code>markless</code>的实时渲染有关.
-好像禁用了markless还是卡, 开了进程监控, 也没看到是哪个进程的cpu显著的高,
-除了main窗口.</h3>
-<h2 id="todo-markless是如何隐藏一部分文字的-但是实际好像又能被搜索到-透明色">todo:
-<code>markless</code>是如何隐藏一部分文字的? 但是实际好像又能被搜索到?
-透明色?</h2>
+<h3 id="todo-回车和backspace按键卡顿-怀疑跟这个markless的实时渲染有关.-好像禁用了markless还是卡-开了进程监控-也没看到是哪个进程的cpu显著的高-除了main窗口.">todo: 回车和backspace按键卡顿, 怀疑跟这个<code>markless</code>的实时渲染有关. 好像禁用了markless还是卡, 开了进程监控, 也没看到是哪个进程的cpu显著的高, 除了main窗口.</h3>
+<h2 id="todo-markless是如何隐藏一部分文字的-但是实际好像又能被搜索到-透明色">todo: <code>markless</code>是如何隐藏一部分文字的? 但是实际好像又能被搜索到? 透明色?</h2>
 <h1 id="数据记录">数据记录</h1>
 <p>在每个大节点的访问之后, 会再进到children内进行子节点的访问.</p>
 <h2 id="无序列表下无序列表">无序列表下无序列表</h2>
@@ -954,7 +627,7 @@ ESLint, and more, were one project.</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.859Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.818Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

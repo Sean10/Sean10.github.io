@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="用二叉树来模拟的算法会TLE,只能找规律来过 画图会发现，当I为奇数时，都会掉到左子树去，偶数则右。然后判断一下何时到叶子节点就可以了 TLE的算法 12345678910111213141516171819202122232425262728#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;#include &lt;math.h&gt;#inclu">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-11-22T08:45:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.901Z">
+<meta property="article:published_time" content="2015-11-22T16:45:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.826Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="二叉树">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">二叉树——UVA679</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-11-22T08:45:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-11-22T16:45:00.000Z" itemprop="datePublished" class="page-time">
   2015-11-22
 </time>
 
@@ -164,7 +164,7 @@
     <div class="post-card">
         <h1 class="post-card-title">二叉树——UVA679</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-11-22 16:45:00" datetime="2015-11-22T08:45:00.000Z"  itemprop="datePublished">2015-11-22</time>
+            <time class="post-time" title="2015-11-22 16:45:00" datetime="2015-11-22T16:45:00.000Z"  itemprop="datePublished">2015-11-22</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -179,8 +179,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>用二叉树来模拟的算法会TLE,只能找规律来过
-画图会发现，当I为奇数时，都会掉到左子树去，偶数则右。然后判断一下何时到叶子节点就可以了</p>
+            <p>用二叉树来模拟的算法会TLE,只能找规律来过 画图会发现，当I为奇数时，都会掉到左子树去，偶数则右。然后判断一下何时到叶子节点就可以了</p>
 <p>TLE的算法 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;math.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#define N 1048577</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    //freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">    int n,x,y,li ;</span><br><span class="line">    int a[N];</span><br><span class="line">    scanf(&quot;%d&quot;,&amp;n);</span><br><span class="line">    while(~scanf(&quot;%d&quot;,&amp;x))&#123;</span><br><span class="line">        int k;</span><br><span class="line">        li = (1&lt;&lt;x) -1;</span><br><span class="line">        if(x == -1) break;</span><br><span class="line">        scanf(&quot;%d&quot;,&amp;y);</span><br><span class="line">        for(int j = 1;j &lt;= li;j++)</span><br><span class="line">            a[j] = 0;</span><br><span class="line">        for(int j = 1;j &lt;= y;j++)&#123;</span><br><span class="line">            for(k = 1;2*k &lt;= li;)&#123;</span><br><span class="line">                a[k] = !a[k];</span><br><span class="line">                k = a[k]==0?(2*k+1):(2*k);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        printf(&quot;%d\n&quot;,k);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>AC <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstring&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    //freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">    int n,D,I;</span><br><span class="line">    scanf(&quot;%d&quot;,&amp;n);</span><br><span class="line">    while(~scanf(&quot;%d&quot;,&amp;D))&#123;</span><br><span class="line">        int k = 1;</span><br><span class="line">        if(D== -1) break;</span><br><span class="line">        long long li = (1&lt;&lt;D)-1;</span><br><span class="line">        scanf(&quot;%d&quot;,&amp;I);</span><br><span class="line">        for(k = 1;k &lt;=li;)&#123;</span><br><span class="line">            if(I%2)&#123;</span><br><span class="line">                I=I/2+1;</span><br><span class="line">                k*=2;</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                I=I/2;</span><br><span class="line">                k=2*k+1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        printf(&quot;%d\n&quot;,k/2);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
@@ -191,7 +190,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.901Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.826Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

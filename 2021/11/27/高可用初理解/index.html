@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="定义上, 高可用其实分为以下几种.  冗余  以及可以基于这个剩下的节点提供除冗余外的完整的服务.  降级  关闭某些功能的情况下继续提供服务.  熔断  熔断更多指检测到连续故障, 让后续的也先拦截掉, 避免无法提供服务但依旧冲击服务压力. 检测到恢复之后再自愈那种. ceph-osd假设重构降级了, 这个情况下业务io继续打下来, 这个时候应该是阻塞, 而并没有通过熔断中断io. 但是如果是业">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-11-27T15:17:08.000Z">
-<meta property="article:modified_time" content="2022-07-15T00:46:00.000Z">
+<meta property="article:published_time" content="2021-11-27T23:17:08.000Z">
+<meta property="article:modified_time" content="2022-07-15T08:46:00.000Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="高可用">
 <meta property="article:tag" content="keepalived">
@@ -139,7 +139,7 @@
         <h1 class="title">高可用初理解</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-11-27T15:17:08.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-11-27T23:17:08.000Z" itemprop="datePublished" class="page-time">
   2021-11-27
 </time>
 
@@ -161,15 +161,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%8A-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%85%B6%E5%AE%9E%E5%88%86%E4%B8%BA%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%A7%8D."><span class="post-toc-number">1.</span> <span class="post-toc-text">定义上,
-高可用其实分为以下几种.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%8C%E6%95%B4%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88%E7%9A%84%E5%88%86%E7%B1%BB"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">完整高可用方案的分类</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%BA%94%E7%94%A8%E7%BA%A7%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88%E7%BB%86%E5%88%86"><span class="post-toc-number">2.</span> <span class="post-toc-text">应用级高可用方案细分</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">客户端</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%8D%E5%8A%A1%E4%B9%8B%E9%97%B4"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">服务之间</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">中间件</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%84%91%E8%A3%82%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.</span> <span class="post-toc-text">脑裂问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%B8%B8%E8%A7%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88ha%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E4%B8%AD%E8%84%91%E8%A3%82%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3---%E8%BF%90%E7%BB%B4%E6%80%BB%E7%BB%93---%E6%95%A3%E5%B0%BD%E6%B5%AE%E5%8D%8E---%E5%8D%9A%E5%AE%A2%E5%9B%AD"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">常见解决方案[^HA高可用集群中&quot;脑裂&quot;问题解决
-- 运维总结 - 散尽浮华 - 博客园]</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="post-toc-number"></span> <span class="post-toc-text">场景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BB%A5ceph-2%E8%8A%82%E7%82%B9%E4%B8%BE%E4%BE%8B."><span class="post-toc-number">1.</span> <span class="post-toc-text">以ceph 2节点举例.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E6%9C%89%E5%8F%AF%E8%83%BD%E8%AE%A9ceph%E5%9C%A8%E6%97%A0%E6%B3%95%E4%B8%8Emon%E9%80%9A%E4%BF%A1%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B-%E4%BE%9D%E6%97%A7%E6%94%AF%E6%8C%81%E6%A0%B9%E6%8D%AE%E7%8E%B0%E6%9C%89%E7%9A%84osdmap%E5%8E%BB%E5%BB%BA%E7%AB%8B%E9%80%9A%E4%BF%A1%E7%9A%84%E6%96%B9%E6%A1%88"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">1.
-是否有可能让ceph在无法与mon通信的情况下,
-依旧支持根据现有的osdmap去建立通信的方案?</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%9C%A82%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5%E4%B8%8B-%E8%AE%A9%E5%AD%98%E6%B4%BB%E8%B6%B3%E5%A4%9F%E6%95%B0%E9%87%8F%E7%9A%84mon"><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">2.
-是否可以在2节点情况下, 让存活足够数量的mon</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E6%AF%94%E5%A6%822%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C3%E4%B8%AAmon"><span class="post-toc-number">1.0.2.1.</span> <span class="post-toc-text">比如2节点运行3个mon?</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E6%AF%94%E5%A6%82%E5%B0%B1%E6%8B%89%E8%B5%B72%E4%B8%AAmon"><span class="post-toc-number">1.0.2.2.</span> <span class="post-toc-text">比如就拉起2个mon?</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="post-toc-number">1.0.2.3.</span> <span class="post-toc-text">思路</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#todo-%E8%BF%99%E9%87%8C%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E7%96%91%E9%97%AE%E9%A1%B9-%E7%BD%91%E5%85%B3%E6%8C%89rfc%E5%8D%8F%E8%AE%AE%E5%A6%82%E4%BD%95%E5%93%8D%E5%BA%94%E5%91%A2"><span class="post-toc-number">1.0.2.4.</span> <span class="post-toc-text">TODO:
-这里存在一个疑问项, 网关按RFC协议如何响应呢?</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8F%8C%E6%8E%A7%E6%9C%8D%E5%8A%A1%E5%99%A8-%E5%88%99%E6%98%AF%E7%89%B9%E4%BE%8B"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">双控服务器 则是特例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%8E%B0%E5%AE%9E%E5%8C%96%E5%9C%BA%E6%99%AF"><span class="post-toc-number">2.</span> <span class="post-toc-text">现实化场景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%9A%E5%8A%A1%E8%BF%90%E8%A1%8C%E5%9C%A8%E6%9C%AC%E8%8A%82%E7%82%B9%E4%B8%8A%E5%A6%82%E8%AE%A1%E7%AE%97%E5%AD%98%E5%82%A8%E4%B8%80%E4%BD%93-%E6%AD%A4%E6%97%B6%E5%AD%98%E5%82%A8%E7%9A%84%E5%89%8D%E5%90%8E%E7%AB%AF%E7%BD%91%E7%BB%9C%E5%85%B6%E5%AE%9E%E9%83%BD%E6%98%AF%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%8E%E7%AB%AF%E7%BD%91%E7%BB%9C"><span class="post-toc-number">2.0.1.</span> <span class="post-toc-text">业务运行在本节点上(如计算&#x2F;存储一体,
-此时存储的前后端网络其实都是节点的后端网络)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%89%8D%E7%AB%AF%E7%BD%91%E7%BB%9C%E6%96%AD%E5%BC%80"><span class="post-toc-number">2.0.1.1.</span> <span class="post-toc-text">前端网络断开</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%90%8E%E7%AB%AF%E7%BD%91%E7%BB%9C%E6%96%AD%E5%BC%80"><span class="post-toc-number">2.0.1.2.</span> <span class="post-toc-text">后端网络断开</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%85%A8%E6%96%AD%E5%BC%80"><span class="post-toc-number">2.0.1.3.</span> <span class="post-toc-text">全断开</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%9A%E5%8A%A1%E6%98%AF%E5%A4%96%E9%83%A8%E8%8A%82%E7%82%B9-%E9%80%9A%E8%BF%87%E5%AD%98%E5%82%A8%E7%9A%84%E5%89%8D%E7%AB%AF%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1"><span class="post-toc-number">2.0.2.</span> <span class="post-toc-text">业务是外部节点
-通过存储的前端网络通信</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%89%8D%E7%AB%AF%E7%BD%91%E7%BB%9C%E6%96%AD%E5%BC%80-1"><span class="post-toc-number">2.0.2.1.</span> <span class="post-toc-text">前端网络断开</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%90%8E%E7%AB%AF%E7%BD%91%E7%BB%9C%E6%96%AD%E5%BC%80-1"><span class="post-toc-number">2.0.2.2.</span> <span class="post-toc-text">后端网络断开</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%85%A8%E6%96%AD%E5%BC%80-1"><span class="post-toc-number">2.0.2.3.</span> <span class="post-toc-text">全断开</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%80%BB%E7%BB%93"><span class="post-toc-number">2.0.3.</span> <span class="post-toc-text">总结</span></a></li></ol></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%8A-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%85%B6%E5%AE%9E%E5%88%86%E4%B8%BA%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%A7%8D."><span class="post-toc-number">1.</span> <span class="post-toc-text">定义上, 高可用其实分为以下几种.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%8C%E6%95%B4%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88%E7%9A%84%E5%88%86%E7%B1%BB"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">完整高可用方案的分类</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%BA%94%E7%94%A8%E7%BA%A7%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88%E7%BB%86%E5%88%86"><span class="post-toc-number">2.</span> <span class="post-toc-text">应用级高可用方案细分</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">客户端</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%8D%E5%8A%A1%E4%B9%8B%E9%97%B4"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">服务之间</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">中间件</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%84%91%E8%A3%82%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.</span> <span class="post-toc-text">脑裂问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%B8%B8%E8%A7%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88ha%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E4%B8%AD%E8%84%91%E8%A3%82%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3---%E8%BF%90%E7%BB%B4%E6%80%BB%E7%BB%93---%E6%95%A3%E5%B0%BD%E6%B5%AE%E5%8D%8E---%E5%8D%9A%E5%AE%A2%E5%9B%AD"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">常见解决方案[^HA高可用集群中&quot;脑裂&quot;问题解决 - 运维总结 - 散尽浮华 - 博客园]</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="post-toc-number"></span> <span class="post-toc-text">场景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BB%A5ceph-2%E8%8A%82%E7%82%B9%E4%B8%BE%E4%BE%8B."><span class="post-toc-number">1.</span> <span class="post-toc-text">以ceph 2节点举例.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E6%9C%89%E5%8F%AF%E8%83%BD%E8%AE%A9ceph%E5%9C%A8%E6%97%A0%E6%B3%95%E4%B8%8Emon%E9%80%9A%E4%BF%A1%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B-%E4%BE%9D%E6%97%A7%E6%94%AF%E6%8C%81%E6%A0%B9%E6%8D%AE%E7%8E%B0%E6%9C%89%E7%9A%84osdmap%E5%8E%BB%E5%BB%BA%E7%AB%8B%E9%80%9A%E4%BF%A1%E7%9A%84%E6%96%B9%E6%A1%88"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">1. 是否有可能让ceph在无法与mon通信的情况下, 依旧支持根据现有的osdmap去建立通信的方案?</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%9C%A82%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5%E4%B8%8B-%E8%AE%A9%E5%AD%98%E6%B4%BB%E8%B6%B3%E5%A4%9F%E6%95%B0%E9%87%8F%E7%9A%84mon"><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">2. 是否可以在2节点情况下, 让存活足够数量的mon</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E6%AF%94%E5%A6%822%E8%8A%82%E7%82%B9%E8%BF%90%E8%A1%8C3%E4%B8%AAmon"><span class="post-toc-number">1.0.2.1.</span> <span class="post-toc-text">比如2节点运行3个mon?</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E6%AF%94%E5%A6%82%E5%B0%B1%E6%8B%89%E8%B5%B72%E4%B8%AAmon"><span class="post-toc-number">1.0.2.2.</span> <span class="post-toc-text">比如就拉起2个mon?</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="post-toc-number">1.0.2.3.</span> <span class="post-toc-text">思路</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#todo-%E8%BF%99%E9%87%8C%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E7%96%91%E9%97%AE%E9%A1%B9-%E7%BD%91%E5%85%B3%E6%8C%89rfc%E5%8D%8F%E8%AE%AE%E5%A6%82%E4%BD%95%E5%93%8D%E5%BA%94%E5%91%A2"><span class="post-toc-number">1.0.2.4.</span> <span class="post-toc-text">TODO: 这里存在一个疑问项, 网关按RFC协议如何响应呢?</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8F%8C%E6%8E%A7%E6%9C%8D%E5%8A%A1%E5%99%A8-%E5%88%99%E6%98%AF%E7%89%B9%E4%BE%8B"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">双控服务器 则是特例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%8E%B0%E5%AE%9E%E5%8C%96%E5%9C%BA%E6%99%AF"><span class="post-toc-number">2.</span> <span class="post-toc-text">现实化场景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%9A%E5%8A%A1%E8%BF%90%E8%A1%8C%E5%9C%A8%E6%9C%AC%E8%8A%82%E7%82%B9%E4%B8%8A%E5%A6%82%E8%AE%A1%E7%AE%97%E5%AD%98%E5%82%A8%E4%B8%80%E4%BD%93-%E6%AD%A4%E6%97%B6%E5%AD%98%E5%82%A8%E7%9A%84%E5%89%8D%E5%90%8E%E7%AB%AF%E7%BD%91%E7%BB%9C%E5%85%B6%E5%AE%9E%E9%83%BD%E6%98%AF%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%8E%E7%AB%AF%E7%BD%91%E7%BB%9C"><span class="post-toc-number">2.0.1.</span> <span class="post-toc-text">业务运行在本节点上(如计算&#x2F;存储一体, 此时存储的前后端网络其实都是节点的后端网络)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%89%8D%E7%AB%AF%E7%BD%91%E7%BB%9C%E6%96%AD%E5%BC%80"><span class="post-toc-number">2.0.1.1.</span> <span class="post-toc-text">前端网络断开</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%90%8E%E7%AB%AF%E7%BD%91%E7%BB%9C%E6%96%AD%E5%BC%80"><span class="post-toc-number">2.0.1.2.</span> <span class="post-toc-text">后端网络断开</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%85%A8%E6%96%AD%E5%BC%80"><span class="post-toc-number">2.0.1.3.</span> <span class="post-toc-text">全断开</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%9A%E5%8A%A1%E6%98%AF%E5%A4%96%E9%83%A8%E8%8A%82%E7%82%B9-%E9%80%9A%E8%BF%87%E5%AD%98%E5%82%A8%E7%9A%84%E5%89%8D%E7%AB%AF%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1"><span class="post-toc-number">2.0.2.</span> <span class="post-toc-text">业务是外部节点 通过存储的前端网络通信</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%89%8D%E7%AB%AF%E7%BD%91%E7%BB%9C%E6%96%AD%E5%BC%80-1"><span class="post-toc-number">2.0.2.1.</span> <span class="post-toc-text">前端网络断开</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%90%8E%E7%AB%AF%E7%BD%91%E7%BB%9C%E6%96%AD%E5%BC%80-1"><span class="post-toc-number">2.0.2.2.</span> <span class="post-toc-text">后端网络断开</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%85%A8%E6%96%AD%E5%BC%80-1"><span class="post-toc-number">2.0.2.3.</span> <span class="post-toc-text">全断开</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%80%BB%E7%BB%93"><span class="post-toc-number">2.0.3.</span> <span class="post-toc-text">总结</span></a></li></ol></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -180,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">高可用初理解</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-11-27 23:17:08" datetime="2021-11-27T15:17:08.000Z"  itemprop="datePublished">2021-11-27</time>
+            <time class="post-time" title="2021-11-27 23:17:08" datetime="2021-11-27T23:17:08.000Z"  itemprop="datePublished">2021-11-27</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -195,8 +187,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="定义上-高可用其实分为以下几种.">定义上,
-高可用其实分为以下几种.</h2>
+            <h2 id="定义上-高可用其实分为以下几种.">定义上, 高可用其实分为以下几种.</h2>
 <ol type="1">
 <li>冗余
 <ol type="1">
@@ -208,16 +199,9 @@
 </ol></li>
 <li>熔断
 <ol type="1">
-<li>熔断更多指检测到连续故障, 让后续的也先拦截掉,
-避免无法提供服务但依旧冲击服务压力. 检测到恢复之后再自愈那种.
-ceph-osd假设重构降级了, 这个情况下业务io继续打下来, 这个时候应该是阻塞,
-而并没有通过熔断中断io. 但是如果是业务io, 发现io异常了,
-倒是上层可以自行熔断. 只是这种其实更要求下层的可靠性.</li>
-<li>不然上游服务器应该会拥塞住. 假设上游服务器还承担其他功能,
-此时就会被僵死.</li>
-<li>扛不住这点, 根本上应该通过限流控制, 当组件存在异常后,
-此时带来的处理能力不足, 就需要熔断来尽量避免堆积.
-熔断后短时间无法恢复则应该考虑整体降级功能了.</li>
+<li>熔断更多指检测到连续故障, 让后续的也先拦截掉, 避免无法提供服务但依旧冲击服务压力. 检测到恢复之后再自愈那种. ceph-osd假设重构降级了, 这个情况下业务io继续打下来, 这个时候应该是阻塞, 而并没有通过熔断中断io. 但是如果是业务io, 发现io异常了, 倒是上层可以自行熔断. 只是这种其实更要求下层的可靠性.</li>
+<li>不然上游服务器应该会拥塞住. 假设上游服务器还承担其他功能, 此时就会被僵死.</li>
+<li>扛不住这点, 根本上应该通过限流控制, 当组件存在异常后, 此时带来的处理能力不足, 就需要熔断来尽量避免堆积. 熔断后短时间无法恢复则应该考虑整体降级功能了.</li>
 </ol></li>
 <li>限流
 <ol type="1">
@@ -225,10 +209,8 @@ ceph-osd假设重构降级了, 这个情况下业务io继续打下来, 这个时
 </ol></li>
 </ol>
 <p><a target="_blank" rel="noopener" href="https://blog.51cto.com/u_13626762/4132114">高并发整体可用性：一文详解降级、限流和熔断_Hollis的技术博客_51CTO博客</a></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903838231576589">面试官：说说降级、熔断、限流
-- 掘金</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/341939685">服务降级与服务熔断区别 -
-知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903838231576589">面试官：说说降级、熔断、限流 - 掘金</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/341939685">服务降级与服务熔断区别 - 知乎</a></p>
 <h3 id="完整高可用方案的分类">完整高可用方案的分类</h3>
 <p>完整的高可用方案目前理随着当前发展主要分为以下几类.</p>
 <ul>
@@ -245,32 +227,25 @@ ceph-osd假设重构降级了, 这个情况下业务io继续打下来, 这个时
 <li>异地双活</li>
 <li>异地多活</li>
 </ul>
-<p>本文不讨论完整的灾备/多活方案, 主要只涉及本地的高可用,
-即双机热备那种, 应用级灾备.</p>
+<p>本文不讨论完整的灾备/多活方案, 主要只涉及本地的高可用, 即双机热备那种, 应用级灾备.</p>
 <h2 id="应用级高可用方案细分">应用级高可用方案细分</h2>
 <h3 id="客户端">客户端</h3>
-<p>客户端直接填写多个服务端ip, 故障后自行切换.
-比如ceph的客户端节点访问mon, 主要依赖客户端节点的配置中mon的地址.
-根据mon地址去连接. 当一个mon故障时, 会根据其他mon地址进行连接.</p>
+<p>客户端直接填写多个服务端ip, 故障后自行切换. 比如ceph的客户端节点访问mon, 主要依赖客户端节点的配置中mon的地址. 根据mon地址去连接. 当一个mon故障时, 会根据其他mon地址进行连接.</p>
 <h3 id="服务之间">服务之间</h3>
 <p>指的就是基于选举自身实现高可用了. 比如ceph-mon之间选举leader,</p>
 <h3 id="中间件">中间件</h3>
 <p>如早期不支持集群的redis上层增加的Codis等等</p>
-<p>或者就是存储端上层, 增加keepalived/nginx等进行处理,
-比如云计算当节点存在异常时, 会疏散切换到另一个节点,
-比如keepalive提供的vip切换节点的能力.</p>
+<p>或者就是存储端上层, 增加keepalived/nginx等进行处理, 比如云计算当节点存在异常时, 会疏散切换到另一个节点, 比如keepalive提供的vip切换节点的能力.</p>
 <p>或是提供dns层级的</p>
 <h2 id="脑裂问题">脑裂问题</h2>
 <p>脑裂问题按目前理解, 算是高可用问题中存在风险较大的一个了</p>
-<h3 id="常见解决方案ha高可用集群中脑裂问题解决---运维总结---散尽浮华---博客园">常见解决方案[^HA高可用集群中"脑裂"问题解决
-- 运维总结 - 散尽浮华 - 博客园]</h3>
+<h3 id="常见解决方案ha高可用集群中脑裂问题解决---运维总结---散尽浮华---博客园">常见解决方案[^HA高可用集群中"脑裂"问题解决 - 运维总结 - 散尽浮华 - 博客园]</h3>
 <ol type="1">
 <li>添加冗余的心跳线路
 <ol type="1">
 <li>如网口绑定, 避免单根线故障, 引起节点直接异常.
 <ol type="1">
-<li>做的更极端一些, 两根线连不同的交换机? 避免交换机的单点故障?
-但一般小规模集群不需要. 大规模集群有节点/机柜层级的冗余了.</li>
+<li>做的更极端一些, 两根线连不同的交换机? 避免交换机的单点故障? 但一般小规模集群不需要. 大规模集群有节点/机柜层级的冗余了.</li>
 </ol></li>
 </ol></li>
 <li>设置第三方仲裁机制
@@ -278,8 +253,7 @@ ceph-osd假设重构降级了, 这个情况下业务io继续打下来, 这个时
 <li>显式的仲裁, 即明确的第三方节点参数选举/判定等</li>
 <li>借助环境中节点以外的资源进行仲裁
 <ol type="1">
-<li>如主备的keepalived配置中增加周期ping网关的check操作,
-ping不通则代表本节点有问题, 需要自行停止服务</li>
+<li>如主备的keepalived配置中增加周期ping网关的check操作, ping不通则代表本节点有问题, 需要自行停止服务</li>
 <li>如双控设备, 借助同时连接的硬盘, 在硬盘上设置标记, 实现磁盘锁.</li>
 </ol></li>
 <li>存在奇数节点的选举算法</li>
@@ -287,154 +261,82 @@ ping不通则代表本节点有问题, 需要自行停止服务</li>
 <li>fense(屏蔽)机制 --硬件设备
 <ol type="1">
 <li>利用ipmi的fence设备, 将故障节点踢出集群? 为啥不是局部组件踢出?</li>
-<li>RHCS的Fence设备分为内部和外部两种Fence。内部fence有IBMRSAII卡，HP的ILO卡，以及IPMI设备等；外部FENCE设备有UPS，SANswitch
-，Networkswitch等。</li>
-<li>对于小规模集群有必要吗? 如果是多个组件,
-比如内网异常可能只影响到某些用内网的组件呀.
-为啥要把整个节点的服务都踢出呢? 大规模集群的话合理, 但是小规模呢?
+<li>RHCS的Fence设备分为内部和外部两种Fence。内部fence有IBMRSAII卡，HP的ILO卡，以及IPMI设备等；外部FENCE设备有UPS，SANswitch ，Networkswitch等。</li>
+<li>对于小规模集群有必要吗? 如果是多个组件, 比如内网异常可能只影响到某些用内网的组件呀. 为啥要把整个节点的服务都踢出呢? 大规模集群的话合理, 但是小规模呢?
 <ol type="1">
 <li>屏蔽可以定义为一种使 HA 群集具有已知状态的方法。</li>
-<li>根据上面这句话来理解,
-至少能够做到对节点的处理能力状态进行一定程序的定义.
+<li>根据上面这句话来理解, 至少能够做到对节点的处理能力状态进行一定程序的定义.
 <ol type="1">
 <li>资源级别和节点级别的屏蔽</li>
 </ol></li>
-<li>在 Pacemaker 群集中，节点级别屏蔽的实施方式是
-STONITH（关闭其他节点）</li>
+<li>在 Pacemaker 群集中，节点级别屏蔽的实施方式是 STONITH（关闭其他节点）</li>
 </ol></li>
-<li><a target="_blank" rel="noopener" href="https://documentation.suse.com/zh-cn/sle-ha/15-SP1/html/SLE-HA-all/cha-ha-fencing.html">屏障和
-STONITH | 管理指南 | SUSE Linux Enterprise High Availability Extension
-15 SP1</a></li>
+<li><a target="_blank" rel="noopener" href="https://documentation.suse.com/zh-cn/sle-ha/15-SP1/html/SLE-HA-all/cha-ha-fencing.html">屏障和 STONITH | 管理指南 | SUSE Linux Enterprise High Availability Extension 15 SP1</a></li>
 </ol></li>
 </ol>
-<p>[^HA高可用集群中"脑裂"问题解决 - 运维总结 - 散尽浮华 -
-博客园](https://www.cnblogs.com/kevingrace/p/7205846.html)</p>
+<p>[^HA高可用集群中"脑裂"问题解决 - 运维总结 - 散尽浮华 - 博客园](https://www.cnblogs.com/kevingrace/p/7205846.html)</p>
 <h1 id="场景">场景</h1>
 <p>目前主要是以下场景</p>
-<p>2节点场景下,
-需要提供数据存储/计算资源/等的高可用能力(有些情况还是有这种需求)
-3节点以上场景, 则基本都是正常的疏散逻辑能够处理的.</p>
+<p>2节点场景下, 需要提供数据存储/计算资源/等的高可用能力(有些情况还是有这种需求) 3节点以上场景, 则基本都是正常的疏散逻辑能够处理的.</p>
 <p>这里我们讨论的, 目前主要是存储的冗余能力.</p>
-<p>回到关心的存储的冗余的场景里, 指的是2个节点下, 其中一个节点彻底离线,
-或者是出现了2个节点之间的网络中断,
-而期望对外的业务服务并不中断的场景.</p>
-<p>P.S. 其实严格意义上来说,
-存储冗余之外,上层业务也需要做上面的另外三种方案.
-只是如虚拟机等方案比如存储外再通过本地存储备份拉起可用虚拟机做降级等,
-可能在一般的冗余要求下 投入成本过高.</p>
+<p>回到关心的存储的冗余的场景里, 指的是2个节点下, 其中一个节点彻底离线, 或者是出现了2个节点之间的网络中断, 而期望对外的业务服务并不中断的场景.</p>
+<p>P.S. 其实严格意义上来说, 存储冗余之外,上层业务也需要做上面的另外三种方案. 只是如虚拟机等方案比如存储外再通过本地存储备份拉起可用虚拟机做降级等, 可能在一般的冗余要求下 投入成本过高.</p>
 <h2 id="以ceph-2节点举例.">以ceph 2节点举例.</h2>
-<p>以具体的存储比如ceph举例,
-ceph如果是基于rbd/cephfs/rgw协议直接对接使用时,
-是需要先基于rados协议与mon节点建立连接, 获取到当前最新的osdmap后,
-根据osdmap计算出当前请求的目标osd, 然后客户端与osd直接建立连接的.</p>
-<p>当2节点场景下, 按官方默认推荐方案仅实施1个mon/mgr时,
-当这个mon所在节点离线的情况下, 就会存在无法查询到最新的osdmap,
-也就无法与osd建立连接的情况.</p>
+<p>以具体的存储比如ceph举例, ceph如果是基于rbd/cephfs/rgw协议直接对接使用时, 是需要先基于rados协议与mon节点建立连接, 获取到当前最新的osdmap后, 根据osdmap计算出当前请求的目标osd, 然后客户端与osd直接建立连接的.</p>
+<p>当2节点场景下, 按官方默认推荐方案仅实施1个mon/mgr时, 当这个mon所在节点离线的情况下, 就会存在无法查询到最新的osdmap, 也就无法与osd建立连接的情况.</p>
 <p>发散一下思路</p>
-<h4 id="是否有可能让ceph在无法与mon通信的情况下-依旧支持根据现有的osdmap去建立通信的方案">1.
-是否有可能让ceph在无法与mon通信的情况下,
-依旧支持根据现有的osdmap去建立通信的方案?</h4>
-<p>可能有. 但是去中心化, 参考区块链的定义,
-其实也意味着数据要么在任意协议中都有保存, 要么本地曾经有过,
-保存下来了.</p>
-<p>那可能的实现思路就是基于本地历史的osdmap去计算目标源.
-然后连上osd之后, osd再承接一部分osdmap分发的能力, 转派真实的osd地址.
-这样技术上有一定的实现难度, 但看起来似乎也不是不行.</p>
-<h4 id="是否可以在2节点情况下-让存活足够数量的mon">2.
-是否可以在2节点情况下, 让存活足够数量的mon</h4>
+<h4 id="是否有可能让ceph在无法与mon通信的情况下-依旧支持根据现有的osdmap去建立通信的方案">1. 是否有可能让ceph在无法与mon通信的情况下, 依旧支持根据现有的osdmap去建立通信的方案?</h4>
+<p>可能有. 但是去中心化, 参考区块链的定义, 其实也意味着数据要么在任意协议中都有保存, 要么本地曾经有过, 保存下来了.</p>
+<p>那可能的实现思路就是基于本地历史的osdmap去计算目标源. 然后连上osd之后, osd再承接一部分osdmap分发的能力, 转派真实的osd地址. 这样技术上有一定的实现难度, 但看起来似乎也不是不行.</p>
+<h4 id="是否可以在2节点情况下-让存活足够数量的mon">2. 是否可以在2节点情况下, 让存活足够数量的mon</h4>
 <h5 id="比如2节点运行3个mon">比如2节点运行3个mon?</h5>
-<p>这里的方案, 其实就首先每个节点运行一个节点服务,
-另外1个节点会运行一个额外的服务. 当出现节点异常时, 通过感知到对端离线,
-本地去启动那个额外的服务, 确保本节点数量是满足要求的.</p>
-<p>这里引出一个需求点: 这个额外的服务的数据库哪里来?
-无论是ceph-mon还是zookeeper其实都具有一个特点, 就是数据强一致性,
-即数据库是完全可重用的. 即当判断时, 临时复制出一个也不是不可以.
-或是通过一个共享存储空间.</p>
-<p>P.S. 这里其实共享存储空间是否可能并不是决定性的?
-因为本身节点之间通过强一致算法去写数据,
-这里数据库之间不一致的检查是为了处理跨节点因网络或各式因素引起的强一致性不可靠.
-而对于单节点拉起2个程序, 这点上, 起到的冗余效果可能只是进程级别的?
-基本可能没有太大作用? 只是为了实现2节点下高可用才进行的.</p>
-<p>按理想的场景 确实对端彻底离线了, 那切换确实问题不大.
-但是这里的核心问题点, 当出现网络隔离或脑裂时,
-如果两端真的同时拉起新服务, 同时起集群. 那就会导致数据不一致了.</p>
-<p>换言之, 这个方案也还是需要一个第三方在网络隔离时,
-能够识别出哪个节点才是真实可服务的.</p>
+<p>这里的方案, 其实就首先每个节点运行一个节点服务, 另外1个节点会运行一个额外的服务. 当出现节点异常时, 通过感知到对端离线, 本地去启动那个额外的服务, 确保本节点数量是满足要求的.</p>
+<p>这里引出一个需求点: 这个额外的服务的数据库哪里来? 无论是ceph-mon还是zookeeper其实都具有一个特点, 就是数据强一致性, 即数据库是完全可重用的. 即当判断时, 临时复制出一个也不是不可以. 或是通过一个共享存储空间.</p>
+<p>P.S. 这里其实共享存储空间是否可能并不是决定性的? 因为本身节点之间通过强一致算法去写数据, 这里数据库之间不一致的检查是为了处理跨节点因网络或各式因素引起的强一致性不可靠. 而对于单节点拉起2个程序, 这点上, 起到的冗余效果可能只是进程级别的? 基本可能没有太大作用? 只是为了实现2节点下高可用才进行的.</p>
+<p>按理想的场景 确实对端彻底离线了, 那切换确实问题不大. 但是这里的核心问题点, 当出现网络隔离或脑裂时, 如果两端真的同时拉起新服务, 同时起集群. 那就会导致数据不一致了.</p>
+<p>换言之, 这个方案也还是需要一个第三方在网络隔离时, 能够识别出哪个节点才是真实可服务的.</p>
 <h5 id="比如就拉起2个mon">比如就拉起2个mon?</h5>
 <p>通过设置mon之间的权重优先级,是否有可能?</p>
-<p>其实是有可能的, 关键问题其实是在于脑裂, 网络隔离时,
-两边都无法感知到对端时, 如何不两边同时拉起 或停止服务.
-即需要有一个第三方仲裁者来完成这件事.</p>
+<p>其实是有可能的, 关键问题其实是在于脑裂, 网络隔离时, 两边都无法感知到对端时, 如何不两边同时拉起 或停止服务. 即需要有一个第三方仲裁者来完成这件事.</p>
 <h5 id="思路">思路</h5>
-<p>如果除了ceph和keepalived的ip之外,
-这两个节点还使用了如keepalived这类vip层级. 即2节点其实是共用一个vip的.
-这时vip的共用引入了一个第三方, 网关(三层交换机/路由器).</p>
-<p>此时利用路由器网关的能力, 通过vip ping一下网关, 确保一个子网里,
-只有一个vip存活.</p>
+<p>如果除了ceph和keepalived的ip之外, 这两个节点还使用了如keepalived这类vip层级. 即2节点其实是共用一个vip的. 这时vip的共用引入了一个第三方, 网关(三层交换机/路由器).</p>
+<p>此时利用路由器网关的能力, 通过vip ping一下网关, 确保一个子网里, 只有一个vip存活.</p>
 <p>这种思路, 其实就是依赖了ip冲突的检测能力, 从而完成了一个仲裁.</p>
-<h5 id="todo-这里存在一个疑问项-网关按rfc协议如何响应呢">TODO:
-这里存在一个疑问项, 网关按RFC协议如何响应呢?</h5>
+<h5 id="todo-这里存在一个疑问项-网关按rfc协议如何响应呢">TODO: 这里存在一个疑问项, 网关按RFC协议如何响应呢?</h5>
 <h3 id="双控服务器-则是特例">双控服务器 则是特例</h3>
-<p>如果是双控服务器, 则双控服务器接入了同一套expander,
-可以从expander层面作为一个第三方, 物理磁盘是同一套,
-不同控制器可以在磁盘上存储标记位, 检测磁盘锁.
-这样确保一个控制器离线的情况下,
-另一个节点能够从磁盘锁上判断对端是否存活,
-是否在本节点拉起额外的服务.</p>
+<p>如果是双控服务器, 则双控服务器接入了同一套expander, 可以从expander层面作为一个第三方, 物理磁盘是同一套, 不同控制器可以在磁盘上存储标记位, 检测磁盘锁. 这样确保一个控制器离线的情况下, 另一个节点能够从磁盘锁上判断对端是否存活, 是否在本节点拉起额外的服务.</p>
 <h2 id="现实化场景">现实化场景</h2>
-<p>依旧如果是普通节点的情况下, 划分管理网络,前端网络, 后端网络,
-2节点场景</p>
-<p>业务程序分为运行在本节点上, 用户基于BS/CS使用本节点上的业务,
-和外部节点通过前端网络通信 两种</p>
-<p>脑裂为主要场景, 所以这里主要讨论网络异常引起的那种.
-不讨论节点正常离线那种.</p>
-<h4 id="业务运行在本节点上如计算存储一体-此时存储的前后端网络其实都是节点的后端网络">业务运行在本节点上(如计算/存储一体,
-此时存储的前后端网络其实都是节点的后端网络)</h4>
+<p>依旧如果是普通节点的情况下, 划分管理网络,前端网络, 后端网络, 2节点场景</p>
+<p>业务程序分为运行在本节点上, 用户基于BS/CS使用本节点上的业务, 和外部节点通过前端网络通信 两种</p>
+<p>脑裂为主要场景, 所以这里主要讨论网络异常引起的那种. 不讨论节点正常离线那种.</p>
+<h4 id="业务运行在本节点上如计算存储一体-此时存储的前后端网络其实都是节点的后端网络">业务运行在本节点上(如计算/存储一体, 此时存储的前后端网络其实都是节点的后端网络)</h4>
 <h5 id="前端网络断开">前端网络断开</h5>
-<p>此时计算需要进行冗余处理.
-只需要计算资源能够确认哪个节点是继续提供服务节点即可.
-即通过上面的高可用<a href="#常见解决方案">常见解决方案</a>来完成</p>
+<p>此时计算需要进行冗余处理. 只需要计算资源能够确认哪个节点是继续提供服务节点即可. 即通过上面的高可用<a href="#常见解决方案">常见解决方案</a>来完成</p>
 <p>此时存储无异常.</p>
 <h5 id="后端网络断开">后端网络断开</h5>
 <!-- 这俩节点之间故障, 比如后端网络跨了三层交换机/路由器, 上面还有个核心交换机, 核心没有问题, 但是这俩交换机之间如果走了其他交换机进行连接的.  -->
 <p>一台设备内网线全异常了.</p>
 <p>这个情况下, 这俩与外网依旧能通, 但是这俩节点之间的后端网络不通了.</p>
-<p>此时计算无异常. 此时, 因为前端网络依旧是通的,
-所以vip本身还是可以保障的, 对外的vip一般应该是不变的.
-即用户访问计算资源, 还是可以正常连接上的.</p>
-<p>此时存储需要冗余处理. 但是ceph-mon的程序无法工作,
-导致计算资源无法再操作存储了.</p>
-<p>如果需要解决, 即需要存储在这个情况下不脑裂继续提供服务.
-其实是可以通过上面说的拉起3个/以及后端网络也存在vip来处理.
-因为当断一个外部网络,
-存储自身通过网关检测到哪个节点的后端网络先能使用这个ip,
-则由该节点拉起足够数量的mon继续提供服务.</p>
+<p>此时计算无异常. 此时, 因为前端网络依旧是通的, 所以vip本身还是可以保障的, 对外的vip一般应该是不变的. 即用户访问计算资源, 还是可以正常连接上的.</p>
+<p>此时存储需要冗余处理. 但是ceph-mon的程序无法工作, 导致计算资源无法再操作存储了.</p>
+<p>如果需要解决, 即需要存储在这个情况下不脑裂继续提供服务. 其实是可以通过上面说的拉起3个/以及后端网络也存在vip来处理. 因为当断一个外部网络, 存储自身通过网关检测到哪个节点的后端网络先能使用这个ip, 则由该节点拉起足够数量的mon继续提供服务.</p>
 <h5 id="全断开">全断开</h5>
 <p>此时计算/存储均出问题.</p>
-<p>此时计算, 可能会出现两端都拉起了计算程序. 因为彻底无第三方,
-则可能计算节点自身同时启动.</p>
-<p>存储如果也做了上面的拉起足够数量的mon继续提供服务,
-则也会出现脑裂问题. 两端同时启动, 同时对本机上的计算资源提供服务.</p>
-<p>此时如果业务会有周期操作, 如快照等.
-则会出现节点内产生的数据不一致的写操作.</p>
-<h4 id="业务是外部节点-通过存储的前端网络通信">业务是外部节点
-通过存储的前端网络通信</h4>
+<p>此时计算, 可能会出现两端都拉起了计算程序. 因为彻底无第三方, 则可能计算节点自身同时启动.</p>
+<p>存储如果也做了上面的拉起足够数量的mon继续提供服务, 则也会出现脑裂问题. 两端同时启动, 同时对本机上的计算资源提供服务.</p>
+<p>此时如果业务会有周期操作, 如快照等. 则会出现节点内产生的数据不一致的写操作.</p>
+<h4 id="业务是外部节点-通过存储的前端网络通信">业务是外部节点 通过存储的前端网络通信</h4>
 <h5 id="前端网络断开-1">前端网络断开</h5>
-<p>业务请求无法访问某一台了, 存储如果没做上面拉起足够数量mon的方案,
-则在mon节点离线时无法响应.</p>
+<p>业务请求无法访问某一台了, 存储如果没做上面拉起足够数量mon的方案, 则在mon节点离线时无法响应.</p>
 <p>如果做了, 则正常冗余切换到另一节点继续提供服务即可.</p>
 <h5 id="后端网络断开-1">后端网络断开</h5>
-<p>此时即存储内网, 会正常通过心跳降级掉无法连上的节点的osd,
-继续提供服务.</p>
+<p>此时即存储内网, 会正常通过心跳降级掉无法连上的节点的osd, 继续提供服务.</p>
 <h5 id="全断开-1">全断开</h5>
 <p>如果采用了拉起足够数量mon方案, 此时两端会同时尝试提供降级服务.</p>
 <p>但是由于业务节点不在存储端, 倒是不会产生数据不一致问题.</p>
 <h4 id="总结">总结</h4>
-<p>根据上面可以看到, 在有些场景下, 提高了可用性, 会引起数据不一致风险.
-C和A在此时互相冲突.</p>
-<p>这里就不再是技术问题了, 而是主要看市场如何了.
-是支持高可用带来的利润足以抵消几起数据不一致风险, 还是为了数据一致性,
-牺牲部分场景的高可用支持能力了.</p>
+<p>根据上面可以看到, 在有些场景下, 提高了可用性, 会引起数据不一致风险. C和A在此时互相冲突.</p>
+<p>这里就不再是技术问题了, 而是主要看市场如何了. 是支持高可用带来的利润足以抵消几起数据不一致风险, 还是为了数据一致性, 牺牲部分场景的高可用支持能力了.</p>
 
         </div>
 
@@ -443,7 +345,7 @@ C和A在此时互相冲突.</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2022-07-15T00:46:00.000Z" itemprop="dateUpdated">2022-07-15 08:46:00</time>
+    最后更新时间：<time datetime="2022-07-15T08:46:00.000Z" itemprop="dateUpdated">2022-07-15 08:46:00</time>
 </span><br>
 
 

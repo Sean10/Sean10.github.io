@@ -29,8 +29,8 @@
 <meta property="og:description" content="之前在公司服务器上验证了好多次流程图，结果是被改过代码了可能，运行结果与原生CentOS镜像结果不同。被迫混淆了好久。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sean10.github.io/.io//rsyslog-journald%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84_2020-10-18-16-00-23.png">
-<meta property="article:published_time" content="2018-08-01T17:45:01.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.875Z">
+<meta property="article:published_time" content="2018-08-02T01:45:01.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.814Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="systemd">
@@ -142,7 +142,7 @@
         <h1 class="title">rsyslog &amp; journald日志系统结构</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-08-01T17:45:01.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-08-02T01:45:01.000Z" itemprop="datePublished" class="page-time">
   2018-08-02
 </time>
 
@@ -164,10 +164,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">基本背景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">实验环境</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#rsyslog%E4%B8%8Esystemd-journald%E6%97%A5%E5%BF%97%E6%B5%81%E5%90%91"><span class="post-toc-number">2.</span> <span class="post-toc-text">rsyslog与systemd-journald日志流向</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.</span> <span class="post-toc-text">常见问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A5%E5%BF%97%E9%87%8D%E5%A4%8D"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">日志重复</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A5%E5%BF%97%E4%B8%A2%E5%A4%B1"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">日志丢失</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%94%B1%E4%BA%8E%E6%97%A5%E5%BF%97%E9%A2%91%E6%AC%A1%E4%B8%A2%E5%A4%B1"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">由于日志频次丢失</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#journal%E6%AD%A3%E5%B8%B8rsyslog%E5%81%9C%E6%AD%A2%E8%AE%B0%E5%BD%95%E6%97%A5%E5%BF%97"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">journal正常，rsyslog停止记录日志</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B5%8B%E8%AF%95journald%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%A7%E8%83%BD%E4%B8%8A%E9%99%90"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">测试journald数据库性能上限</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B5%8B%E8%AF%95%E5%86%8Dpersistent%E4%B8%8Evolatile%E7%8A%B6%E6%80%81%E4%B8%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E5%81%9C%E6%AD%A2%E8%AE%B0%E5%BD%95%E6%9D%A1%E4%BB%B6"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">测试再persistent与volatile状态下，数据库停止记录条件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#imjournald-journal-reloaded%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">imjournald journal
-reloaded问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#devlog-%E4%B8%A2%E5%A4%B1"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">&#x2F;dev&#x2F;log 丢失</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#varlogmessages-%E6%97%B6%E9%97%B4%E5%AD%98%E5%9C%A8%E8%B7%B3%E5%8F%98%E4%B9%B1%E5%BA%8F"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">&#x2F;var&#x2F;log&#x2F;messages
-时间存在跳变，乱序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#journal-inputoutput-error"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">journal input&#x2F;output Error</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B0%86varlogjournal%E7%9B%AE%E5%BD%95%E5%81%9A%E4%BA%86%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%90%8E%E6%8C%87%E5%90%91%E8%B7%AF%E5%BE%84%E6%98%AF%E8%A2%AB%E6%8C%82%E8%BD%BD%E7%9A%84%E7%9B%98%E5%9C%A8%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%B0%9A%E6%9C%AA%E6%8C%82%E8%BD%BD%E4%B8%8A%E6%97%B6%E4%BC%9A%E5%AF%BC%E8%87%B4%E6%97%A5%E5%BF%97%E4%B8%8D%E5%90%88%E5%B9%B6%E4%BC%9A%E4%B8%A2%E5%A4%B1"><span class="post-toc-number">3.9.</span> <span class="post-toc-text">将&#x2F;var&#x2F;log&#x2F;journal目录做了软链接后，指向路径是被挂载的盘，在系统启动尚未挂载上时，会导致日志不合并，会丢失</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="post-toc-number">4.</span> <span class="post-toc-text">配置信息</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#etcrsyslog.conf"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">&#x2F;etc&#x2F;rsyslog.conf</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imuxsock"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">$ModLoad imuxsock</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#omitlocallogging-%E4%B8%8E-systemlogsocketname"><span class="post-toc-number">4.1.1.1.</span> <span class="post-toc-text">$OmitLocalLogging 与
-$SystemLogSocketName</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imjournal"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">$ModLoad imjournal</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#imjournalratelimitinterval-0"><span class="post-toc-number">4.1.2.1.</span> <span class="post-toc-text">$imjournalRatelimitInterval 0</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#imjournalratelimitburst-0"><span class="post-toc-number">4.1.2.2.</span> <span class="post-toc-text">$imjournalRatelimitBurst 0</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imklog"><span class="post-toc-number">4.1.3.</span> <span class="post-toc-text">$ModLoad imklog</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imkmsg"><span class="post-toc-number">4.1.4.</span> <span class="post-toc-text">$ModLoad imkmsg</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imudp"><span class="post-toc-number">4.1.5.</span> <span class="post-toc-text">$ModLoad imudp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imtcp"><span class="post-toc-number">4.1.6.</span> <span class="post-toc-text">$ModLoad imtcp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%BD%AC%E5%8F%91%E8%A7%84%E5%88%99"><span class="post-toc-number">4.1.7.</span> <span class="post-toc-text">转发规则</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#begin-forwarding-rule"><span class="post-toc-number">4.1.8.</span> <span class="post-toc-text">begin forwarding rule</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#etcsystemdjournald.conf"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">&#x2F;etc&#x2F;systemd&#x2F;journald.conf</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ratelimitinterval30s"><span class="post-toc-number">4.2.1.</span> <span class="post-toc-text">RateLimitInterval&#x3D;30s</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ratelimitburst1000"><span class="post-toc-number">4.2.2.</span> <span class="post-toc-text">RateLimitBurst&#x3D;1000</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#storageauto"><span class="post-toc-number">4.2.3.</span> <span class="post-toc-text">Storage&#x3D;auto</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#runtimemaxuse"><span class="post-toc-number">4.2.4.</span> <span class="post-toc-text">RuntimeMaxUse&#x3D;</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#runtimekeepfree"><span class="post-toc-number">4.2.5.</span> <span class="post-toc-text">RuntimeKeepFree&#x3D;</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#runtimemaxfilesize"><span class="post-toc-number">4.2.6.</span> <span class="post-toc-text">RuntimeMaxFileSize&#x3D;</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#forwardtosyslogyes"><span class="post-toc-number">4.2.7.</span> <span class="post-toc-text">ForwardToSyslog&#x3D;yes</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#maxlevelstoredebug"><span class="post-toc-number">4.2.8.</span> <span class="post-toc-text">MaxLevelStore&#x3D;debug</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#libsystemdsystemsystemd-journald.service"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;systemd-journald.service</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#standardoutputnull"><span class="post-toc-number">4.3.1.</span> <span class="post-toc-text">StandardOutput&#x3D;null</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#etclogrotate.conf"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">&#x2F;etc&#x2F;logrotate.conf</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#journald%E6%8C%81%E4%B9%85%E5%8C%96"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">journald持久化</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95"><span class="post-toc-number">5.</span> <span class="post-toc-text">调试方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A3%80%E9%AA%8Crsyslog%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">检验rsyslog配置信息</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#strace--p-pid%E8%BF%BD%E8%B8%AA%E8%BF%9B%E7%A8%8B"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">strace -p pid追踪进程</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">基本背景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">实验环境</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#rsyslog%E4%B8%8Esystemd-journald%E6%97%A5%E5%BF%97%E6%B5%81%E5%90%91"><span class="post-toc-number">2.</span> <span class="post-toc-text">rsyslog与systemd-journald日志流向</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.</span> <span class="post-toc-text">常见问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A5%E5%BF%97%E9%87%8D%E5%A4%8D"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">日志重复</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A5%E5%BF%97%E4%B8%A2%E5%A4%B1"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">日志丢失</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%94%B1%E4%BA%8E%E6%97%A5%E5%BF%97%E9%A2%91%E6%AC%A1%E4%B8%A2%E5%A4%B1"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">由于日志频次丢失</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#journal%E6%AD%A3%E5%B8%B8rsyslog%E5%81%9C%E6%AD%A2%E8%AE%B0%E5%BD%95%E6%97%A5%E5%BF%97"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">journal正常，rsyslog停止记录日志</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B5%8B%E8%AF%95journald%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%A7%E8%83%BD%E4%B8%8A%E9%99%90"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">测试journald数据库性能上限</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B5%8B%E8%AF%95%E5%86%8Dpersistent%E4%B8%8Evolatile%E7%8A%B6%E6%80%81%E4%B8%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E5%81%9C%E6%AD%A2%E8%AE%B0%E5%BD%95%E6%9D%A1%E4%BB%B6"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">测试再persistent与volatile状态下，数据库停止记录条件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#imjournald-journal-reloaded%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">imjournald journal reloaded问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#devlog-%E4%B8%A2%E5%A4%B1"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">&#x2F;dev&#x2F;log 丢失</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#varlogmessages-%E6%97%B6%E9%97%B4%E5%AD%98%E5%9C%A8%E8%B7%B3%E5%8F%98%E4%B9%B1%E5%BA%8F"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">&#x2F;var&#x2F;log&#x2F;messages 时间存在跳变，乱序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#journal-inputoutput-error"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">journal input&#x2F;output Error</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B0%86varlogjournal%E7%9B%AE%E5%BD%95%E5%81%9A%E4%BA%86%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%90%8E%E6%8C%87%E5%90%91%E8%B7%AF%E5%BE%84%E6%98%AF%E8%A2%AB%E6%8C%82%E8%BD%BD%E7%9A%84%E7%9B%98%E5%9C%A8%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%B0%9A%E6%9C%AA%E6%8C%82%E8%BD%BD%E4%B8%8A%E6%97%B6%E4%BC%9A%E5%AF%BC%E8%87%B4%E6%97%A5%E5%BF%97%E4%B8%8D%E5%90%88%E5%B9%B6%E4%BC%9A%E4%B8%A2%E5%A4%B1"><span class="post-toc-number">3.9.</span> <span class="post-toc-text">将&#x2F;var&#x2F;log&#x2F;journal目录做了软链接后，指向路径是被挂载的盘，在系统启动尚未挂载上时，会导致日志不合并，会丢失</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="post-toc-number">4.</span> <span class="post-toc-text">配置信息</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#etcrsyslog.conf"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">&#x2F;etc&#x2F;rsyslog.conf</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imuxsock"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">$ModLoad imuxsock</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#omitlocallogging-%E4%B8%8E-systemlogsocketname"><span class="post-toc-number">4.1.1.1.</span> <span class="post-toc-text">$OmitLocalLogging 与 $SystemLogSocketName</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imjournal"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">$ModLoad imjournal</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#imjournalratelimitinterval-0"><span class="post-toc-number">4.1.2.1.</span> <span class="post-toc-text">$imjournalRatelimitInterval 0</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#imjournalratelimitburst-0"><span class="post-toc-number">4.1.2.2.</span> <span class="post-toc-text">$imjournalRatelimitBurst 0</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imklog"><span class="post-toc-number">4.1.3.</span> <span class="post-toc-text">$ModLoad imklog</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imkmsg"><span class="post-toc-number">4.1.4.</span> <span class="post-toc-text">$ModLoad imkmsg</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imudp"><span class="post-toc-number">4.1.5.</span> <span class="post-toc-text">$ModLoad imudp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#modload-imtcp"><span class="post-toc-number">4.1.6.</span> <span class="post-toc-text">$ModLoad imtcp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%BD%AC%E5%8F%91%E8%A7%84%E5%88%99"><span class="post-toc-number">4.1.7.</span> <span class="post-toc-text">转发规则</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#begin-forwarding-rule"><span class="post-toc-number">4.1.8.</span> <span class="post-toc-text">begin forwarding rule</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#etcsystemdjournald.conf"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">&#x2F;etc&#x2F;systemd&#x2F;journald.conf</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ratelimitinterval30s"><span class="post-toc-number">4.2.1.</span> <span class="post-toc-text">RateLimitInterval&#x3D;30s</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ratelimitburst1000"><span class="post-toc-number">4.2.2.</span> <span class="post-toc-text">RateLimitBurst&#x3D;1000</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#storageauto"><span class="post-toc-number">4.2.3.</span> <span class="post-toc-text">Storage&#x3D;auto</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#runtimemaxuse"><span class="post-toc-number">4.2.4.</span> <span class="post-toc-text">RuntimeMaxUse&#x3D;</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#runtimekeepfree"><span class="post-toc-number">4.2.5.</span> <span class="post-toc-text">RuntimeKeepFree&#x3D;</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#runtimemaxfilesize"><span class="post-toc-number">4.2.6.</span> <span class="post-toc-text">RuntimeMaxFileSize&#x3D;</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#forwardtosyslogyes"><span class="post-toc-number">4.2.7.</span> <span class="post-toc-text">ForwardToSyslog&#x3D;yes</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#maxlevelstoredebug"><span class="post-toc-number">4.2.8.</span> <span class="post-toc-text">MaxLevelStore&#x3D;debug</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#libsystemdsystemsystemd-journald.service"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;systemd-journald.service</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#standardoutputnull"><span class="post-toc-number">4.3.1.</span> <span class="post-toc-text">StandardOutput&#x3D;null</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#etclogrotate.conf"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">&#x2F;etc&#x2F;logrotate.conf</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#journald%E6%8C%81%E4%B9%85%E5%8C%96"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">journald持久化</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95"><span class="post-toc-number">5.</span> <span class="post-toc-text">调试方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A3%80%E9%AA%8Crsyslog%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">检验rsyslog配置信息</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#strace--p-pid%E8%BF%BD%E8%B8%AA%E8%BF%9B%E7%A8%8B"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">strace -p pid追踪进程</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
         </nav>
     </aside>
 
@@ -178,7 +175,7 @@ $SystemLogSocketName</span></a></li></ol></li><li class="post-toc-item post-toc-
     <div class="post-card">
         <h1 class="post-card-title">rsyslog & journald日志系统结构</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-08-02 01:45:01" datetime="2018-08-01T17:45:01.000Z"  itemprop="datePublished">2018-08-02</time>
+            <time class="post-time" title="2018-08-02 01:45:01" datetime="2018-08-02T01:45:01.000Z"  itemprop="datePublished">2018-08-02</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -225,10 +222,8 @@ $SystemLogSocketName</span></a></li></ol></li><li class="post-toc-item post-toc-
 <p>但是这边的现象还是有点怪，在我关闭那个特别高频的日志写入之后，就会更新最新的了，但这是为什么呢？</p>
 <p>这里的messages是在/b_iscsi/log/messages里的，这块的设置倒是和我没太大关系，不过原因还是得测试一下，在自己的53.31的/var/log/messages里测试是没什么问题的。</p>
 <p>通过lsof，并且从logrotate那里删除自动备份的操作，结果发现，rsyslog还是会出现被删除的情况，但是没找到哪里触发的，</p>
-<p>logrotate会在100M时删除
-sys_space这个进程会在messages达到110M时删除</p>
-<p>Aug 29 17:02:28 localhost syslog: [do_record_log_t:1013] get log info
-error</p>
+<p>logrotate会在100M时删除 sys_space这个进程会在messages达到110M时删除</p>
+<p>Aug 29 17:02:28 localhost syslog: [do_record_log_t:1013] get log info error</p>
 <p>目前更换回/var/log/messages，没有出现被删的情况，但是每满130M会出现一次rsyslog不再读取journal的问题,需要移除那个快速写入的程序才能接着更新</p>
 <p>看了下卡死的那个时候，rsyslog的lsof显示并不是像我之前想的那样，读取的全都是Deleted文件，反而有些是正常的文件。</p>
 <p>刚才试了一下，top里可以看到rsyslog卡死之后读取了30M缓存。</p>
@@ -240,30 +235,20 @@ error</p>
 <p>目前在设置了日志上限的情况下，并没有出现数据库卡死，都是在覆写之前的日志。</p>
 <p>在公司镜像上测试，发现，在volatile状态下的日志，和在persistent状态下，同样会自动覆写之前的日志。</p>
 <p>仅当journald日志大小达到该分区上限时，目前测试为当RunMaxUse大于分区可用空间时，会导致日志卡死。</p>
-<h2 id="imjournald-journal-reloaded问题">imjournald journal
-reloaded问题</h2>
+<h2 id="imjournald-journal-reloaded问题">imjournald journal reloaded问题</h2>
 <p>这个问题在[7]中被提到，主要时由于systemd-journald正在轮转数据库文件，因此导致数据库文件变动，所以会出现这个reload日志。</p>
 <p>根据[8]中添加的这个日志信息，可以看到是为了在journald切换文件位置时，为了不用重启rsyslog而添加的自动切换。</p>
 <p>经过测试，journal日志每被切割一次，都会产生一个reloaded信息（日志level是info，不是Error，所以可以忽视）</p>
 <h2 id="devlog-丢失">/dev/log 丢失</h2>
-<p>参照[11]，这个socket似乎在systemd设备上，是由systemd-journald.socket提供，
-如果是单独的rsyslog的日志管理下，则是由imuxsock插件创建，</p>
+<p>参照[11]，这个socket似乎在systemd设备上，是由systemd-journald.socket提供， 如果是单独的rsyslog的日志管理下，则是由imuxsock插件创建，</p>
 <blockquote>
-<p>Normally, with rsyslogd, the imuxsock module will create the /dev/log
-socket on its own, unlinking the previous entry before creating it. When
-rsyslogd is stopped (possibly because restart which fails because of
-faulty configuration), rsyslogd removes /dev/log.</p>
-<p>However, the rsyslog supplied with RHEL7 is expected to be used in
-conjunction with systemd, and the imuxsock module will actually open and
-remove /run/systemd/journal/syslog socket. Meanwhile, the /dev/log
-device is created by the system service-file systemd-journald.socket
-which triggers journald.</p>
+<p>Normally, with rsyslogd, the imuxsock module will create the /dev/log socket on its own, unlinking the previous entry before creating it. When rsyslogd is stopped (possibly because restart which fails because of faulty configuration), rsyslogd removes /dev/log.</p>
+<p>However, the rsyslog supplied with RHEL7 is expected to be used in conjunction with systemd, and the imuxsock module will actually open and remove /run/systemd/journal/syslog socket. Meanwhile, the /dev/log device is created by the system service-file systemd-journald.socket which triggers journald.</p>
 </blockquote>
 <p>在systemd-journald.socket这个服务的Unit文件里是这么写的</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# less /lib/systemd/system/systemd-journald.socket </span><br><span class="line">#  This file is part of systemd.</span><br><span class="line">#</span><br><span class="line">#  systemd is free software; you can redistribute it and/or modify it</span><br><span class="line">#  under the terms of the GNU Lesser General Public License as published by</span><br><span class="line">#  the Free Software Foundation; either version 2.1 of the License, or</span><br><span class="line">#  (at your option) any later version.</span><br><span class="line"></span><br><span class="line">[Unit]</span><br><span class="line">Description=Journal Socket</span><br><span class="line">Documentation=man:systemd-journald.service(8) man:journald.conf(5)</span><br><span class="line">DefaultDependencies=no</span><br><span class="line">Before=sockets.target</span><br><span class="line"></span><br><span class="line"># Mount and swap units need this. If this socket unit is removed by an</span><br><span class="line"># isolate request the mount and swap units would be removed too,</span><br><span class="line"># hence let&#x27;s exclude this from isolate requests.</span><br><span class="line">IgnoreOnIsolate=yes</span><br><span class="line"></span><br><span class="line">[Socket]</span><br><span class="line">ListenStream=/run/systemd/journal/stdout</span><br><span class="line">ListenDatagram=/run/systemd/journal/socket</span><br><span class="line">ListenDatagram=/dev/log</span><br><span class="line">SocketMode=0666</span><br><span class="line">PassCredentials=yes</span><br><span class="line">PassSecurity=yes</span><br><span class="line">ReceiveBuffer=8M</span><br></pre></td></tr></table></figure>
 <p>这里可以看到监听的/dev/log端口创建是由这个服务管理的。</p>
-<h2 id="varlogmessages-时间存在跳变乱序">/var/log/messages
-时间存在跳变，乱序</h2>
+<h2 id="varlogmessages-时间存在跳变乱序">/var/log/messages 时间存在跳变，乱序</h2>
 <p>暂时无法复现</p>
 <h2 id="journal-inputoutput-error">journal input/output Error</h2>
 <p>理论上来说，应该是journald连接写入到数据库被阻断了，数据库无法访问导致的问题。</p>
@@ -275,20 +260,12 @@ which triggers journald.</p>
 <h1 id="配置信息">配置信息</h1>
 <h2 id="etcrsyslog.conf">/etc/rsyslog.conf</h2>
 <h3 id="modload-imuxsock">$ModLoad imuxsock</h3>
-<p>该模块导入监听本机syslog
-socket的功能，从syslog中接收日志,该配置项依赖systemd-journald.conf中的ForwardToSyslog=Yes</p>
-<h4 id="omitlocallogging-与-systemlogsocketname">$OmitLocalLogging 与
-$SystemLogSocketName</h4>
+<p>该模块导入监听本机syslog socket的功能，从syslog中接收日志,该配置项依赖systemd-journald.conf中的ForwardToSyslog=Yes</p>
+<h4 id="omitlocallogging-与-systemlogsocketname">$OmitLocalLogging 与 $SystemLogSocketName</h4>
 <p>该配置信息测试结果与官网有所区别，测试中指定socketName为/dev/log(可修改)，系统默认指向socket为/run/systemd/journal/syslog。使用详见下表。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显式关闭 OmitLocalLog,未指定socketName || 非显式关闭，未指定socketName</span></span><br><span class="line">[root@localhost ~]<span class="comment"># lsof -c rsyslog</span></span><br><span class="line">COMMAND   PID USER   FD   TYPE             DEVICE SIZE/OFF   NODE NAME</span><br><span class="line">rsyslogd 1713 root  cwd    DIR              253,0      224     64 /</span><br><span class="line">rsyslogd 1713 root  rtd    DIR              253,0      224     64 /</span><br><span class="line">rsyslogd 1713 root  txt    REG              253,0   663960    961 /usr/sbin/rsyslogd</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0    38128   9671 /usr/lib64/rsyslog/imuxsock.so</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0    24520   9672 /usr/lib64/rsyslog/lmnet.so</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0  2127336  61000 /usr/lib64/libc-2.17.so</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0    88720     84 /usr/lib64/libgcc_s-4.8.5-20150702.so.1</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0    20040  87327 /usr/lib64/libuuid.so.1.3.0</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0    40824 322855 /usr/lib64/libfastjson.so.4.0.0</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0    15424 322847 /usr/lib64/libestr.so.0.0.0</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0    44448  72710 /usr/lib64/librt-2.17.so</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0    19776  61006 /usr/lib64/libdl-2.17.so</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0   144792  72706 /usr/lib64/libpthread-2.17.so</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0    90664  87310 /usr/lib64/libz.so.1.2.7</span><br><span class="line">rsyslogd 1713 root  mem    REG              253,0   164264  60993 /usr/lib64/ld-2.17.so</span><br><span class="line">rsyslogd 1713 root    0r   CHR                1,3      0t0   5423 /dev/null</span><br><span class="line">rsyslogd 1713 root    1w   CHR                1,3      0t0   5423 /dev/null</span><br><span class="line">rsyslogd 1713 root    2w   CHR                1,3      0t0   5423 /dev/null</span><br><span class="line">rsyslogd 1713 root    3u  unix 0xffff880037064800      0t0  29648 /run/systemd/journal/syslog</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显式打开OmitLocalLog 并 指定socketName || 并不指定socketName</span></span><br><span class="line">[root@localhost ~]<span class="comment"># lsof -c rsyslog</span></span><br><span class="line">COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF   NODE NAME</span><br><span class="line">rsyslogd 1765 root  cwd    DIR  253,0      224     64 /</span><br><span class="line">rsyslogd 1765 root  rtd    DIR  253,0      224     64 /</span><br><span class="line">rsyslogd 1765 root  txt    REG  253,0   663960    961 /usr/sbin/rsyslogd</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0    38128   9671 /usr/lib64/rsyslog/imuxsock.so</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0    24520   9672 /usr/lib64/rsyslog/lmnet.so</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0  2127336  61000 /usr/lib64/libc-2.17.so</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0    88720     84 /usr/lib64/libgcc_s-4.8.5-20150702.so.1</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0    20040  87327 /usr/lib64/libuuid.so.1.3.0</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0    40824 322855 /usr/lib64/libfastjson.so.4.0.0</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0    15424 322847 /usr/lib64/libestr.so.0.0.0</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0    44448  72710 /usr/lib64/librt-2.17.so</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0    19776  61006 /usr/lib64/libdl-2.17.so</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0   144792  72706 /usr/lib64/libpthread-2.17.so</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0    90664  87310 /usr/lib64/libz.so.1.2.7</span><br><span class="line">rsyslogd 1765 root  mem    REG  253,0   164264  60993 /usr/lib64/ld-2.17.so</span><br><span class="line">rsyslogd 1765 root    0r   CHR    1,3      0t0   5423 /dev/null</span><br><span class="line">rsyslogd 1765 root    1w   CHR    1,3      0t0   5423 /dev/null</span><br><span class="line">rsyslogd 1765 root    2w   CHR    1,3      0t0   5423 /dev/null</span><br><span class="line"></span><br><span class="line"><span class="comment"># 非显式开启OmitLocalLog ，指定socketName || 显式关闭OmitLocalLog, 并指定SocketName</span></span><br><span class="line">[root@localhost ~]<span class="comment"># lsof -c rsyslog</span></span><br><span class="line">COMMAND   PID USER   FD   TYPE             DEVICE SIZE/OFF     NODE NAME</span><br><span class="line">rsyslogd 1779 root  cwd    DIR              253,0      224       64 /</span><br><span class="line">rsyslogd 1779 root  rtd    DIR              253,0      224       64 /</span><br><span class="line">rsyslogd 1779 root  txt    REG              253,0   663960      961 /usr/sbin/rsyslogd</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0    38128     9671 /usr/lib64/rsyslog/imuxsock.so</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0    24520     9672 /usr/lib64/rsyslog/lmnet.so</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0  2127336    61000 /usr/lib64/libc-2.17.so</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0    88720       84 /usr/lib64/libgcc_s-4.8.5-20150702.so.1</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0    20040    87327 /usr/lib64/libuuid.so.1.3.0</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0    40824   322855 /usr/lib64/libfastjson.so.4.0.0</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0    15424   322847 /usr/lib64/libestr.so.0.0.0</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0    44448    72710 /usr/lib64/librt-2.17.so</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0    19776    61006 /usr/lib64/libdl-2.17.so</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0   144792    72706 /usr/lib64/libpthread-2.17.so</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0    90664    87310 /usr/lib64/libz.so.1.2.7</span><br><span class="line">rsyslogd 1779 root  mem    REG              253,0   164264    60993 /usr/lib64/ld-2.17.so</span><br><span class="line">rsyslogd 1779 root    0r   CHR                1,3      0t0     5423 /dev/null</span><br><span class="line">rsyslogd 1779 root    1w   CHR                1,3      0t0     5423 /dev/null</span><br><span class="line">rsyslogd 1779 root    2w   CHR                1,3      0t0     5423 /dev/null</span><br><span class="line">rsyslogd 1779 root    3u  unix 0xffff88003b564800      0t0    30441 /dev/log</span><br><span class="line">rsyslogd 1779 root    4u  unix 0xffff88003b560800      0t0    30443 socket</span><br><span class="line">rsyslogd 1779 root    5w   REG              253,0   754001 17131680 /var/log/messages</span><br><span class="line">rsyslogd 1779 root    6w   REG              253,0    24654 17131681 /var/log/secure</span><br></pre></td></tr></table></figure>
 <p>由上述可知，在不同情况下，rsyslog实际监听的socket如下</p>
 <table>
-<colgroup>
-<col style="width: 16%">
-<col style="width: 10%">
-<col style="width: 36%">
-<col style="width: 36%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>x</th>
@@ -320,12 +297,7 @@ $SystemLogSocketName</h4>
 <h4 id="imjournalratelimitburst-0">$imjournalRatelimitBurst 0</h4>
 <p>该属性设置为上一条设置的间隙期间读取日志条数上限，如5s内读取1000条，达到该频次即停止。与上一条同时设置为0，即关闭该上限</p>
 <blockquote>
-<p>Note that it is not recommended to turn of ratelimiting, except that
-you know for sure journal database entries will never be corrupted.
-Without ratelimiting, a corrupted systemd journal database may cause a
-kind of denial of service (we are stressing this point as multiple users
-have reported us such problems with the journal database - information
-current as of June 2013).</p>
+<p>Note that it is not recommended to turn of ratelimiting, except that you know for sure journal database entries will never be corrupted. Without ratelimiting, a corrupted systemd journal database may cause a kind of denial of service (we are stressing this point as multiple users have reported us such problems with the journal database - information current as of June 2013).</p>
 </blockquote>
 <p>但是官方并不建议关闭该上限，可能会导致数据库阻塞等问题导致其他服务出现异常。</p>
 <h3 id="modload-imklog">$ModLoad imklog</h3>
@@ -337,58 +309,32 @@ current as of June 2013).</p>
 <h3 id="modload-imtcp">$ModLoad imtcp</h3>
 <p>导入该模块，并打开防火墙放行，可远程访问该主机获取日志信息</p>
 <h3 id="转发规则">转发规则</h3>
-<p>rhel7系统中，一般log默认保存在下述目录，/var/log
-目录保管由rsyslog维护的各种特定于系统和服务的日志文件。</p>
-<p>/var/log/messages大多数系统日志消息记录在此。例外是与身份验证，电子邮件处理相关的定期运行作业的消息以及纯粹与调试相关的信息。
-/var/log/secure安全和身份验证相关的消息和错误的日志文件。
-/var/log/maillog与邮件服务器相关的日志文件。 /var/log/cron
-crond计划任务的日志 /var/log/boot.log与系统启动相关的消息记录在此。</p>
+<p>rhel7系统中，一般log默认保存在下述目录，/var/log 目录保管由rsyslog维护的各种特定于系统和服务的日志文件。</p>
+<p>/var/log/messages大多数系统日志消息记录在此。例外是与身份验证，电子邮件处理相关的定期运行作业的消息以及纯粹与调试相关的信息。 /var/log/secure安全和身份验证相关的消息和错误的日志文件。 /var/log/maillog与邮件服务器相关的日志文件。 /var/log/cron crond计划任务的日志 /var/log/boot.log与系统启动相关的消息记录在此。</p>
 <p>建议不直接修改rsyslog.conf的规则，在这个目录<code>$IncludeConfig /etc/rsyslog.d/*.conf</code>下存放自定义的转发规则</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">:msg, contains, <span class="string">&quot;of user root&quot;</span>            ~ </span><br><span class="line">&amp; ~</span><br><span class="line"></span><br><span class="line">:msg, contains, <span class="string">&quot;Removed session&quot;</span>            ~ </span><br><span class="line">&amp; ~</span><br><span class="line"></span><br><span class="line">:msg, contains, <span class="string">&quot;please try to use systemctl&quot;</span>		~</span><br><span class="line">&amp; ~	</span><br><span class="line"></span><br><span class="line"><span class="comment"># Log all kernel messages to the console.</span></span><br><span class="line"><span class="comment"># Logging much else clutters up the screen.</span></span><br><span class="line"><span class="comment">#kern.*                                                 /dev/console</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Log anything (except mail) of level info or higher.</span></span><br><span class="line"><span class="comment"># Don&#x27;t log private authentication messages!</span></span><br><span class="line">*.info;mail.none;authpriv.none;cron.none                /var/log/messages</span><br><span class="line"></span><br><span class="line"><span class="comment"># The authpriv file has restricted access.</span></span><br><span class="line">authpriv.*                                              /var/log/secure</span><br><span class="line"></span><br><span class="line"><span class="comment"># Log all the mail messages in one place.</span></span><br><span class="line">mail.*                                                  -/var/log/maillog</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Log cron stuff</span></span><br><span class="line">cron.*                                                  /var/log/cron</span><br><span class="line"></span><br><span class="line"><span class="comment"># Everybody gets emergency messages</span></span><br><span class="line">*.emerg                                                 :omusrmsg:*</span><br><span class="line"></span><br><span class="line"><span class="comment"># Save news errors of level crit and higher in a special file.</span></span><br><span class="line">uucp,news.crit                                          /var/log/spooler</span><br><span class="line"></span><br><span class="line"><span class="comment"># Save boot messages also to boot.log</span></span><br><span class="line">local7.*                                                /var/log/boot.log</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>转发过滤规则，见<a target="_blank" rel="noopener" href="https://www.rsyslog.com/doc/v8-stable/configuration/filters.html?highlight=info%20mail%20none%20authpriv%20none%20cron%20none%20news%20none">文档</a></p>
 <h3 id="begin-forwarding-rule">begin forwarding rule</h3>
-<p>暂未使用的远程访问日志配置信息，语法见<a target="_blank" rel="noopener" href="https://www.rsyslog.com/doc/v8-stable/configuration/action/index.html?highlight=actionfiledefaulttemplate">Legacy
-Action-Specific Configuration Statements</a></p>
+<p>暂未使用的远程访问日志配置信息，语法见<a target="_blank" rel="noopener" href="https://www.rsyslog.com/doc/v8-stable/configuration/action/index.html?highlight=actionfiledefaulttemplate">Legacy Action-Specific Configuration Statements</a></p>
 <h2 id="etcsystemdjournald.conf">/etc/systemd/journald.conf</h2>
-<p>systemd-journald主要获得以下信息 * Kernel log messages, via kmsg *
-Simple system log messages, via the libc syslog(3) call * Structured
-system log messages via the native Journal API, see sd_journal_print(4)
-* Standard output and standard error of service units. For further
-details see below. * Audit records, originating from the kernel audit
-subsystem</p>
+<p>systemd-journald主要获得以下信息 * Kernel log messages, via kmsg * Simple system log messages, via the libc syslog(3) call * Structured system log messages via the native Journal API, see sd_journal_print(4) * Standard output and standard error of service units. For further details see below. * Audit records, originating from the kernel audit subsystem</p>
 <h3 id="ratelimitinterval30s">RateLimitInterval=30s</h3>
 <p>频率间隙为30s</p>
 <h3 id="ratelimitburst1000">RateLimitBurst=1000</h3>
 <p>每个间隙频次上限为1000，直到下个间隙不会接收日志</p>
 <h3 id="storageauto">Storage=auto</h3>
-<p>该配置选项控制journald日志的存储位置，以下4个选项"volatile",
-"persistent", "auto" and
-"none"，对应<code>/run/log/journal</code>,<code>/var/log/journal</code>,根据<code>/var/log/journal</code>目录建立与否判断，收到即drop,但转发forward还是生效的(如imjournal等读取数据库文件等方式无效)。</p>
+<p>该配置选项控制journald日志的存储位置，以下4个选项"volatile", "persistent", "auto" and "none"，对应<code>/run/log/journal</code>,<code>/var/log/journal</code>,根据<code>/var/log/journal</code>目录建立与否判断，收到即drop,但转发forward还是生效的(如imjournal等读取数据库文件等方式无效)。</p>
 <h3 id="runtimemaxuse">RuntimeMaxUse=</h3>
 <p>设置内存中journald文件上限，一旦达到该上限，journald数据库就会阻塞住。</p>
 <h3 id="runtimekeepfree">RuntimeKeepFree=</h3>
 <p>RuntimeKeepFree表示需要保留的内存空间，剩余空间不足其设置，journald数据库同样会阻塞住。</p>
-<p>SystemMaxUse= 与 RuntimeMaxUse=
-的默认值是10%空间与4G空间两者中的较小者； SystemKeepFree= 与
-RuntimeKeepFree= 的默认值是15%空间与4G空间两者中的较大者； 如果在
-systemd-journald 启动时， 文件系统即将被填满并且已经超越了
-SystemKeepFree= 或 RuntimeKeepFree= 的限制，那么日志记录将被暂停。
-也就是说，如果在创建日志文件时，文件系统有充足的空闲空间，
-但是后来文件系统被其他非日志文件过多占用， 那么 systemd-journald
-只会立即暂停日志记录， 但不会删除已经存在的日志文件。</p>
+<p>SystemMaxUse= 与 RuntimeMaxUse= 的默认值是10%空间与4G空间两者中的较小者； SystemKeepFree= 与 RuntimeKeepFree= 的默认值是15%空间与4G空间两者中的较大者； 如果在 systemd-journald 启动时， 文件系统即将被填满并且已经超越了 SystemKeepFree= 或 RuntimeKeepFree= 的限制，那么日志记录将被暂停。 也就是说，如果在创建日志文件时，文件系统有充足的空闲空间， 但是后来文件系统被其他非日志文件过多占用， 那么 systemd-journald 只会立即暂停日志记录， 但不会删除已经存在的日志文件。</p>
 <h3 id="runtimemaxfilesize">RuntimeMaxFileSize=</h3>
-<p>SystemMaxFileSize= 与 RuntimeMaxFileSize=
-限制单个日志文件的最大体积， 到达此限制后日志文件将会自动滚动。
-默认值是对应的 SystemMaxUse= 与 RuntimeMaxUse= 值的1/8 ，
-这也意味着日志滚动默认保留7个历史文件。</p>
-<p>日志大小的值可以使用以1024为基数的 K, M, G, T, P, E 后缀， 分别对应于
-1024, 1024², … 字节。</p>
+<p>SystemMaxFileSize= 与 RuntimeMaxFileSize= 限制单个日志文件的最大体积， 到达此限制后日志文件将会自动滚动。 默认值是对应的 SystemMaxUse= 与 RuntimeMaxUse= 值的1/8 ， 这也意味着日志滚动默认保留7个历史文件。</p>
+<p>日志大小的值可以使用以1024为基数的 K, M, G, T, P, E 后缀， 分别对应于 1024, 1024², … 字节。</p>
 <h3 id="forwardtosyslogyes">ForwardToSyslog=yes</h3>
-<p>转发syslog日志到syslog
-socket，从而使rsyslog调用imuxsock从该socket接收日志</p>
-<p>该选项可被内核引导选项覆盖<code>systemd.journald.forward_to_syslog=, systemd.journald.forward_to_kmsg=, systemd.journald.forward_to_console=, systemd.journald.forward_to_wall=</code>，允许/禁止将收集到的日志：
-转发到传统的 syslog 守护进程, 转发到内核日志缓冲区, 转发到系统控制台,
-作为wall警告信息转发给所有已登录的用户</p>
+<p>转发syslog日志到syslog socket，从而使rsyslog调用imuxsock从该socket接收日志</p>
+<p>该选项可被内核引导选项覆盖<code>systemd.journald.forward_to_syslog=, systemd.journald.forward_to_kmsg=, systemd.journald.forward_to_console=, systemd.journald.forward_to_wall=</code>，允许/禁止将收集到的日志： 转发到传统的 syslog 守护进程, 转发到内核日志缓冲区, 转发到系统控制台, 作为wall警告信息转发给所有已登录的用户</p>
 <h3 id="maxlevelstoredebug">MaxLevelStore=debug</h3>
 <ul>
 <li>MaxLevelSyslog=debug</li>
@@ -397,45 +343,27 @@ socket，从而使rsyslog调用imuxsock从该socket接收日志</p>
 <li>MaxLevelWall=emerg</li>
 </ul>
 <p>以上配置控制在数据库上存储以及转发的最大日志等级。</p>
-<p>日志等级一共分为"emerg", "alert", "crit", "err", "warning",
-"notice","info", "debug"</p>
+<p>日志等级一共分为"emerg", "alert", "crit", "err", "warning", "notice","info", "debug"</p>
 <h2 id="libsystemdsystemsystemd-journald.service">/lib/systemd/system/systemd-journald.service</h2>
 <h3 id="standardoutputnull">StandardOutput=null</h3>
-<p>设置进程的标准输出(STDOUT)。 可设为 inherit, null, tty, journal,
-syslog, kmsg, journal+console, syslog+console, kmsg+console, socket, fd
-之一。</p>
+<p>设置进程的标准输出(STDOUT)。 可设为 inherit, null, tty, journal, syslog, kmsg, journal+console, syslog+console, kmsg+console, socket, fd 之一。</p>
 <ul>
 <li>inherit 表示使用 StandardInput= 设置的值。</li>
 <li>null 表示 /dev/null ， 也就是所有写入都会被丢弃。</li>
-<li>tty 表示 TTY(由 TTYPath= 设置)， 如果仅用于输出，
-那么进程将无需取得终端的控制权， 亦无需等待其他进程释放终端控制权。</li>
-<li>journal 表示 systemd 日志服务(通过 journalctl(1) 访问)。
-注意，所有发到 syslog 或 kmsg 的日志都会 隐含的复制一份到 journal
-中。</li>
-<li>syslog 表示 syslog(3) 日志服务。
-注意，此时所有日志都会隐含的复制一份到 journal 中。</li>
-<li>kmsg 表示内核日志缓冲区(通过 dmesg(1) 访问)。
-注意，此时所有日志都会隐含的复制一份到 journal 中。</li>
-<li>journal+console, syslog+console, kmsg+console 与上面三个值类似，
-不同之处在于所有日志都会再复制一份到系统的控制台上。</li>
+<li>tty 表示 TTY(由 TTYPath= 设置)， 如果仅用于输出， 那么进程将无需取得终端的控制权， 亦无需等待其他进程释放终端控制权。</li>
+<li>journal 表示 systemd 日志服务(通过 journalctl(1) 访问)。 注意，所有发到 syslog 或 kmsg 的日志都会 隐含的复制一份到 journal 中。</li>
+<li>syslog 表示 syslog(3) 日志服务。 注意，此时所有日志都会隐含的复制一份到 journal 中。</li>
+<li>kmsg 表示内核日志缓冲区(通过 dmesg(1) 访问)。 注意，此时所有日志都会隐含的复制一份到 journal 中。</li>
+<li>journal+console, syslog+console, kmsg+console 与上面三个值类似， 不同之处在于所有日志都会再复制一份到系统的控制台上。</li>
 <li>socket 的解释与 StandardInput= 中的解释完全相同。</li>
-<li>fd 表示将标准输出(STDOUT)连接到一个由 socket 单元提供的文件描述符。
-可以通过 "fd:foobar" 格式 明确指定文件描述符的名称。
-描述符名称的默认值为 "stdout" ，也就是 "fd" 等价于 "fd:stdout" 。
-必须明确使用 Sockets= 选项 提供至少一个定义了文件描述符名称的 socket
-单元。 注意，文件描述符的名称不一定和定义它的 socket 单元的名称一致。
-如果出现了多个匹配，那么以第一个为准， 详见 systemd.socket(5) 手册对
-FileDescriptorName= 选项的讲解。</li>
+<li>fd 表示将标准输出(STDOUT)连接到一个由 socket 单元提供的文件描述符。 可以通过 "fd:foobar" 格式 明确指定文件描述符的名称。 描述符名称的默认值为 "stdout" ，也就是 "fd" 等价于 "fd:stdout" 。 必须明确使用 Sockets= 选项 提供至少一个定义了文件描述符名称的 socket 单元。 注意，文件描述符的名称不一定和定义它的 socket 单元的名称一致。 如果出现了多个匹配，那么以第一个为准， 详见 systemd.socket(5) 手册对 FileDescriptorName= 选项的讲解。</li>
 </ul>
-<p>如果单元的标准输出(StandardOutput=)或标准错误(StandardError=)中含有
-journal, syslog, kmsg 之一， 那么该单元将会自动隐含的获得
-After=systemd-journald.socket 依赖(见上文)。</p>
+<p>如果单元的标准输出(StandardOutput=)或标准错误(StandardError=)中含有 journal, syslog, kmsg 之一， 那么该单元将会自动隐含的获得 After=systemd-journald.socket 依赖(见上文)。</p>
 <h2 id="etclogrotate.conf">/etc/logrotate.conf</h2>
 <p>仅对持久化后的/var/log/journal有效</p>
 <h2 id="journald持久化">journald持久化</h2>
 <p>持久化保存journal的日志，默认保存一个月的日志</p>
-<p>直接修改journald.conf中的storage为persistent就切换到var路径下了，切换到volatile就自动回/run/log了。
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart systemd-journald.service</span><br><span class="line">systemctl restart systemd-journald.socket</span><br></pre></td></tr></table></figure></p>
+<p>直接修改journald.conf中的storage为persistent就切换到var路径下了，切换到volatile就自动回/run/log了。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart systemd-journald.service</span><br><span class="line">systemctl restart systemd-journald.socket</span><br></pre></td></tr></table></figure></p>
 <p>如果出现了切换到persistent状态下，日志已经存到了/var/log/journal，但是/run/log/journal路径依旧存在的状况的话，可能是自动切换有些不同。就手动将volatile修改成auto,手动<code>mkdir /var/log/journal</code>，这样再重启比较适合防丢日志。</p>
 <p>在切换前，为了防止journal数据库文件大小刚好超过设置的上限，然后由于重启了服务，没能及时自动清理掉超过的部分，从而导致数据库假死，建议使用<code>journalctl --vacuumm-size=250M</code>，可以清除日志直到满足这个大小限制。不过这个要求sytemd版本318及以上才支持这个选项。</p>
 <p>如果版本不支持的话，那就还是<code>rm -rf</code>掉这些日志或者手动删掉一些数据库文件吧，升级systemd的版本似乎带来的风险相比这些日志的价值要大得多。[12]</p>
@@ -445,32 +373,19 @@ After=systemd-journald.socket 依赖(见上文)。</p>
 <h2 id="strace--p-pid追踪进程">strace -p pid追踪进程</h2>
 <h1 id="参考资料">参考资料</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://www.rsyslog.com/doc/v8-stable/configuration/modules/imjournal.html?highlight=imjournalstatefile">imjournal:
-Systemd Journal Input Module</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.rsyslog.com/doc/v8-stable/configuration/modules/imjournal.html?highlight=imjournalstatefile">imjournal: Systemd Journal Input Module</a></li>
 <li><a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/196877/rsyslog-logger-message-duplicated">rsyslog-logger-message-duplicated</a></li>
-<li><a target="_blank" rel="noopener" href="https://zh.opensuse.org/openSUSE:How_to_write_a_systemd_service">systemd
-service 单元语法</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.rsyslog.com/doc/v8-stable/configuration/filters.html?highlight=info%20mail%20none%20authpriv%20none%20cron%20none%20news%20none">Filter
-Conditions</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.rsyslog.com/doc/v8-stable/configuration/modules/imuxsock.html?highlight=omitlocallogging">imuxsock:
-Unix Socket Input Module</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.jinbuguo.com/systemd/journald.conf.html">man
-journald.conf</a></li>
-<li><a target="_blank" rel="noopener" href="https://bugzilla.redhat.com/show_bug.cgi?id=1497985">rsyslog
-daemon have unkown log entries "rsyslogd:imjournal: journal reloaded"
-from time to time</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/rsyslog/rsyslog/pull/1747/files#diff-b1ea6478b8060f07cd30ecde78bfdc49R518">switching
-to persistent journal possible without rsyslog restart</a></li>
-<li><a target="_blank" rel="noopener" href="https://bugzilla.redhat.com/show_bug.cgi?id=1495631">Journal is
-reloaded and duplicate messages are output into log file</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.tsingfun.com/html/2015/dev_1123/high_performance_rsyslogd.html">关于Rsyslogd
-的一些配置 (高性能、高可用 rsyslogd)</a></li>
-<li><a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/317064/how-do-i-restore-dev-log-in-systemdrsyslog-host">How
-do I restore <code>/dev/log</code> in systemd+rsyslog host?</a></li>
-<li><a target="_blank" rel="noopener" href="https://askubuntu.com/questions/627174/how-would-i-upgrade-systemd">How
-would I upgrade systemd?</a></li>
-<li><a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/332274/is-systemd-journald-a-syslog-implementation">Is
-systemd-journald a syslog implementation?</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.opensuse.org/openSUSE:How_to_write_a_systemd_service">systemd service 单元语法</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.rsyslog.com/doc/v8-stable/configuration/filters.html?highlight=info%20mail%20none%20authpriv%20none%20cron%20none%20news%20none">Filter Conditions</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.rsyslog.com/doc/v8-stable/configuration/modules/imuxsock.html?highlight=omitlocallogging">imuxsock: Unix Socket Input Module</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jinbuguo.com/systemd/journald.conf.html">man journald.conf</a></li>
+<li><a target="_blank" rel="noopener" href="https://bugzilla.redhat.com/show_bug.cgi?id=1497985">rsyslog daemon have unkown log entries "rsyslogd:imjournal: journal reloaded" from time to time</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rsyslog/rsyslog/pull/1747/files#diff-b1ea6478b8060f07cd30ecde78bfdc49R518">switching to persistent journal possible without rsyslog restart</a></li>
+<li><a target="_blank" rel="noopener" href="https://bugzilla.redhat.com/show_bug.cgi?id=1495631">Journal is reloaded and duplicate messages are output into log file</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.tsingfun.com/html/2015/dev_1123/high_performance_rsyslogd.html">关于Rsyslogd 的一些配置 (高性能、高可用 rsyslogd)</a></li>
+<li><a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/317064/how-do-i-restore-dev-log-in-systemdrsyslog-host">How do I restore <code>/dev/log</code> in systemd+rsyslog host?</a></li>
+<li><a target="_blank" rel="noopener" href="https://askubuntu.com/questions/627174/how-would-i-upgrade-systemd">How would I upgrade systemd?</a></li>
+<li><a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/332274/is-systemd-journald-a-syslog-implementation">Is systemd-journald a syslog implementation?</a></li>
 </ol>
 
         </div>
@@ -480,7 +395,7 @@ systemd-journald a syslog implementation?</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.875Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.814Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

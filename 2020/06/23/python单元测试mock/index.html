@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="背景 单测主要遇到需要mock数据的场景目前遇到比较多的是两类 * HTTP接口 * 对底层业务逻辑API HTTP接口相关的mock工具非常多了，暂时就不具体说了。这篇主要记录的是针对依赖的API的mock。 在python单元测试数据mock有两座山，一个是unittest.mock，一个是pytest的mockeypatch。当然，还有一些easymock之类的库，但是没去研究，暂时搁置。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-23T13:06:11.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.892Z">
+<meta property="article:published_time" content="2020-06-23T21:06:11.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.806Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="mock">
@@ -140,7 +140,7 @@
         <h1 class="title">python单元测试mock和stub小记</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-06-23T13:06:11.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-06-23T21:06:11.000Z" itemprop="datePublished" class="page-time">
   2020-06-23
 </time>
 
@@ -173,7 +173,7 @@
     <div class="post-card">
         <h1 class="post-card-title">python单元测试mock和stub小记</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-06-23 21:06:11" datetime="2020-06-23T13:06:11.000Z"  itemprop="datePublished">2020-06-23</time>
+            <time class="post-time" title="2020-06-23 21:06:11" datetime="2020-06-23T21:06:11.000Z"  itemprop="datePublished">2020-06-23</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -189,12 +189,10 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h2 id="背景">背景</h2>
-<p>单测主要遇到需要<code>mock</code>数据的场景目前遇到比较多的是两类 *
-HTTP接口 * 对底层业务逻辑API</p>
+<p>单测主要遇到需要<code>mock</code>数据的场景目前遇到比较多的是两类 * HTTP接口 * 对底层业务逻辑API</p>
 <p>HTTP接口相关的mock工具非常多了，暂时就不具体说了。这篇主要记录的是针对依赖的API的mock。</p>
 <p>在python单元测试数据mock有两座山，一个是<code>unittest.mock</code>，一个是<code>pytest</code>的<code>mockeypatch</code>。当然，还有一些<code>easymock</code>之类的库，但是没去研究，暂时搁置。</p>
-<p>很多文章里提到<a target="_blank" rel="noopener" href="http://xunitpatterns.com/Test%20Double.html">Test Double at
-XUnitPatterns.com</a>，好像TDD开发中的概念，这里做了非常详细的划分。</p>
+<p>很多文章里提到<a target="_blank" rel="noopener" href="http://xunitpatterns.com/Test%20Double.html">Test Double at XUnitPatterns.com</a>，好像TDD开发中的概念，这里做了非常详细的划分。</p>
 <p>不过，主体上其实对数据的模拟主要是2点。 * mock * stub</p>
 <h2 id="mock与stub">mock与stub</h2>
 <ul>
@@ -203,12 +201,10 @@ XUnitPatterns.com</a>，好像TDD开发中的概念，这里做了非常详细�
 </ul>
 <h2 id="mock使用">mock使用</h2>
 <p>虽然上面的理论上是这样说，但是对于python的<code>unittest</code>库里，并没有按照这两个来分开实现，统一都是叫做<code>mock.patch</code>。</p>
-<p>不过使用的方法上的确有差异 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># mock</span><br><span class="line">mock_instance.assert_called_with</span><br><span class="line"></span><br><span class="line"># stub</span><br><span class="line">mock_instance.return_value = &#x27;xxx&#x27;</span><br><span class="line">mock_instance.side_effect = &#123;&#x27;a&#x27;: &#x27;xxx&#x27;&#125;</span><br></pre></td></tr></table></figure>
-<code>mock</code>应该主要指的是检查函数的调用、异常的触发情况，而<code>stub</code>主要就负责提供我们要的模拟数据</p>
+<p>不过使用的方法上的确有差异 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># mock</span><br><span class="line">mock_instance.assert_called_with</span><br><span class="line"></span><br><span class="line"># stub</span><br><span class="line">mock_instance.return_value = &#x27;xxx&#x27;</span><br><span class="line">mock_instance.side_effect = &#123;&#x27;a&#x27;: &#x27;xxx&#x27;&#125;</span><br></pre></td></tr></table></figure> <code>mock</code>应该主要指的是检查函数的调用、异常的触发情况，而<code>stub</code>主要就负责提供我们要的模拟数据</p>
 <h3 id="具体使用方式">具体使用方式</h3>
 <p>主要使用的是<code>pytest</code>及<code>pytest-mock</code>，<code>pytest-mock</code>提供了一个<code>mocker</code>的<code>fixture</code>。</p>
-<p>PS.
-<code>fixture</code>是pytest的一个封装，将一个函数封装，作为全局参数使用，在被写入某些函数的参数时，这些被封装的函数会执行一遍（对于像<code>patch</code>这类修改运行时的操作，能够保留）</p>
+<p>PS. <code>fixture</code>是pytest的一个封装，将一个函数封装，作为全局参数使用，在被写入某些函数的参数时，这些被封装的函数会执行一遍（对于像<code>patch</code>这类修改运行时的操作，能够保留）</p>
 <h4 id="patch基本使用">patch基本使用</h4>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 <h4 id="patch调用封装的接口">patch调用封装的接口</h4>
@@ -226,16 +222,11 @@ XUnitPatterns.com</a>，好像TDD开发中的概念，这里做了非常详细�
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">myMethod = Mock(side_effect=KeyError(<span class="string">&#x27;whatever&#x27;</span>))</span><br><span class="line"><span class="keyword">with</span> self.assertRaises(KeyError):</span><br><span class="line">    myMethod()</span><br></pre></td></tr></table></figure>
 <h2 id="reference">Reference</h2>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="http://hongyitong.github.io/2016/12/23/%E6%B5%85%E8%B0%88mock%E5%92%8Cstub/">浅谈mock和stub
-| 忆桐之家的博客</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/unittest.mock.html">unittest.mock
-— mock object library — Python 3.8.3 documentation</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.pytest.org/en/latest/monkeypatch.html">Monkeypatching/mocking
-modules and environments — pytest documentation</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.toptal.com/python/an-introduction-to-mocking-in-python">Python
-Mocking: A Guide to Better Unit Tests | Toptal</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.woodcoding.com/%E6%B5%8B%E8%AF%95/2019/03/31/first-to-touch-unittest/">简述软件开发中的单元测试
-| 无人之岛</a></li>
+<li><a target="_blank" rel="noopener" href="http://hongyitong.github.io/2016/12/23/%E6%B5%85%E8%B0%88mock%E5%92%8Cstub/">浅谈mock和stub | 忆桐之家的博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/unittest.mock.html">unittest.mock — mock object library — Python 3.8.3 documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.pytest.org/en/latest/monkeypatch.html">Monkeypatching/mocking modules and environments — pytest documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.toptal.com/python/an-introduction-to-mocking-in-python">Python Mocking: A Guide to Better Unit Tests | Toptal</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.woodcoding.com/%E6%B5%8B%E8%AF%95/2019/03/31/first-to-touch-unittest/">简述软件开发中的单元测试 | 无人之岛</a></li>
 </ol>
 
         </div>
@@ -245,7 +236,7 @@ Mocking: A Guide to Better Unit Tests | Toptal</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.892Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.806Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

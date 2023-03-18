@@ -40,8 +40,8 @@
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_Capture4.PNG">
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_Capture1.1.PNG">
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_Capture1.2.PNG">
-<meta property="article:published_time" content="2015-10-29T13:22:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.885Z">
+<meta property="article:published_time" content="2015-10-29T21:22:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.826Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="离散数学">
 <meta property="article:tag" content="关系">
@@ -152,7 +152,7 @@
         <h1 class="title">【Discrete Mathematics】Relations【2015.10.31更新】</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-10-29T13:22:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-10-29T21:22:00.000Z" itemprop="datePublished" class="page-time">
   2015-10-29
 </time>
 
@@ -178,7 +178,7 @@
     <div class="post-card">
         <h1 class="post-card-title">【Discrete Mathematics】Relations【2015.10.31更新】</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-10-29 21:22:00" datetime="2015-10-29T13:22:00.000Z"  itemprop="datePublished">2015-10-29</time>
+            <time class="post-time" title="2015-10-29 21:22:00" datetime="2015-10-29T21:22:00.000Z"  itemprop="datePublished">2015-10-29</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -199,129 +199,59 @@
 <p>现在主要拉定义，加上个人理解= =</p>
 <p><strong>Chapter 9.1 Relations and their properties</strong></p>
 <blockquote>
-<p><strong>Definition1.</strong> Let A and B be sets. A binary relation
-from A to B is a subset of A × B._</p>
+<p><strong>Definition1.</strong> Let A and B be sets. A binary relation from A to B is a subset of A × B._</p>
 </blockquote>
 <p>二元关系就是序偶的集合R，记号为aRb，表示(a,b).</p>
 <p>函数是关系的一种。对应于集合A的每一个元素，恰好有且仅有一个集合B中的元素与之对应。</p>
 <blockquote>
-<p><strong>Definition2.</strong> A relation on a set A is relation from
-A to A.</p>
+<p><strong>Definition2.</strong> A relation on a set A is relation from A to A.</p>
 </blockquote>
 <blockquote>
-<p><strong>Definition3.</strong> A relation R on a set A is called
-<em>reflexive</em> if (a, a)R for every element a A.</p>
+<p><strong>Definition3.</strong> A relation R on a set A is called <em>reflexive</em> if (a, a)R for every element a A.</p>
 </blockquote>
 <p>Remark.我们看到a((a,a)R),那么集合上的关系是自反的。这里的论域是A中所有元素的集合。</p>
 <blockquote>
-<p><strong>Definition4.</strong> A relation R on a set A is called
-<em>symmetric</em> if(b,a) R whenever (a,b)R ,for all a,b A. A relation
-R on a set A such that for all a,b A, if (a,b) R and (b,a) R, then a = b
-is called antisymmetric.</p>
+<p><strong>Definition4.</strong> A relation R on a set A is called <em>symmetric</em> if(b,a) R whenever (a,b)R ,for all a,b A. A relation R on a set A such that for all a,b A, if (a,b) R and (b,a) R, then a = b is called antisymmetric.</p>
 </blockquote>
-<p>Remark.使用量词，可以看到如果a b((a,b) R -&gt; (b,a)
-R),则A上的关系R是对称的。类似的，如果a b(((a,b) R ^ (b,a)
-R)-&gt;(a=b),则A上的关系R是反对称的。</p>
-<p>就是说，关系R是对称的，当且仅当如果a与b相关则b与a就相关，关系R是反对称的，当且仅当不存在由不同元素a和b构成的序偶使得a与b相关并且b与a也相关。对称与反对称的概念不是对立的，因为一个关系可以同时有这两种性质或者两种性质都没有。一个关系如果包含了某些形如(a,b)的对，其中a
-!= b，这个关系就不可能同时是对称和反对称的。</p>
+<p>Remark.使用量词，可以看到如果a b((a,b) R -&gt; (b,a) R),则A上的关系R是对称的。类似的，如果a b(((a,b) R ^ (b,a) R)-&gt;(a=b),则A上的关系R是反对称的。</p>
+<p>就是说，关系R是对称的，当且仅当如果a与b相关则b与a就相关，关系R是反对称的，当且仅当不存在由不同元素a和b构成的序偶使得a与b相关并且b与a也相关。对称与反对称的概念不是对立的，因为一个关系可以同时有这两种性质或者两种性质都没有。一个关系如果包含了某些形如(a,b)的对，其中a != b，这个关系就不可能同时是对称和反对称的。</p>
 <blockquote>
-<p><strong>Definition5.</strong> A relation R on a set A is called
-<em>transitive</em> if whenever (a,b) R and (b,c) R,then (a,c) R,for all
-a,b,c A.</p>
+<p><strong>Definition5.</strong> A relation R on a set A is called <em>transitive</em> if whenever (a,b) R and (b,c) R,then (a,c) R,for all a,b,c A.</p>
 </blockquote>
-<p>Remark.使用量词，我们可以看到在集合A上的关系R是传递的，如果a b
-c(((a,b)R ^(b,c)R)-&gt; (a,c)R).</p>
+<p>Remark.使用量词，我们可以看到在集合A上的关系R是传递的，如果a b c(((a,b)R ^(b,c)R)-&gt; (a,c)R).</p>
 <blockquote>
-<p><strong>Definition6.</strong> Let R be a relation from a set A to a
-set B and S a relation from B to a set C.The <em>composite</em> of R and
-S is the relation consisting of ordered pairs(a,c),where aA,cC,and for
-which there exists an element b B such that (a,b) R and (b,c) S.We
-denote the composite of R and S by SR.</p>
+<p><strong>Definition6.</strong> Let R be a relation from a set A to a set B and S a relation from B to a set C.The <em>composite</em> of R and S is the relation consisting of ordered pairs(a,c),where aA,cC,and for which there exists an element b B such that (a,b) R and (b,c) S.We denote the composite of R and S by SR.</p>
 </blockquote>
 <blockquote>
-<p><strong>Definition7.</strong> Let R be a relation on the set A.The
-powers R^n,n= 1,2,3...,are defined recursively by R^1=R and R^(n+1) =
-R^nR.</p>
+<p><strong>Definition7.</strong> Let R be a relation on the set A.The powers R^n,n= 1,2,3...,are defined recursively by R^1=R and R^(n+1) = R^nR.</p>
 </blockquote>
 <blockquote>
-<p><strong>Theorem1.</strong> The relation R on a set A is transitive if
-and only if R^n R for n = 1,2,3...</p>
+<p><strong>Theorem1.</strong> The relation R on a set A is transitive if and only if R^n R for n = 1,2,3...</p>
 </blockquote>
 <blockquote>
-<p><strong>Supplement</strong> A relation R on the set A is
-<em>irreflexive</em> if for every a A,(a,a) R.That is ,R is irreflexive
-if no element in A is related to itself. A relation R is called
-<em>asymmetric</em> if (a,b)R implies that (b,a) R. Let R be a relation
-from a set A to a set B.The <strong>inverse relation</strong> from B to
-A,denoted by R^-1 ,is the set of ordered pairs {(b,a)|(a,b)}.The
-<strong>complementary relation</strong> R is the set of ordered
-pairs{(a,b)|(a,b)R}.</p>
+<p><strong>Supplement</strong> A relation R on the set A is <em>irreflexive</em> if for every a A,(a,a) R.That is ,R is irreflexive if no element in A is related to itself. A relation R is called <em>asymmetric</em> if (a,b)R implies that (b,a) R. Let R be a relation from a set A to a set B.The <strong>inverse relation</strong> from B to A,denoted by R^-1 ,is the set of ordered pairs {(b,a)|(a,b)}.The <strong>complementary relation</strong> R is the set of ordered pairs{(a,b)|(a,b)R}.</p>
 </blockquote>
-<p><strong>Chapter 9.2 n-ary relations and their
-applications</strong></p>
+<p><strong>Chapter 9.2 n-ary relations and their applications</strong></p>
 <blockquote>
-<p><strong>Definition1.</strong> Let A1,A2,...An be sets.An <em>n-ary
-relation</em> on these sets is a subset of A1×A2×...×An.The sets
-A1,A2,...An are called the <em>domains</em> of the relation ,and n is
-called its <em>degree</em>.</p>
+<p><strong>Definition1.</strong> Let A1,A2,...An be sets.An <em>n-ary relation</em> on these sets is a subset of A1×A2×...×An.The sets A1,A2,...An are called the <em>domains</em> of the relation ,and n is called its <em>degree</em>.</p>
 </blockquote>
 <blockquote>
-<p>__*Supplement__ Relations used to represent databases are also called
-<strong>tables</strong>, because these relations are often displayed as
-tables. Each column of the table corresponds to an attribute of the
-database. For instance, the same database of students is displayed in
-Table 1. The attributes of this database are Student Name, ID Number,
-Major, and GPA. A domain of an n-ary relation is called a
-<strong>primary key</strong> when the value of the n-tuple from this
-domain determines the n-tuple. That is, a domain is a primary key when
-no two n-tuples in the relation have the same value from this domain.
-Records are often added to or deleted from databases. Because of this,
-the property that a domain is a primary key is
-time-dependent.Consequently, a primary key should be chosen that remains
-one whenever the database is changed. The current collection of n-tuples
-in a relation is called the <strong>extension</strong> of the relation.
-The more permanent part of a database, including the name and attributes
-of the database, is called its <strong>intension</strong>. When
-selecting a primary key, the goal should be to select a key that can
-serve as a primary key for all possible extensions of the database. To
-do this, it is necessary to examine the intension of the database to
-understand the set of possible n-tuples that can occur in an
-extension.</p>
+<p>__*Supplement__ Relations used to represent databases are also called <strong>tables</strong>, because these relations are often displayed as tables. Each column of the table corresponds to an attribute of the database. For instance, the same database of students is displayed in Table 1. The attributes of this database are Student Name, ID Number, Major, and GPA. A domain of an n-ary relation is called a <strong>primary key</strong> when the value of the n-tuple from this domain determines the n-tuple. That is, a domain is a primary key when no two n-tuples in the relation have the same value from this domain. Records are often added to or deleted from databases. Because of this, the property that a domain is a primary key is time-dependent.Consequently, a primary key should be chosen that remains one whenever the database is changed. The current collection of n-tuples in a relation is called the <strong>extension</strong> of the relation. The more permanent part of a database, including the name and attributes of the database, is called its <strong>intension</strong>. When selecting a primary key, the goal should be to select a key that can serve as a primary key for all possible extensions of the database. To do this, it is necessary to examine the intension of the database to understand the set of possible n-tuples that can occur in an extension.</p>
 </blockquote>
 <blockquote>
-<p>Combinations of domains can also uniquely identify n-tuples in an
-n-ary relation. When the values of a set of domains determine an n-tuple
-in a relation, the Cartesian product of these domains is called a
-<strong>composite key</strong>.</p>
+<p>Combinations of domains can also uniquely identify n-tuples in an n-ary relation. When the values of a set of domains determine an n-tuple in a relation, the Cartesian product of these domains is called a <strong>composite key</strong>.</p>
 </blockquote>
 <blockquote>
-<p><strong>Definition2.</strong> Let R be an n-ary relation and C a
-condition that elements in R may satisfy. Then the selection operator sC
-maps the n-ary relation R to the n-ary relation of all n-tuples from R
-that satisfy the condition C.</p>
+<p><strong>Definition2.</strong> Let R be an n-ary relation and C a condition that elements in R may satisfy. Then the selection operator sC maps the n-ary relation R to the n-ary relation of all n-tuples from R that satisfy the condition C.</p>
 </blockquote>
 <blockquote>
-<p><strong>Definition3.</strong> The projection P(i1,i2,...,im) where i1
-&lt; i2 &lt; · · · &lt; im, maps the n-tuple (a1, a2, . . . , an) to the
-m-tuple (a(i1), a(i2), . . . , a(im)), where m ≤ n.</p>
+<p><strong>Definition3.</strong> The projection P(i1,i2,...,im) where i1 &lt; i2 &lt; · · · &lt; im, maps the n-tuple (a1, a2, . . . , an) to the m-tuple (a(i1), a(i2), . . . , a(im)), where m ≤ n.</p>
 </blockquote>
 <blockquote>
-<p><strong>Definition4.</strong> Let R be a relation of degree m and S a
-relation of degree n. The join Jp(R, S), where p ≤ m and p ≤ n, is a
-relation of degree m + n − p that consists of all (m + n − p)-tuples
-(a1, a2, . . . , a(m−p), c1, c2, . . . , cp, b1, b2, . . . , b(n−p)),
-where the m-tuple (a1, a2, . . . , a(m−p), c1, c2, . . . , c(p)) belongs
-to R and the n-tuple (c1, c2, . . . , cp, b1, b2, . . . ,b(n−p)) belongs
-to S.</p>
+<p><strong>Definition4.</strong> Let R be a relation of degree m and S a relation of degree n. The join Jp(R, S), where p ≤ m and p ≤ n, is a relation of degree m + n − p that consists of all (m + n − p)-tuples (a1, a2, . . . , a(m−p), c1, c2, . . . , cp, b1, b2, . . . , b(n−p)), where the m-tuple (a1, a2, . . . , a(m−p), c1, c2, . . . , c(p)) belongs to R and the n-tuple (c1, c2, . . . , cp, b1, b2, . . . ,b(n−p)) belongs to S.</p>
 </blockquote>
-<p><strong>Chapter 9.3 representing relations</strong> Representing
-relations using Matrices</p>
-<p>A relation between finite sets can be represented using a zero–one
-matrix. Suppose that R is a relation from A = {a1, a2, . . . , am} to B
-= {b1, b2, . . . , bn}. (Here the elements of the sets A and B have been
-listed in a particular, but arbitrary, order. Furthermore, when A = B we
-use the same ordering for A and B.) The relation R can be represented by
-the matrix MR = [mij], where m(ij)={1 if(ai,bj)R,0 if(ai,bj)R}.</p>
+<p><strong>Chapter 9.3 representing relations</strong> Representing relations using Matrices</p>
+<p>A relation between finite sets can be represented using a zero–one matrix. Suppose that R is a relation from A = {a1, a2, . . . , am} to B = {b1, b2, . . . , bn}. (Here the elements of the sets A and B have been listed in a particular, but arbitrary, order. Furthermore, when A = B we use the same ordering for A and B.) The relation R can be represented by the matrix MR = [mij], where m(ij)={1 if(ai,bj)R,0 if(ai,bj)R}.</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -330,55 +260,20 @@ the matrix MR = [mij], where m(ij)={1 if(ai,bj)R,0 if(ai,bj)R}.</p>
                 <div class="image-caption">matrix</div>
             </figure>
 <p>Representing relations using Digraphs</p>
-<p>We have shown that a relation can be represented by listing all of
-its ordered pairs or by using a zero–one matrix. There is another
-important way of representing a relation using a pictorial
-representation. Each element of the set is represented by a point, and
-each ordered pair is represented using an arc with its direction
-indicated by an arrow. We use such pictorial representations when we
-think of relations on a finite set as <strong>directed graphs</strong>,
-or <strong>digraphs.</strong></p>
+<p>We have shown that a relation can be represented by listing all of its ordered pairs or by using a zero–one matrix. There is another important way of representing a relation using a pictorial representation. Each element of the set is represented by a point, and each ordered pair is represented using an arc with its direction indicated by an arrow. We use such pictorial representations when we think of relations on a finite set as <strong>directed graphs</strong>, or <strong>digraphs.</strong></p>
 <blockquote>
-<p>__Definition1. A directed graph, or digraph, consists of a set V of
-vertices (or nodes) together with a set E of ordered pairs of elements
-of V called edges (or arcs). The vertex a is called the initial vertex
-of the edge (a, b), and the vertex b is called the terminal vertex of
-this edge.</p>
+<p>__Definition1. A directed graph, or digraph, consists of a set V of vertices (or nodes) together with a set E of ordered pairs of elements of V called edges (or arcs). The vertex a is called the initial vertex of the edge (a, b), and the vertex b is called the terminal vertex of this edge.</p>
 </blockquote>
-<p>An edge of the form (a, a) is represented using an arc from the
-vertex a back to itself. Such an edge is called a loop.</p>
-<p><strong>Chapter9.4 closures of relations</strong> The relation R =
-{(1, 1), (1, 2), (2, 1), (3, 2)} on the set A = {1, 2, 3} is not
-reflexive. How can we produce a reflexive relation containing R that is
-as small as possible? This can be done by adding (2, 2) and (3, 3) to R,
-because these are the only pairs of the form (a, a) that are not in R.
-Clearly, this new relation contains R. Furthermore, any reflexive
-relation that contains R must also contain (2, 2) and (3, 3). Because
-this relation contains R, is reflexive, and is contained within every
-reflexive relation that contains R, it is called the <strong>reflexive
-closure</strong> of R.</p>
-<p>Paths in Directed Graphs &gt;<strong>Definition1.</strong> A path
-from a to b in the directed graph G is a sequence of edges (x0, x1),
-(x1, x2), (x2, x3), . . . , (xn−1, xn) in G, where n is a nonnegative
-integer, and x0 = a and xn = b, that is, a sequence of edges where the
-terminal vertex of an edge is the same as the initial vertex in the next
-edge in the path. This path is denoted by x0, x1, x2, . . . , xn−1, xn
-and has length n. We view the empty set of edges as a path of length
-zero from a to a. A path of length n ≥ 1 that begins and ends at the
-same vertex is called a circuit or cycle.</p>
+<p>An edge of the form (a, a) is represented using an arc from the vertex a back to itself. Such an edge is called a loop.</p>
+<p><strong>Chapter9.4 closures of relations</strong> The relation R = {(1, 1), (1, 2), (2, 1), (3, 2)} on the set A = {1, 2, 3} is not reflexive. How can we produce a reflexive relation containing R that is as small as possible? This can be done by adding (2, 2) and (3, 3) to R, because these are the only pairs of the form (a, a) that are not in R. Clearly, this new relation contains R. Furthermore, any reflexive relation that contains R must also contain (2, 2) and (3, 3). Because this relation contains R, is reflexive, and is contained within every reflexive relation that contains R, it is called the <strong>reflexive closure</strong> of R.</p>
+<p>Paths in Directed Graphs &gt;<strong>Definition1.</strong> A path from a to b in the directed graph G is a sequence of edges (x0, x1), (x1, x2), (x2, x3), . . . , (xn−1, xn) in G, where n is a nonnegative integer, and x0 = a and xn = b, that is, a sequence of edges where the terminal vertex of an edge is the same as the initial vertex in the next edge in the path. This path is denoted by x0, x1, x2, . . . , xn−1, xn and has length n. We view the empty set of edges as a path of length zero from a to a. A path of length n ≥ 1 that begins and ends at the same vertex is called a circuit or cycle.</p>
 <blockquote>
-<p><strong>Theorem1.</strong> Let R be a relation on a set A. There is a
-path of length n, where n is a positive integer, from a to b if and only
-if (a, b) ∈ Rn.</p>
+<p><strong>Theorem1.</strong> Let R be a relation on a set A. There is a path of length n, where n is a positive integer, from a to b if and only if (a, b) ∈ Rn.</p>
 </blockquote>
 <blockquote>
-<p><strong>Definition2.</strong> Let R be a relation on a set A. The
-connectivity relation R* consists of the pairs (a, b) such that there is
-a path of length at least one from a to b in R.</p>
+<p><strong>Definition2.</strong> Let R be a relation on a set A. The connectivity relation R* consists of the pairs (a, b) such that there is a path of length at least one from a to b in R.</p>
 </blockquote>
-<p>Because Rn consists of the pairs (a, b) such that there is a path of
-length n from a to b, it follows that R* is the union of all the sets
-Rn. In other words, <figure class="image-bubble">
+<p>Because Rn consists of the pairs (a, b) such that there is a path of length n from a to b, it follows that R* is the union of all the sets Rn. In other words, <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_Capture.PNG" alt="formula1" title>
@@ -386,16 +281,10 @@ Rn. In other words, <figure class="image-bubble">
                 <div class="image-caption">formula1</div>
             </figure></p>
 <blockquote>
-<p><strong>Theorem2.</strong> The transitive closure of a relation R
-equals the connectivity relation R*.</p>
+<p><strong>Theorem2.</strong> The transitive closure of a relation R equals the connectivity relation R*.</p>
 </blockquote>
 <blockquote>
-<p><strong>Lemma1.</strong> Let A be a set with n elements, and let R be
-a relation on A. If there is a path of length at least one in R from a
-to b, then there is such a path with length not exceeding n. Moreover,
-when a != b, if there is a path of length at least one in R from a to b,
-then there is such a path with length not exceeding n − 1.
-<figure class="image-bubble">
+<p><strong>Lemma1.</strong> Let A be a set with n elements, and let R be a relation on A. If there is a path of length at least one in R from a to b, then there is such a path with length not exceeding n. Moreover, when a != b, if there is a path of length at least one in R from a to b, then there is such a path with length not exceeding n − 1. <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_figure.path.PNG" alt="path" title>
@@ -404,9 +293,7 @@ then there is such a path with length not exceeding n − 1.
             </figure></p>
 </blockquote>
 <blockquote>
-<p><strong>Theorem3.</strong> Let MR be the zero–one matrix of the
-relation R on a set with n elements. Then the zero–one matrix of the
-transitive closure R* is <figure class="image-bubble">
+<p><strong>Theorem3.</strong> Let MR be the zero–one matrix of the relation R on a set with n elements. Then the zero–one matrix of the transitive closure R* is <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_formula2.png" alt="formula2" title>
@@ -432,47 +319,24 @@ transitive closure R* is <figure class="image-bubble">
             </figure>
 <p><strong>Chapter9.5 Equivalence Relations</strong></p>
 <blockquote>
-<p><strong>Definition1.</strong> A relation on a set A is called an
-<em>equivalence relation</em> if it is reflexive, symmetric, and
-transitive.</p>
+<p><strong>Definition1.</strong> A relation on a set A is called an <em>equivalence relation</em> if it is reflexive, symmetric, and transitive.</p>
 </blockquote>
 <blockquote>
-<p><strong>Definition2.</strong> Two elements a and b that are related
-by an equivalence relation are called <em>equivalent</em>. The notation
-a~b is often used to denote that a and b are equivalent elements with
-respect to a particular equivalence relation.</p>
+<p><strong>Definition2.</strong> Two elements a and b that are related by an equivalence relation are called <em>equivalent</em>. The notation a~b is often used to denote that a and b are equivalent elements with respect to a particular equivalence relation.</p>
 </blockquote>
 <blockquote>
-<p><strong>Definition3.</strong> Let R be an equivalence relation on a
-set A. The set of all elements that are related to an element a of A is
-called the equivalence class of a. The <em>equivalence class</em> of a
-with respect to R is denoted by [a]R. When only one relation is under
-consideration, we can delete the subscript R and write [a] for this
-equivalence class.</p>
+<p><strong>Definition3.</strong> Let R be an equivalence relation on a set A. The set of all elements that are related to an element a of A is called the equivalence class of a. The <em>equivalence class</em> of a with respect to R is denoted by [a]R. When only one relation is under consideration, we can delete the subscript R and write [a] for this equivalence class.</p>
 </blockquote>
-<p>In other words, if R is an equivalence relation on a set A, the
-equivalence class of the element a is [a]R = {s | (a, s) ∈ R}.</p>
-<p>If b ∈ [a]R, then b is called a <strong>representative</strong> of
-this equivalence class. Any element of a class can be used as a
-representative of this class. That is, there is nothing special about
-the particular element chosen as the representative of the class.</p>
+<p>In other words, if R is an equivalence relation on a set A, the equivalence class of the element a is [a]R = {s | (a, s) ∈ R}.</p>
+<p>If b ∈ [a]R, then b is called a <strong>representative</strong> of this equivalence class. Any element of a class can be used as a representative of this class. That is, there is nothing special about the particular element chosen as the representative of the class.</p>
 <blockquote>
-<p><strong>Theorem1.</strong> Let R be an equivalence relation on a set
-A. These statements for elements a and b of A are equivalent:(i) aRb
-(ii) [a] = [b] (iii) [a]∩[b] != 0</p>
+<p><strong>Theorem1.</strong> Let R be an equivalence relation on a set A. These statements for elements a and b of A are equivalent:(i) aRb (ii) [a] = [b] (iii) [a]∩[b] != 0</p>
 </blockquote>
 <blockquote>
-<p><strong>Theorem2.</strong> Let R be an equivalence relation on a set
-S. Then the equivalence classes of R form a partition of S. Conversely,
-given a partition {Ai | i ∈ I} of the set S, there is an equivalence
-relation R that has the sets Ai, i ∈ I, as its equivalence classes.</p>
+<p><strong>Theorem2.</strong> Let R be an equivalence relation on a set S. Then the equivalence classes of R form a partition of S. Conversely, given a partition {Ai | i ∈ I} of the set S, there is an equivalence relation R that has the sets Ai, i ∈ I, as its equivalence classes.</p>
 </blockquote>
 <blockquote>
-<p>a partition of a set S is a collection of disjoint nonempty subsets
-of S that have S as their union. In other words, the collection of
-subsets Ai, i ∈ I (where I is an index set) forms a partition of S if
-and only if Ai != 0 for i ∈ I, Ai ∩ Aj = 0 when i != j, and
-<figure class="image-bubble">
+<p>a partition of a set S is a collection of disjoint nonempty subsets of S that have S as their union. In other words, the collection of subsets Ai, i ∈ I (where I is an index set) forms a partition of S if and only if Ai != 0 for i ∈ I, Ai ∩ Aj = 0 when i != j, and <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_1.png" alt="c" title>
@@ -488,17 +352,11 @@ and only if Ai != 0 for i ∈ I, Ai ∩ Aj = 0 when i != j, and
                 <div class="image-caption"></div>
             </figure>
 <blockquote>
-<p><strong>Supplement</strong> A partition P1 is called a refinement of
-the partition P2 if every set in P1 is a subset of one of the sets in
-P2.</p>
+<p><strong>Supplement</strong> A partition P1 is called a refinement of the partition P2 if every set in P1 is a subset of one of the sets in P2.</p>
 </blockquote>
 <p><strong>Chapter9.6 Partial Orderings</strong></p>
 <blockquote>
-<p><strong>Definition1.</strong> A relation R on a set S is called a
-<em>partial ordering</em> or <em>partial order</em> if it is reflexive,
-antisymmetric, and transitive. A set S together with a partial ordering
-R is called a <em>partially ordered</em> set, or poset, and is denoted
-by (S, R). Members of S are called elements of the poset.</p>
+<p><strong>Definition1.</strong> A relation R on a set S is called a <em>partial ordering</em> or <em>partial order</em> if it is reflexive, antisymmetric, and transitive. A set S together with a partial ordering R is called a <em>partially ordered</em> set, or poset, and is denoted by (S, R). Members of S are called elements of the poset.</p>
 </blockquote>
 <blockquote>
 <p><strong>Definition2.</strong> <figure class="image-bubble">
@@ -545,7 +403,7 @@ by (S, R). Members of S are called elements of the poset.</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.885Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.826Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

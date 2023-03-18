@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="快排、归并、二分">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-03-05T14:44:08.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.879Z">
+<meta property="article:published_time" content="2018-03-05T22:44:08.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">算法学习目录</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-03-05T14:44:08.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-03-05T22:44:08.000Z" itemprop="datePublished" class="page-time">
   2018-03-05
 </time>
 
@@ -171,7 +171,7 @@
     <div class="post-card">
         <h1 class="post-card-title">算法学习目录</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-03-05 22:44:08" datetime="2018-03-05T14:44:08.000Z"  itemprop="datePublished">2018-03-05</time>
+            <time class="post-time" title="2018-03-05 22:44:08" datetime="2018-03-05T22:44:08.000Z"  itemprop="datePublished">2018-03-05</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -190,8 +190,7 @@
 <span id="more"></span>
 <h1 id="数组">数组</h1>
 <h4 id="原地转置">原地转置</h4>
-<p>不过这个是对一维数组的操作，暂时没想到对二维非方阵数组，除了不停的resize以外的方法。
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">int getNext(int i, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    return (i%n)*m + i/n;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">/* 前驱 */</span><br><span class="line">int getPre(int i, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    return (i%m)*n + i/m;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">/* 处理以下标i为起点的环 */</span><br><span class="line">void movedata(int *mtx, int i, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    int temp = mtx[i];  // 暂存</span><br><span class="line">    int cur = i;       // 当前下标</span><br><span class="line">    int pre = getPre(cur, m, n);</span><br><span class="line">    while(pre != i)</span><br><span class="line">    &#123;</span><br><span class="line">        mtx[cur] = mtx[pre];</span><br><span class="line">        cur = pre;</span><br><span class="line">        pre = getPre(cur, m, n);</span><br><span class="line">    &#125;</span><br><span class="line">    mtx[cur] = temp;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">/* 转置，即循环处理所有环 */</span><br><span class="line">void transpose(int *mtx, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    for(int i=0; i&lt;m*n; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        int next = getNext(i, m, n);</span><br><span class="line">        while(next &gt; i) // 若存在后继小于i说明重复</span><br><span class="line">            next = getNext(next, m, n);</span><br><span class="line">        if(next == i)   // 处理当前环 </span><br><span class="line">            movedata(mtx, i, m, n);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">/* 输出矩阵 */</span><br><span class="line">void print(int *mtx, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    for(int i=0; i&lt;m*n; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        if((i+1)%n == 0)</span><br><span class="line">            cout &lt;&lt; mtx[i] &lt;&lt; &quot;\n&quot;;</span><br><span class="line">        else</span><br><span class="line">            cout &lt;&lt; mtx[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>不过这个是对一维数组的操作，暂时没想到对二维非方阵数组，除了不停的resize以外的方法。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">int getNext(int i, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    return (i%n)*m + i/n;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">/* 前驱 */</span><br><span class="line">int getPre(int i, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    return (i%m)*n + i/m;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">/* 处理以下标i为起点的环 */</span><br><span class="line">void movedata(int *mtx, int i, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    int temp = mtx[i];  // 暂存</span><br><span class="line">    int cur = i;       // 当前下标</span><br><span class="line">    int pre = getPre(cur, m, n);</span><br><span class="line">    while(pre != i)</span><br><span class="line">    &#123;</span><br><span class="line">        mtx[cur] = mtx[pre];</span><br><span class="line">        cur = pre;</span><br><span class="line">        pre = getPre(cur, m, n);</span><br><span class="line">    &#125;</span><br><span class="line">    mtx[cur] = temp;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">/* 转置，即循环处理所有环 */</span><br><span class="line">void transpose(int *mtx, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    for(int i=0; i&lt;m*n; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        int next = getNext(i, m, n);</span><br><span class="line">        while(next &gt; i) // 若存在后继小于i说明重复</span><br><span class="line">            next = getNext(next, m, n);</span><br><span class="line">        if(next == i)   // 处理当前环 </span><br><span class="line">            movedata(mtx, i, m, n);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">/* 输出矩阵 */</span><br><span class="line">void print(int *mtx, int m, int n)</span><br><span class="line">&#123;</span><br><span class="line">    for(int i=0; i&lt;m*n; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        if((i+1)%n == 0)</span><br><span class="line">            cout &lt;&lt; mtx[i] &lt;&lt; &quot;\n&quot;;</span><br><span class="line">        else</span><br><span class="line">            cout &lt;&lt; mtx[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="双指针法">双指针法</h2>
 <p>http://chocoluffy.com/2016/12/04/%E6%B5%85%E6%9E%90%E7%BB%8F%E5%85%B8%E9%9D%A2%E8%AF%95%E7%AE%97%E6%B3%95%E9%A2%98-two-pointer%E7%9A%84%E8%BF%90%E7%94%A8/</p>
 <h1 id="表">表:</h1>
@@ -212,8 +211,7 @@
 <h4 id="拓扑排序">拓扑排序</h4>
 <p>我们都知道对于有向图进行拓扑排序可以判断是否存在环。</p>
 <p>对于有向图的拓扑排序，大家都知道的kahn算法：</p>
-<p>计算图中所有点的入度，把入度为0的点加入栈 如果栈非空：
-取出栈顶顶点a，输出该顶点值，删除该顶点</p>
+<p>计算图中所有点的入度，把入度为0的点加入栈 如果栈非空： 取出栈顶顶点a，输出该顶点值，删除该顶点</p>
 <p>从图中删除所有以a为起始点的边，如果删除的边的另一个顶点入度为0，则把它入栈</p>
 <p>如果图中还存在顶点，则表示图中存在环；否则输出的顶点就是一个拓扑排序序列</p>
 <h5 id="dfs">dfs</h5>
@@ -223,8 +221,7 @@
 <h2 id="十字链表">十字链表</h2>
 <h3 id="舞蹈链算法">舞蹈链算法</h3>
 <h2 id="bfs-1">BFS</h2>
-<p>BFS（显式用队列） DFS（隐式用栈）（即递归）
-当然，对于DFS，用递归可能会造成栈溢出，所以也可以更改为显示栈。</p>
+<p>BFS（显式用队列） DFS（隐式用栈）（即递归） 当然，对于DFS，用递归可能会造成栈溢出，所以也可以更改为显示栈。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">将（起始）首节点加入队列：</span><br><span class="line">q.<span class="built_in">push</span>(head);</span><br><span class="line">   标记首节点已经被访问：</span><br><span class="line">isvisited[head]=<span class="literal">true</span>;</span><br><span class="line">   以下自动反应：</span><br><span class="line"><span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">   	<span class="type">int</span> temp=q.<span class="built_in">front</span>();</span><br><span class="line">   	q.<span class="built_in">pop</span>();</span><br><span class="line">	访问temp，并标记temp已被访问过，将temp的子相关节点加入队列</span><br><span class="line">	q.<span class="built_in">push</span>(temp相关节点);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="dfs-1">DFS</h2>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">void dfs(int 当前状态)</span><br><span class="line">	&#123;</span><br><span class="line">	      if(当前状态为边界状态)</span><br><span class="line">	      &#123;</span><br><span class="line">	        记录或输出</span><br><span class="line">	        return;</span><br><span class="line">	      &#125;</span><br><span class="line">	      for(i=0;i&lt;n;i++)		//横向遍历解答树所有子节点</span><br><span class="line">	     &#123;</span><br><span class="line">	           //扩展出一个子状态。</span><br><span class="line">	           修改了全局变量</span><br><span class="line">	           if(子状态满足约束条件)</span><br><span class="line">	            &#123;</span><br><span class="line">	              dfs(子状态)</span><br><span class="line">	           &#125;</span><br><span class="line">	            恢复全局变量//回溯部分</span><br><span class="line">	        &#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
@@ -232,20 +229,14 @@
 <h3 id="尾递归">尾递归</h3>
 <p>非尾递归:下一个函数结束以后此函数还有后续，所以必须保存本身的环境以供处理返回值。</p>
 <p>尾递归的精髓在于往内进行下一层解析的时候，这一层函数执行完了没卵用了，编译器一想，你都没卵用了我把你参数改改也没事啊，改了之后发现，哟呵这不是你儿子吗，那你爷俩就用这一块地儿好了。所以空间复杂度是O(1)。</p>
-<p>尾递归优化主要看语言编译器的支持吧？python，因此鼓励用迭代的方式来实现。「似乎说是为了抛出异常时有完整的Stack
-trace」</p>
+<p>尾递归优化主要看语言编译器的支持吧？python，因此鼓励用迭代的方式来实现。「似乎说是为了抛出异常时有完整的Stack trace」</p>
 <p>好像C中并没有规定需要尾递归优化，默认并不开启，也不推荐写尾递归，如果代码需要跨平台（那就不要写了）</p>
 <p>似乎Erlang更推荐。Erlang的虚拟机会进行优化。</p>
 <p>是不是应该写个例子出来？</p>
 <p>尾递归优化主要解决内存占用问题，从O(n)转为O(1)</p>
 <h3 id="dijkstra单源最短路径算法">dijkstra单源最短路径算法</h3>
 <h3 id="prim最小生成树算法">Prim最小生成树算法</h3>
-<p>每个阶段只有一个状态-&gt;递推；
-每个阶段的最优状态都是由上一个阶段的最优状态得到的-&gt;贪心；
-每个阶段的最优状态是由之前所有阶段的状态的组合得到的-&gt;搜索；
-每个阶段的最优状态可以从之前某个阶段的某个或某些状态直接得到而不管之前这个状态是如何得到的-&gt;动态规划。
-每个阶段的最优状态可以从之前某个阶段的某个或某些状态直接得到这个性质叫做最优子结构；
-而不管之前这个状态是如何得到的这个性质叫做无后效性。</p>
+<p>每个阶段只有一个状态-&gt;递推； 每个阶段的最优状态都是由上一个阶段的最优状态得到的-&gt;贪心； 每个阶段的最优状态是由之前所有阶段的状态的组合得到的-&gt;搜索； 每个阶段的最优状态可以从之前某个阶段的某个或某些状态直接得到而不管之前这个状态是如何得到的-&gt;动态规划。 每个阶段的最优状态可以从之前某个阶段的某个或某些状态直接得到这个性质叫做最优子结构； 而不管之前这个状态是如何得到的这个性质叫做无后效性。</p>
 <h1 id="动态规划">动态规划</h1>
 <h2 id="数字三角形问题">数字三角形问题，</h2>
 <p>由底向上，才算是每个阶段的最优状态</p>
@@ -269,7 +260,7 @@ trace」</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.879Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

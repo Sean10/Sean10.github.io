@@ -29,8 +29,8 @@
 <meta property="og:description" content="todo  为什么文件系统不默认提供每个目录的空间使用量呢?  多文件系统嵌套, 还是需要用户自己去df挂载的位置里去找所在目录在哪个分区里, 然后分区大小多少, 为什么不能直接显示出当前目录使用量及这个文件系统根的容量呢? subvolume btrfs子文件系统支持 说到这个,df默认为啥没有什么超时机制呢?卡在显示所有上? 可能df只提供基本查询, 自己有超时需求自己处理?  文件系统配额,">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sean10.github.io/.io//%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1_2020-10-18-21-27-06.png">
-<meta property="article:published_time" content="2020-10-18T13:38:26.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.889Z">
+<meta property="article:published_time" content="2020-10-18T21:38:26.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="存储">
 <meta property="article:tag" content="文件系统">
@@ -141,7 +141,7 @@
         <h1 class="title">文件系统概念初探</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-10-18T13:38:26.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-10-18T21:38:26.000Z" itemprop="datePublished" class="page-time">
   2020-10-18
 </time>
 
@@ -163,9 +163,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#todo"><span class="post-toc-number">1.</span> <span class="post-toc-text">todo</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%B8%8E%E5%9D%97%E8%AE%BE%E5%A4%87%E7%9B%B8%E6%AF%94"><span class="post-toc-number">2.</span> <span class="post-toc-text">与块设备相比</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%A6%82%E5%BF%B53"><span class="post-toc-number">3.</span> <span class="post-toc-text">文件系统概念[^3]</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%85%B3%E9%94%AE%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="post-toc-number">4.</span> <span class="post-toc-text">关键优化问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AD%98%E5%82%A8%E5%A4%A7%E9%87%8F%E5%B0%8F%E6%96%87%E4%BB%B6%E6%97%B6-%E4%B8%80%E6%AC%A1%E6%96%87%E4%BB%B6%E5%A4%9A%E6%AC%A1%E8%AF%BB%E5%8F%96%E5%85%83%E6%95%B0%E6%8D%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E9%95%BF%E5%B0%BE%E6%95%88%E5%BA%94"><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">存储大量小文件时,
-一次文件多次读取元数据信息的&quot;长尾效应&quot;</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%943"><span class="post-toc-number">5.</span> <span class="post-toc-text">文件系统架构对比[^3]</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#mpi-%E5%B9%B6%E8%A1%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">MPI 并行文件系统</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#juicefs"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">JuiceFS</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%9B%98%E5%8F%A4"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">盘古</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#nebulasfs360"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">NebulasFS(360)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%9A%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%85%B3%E8%81%94"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">多文件系统关联</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#fuse"><span class="post-toc-number">5.6.</span> <span class="post-toc-text">FUSE</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">5.7.</span> <span class="post-toc-text">实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B8%83%E5%B1%80"><span class="post-toc-number">5.7.1.</span> <span class="post-toc-text">文件系统布局</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%BC%95%E5%AF%BC%E5%9D%97"><span class="post-toc-number">5.7.1.1.</span> <span class="post-toc-text">引导块</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E8%B6%85%E7%BA%A7%E5%9D%97"><span class="post-toc-number">5.7.1.2.</span> <span class="post-toc-text">超级块</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%A9%BA%E9%97%B2%E7%A9%BA%E9%97%B4%E5%9D%97"><span class="post-toc-number">5.7.1.3.</span> <span class="post-toc-text">空闲空间块</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%97%A5%E5%BF%97%E7%BB%93%E6%9E%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9Flog-structured-file-system-lfs"><span class="post-toc-number">5.7.2.</span> <span class="post-toc-text">日志结构文件系统(Log
-structured File System, LFS)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">5.7.3.</span> <span class="post-toc-text">虚拟文件系统</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%AE%A1%E7%90%86%E5%92%8C%E4%BC%98%E5%8C%96"><span class="post-toc-number">5.8.</span> <span class="post-toc-text">文件系统的管理和优化</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86"><span class="post-toc-number">5.8.1.</span> <span class="post-toc-text">磁盘空间管理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%A3%81%E7%9B%98%E9%85%8D%E9%A2%9D"><span class="post-toc-number">5.8.2.</span> <span class="post-toc-text">磁盘配额</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%89%A9%E7%90%86%E8%BD%AC%E5%82%A8%E5%92%8C%E9%80%BB%E8%BE%91%E8%BD%AC%E5%82%A8"><span class="post-toc-number">5.8.2.1.</span> <span class="post-toc-text">物理转储和逻辑转储</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD"><span class="post-toc-number">5.8.3.</span> <span class="post-toc-text">文件系统性能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98"><span class="post-toc-number">5.8.3.1.</span> <span class="post-toc-text">高速缓存</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%9D%97%E6%8F%90%E5%89%8D%E8%AF%BB"><span class="post-toc-number">5.8.3.2.</span> <span class="post-toc-text">块提前读</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%87%8F%E5%B0%91%E7%A3%81%E7%9B%98%E8%87%82%E8%BF%90%E5%8A%A8"><span class="post-toc-number">5.8.3.3.</span> <span class="post-toc-text">减少磁盘臂运动</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%A3%81%E7%9B%98%E7%A2%8E%E7%89%87%E6%95%B4%E7%90%86"><span class="post-toc-number">5.8.3.4.</span> <span class="post-toc-text">磁盘碎片整理</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6"><span class="post-toc-number">5.9.</span> <span class="post-toc-text">文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E5%91%BD%E5%90%8D"><span class="post-toc-number">5.9.1.</span> <span class="post-toc-text">文件命名</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="post-toc-number">5.9.2.</span> <span class="post-toc-text">文件结构</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="post-toc-number">5.9.3.</span> <span class="post-toc-text">文件类型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE"><span class="post-toc-number">5.9.4.</span> <span class="post-toc-text">文件访问</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7"><span class="post-toc-number">5.9.5.</span> <span class="post-toc-text">文件属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="post-toc-number">5.9.6.</span> <span class="post-toc-text">文件操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="post-toc-number">5.10.</span> <span class="post-toc-text">目录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%80%E7%BA%A7%E7%9B%AE%E5%BD%95%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">5.10.1.</span> <span class="post-toc-text">一级目录系统</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%B1%82%E6%AC%A1%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95"><span class="post-toc-number">5.10.2.</span> <span class="post-toc-text">层次文件目录</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%B7%AF%E5%BE%84%E5%90%8D"><span class="post-toc-number">5.10.3.</span> <span class="post-toc-text">路径名</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C"><span class="post-toc-number">5.10.4.</span> <span class="post-toc-text">目录操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#fuse%E6%94%AF%E6%8C%81"><span class="post-toc-number">5.11.</span> <span class="post-toc-text">FUSE支持</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">6.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#todo"><span class="post-toc-number">1.</span> <span class="post-toc-text">todo</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%B8%8E%E5%9D%97%E8%AE%BE%E5%A4%87%E7%9B%B8%E6%AF%94"><span class="post-toc-number">2.</span> <span class="post-toc-text">与块设备相比</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%A6%82%E5%BF%B53"><span class="post-toc-number">3.</span> <span class="post-toc-text">文件系统概念[^3]</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%85%B3%E9%94%AE%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="post-toc-number">4.</span> <span class="post-toc-text">关键优化问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AD%98%E5%82%A8%E5%A4%A7%E9%87%8F%E5%B0%8F%E6%96%87%E4%BB%B6%E6%97%B6-%E4%B8%80%E6%AC%A1%E6%96%87%E4%BB%B6%E5%A4%9A%E6%AC%A1%E8%AF%BB%E5%8F%96%E5%85%83%E6%95%B0%E6%8D%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E9%95%BF%E5%B0%BE%E6%95%88%E5%BA%94"><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">存储大量小文件时, 一次文件多次读取元数据信息的&quot;长尾效应&quot;</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%943"><span class="post-toc-number">5.</span> <span class="post-toc-text">文件系统架构对比[^3]</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#mpi-%E5%B9%B6%E8%A1%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">MPI 并行文件系统</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#juicefs"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">JuiceFS</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%9B%98%E5%8F%A4"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">盘古</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#nebulasfs360"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">NebulasFS(360)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%9A%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%85%B3%E8%81%94"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">多文件系统关联</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#fuse"><span class="post-toc-number">5.6.</span> <span class="post-toc-text">FUSE</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">5.7.</span> <span class="post-toc-text">实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B8%83%E5%B1%80"><span class="post-toc-number">5.7.1.</span> <span class="post-toc-text">文件系统布局</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%BC%95%E5%AF%BC%E5%9D%97"><span class="post-toc-number">5.7.1.1.</span> <span class="post-toc-text">引导块</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E8%B6%85%E7%BA%A7%E5%9D%97"><span class="post-toc-number">5.7.1.2.</span> <span class="post-toc-text">超级块</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%A9%BA%E9%97%B2%E7%A9%BA%E9%97%B4%E5%9D%97"><span class="post-toc-number">5.7.1.3.</span> <span class="post-toc-text">空闲空间块</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%97%A5%E5%BF%97%E7%BB%93%E6%9E%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9Flog-structured-file-system-lfs"><span class="post-toc-number">5.7.2.</span> <span class="post-toc-text">日志结构文件系统(Log structured File System, LFS)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">5.7.3.</span> <span class="post-toc-text">虚拟文件系统</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%AE%A1%E7%90%86%E5%92%8C%E4%BC%98%E5%8C%96"><span class="post-toc-number">5.8.</span> <span class="post-toc-text">文件系统的管理和优化</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86"><span class="post-toc-number">5.8.1.</span> <span class="post-toc-text">磁盘空间管理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%A3%81%E7%9B%98%E9%85%8D%E9%A2%9D"><span class="post-toc-number">5.8.2.</span> <span class="post-toc-text">磁盘配额</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%89%A9%E7%90%86%E8%BD%AC%E5%82%A8%E5%92%8C%E9%80%BB%E8%BE%91%E8%BD%AC%E5%82%A8"><span class="post-toc-number">5.8.2.1.</span> <span class="post-toc-text">物理转储和逻辑转储</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD"><span class="post-toc-number">5.8.3.</span> <span class="post-toc-text">文件系统性能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98"><span class="post-toc-number">5.8.3.1.</span> <span class="post-toc-text">高速缓存</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%9D%97%E6%8F%90%E5%89%8D%E8%AF%BB"><span class="post-toc-number">5.8.3.2.</span> <span class="post-toc-text">块提前读</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%87%8F%E5%B0%91%E7%A3%81%E7%9B%98%E8%87%82%E8%BF%90%E5%8A%A8"><span class="post-toc-number">5.8.3.3.</span> <span class="post-toc-text">减少磁盘臂运动</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%A3%81%E7%9B%98%E7%A2%8E%E7%89%87%E6%95%B4%E7%90%86"><span class="post-toc-number">5.8.3.4.</span> <span class="post-toc-text">磁盘碎片整理</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6"><span class="post-toc-number">5.9.</span> <span class="post-toc-text">文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E5%91%BD%E5%90%8D"><span class="post-toc-number">5.9.1.</span> <span class="post-toc-text">文件命名</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="post-toc-number">5.9.2.</span> <span class="post-toc-text">文件结构</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="post-toc-number">5.9.3.</span> <span class="post-toc-text">文件类型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE"><span class="post-toc-number">5.9.4.</span> <span class="post-toc-text">文件访问</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7"><span class="post-toc-number">5.9.5.</span> <span class="post-toc-text">文件属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="post-toc-number">5.9.6.</span> <span class="post-toc-text">文件操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="post-toc-number">5.10.</span> <span class="post-toc-text">目录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%80%E7%BA%A7%E7%9B%AE%E5%BD%95%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">5.10.1.</span> <span class="post-toc-text">一级目录系统</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%B1%82%E6%AC%A1%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95"><span class="post-toc-number">5.10.2.</span> <span class="post-toc-text">层次文件目录</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%B7%AF%E5%BE%84%E5%90%8D"><span class="post-toc-number">5.10.3.</span> <span class="post-toc-text">路径名</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C"><span class="post-toc-number">5.10.4.</span> <span class="post-toc-text">目录操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#fuse%E6%94%AF%E6%8C%81"><span class="post-toc-number">5.11.</span> <span class="post-toc-text">FUSE支持</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">6.</span> <span class="post-toc-text">Reference</span></a></li></ol>
         </nav>
     </aside>
 
@@ -176,7 +174,7 @@ structured File System, LFS)</span></a></li><li class="post-toc-item post-toc-le
     <div class="post-card">
         <h1 class="post-card-title">文件系统概念初探</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-10-18 21:38:26" datetime="2020-10-18T13:38:26.000Z"  itemprop="datePublished">2020-10-18</time>
+            <time class="post-time" title="2020-10-18 21:38:26" datetime="2020-10-18T21:38:26.000Z"  itemprop="datePublished">2020-10-18</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -195,16 +193,11 @@ structured File System, LFS)</span></a></li><li class="post-toc-item post-toc-le
 <ul>
 <li>为什么文件系统不默认提供每个目录的空间使用量呢?
 <ul>
-<li>多文件系统嵌套,
-还是需要用户自己去df挂载的位置里去找所在目录在哪个分区里,
-然后分区大小多少,
-为什么不能直接显示出当前目录使用量及这个文件系统根的容量呢?</li>
+<li>多文件系统嵌套, 还是需要用户自己去df挂载的位置里去找所在目录在哪个分区里, 然后分区大小多少, 为什么不能直接显示出当前目录使用量及这个文件系统根的容量呢?</li>
 <li>subvolume btrfs子文件系统支持</li>
-<li>说到这个,df默认为啥没有什么超时机制呢?卡在显示所有上?
-可能df只提供基本查询, 自己有超时需求自己处理?</li>
+<li>说到这个,df默认为啥没有什么超时机制呢?卡在显示所有上? 可能df只提供基本查询, 自己有超时需求自己处理?</li>
 </ul></li>
-<li>文件系统配额, 如果不开启的话,
-怎么知道这个文件系统究竟有多少空间可以用呢?</li>
+<li>文件系统配额, 如果不开启的话, 怎么知道这个文件系统究竟有多少空间可以用呢?</li>
 <li>文件系统写满时, 到底是哪层做的错误返回?
 <ul>
 <li>分配器提供的吧?</li>
@@ -215,9 +208,7 @@ structured File System, LFS)</span></a></li><li class="post-toc-item post-toc-le
 <li>隐藏的预留容量, 超级块</li>
 </ul>
 <h1 id="与块设备相比">与块设备相比</h1>
-<p>问题原因 * 如何找到你想要的信息 *
-如何保证一个用户不会读取另一个用户的数据 * 如何得知哪些块是空闲的,
-等等</p>
+<p>问题原因 * 如何找到你想要的信息 * 如何保证一个用户不会读取另一个用户的数据 * 如何得知哪些块是空闲的, 等等</p>
 <p>文件是上面这些问题的抽象解决.</p>
 <h1 id="文件系统概念3">文件系统概念[^3]</h1>
 <ul>
@@ -226,29 +217,22 @@ structured File System, LFS)</span></a></li><li class="post-toc-item post-toc-le
 <li>数据以文件的形式存在</li>
 </ul></li>
 <li>文件以树形目录进行组织.</li>
-<li>较为复杂,
-扩展性相比现在新增的对象存储较差一些.(各公司自研的应该还好)
+<li>较为复杂, 扩展性相比现在新增的对象存储较差一些.(各公司自研的应该还好)
 <ul>
-<li>文件系统的复杂性导致可扩展性未能跟上互联网的高速发展,
-极大简化了的对象存储及时填补了空确.</li>
-<li>不过因为对象存储缺乏树状结构, 也不支持原子重命名操作,
-跟文件系统差异较大.</li>
+<li>文件系统的复杂性导致可扩展性未能跟上互联网的高速发展, 极大简化了的对象存储及时填补了空确.</li>
+<li>不过因为对象存储缺乏树状结构, 也不支持原子重命名操作, 跟文件系统差异较大.</li>
 </ul></li>
 </ul>
 <h1 id="关键优化问题">关键优化问题</h1>
-<h3 id="存储大量小文件时-一次文件多次读取元数据信息的长尾效应">存储大量小文件时,
-一次文件多次读取元数据信息的"长尾效应"</h3>
+<h3 id="存储大量小文件时-一次文件多次读取元数据信息的长尾效应">存储大量小文件时, 一次文件多次读取元数据信息的"长尾效应"</h3>
 <ul>
-<li>比如<code>Haystack</code>通过合并多个小文件成一个大文件,
-通过减少文件数量的方式解决</li>
+<li>比如<code>Haystack</code>通过合并多个小文件成一个大文件, 通过减少文件数量的方式解决</li>
 </ul>
 <h1 id="文件系统架构对比3">文件系统架构对比[^3]</h1>
 <h2 id="mpi-并行文件系统">MPI 并行文件系统</h2>
 <h2 id="juicefs">JuiceFS</h2>
 <blockquote>
-<p>TODO:JuiceFS
-只需要专注元数据的管理，也大大降低了元数据服务的复杂度（GFS 和 MooseFS
-的 master 要同时解决元数据的存储和数据块的健康管理）。</p>
+<p>TODO:JuiceFS 只需要专注元数据的管理，也大大降低了元数据服务的复杂度（GFS 和 MooseFS 的 master 要同时解决元数据的存储和数据块的健康管理）。</p>
 </blockquote>
 <h2 id="盘古">盘古</h2>
 <h2 id="nebulasfs360">NebulasFS(360)</h2>
@@ -300,8 +284,7 @@ structured File System, LFS)</span></a></li><li class="post-toc-item post-toc-le
 <li>引入索引的概念</li>
 <li>FAT(File Application Table)
 <ul>
-<li>整个链表都在内存中, 表占用空间较大(1T盘 1KB的块,
-需要至少3-4个字节的管理, 需要3GB左右的内存)</li>
+<li>整个链表都在内存中, 表占用空间较大(1T盘 1KB的块, 需要至少3-4个字节的管理, 需要3GB左右的内存)</li>
 <li>满的时候, 直接链表最后断开就行了. #### inode</li>
 </ul></li>
 <li>只有文件打开时, inode才在内存中, 解决FAT的问题</li>
@@ -312,20 +295,16 @@ structured File System, LFS)</span></a></li><li class="post-toc-item post-toc-le
 <li>ext4预留了inode用于比如/proc/, lost+found</li>
 <li>问题:
 <ul>
-<li>文件知道自己的inode之后,
-inode存储了什么东西,可以让他找到对应的所有块? [^3]
+<li>文件知道自己的inode之后, inode存储了什么东西,可以让他找到对应的所有块? [^3]
 <ul>
 <li>inode中保存了块的文件指针</li>
-<li>ext2/ext3 最多15个指针, 前12个直接寻址,
-第13-15个分别一级,二级,三级间接寻址
+<li>ext2/ext3 最多15个指针, 前12个直接寻址, 第13-15个分别一级,二级,三级间接寻址
 <ul>
-<li>一个4K block可以放4096/4=1024个指针. 即1024^3+ 1024^2 + 1024^1+12 =
-1.1G个块指针, * 4K= 4T左右的大小</li>
+<li>一个4K block可以放4096/4=1024个指针. 即1024^3+ 1024^2 + 1024^1+12 = 1.1G个块指针, * 4K= 4T左右的大小</li>
 </ul></li>
 <li>ext4 使用了extent的方案</li>
 </ul></li>
-<li>满的时候, 最后一个磁盘地址不指向数据块,
-而是指向一个包含额外磁盘块地址的地址 ### 目录的实现 ### 共享文件</li>
+<li>满的时候, 最后一个磁盘地址不指向数据块, 而是指向一个包含额外磁盘块地址的地址 ### 目录的实现 ### 共享文件</li>
 </ul></li>
 <li>有向无环图</li>
 <li>硬链接</li>
@@ -335,8 +314,7 @@ inode存储了什么东西,可以让他找到对应的所有块? [^3]
 <li>复制时如果不对符号链接进行区分, 会带来重复写入问题</li>
 </ul></li>
 </ul>
-<h3 id="日志结构文件系统log-structured-file-system-lfs">日志结构文件系统(Log
-structured File System, LFS)</h3>
+<h3 id="日志结构文件系统log-structured-file-system-lfs">日志结构文件系统(Log structured File System, LFS)</h3>
 <ul>
 <li>性能问题</li>
 <li>背景:
@@ -375,8 +353,7 @@ structured File System, LFS)</h3>
 <li>磁盘块链表</li>
 <li>问题
 <ul>
-<li>在内存中保留一个半满的指针块, 这样既处理文件的创建和删除,
-又不会为空闲表进行磁盘IO</li>
+<li>在内存中保留一个半满的指针块, 这样既处理文件的创建和删除, 又不会为空闲表进行磁盘IO</li>
 <li>磁盘处理一些列临时文件, 不需要进行任何磁盘IO</li>
 </ul></li>
 </ul>
@@ -418,8 +395,7 @@ structured File System, LFS)</h3>
 <li>坏块转储</li>
 <li>逻辑转储
 <ul>
-<li>维持一个<code>inode</code>为索引的<code>bitmap</code>,
-修改过的文件被标记</li>
+<li>维持一个<code>inode</code>为索引的<code>bitmap</code>, 修改过的文件被标记</li>
 </ul></li>
 <li>空洞问题的处理 ### 文件系统的一致性</li>
 <li>因为系统调用并不是原子事务的, 写操作复杂, 完全存在不一致可能性.</li>
@@ -438,8 +414,7 @@ structured File System, LFS)</h3>
 </ul></li>
 <li>不同文件使用了这个块
 <ul>
-<li>分配一个磁盘快, 把他插入到文件里, 比如文本文件打开中, 出现掉电,
-中间插入乱码是不是就是这个做法?</li>
+<li>分配一个磁盘快, 把他插入到文件里, 比如文本文件打开中, 出现掉电, 中间插入乱码是不是就是这个做法?</li>
 </ul></li>
 <li>已使用和空闲表中均出现(就是删除过程只执行了一半)
 <ul>
@@ -484,8 +459,7 @@ structured File System, LFS)</h3>
 <ul>
 <li>访问inode</li>
 <li>访问块</li>
-<li>原本inode放在磁盘开始位置,
-所以inode到块的平均距离是柱面组的一半</li>
+<li>原本inode放在磁盘开始位置, 所以inode到块的平均距离是柱面组的一半</li>
 <li>改到中间</li>
 </ul></li>
 </ul>
@@ -518,8 +492,7 @@ structured File System, LFS)</h3>
 </ul></li>
 </ul>
 <h3 id="文件结构">文件结构</h3>
-<p>目前都是字节序列, 用使用者自己进行定位.
-这样的话其实和操作裸块也有点像吧? 的确</p>
+<p>目前都是字节序列, 用使用者自己进行定位. 这样的话其实和操作裸块也有点像吧? 的确</p>
 <p>不知道有没有采用树等结构化关系的, 感觉更适合更上层的应用自己抉择.</p>
 <h3 id="文件类型">文件类型</h3>
 <ul>
@@ -537,8 +510,7 @@ structured File System, LFS)</h3>
 <li>由设备驱动程序处理</li>
 </ul></li>
 </ul>
-<p>操作系统至少能识别自己的可执行文件.
-所以文件系统和操作系统还是有一些绑定关系的?</p>
+<p>操作系统至少能识别自己的可执行文件. 所以文件系统和操作系统还是有一些绑定关系的?</p>
 <h3 id="文件访问">文件访问</h3>
 <h3 id="文件属性">文件属性</h3>
 <h3 id="文件操作">文件操作</h3>
@@ -576,15 +548,11 @@ structured File System, LFS)</h3>
 <h2 id="fuse支持">FUSE支持</h2>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cxuanBlog/p/12565601.html">简直不要太硬了！一文带你彻底理解文件系统
-- 程序员cxuan - 博客园</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19853952">(80 条消息)
-为什么NTFS系统容易产生碎片而ext系列则不会？ - 知乎</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.junmajinlong.com/linux/ext_filesystem/">ext文件系统机制原理剖析
-| 骏马金龙</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cxuanBlog/p/12565601.html">简直不要太硬了！一文带你彻底理解文件系统 - 程序员cxuan - 博客园</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19853952">(80 条消息) 为什么NTFS系统容易产生碎片而ext系列则不会？ - 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.junmajinlong.com/linux/ext_filesystem/">ext文件系统机制原理剖析 | 骏马金龙</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/bp7uvbnb7dbgdk2gtxl9">分布式文件系统架构对比-InfoQ</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/138896704">分布式文件系统浅谈
-- 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/138896704">分布式文件系统浅谈 - 知乎</a></li>
 </ol>
 
         </div>
@@ -594,7 +562,7 @@ structured File System, LFS)</h3>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.889Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

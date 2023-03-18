@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="题目链接 总时间限制: 3000ms 内存限制: 65535kB 描述 定义一个数组，初始化为空。在数组上执行两种操作： 1、增添1个元素，把1个新的元素放入数组。 2、输出并删除数组中最小的数。 使用堆结构实现上述功能的高效算法。 输入 第一行输入一个整数t，代表测试数据的组数。 对于每组测试数据，第一行输入一个整数n，代表操作的次数。 每次操作首先输入一个整数type。 当type&#x3D;1，增添操">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-11-23T01:46:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.853Z">
+<meta property="article:published_time" content="2015-11-23T09:46:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.826Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="二叉树">
 <meta property="article:tag" content="堆">
@@ -139,7 +139,7 @@
         <h1 class="title">二叉树——实现堆结构</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-11-23T01:46:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-11-23T09:46:00.000Z" itemprop="datePublished" class="page-time">
   2015-11-23
 </time>
 
@@ -165,7 +165,7 @@
     <div class="post-card">
         <h1 class="post-card-title">二叉树——实现堆结构</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-11-23 09:46:00" datetime="2015-11-23T01:46:00.000Z"  itemprop="datePublished">2015-11-23</time>
+            <time class="post-time" title="2015-11-23 09:46:00" datetime="2015-11-23T09:46:00.000Z"  itemprop="datePublished">2015-11-23</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -180,21 +180,11 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p><a target="_blank" rel="noopener" href="http://dsalgo.openjudge.cn/201409week5/2/">题目链接</a>
-总时间限制: 3000ms 内存限制: 65535kB 描述
-定义一个数组，初始化为空。在数组上执行两种操作：</p>
+            <p><a target="_blank" rel="noopener" href="http://dsalgo.openjudge.cn/201409week5/2/">题目链接</a> 总时间限制: 3000ms 内存限制: 65535kB 描述 定义一个数组，初始化为空。在数组上执行两种操作：</p>
 <p>1、增添1个元素，把1个新的元素放入数组。</p>
 <p>2、输出并删除数组中最小的数。</p>
 <p>使用堆结构实现上述功能的高效算法。</p>
-<p>输入 第一行输入一个整数t，代表测试数据的组数。
-对于每组测试数据，第一行输入一个整数n，代表操作的次数。
-每次操作首先输入一个整数type。
-当type=1，增添操作，接着输入一个整数u，代表要插入的元素。
-当type=2，输出删除操作，输出并删除数组中最小的元素。
-1&lt;=n&lt;=100000。 输出 每次删除操作输出被删除的数字。 样例输入
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">2</span><br><span class="line">5</span><br><span class="line">1 1</span><br><span class="line">1 2</span><br><span class="line">1 3</span><br><span class="line">2</span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">1 5</span><br><span class="line">1 1</span><br><span class="line">1 7</span><br><span class="line">2</span><br></pre></td></tr></table></figure> 样例输出 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure> 提示
-每组测试数据的复杂度为O(nlgn)的算法才能通过本次，否则会返回TLE(超时)
-需要使用最小堆结构来实现本题的算法</p>
+<p>输入 第一行输入一个整数t，代表测试数据的组数。 对于每组测试数据，第一行输入一个整数n，代表操作的次数。 每次操作首先输入一个整数type。 当type=1，增添操作，接着输入一个整数u，代表要插入的元素。 当type=2，输出删除操作，输出并删除数组中最小的元素。 1&lt;=n&lt;=100000。 输出 每次删除操作输出被删除的数字。 样例输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">2</span><br><span class="line">5</span><br><span class="line">1 1</span><br><span class="line">1 2</span><br><span class="line">1 3</span><br><span class="line">2</span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">1 5</span><br><span class="line">1 1</span><br><span class="line">1 7</span><br><span class="line">2</span><br></pre></td></tr></table></figure> 样例输出 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure> 提示 每组测试数据的复杂度为O(nlgn)的算法才能通过本次，否则会返回TLE(超时) 需要使用最小堆结构来实现本题的算法</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int heap[100010];</span><br><span class="line">int len;</span><br><span class="line">//int maxsize;</span><br><span class="line"></span><br><span class="line">void Init()&#123;</span><br><span class="line">    //maxsize = 0;</span><br><span class="line">    len = 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Insert(int x)&#123;</span><br><span class="line">    //heap[len] = x;</span><br><span class="line">    len++;</span><br><span class="line"></span><br><span class="line">    int i = len -1;</span><br><span class="line"></span><br><span class="line">    while(i &gt; 0)&#123;</span><br><span class="line">        int j = (i-1)/2;</span><br><span class="line">        if(x &gt; heap[j])</span><br><span class="line">            break;</span><br><span class="line">        heap[i] = heap[j];</span><br><span class="line">        i = j;</span><br><span class="line">    &#125;</span><br><span class="line">    heap[i] = x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int Del()&#123;</span><br><span class="line">    if(0 == len)&#123;</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int temp = heap[0];</span><br><span class="line">    len--;</span><br><span class="line"></span><br><span class="line">    if(0 == len)&#123;</span><br><span class="line">        return temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int x = heap[len];</span><br><span class="line">    int i = 0;</span><br><span class="line">    int j = 2*i+1;</span><br><span class="line">    while(j &lt;= len-1)&#123;</span><br><span class="line">        if((j &lt; len-1)&amp;&amp; (heap[j] &gt; heap[j+1]))&#123;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        if(x &lt; heap[j])&#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        heap[i] = heap[j];</span><br><span class="line">        i = j;</span><br><span class="line">        j = 2*i+1;</span><br><span class="line">    &#125;</span><br><span class="line">    heap[i] = x;</span><br><span class="line">    return temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    //freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">    int t,n,type,x;</span><br><span class="line">    scanf(&quot;%d&quot;,&amp;t);</span><br><span class="line">    while(t--)&#123;</span><br><span class="line">        scanf(&quot;%d&quot;,&amp;n);</span><br><span class="line">        //struct node p;</span><br><span class="line">        Init();</span><br><span class="line">        while(n--)&#123;</span><br><span class="line">            scanf(&quot;%d&quot;,&amp;type);</span><br><span class="line">            if(type == 1)&#123;</span><br><span class="line">                scanf(&quot;%d&quot;,&amp;x);</span><br><span class="line">                Insert(x);</span><br><span class="line">            &#125;</span><br><span class="line">            else if(type == 2)</span><br><span class="line">                printf(&quot;%d\n&quot;,Del());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
         </div>
@@ -204,7 +194,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.853Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.826Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

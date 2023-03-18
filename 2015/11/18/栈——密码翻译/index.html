@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="题目链接 总时间限制: 1000ms 内存限制: 65536kB 描述 在情报传递过程中，为了防止情报被截获，往往需要对情报用一定的方式加密，简单的加密算法虽然不足以完全避免情报被破译，但仍然能防止情报被轻易的识别。我们给出一种最简的的加密方法，对给定的一个字符串，把其中从a-y,A-Y的字母用其后继字母替代，把z和Z用a和A替代，则可得到一个简单的加密字符串。 输入 第一行是字符串的数目n。 其">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-11-18T04:43:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.866Z">
+<meta property="article:published_time" content="2015-11-18T12:43:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="栈">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">栈——密码翻译</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-11-18T04:43:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-11-18T12:43:00.000Z" itemprop="datePublished" class="page-time">
   2015-11-18
 </time>
 
@@ -164,7 +164,7 @@
     <div class="post-card">
         <h1 class="post-card-title">栈——密码翻译</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-11-18 12:43:00" datetime="2015-11-18T04:43:00.000Z"  itemprop="datePublished">2015-11-18</time>
+            <time class="post-time" title="2015-11-18 12:43:00" datetime="2015-11-18T12:43:00.000Z"  itemprop="datePublished">2015-11-18</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -179,12 +179,8 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p><a target="_blank" rel="noopener" href="http://dsalgo.openjudge.cn/201409week3/2/">题目链接</a>
-总时间限制: 1000ms 内存限制: 65536kB 描述
-在情报传递过程中，为了防止情报被截获，往往需要对情报用一定的方式加密，简单的加密算法虽然不足以完全避免情报被破译，但仍然能防止情报被轻易的识别。我们给出一种最简的的加密方法，对给定的一个字符串，把其中从a-y,A-Y的字母用其后继字母替代，把z和Z用a和A替代，则可得到一个简单的加密字符串。</p>
-<p>输入 第一行是字符串的数目n。 其余n行每行一个字符串。 输出
-输出每行字符串的加密字符串。 样例输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">Hello! How are you!</span><br></pre></td></tr></table></figure> 样例输出
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ifmmp! Ipx bsf zpv!</span><br></pre></td></tr></table></figure></p>
+            <p><a target="_blank" rel="noopener" href="http://dsalgo.openjudge.cn/201409week3/2/">题目链接</a> 总时间限制: 1000ms 内存限制: 65536kB 描述 在情报传递过程中，为了防止情报被截获，往往需要对情报用一定的方式加密，简单的加密算法虽然不足以完全避免情报被破译，但仍然能防止情报被轻易的识别。我们给出一种最简的的加密方法，对给定的一个字符串，把其中从a-y,A-Y的字母用其后继字母替代，把z和Z用a和A替代，则可得到一个简单的加密字符串。</p>
+<p>输入 第一行是字符串的数目n。 其余n行每行一个字符串。 输出 输出每行字符串的加密字符串。 样例输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">Hello! How are you!</span><br></pre></td></tr></table></figure> 样例输出 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ifmmp! Ipx bsf zpv!</span><br></pre></td></tr></table></figure></p>
 <p>最近重新开始练算法了，好多基础用法都忘了，现在重新熟悉一下，先从OpenJudge做起。</p>
 <p>这道题严格意义上应该题目叫简单凯撒密码翻译。题目理解很简单，不过对于scanf的用法需要注意，在%s格式时，遇到空格就会结束输入，这里可以用gets()和scanf("%[^\n]",h)来解决这个问题。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    //freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">    char h[1000];</span><br><span class="line">    int n;</span><br><span class="line">    scanf(&quot; %d&quot;,&amp;n);</span><br><span class="line">    getchar();</span><br><span class="line">    for(int k = 0;k &lt; n;k++)&#123;</span><br><span class="line">        //getchar();</span><br><span class="line">        gets(h);</span><br><span class="line">        //printf(&quot;%s\n&quot;,h);</span><br><span class="line">        int len=strlen(h);</span><br><span class="line">        for(int i = 0;i &lt; len;i++)&#123;</span><br><span class="line">            if((h[i] &gt;= &#x27;a&#x27; &amp;&amp; h[i] &lt; &#x27;z&#x27;) ||( h[i] &gt;= &#x27;A&#x27; &amp;&amp; h[i] &lt; &#x27;Z&#x27;))&#123;</span><br><span class="line">                h[i]+=1;</span><br><span class="line">            &#125;</span><br><span class="line">            else if(h[i] == &#x27;z&#x27;)&#123;</span><br><span class="line">                h[i] = &#x27;a&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">            else if(h[i] == &#x27;Z&#x27;)&#123;</span><br><span class="line">                h[i] = &#x27;A&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        printf(&quot;%s\n&quot;,h);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -196,7 +192,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.866Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

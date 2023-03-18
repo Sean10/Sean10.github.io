@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="环境背景 使用libvirt管理kvm， 需要在不知道虚拟机ip的情况下，与虚拟机进行交互。 翻了翻，qemu有提供一个qemu-guest-agent的工具，在虚拟机内安装后就可以让宿主机获取虚拟机内的信息了。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-08-16T12:08:01.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.810Z">
+<meta property="article:published_time" content="2018-08-16T20:08:01.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.754Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="KVM">
 <meta property="article:tag" content="虚拟化">
@@ -139,7 +139,7 @@
         <h1 class="title">KVM宿主机与虚拟机交互</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-08-16T12:08:01.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-08-16T20:08:01.000Z" itemprop="datePublished" class="page-time">
   2018-08-16
 </time>
 
@@ -172,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">KVM宿主机与虚拟机交互</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-08-16 20:08:01" datetime="2018-08-16T12:08:01.000Z"  itemprop="datePublished">2018-08-16</time>
+            <time class="post-time" title="2018-08-16 20:08:01" datetime="2018-08-16T20:08:01.000Z"  itemprop="datePublished">2018-08-16</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -188,25 +188,17 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h1 id="环境背景">环境背景</h1>
-<p>使用libvirt管理kvm，
-需要在不知道虚拟机ip的情况下，与虚拟机进行交互。</p>
+<p>使用libvirt管理kvm， 需要在不知道虚拟机ip的情况下，与虚拟机进行交互。</p>
 <p>翻了翻，qemu有提供一个qemu-guest-agent的工具，在虚拟机内安装后就可以让宿主机获取虚拟机内的信息了。</p>
 <span id="more"></span>
 <h1 id="操作引导">操作引导</h1>
 <p>根据redhat的指导[1], 在rhel7的系统的虚拟机xml里插入以下内容</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;channel type=&#x27;unix&#x27;&gt;</span><br><span class="line">   &lt;target type=&#x27;virtio&#x27; name=&#x27;org.qemu.guest_agent.0&#x27;/&gt;</span><br><span class="line">&lt;/channel&gt;</span><br></pre></td></tr></table></figure>
-<p>原理上，上面这部分为虚拟机添加了一个叫做<code>org.qemu.guest_agent.0</code>的串口，而在宿主机上则是在路径<code>/var/lib/libvirt/qemu/channel/target/&lt;domain-6-kvm01&gt;/org.qemu.guest_agent.0</code>创建了一个unix
-socket。</p>
-<p>不过为什么要在虚拟机内建立的是串口呢？而不是和宿主机一样的unix
-socket呢？</p>
+<p>原理上，上面这部分为虚拟机添加了一个叫做<code>org.qemu.guest_agent.0</code>的串口，而在宿主机上则是在路径<code>/var/lib/libvirt/qemu/channel/target/&lt;domain-6-kvm01&gt;/org.qemu.guest_agent.0</code>创建了一个unix socket。</p>
+<p>不过为什么要在虚拟机内建立的是串口呢？而不是和宿主机一样的unix socket呢？</p>
 <p>虚拟机内安装这个包之后，启动这个服务就可以了。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install qemu-guest-agent</span><br><span class="line">systemctl start qemu-guest-agent</span><br><span class="line">systemctl enable qemu-guest-agent</span><br></pre></td></tr></table></figure></p>
-<p>这里需要注意，默认安装的qga的service文件中的串口名都是默认的guest_agent.0，如果在指定时修改了这个，手动指定了bind
-socket路径和target，那么虚拟机内的服务文件就需要替换这些默认名。并且，宿主机就监听不到我们所使用的端口了，需要手动使用下面的socat命令监听了。</p>
-<p>然后宿主机，有3种 1.
-执行<code>socat /var/lib/libvirt/qemu/channel/target/&lt;domain-6-kvm01&gt;/org.qemu.guest_agent.0  readline</code>，在这里交互式输入json格式的命令可以得到结果
-2. virsh qemu-agent-command kvm_instance
-'{"execute":"guest-network-get-interfaces"}' 3.
-也可以通过qemu-guest-agent提供的api执行命令，不过似乎要添加他的so包，没尝试</p>
+<p>这里需要注意，默认安装的qga的service文件中的串口名都是默认的guest_agent.0，如果在指定时修改了这个，手动指定了bind socket路径和target，那么虚拟机内的服务文件就需要替换这些默认名。并且，宿主机就监听不到我们所使用的端口了，需要手动使用下面的socat命令监听了。</p>
+<p>然后宿主机，有3种 1. 执行<code>socat /var/lib/libvirt/qemu/channel/target/&lt;domain-6-kvm01&gt;/org.qemu.guest_agent.0  readline</code>，在这里交互式输入json格式的命令可以得到结果 2. virsh qemu-agent-command kvm_instance '{"execute":"guest-network-get-interfaces"}' 3. 也可以通过qemu-guest-agent提供的api执行命令，不过似乎要添加他的so包，没尝试</p>
 <h2 id="常用命令">常用命令</h2>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;execute&quot;: &quot;guest-info&quot;&#125;</span><br><span class="line"></span><br><span class="line">通过下述3个命令在虚拟机内写信息到文件内</span><br><span class="line">&#123;&quot;execute&quot;:&quot;guest-file-open&quot;, &quot;arguments&quot;:&#123;&quot;path&quot;:&quot;/home/testqga&quot;,&quot;mode&quot;:&quot;w+&quot;&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&quot;execute&quot;:&quot;guest-file-write&quot;,&quot;arguments&quot;:&#123;&quot;handle&quot;:0,&quot;buf-b64&quot;:&quot;aGVsbG8gd29ybGQhCg==&quot;&#125;&#125;</span><br><span class="line"># 注意这个handle是返回的句柄</span><br><span class="line">&#123;&quot;execute&quot;:&quot;guest-file-close&quot;, &quot;arguments&quot;:&#123;&quot;handle&quot;:0&#125;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 获取虚拟机网络信息ip</span><br><span class="line">&#123;&quot;execute&quot;:&quot;guest-network-get-interfaces&quot;&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="接口扩展">接口扩展</h1>
@@ -215,14 +207,11 @@ socket路径和target，那么虚拟机内的服务文件就需要替换这些�
 <h1 id="在虚拟机内执行命令">在虚拟机内执行命令</h1>
 <p>如果只是需要执行shell脚本的话，参照[3],似乎可以通过上面的方法写入到fsfreeze-hook.d中，然后fsfreeze-hook来执行。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">virsh qemu-agent-command instance &#x27;&#123;&quot;execute&quot;:&quot;guest-fsfreeze-freeze&quot;&#125;&#x27;</span><br><span class="line">virsh qemu-agent-command instance &#x27;&#123;&quot;execute&quot;:&quot;guest-fsfreeze-thaw&quot;&#125;&#x27;</span><br></pre></td></tr></table></figure>
-<p>不过也可以通过上面的network
-interface得到ip之后通过socket或者rpc等等自己定制接口来执行就是了。</p>
+<p>不过也可以通过上面的network interface得到ip之后通过socket或者rpc等等自己定制接口来执行就是了。</p>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://access.redhat.com/solutions/732773">How to enable
-QEMU guest agent in KVM</a></li>
-<li><a target="_blank" rel="noopener" href="https://qemu.weilnetz.de/doc/qemu-ga-ref.html#API-Reference">qemu-guest-agent
-api</a></li>
+<li><a target="_blank" rel="noopener" href="https://access.redhat.com/solutions/732773">How to enable QEMU guest agent in KVM</a></li>
+<li><a target="_blank" rel="noopener" href="https://qemu.weilnetz.de/doc/qemu-ga-ref.html#API-Reference">qemu-guest-agent api</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/cugb1004101218/article/details/49785859">openstack通过qemu-guest-agent在物理机上操作虚拟机</a></li>
 </ol>
 
@@ -233,7 +222,7 @@ api</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.810Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.754Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 
@@ -279,8 +268,7 @@ api</a></li>
       </li>
       <li>
         <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2018/08/16/KVM%E5%AE%BF%E4%B8%BB%E6%9C%BA%E4%B8%8E%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BA%A4%E4%BA%92/&title=《KVM宿主机与虚拟机交互》 — 行路中.&source=环境背景
-使用libvirt管理kvm，
-需要在不知道虚拟机ip的情况下，与虚拟机进行交互。
+使用libvirt管理kvm， 需要在不知道虚拟机ip的情况下，与虚拟机进行交互。
 翻了翻，qemu有提供一个qemu-guest-agent的..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
@@ -441,8 +429,7 @@ api</a></li>
       </li>
       <li>
         <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2018/08/16/KVM%E5%AE%BF%E4%B8%BB%E6%9C%BA%E4%B8%8E%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BA%A4%E4%BA%92/&title=《KVM宿主机与虚拟机交互》 — 行路中.&source=环境背景
-使用libvirt管理kvm，
-需要在不知道虚拟机ip的情况下，与虚拟机进行交互。
+使用libvirt管理kvm， 需要在不知道虚拟机ip的情况下，与虚拟机进行交互。
 翻了翻，qemu有提供一个qemu-guest-agent的..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>

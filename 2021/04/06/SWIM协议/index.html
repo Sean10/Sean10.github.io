@@ -30,8 +30,8 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sean10.github.io/.io//SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-16-19.png">
 <meta property="og:image" content="https://sean10.github.io/.io//SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-56-27.png">
-<meta property="article:published_time" content="2021-04-06T15:07:08.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.827Z">
+<meta property="article:published_time" content="2021-04-06T23:07:08.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.754Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="分布式">
 <meta property="article:tag" content="论文">
@@ -143,7 +143,7 @@
         <h1 class="title">SWIM协议</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-04-06T15:07:08.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-04-06T23:07:08.000Z" itemprop="datePublished" class="page-time">
   2021-04-06
 </time>
 
@@ -165,10 +165,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%AE%BA%E6%96%87"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文
-</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%88%90%E5%91%98%E8%B5%84%E6%A0%BC%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">2.</span> <span class="post-toc-text">成员资格协议</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%A8%A1%E5%9D%97"><span class="post-toc-number">3.</span> <span class="post-toc-text">模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#failure-detector-%E7%94%A8%E4%BA%8Enode%E5%A4%B1%E8%B4%A5%E6%A3%80%E6%B5%8B"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Failure Detector,
-用于Node失败检测</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dissemination-%E6%A8%A1%E5%9D%97%E7%94%A8%E4%BA%8E%E5%B0%86node%E4%B8%BB%E5%8A%A8%E5%8A%A0%E5%85%A5%E9%80%80%E5%87%BA%E6%88%96%E5%A4%B1%E8%B4%A5%E7%9A%84%E4%BF%A1%E6%81%AF%E4%BC%A0%E6%92%AD%E5%87%BA%E5%8E%BB"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Dissemination
-模块，用于将Node主动加入、退出或失败的信息传播出去</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%80%9D%E8%80%83"><span class="post-toc-number">4.</span> <span class="post-toc-text">思考</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">5.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%AE%BA%E6%96%87"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文 </span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%88%90%E5%91%98%E8%B5%84%E6%A0%BC%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">2.</span> <span class="post-toc-text">成员资格协议</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%A8%A1%E5%9D%97"><span class="post-toc-number">3.</span> <span class="post-toc-text">模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#failure-detector-%E7%94%A8%E4%BA%8Enode%E5%A4%B1%E8%B4%A5%E6%A3%80%E6%B5%8B"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Failure Detector, 用于Node失败检测</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dissemination-%E6%A8%A1%E5%9D%97%E7%94%A8%E4%BA%8E%E5%B0%86node%E4%B8%BB%E5%8A%A8%E5%8A%A0%E5%85%A5%E9%80%80%E5%87%BA%E6%88%96%E5%A4%B1%E8%B4%A5%E7%9A%84%E4%BF%A1%E6%81%AF%E4%BC%A0%E6%92%AD%E5%87%BA%E5%8E%BB"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Dissemination 模块，用于将Node主动加入、退出或失败的信息传播出去</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%80%9D%E8%80%83"><span class="post-toc-number">4.</span> <span class="post-toc-text">思考</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">5.</span> <span class="post-toc-text">Reference</span></a></li></ol>
         </nav>
     </aside>
 
@@ -179,7 +176,7 @@
     <div class="post-card">
         <h1 class="post-card-title">SWIM协议</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-04-06 23:07:08" datetime="2021-04-06T15:07:08.000Z"  itemprop="datePublished">2021-04-06</time>
+            <time class="post-time" title="2021-04-06 23:07:08" datetime="2021-04-06T23:07:08.000Z"  itemprop="datePublished">2021-04-06</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -194,8 +191,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h1 id="论文">论文
-<Scalable weakly-consistent infection-style process group membership protocol></Scalable></h1>
+            <h1 id="论文">论文 <Scalable weakly-consistent infection-style process group membership protocol></Scalable></h1>
 <blockquote>
 <p>可扩展弱一致性感染型进程组成员协议</p>
 <p>进程组的成员关系协议</p>
@@ -217,15 +213,11 @@
 <p>理想情况下，我们需要这样的协议：它一定要完全100%准确，这就意味着可以检测到每一个失效进程，而且不存在任何误判。然而，像分布式系统里的其他协议一样，存在这样的事实：在异步网络上保证100%的完备和准确是不可能的。因此许多成员资格协议（包括SWIM)为了完备性就会降低准确性，同时尽最大可能降低误判率。</p>
 </blockquote>
 <h1 id="模块">模块</h1>
-<h2 id="failure-detector-用于node失败检测">Failure Detector,
-用于Node失败检测</h2>
+<h2 id="failure-detector-用于node失败检测">Failure Detector, 用于Node失败检测</h2>
 <blockquote>
 <p>概念：</p>
-<p>T’: 协议周期，2次探测的时间间隔 k: k个节点
-该协议中，若Mi检测Mj状态，则先发一个ping包到Mj，若Mj未在超时时间内ack，则Mi随机选择k个节点，发送间接探测ping-req包，k个节点如Mh收到ping-req请求，将会ping
-Mj并将结果返回给Mi。若任意一个ping-req返回Mj存活，则Mj存活。</p>
-<p>上述过程，包含3个round-trip的网络过程，Mi-&gt;Mj, Mi-&gt;Mh,
-Mh-&gt;Mj，所以T’ 要大于3个超时；如T’=1s, timeout=200ms</p>
+<p>T’: 协议周期，2次探测的时间间隔 k: k个节点 该协议中，若Mi检测Mj状态，则先发一个ping包到Mj，若Mj未在超时时间内ack，则Mi随机选择k个节点，发送间接探测ping-req包，k个节点如Mh收到ping-req请求，将会ping Mj并将结果返回给Mi。若任意一个ping-req返回Mj存活，则Mj存活。</p>
+<p>上述过程，包含3个round-trip的网络过程，Mi-&gt;Mj, Mi-&gt;Mh, Mh-&gt;Mj，所以T’ 要大于3个超时；如T’=1s, timeout=200ms</p>
 </blockquote>
 <figure class="image-bubble">
                 <div class="img-lightbox">
@@ -234,25 +226,17 @@ Mh-&gt;Mj，所以T’ 要大于3个超时；如T’=1s, timeout=200ms</p>
                 </div>
                 <div class="image-caption"></div>
             </figure>
-<p>这里故障监测,
-也存在一篇论文讲到<code>[SRDS 2004] The Phi Accrual Failure Detector</code>讲到可以通过概率模型来判断都次未响应后到底该节点是否已经离线,
-还是只是网络波动缘由导致. 这个还挺可靠的,
-的确某个设备的链路存在波动问题时, 常常代表他的响应会是长期离线的.</p>
+<p>这里故障监测, 也存在一篇论文讲到<code>[SRDS 2004] The Phi Accrual Failure Detector</code>讲到可以通过概率模型来判断都次未响应后到底该节点是否已经离线, 还是只是网络波动缘由导致. 这个还挺可靠的, 的确某个设备的链路存在波动问题时, 常常代表他的响应会是长期离线的.</p>
 <blockquote>
 <ol type="1">
-<li>假设 heartbeat message 符合某一概率模型。例如定期发送的 heartbeat
-message 在有网络延迟的情况下，接收到消息的 interval 符合正态分布。</li>
+<li>假设 heartbeat message 符合某一概率模型。例如定期发送的 heartbeat message 在有网络延迟的情况下，接收到消息的 interval 符合正态分布。</li>
 <li>利用接收到的历史数据（滑动窗口），对概率模型参数进行极大似然估计。</li>
-<li>利用估计得出的参数带入模型，计算在当前时刻接收到 heartbeat message
-的概率
-区别于传统方法，此时不直接得出对端是否存活的判断，而是直接向上层应用返回这一概率，由上层应用自行进行解释，是这篇论文中提出的另一个“亮点"。</li>
+<li>利用估计得出的参数带入模型，计算在当前时刻接收到 heartbeat message 的概率 区别于传统方法，此时不直接得出对端是否存活的判断，而是直接向上层应用返回这一概率，由上层应用自行进行解释，是这篇论文中提出的另一个“亮点"。</li>
 </ol>
 </blockquote>
-<h2 id="dissemination-模块用于将node主动加入退出或失败的信息传播出去">Dissemination
-模块，用于将Node主动加入、退出或失败的信息传播出去</h2>
+<h2 id="dissemination-模块用于将node主动加入退出或失败的信息传播出去">Dissemination 模块，用于将Node主动加入、退出或失败的信息传播出去</h2>
 <blockquote>
-<p>当Mi检测到Mj失败，会利用IP多播等方式，发送一条 failed(Mj)
-的消息，收到消息的Node，会把Mj从本地Node表中踢除。</p>
+<p>当Mi检测到Mj失败，会利用IP多播等方式，发送一条 failed(Mj) 的消息，收到消息的Node，会把Mj从本地Node表中踢除。</p>
 </blockquote>
 <figure class="image-bubble">
                 <div class="img-lightbox">
@@ -265,13 +249,10 @@ message 在有网络延迟的情况下，接收到消息的 interval 符合正�
 <p>所以理论上, 基于这个的linux集群网络稳定性监控机制应该是有的吧.</p>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://www.dazhuanlan.com/2019/11/04/5dbf34e0e3a3a/">Scalable
-Weakly | 大专栏</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.dazhuanlan.com/2019/11/04/5dbf34e0e3a3a/">Scalable Weakly | 大专栏</a></li>
 <li>[致远的 BLOG](http://understars.ltd/archives/swim.md</li>
-<li><a target="_blank" rel="noopener" href="https://www.oschina.net/translate/swim?cmp">分布式系统中的
-SWIM 成员协议 - OSCHINA - 中文开源技术交流社区</a>)</li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33819239">论文笔记：[SRDS
-2004] The Phi Accrual Failure Detector - 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.oschina.net/translate/swim?cmp">分布式系统中的 SWIM 成员协议 - OSCHINA - 中文开源技术交流社区</a>)</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33819239">论文笔记：[SRDS 2004] The Phi Accrual Failure Detector - 知乎</a></li>
 </ol>
 
         </div>
@@ -281,7 +262,7 @@ SWIM 成员协议 - OSCHINA - 中文开源技术交流社区</a>)</li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.827Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.754Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

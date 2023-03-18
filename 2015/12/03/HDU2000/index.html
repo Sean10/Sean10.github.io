@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="自从那次校赛没过以后就一直没心思做题，现在连水题要注意的PE也交了6次再看了一份AC代码才想起来，多输出了空格再换行也是会PE的。 真的是代码打得太少了。 123456789101112131415161718192021222324252627282930313233343536#include &lt;cstdio&gt;#include &lt;cstring&gt;#include &amp;lt">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-12-03T07:04:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.876Z">
+<meta property="article:published_time" content="2015-12-03T15:04:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.734Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="水题">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">HDU2000</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-12-03T07:04:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-12-03T15:04:00.000Z" itemprop="datePublished" class="page-time">
   2015-12-03
 </time>
 
@@ -164,7 +164,7 @@
     <div class="post-card">
         <h1 class="post-card-title">HDU2000</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-12-03 15:04:00" datetime="2015-12-03T07:04:00.000Z"  itemprop="datePublished">2015-12-03</time>
+            <time class="post-time" title="2015-12-03 15:04:00" datetime="2015-12-03T15:04:00.000Z"  itemprop="datePublished">2015-12-03</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -179,8 +179,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>自从那次校赛没过以后就一直没心思做题，现在连水题要注意的PE也交了6次再看了一份AC代码才想起来，多输出了空格再换行也是会PE的。
-真的是代码打得太少了。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstring&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line"></span><br><span class="line">void swap(char *s,int j)&#123;</span><br><span class="line">    char temp = s[j];</span><br><span class="line">    s[j] = s[j+1];</span><br><span class="line">    s[j+1] = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Bubblesort(char *s)&#123;</span><br><span class="line">    char temp = s[0];</span><br><span class="line">    for(int i = 0;i &lt; 3;i++)&#123;</span><br><span class="line">        for(int j = 0;j &lt; 2;j++)&#123;</span><br><span class="line">            if(s[j] &gt; s[j+1])</span><br><span class="line">                swap(s,j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    //freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">    char s[4];</span><br><span class="line">    while(scanf(&quot;%s&quot;,s)!=EOF)&#123;</span><br><span class="line">        //getchar();</span><br><span class="line">        Bubblesort(s);</span><br><span class="line">        for(int i = 0;i &lt; 2;i++)&#123;</span><br><span class="line">            printf(&quot;%c&quot;,s[i]);</span><br><span class="line">            printf(&quot; &quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        printf(&quot;%c&quot;,s[2]);</span><br><span class="line">        printf(&quot;\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    //printf(&quot;\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+            <p>自从那次校赛没过以后就一直没心思做题，现在连水题要注意的PE也交了6次再看了一份AC代码才想起来，多输出了空格再换行也是会PE的。 真的是代码打得太少了。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstring&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line"></span><br><span class="line">void swap(char *s,int j)&#123;</span><br><span class="line">    char temp = s[j];</span><br><span class="line">    s[j] = s[j+1];</span><br><span class="line">    s[j+1] = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Bubblesort(char *s)&#123;</span><br><span class="line">    char temp = s[0];</span><br><span class="line">    for(int i = 0;i &lt; 3;i++)&#123;</span><br><span class="line">        for(int j = 0;j &lt; 2;j++)&#123;</span><br><span class="line">            if(s[j] &gt; s[j+1])</span><br><span class="line">                swap(s,j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    //freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">    char s[4];</span><br><span class="line">    while(scanf(&quot;%s&quot;,s)!=EOF)&#123;</span><br><span class="line">        //getchar();</span><br><span class="line">        Bubblesort(s);</span><br><span class="line">        for(int i = 0;i &lt; 2;i++)&#123;</span><br><span class="line">            printf(&quot;%c&quot;,s[i]);</span><br><span class="line">            printf(&quot; &quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        printf(&quot;%c&quot;,s[2]);</span><br><span class="line">        printf(&quot;\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    //printf(&quot;\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
         </div>
 
@@ -189,7 +188,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.876Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.734Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

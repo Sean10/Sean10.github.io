@@ -29,8 +29,8 @@
 <meta property="og:description" content="背景 最近发现用外部OSS图床，在本地处理归档文件资源时，不是那么的方便。且自己用的腾讯云COS的上传插件没做对剪切板中图片上传的功能，导致每次粘贴图片都得多一步去获取文件的绝对路径或者选中文件。 然后发现vs code有个Paste Image的插件可以做到直接将剪切板的图片放到本地指定相对路径的功能。 但是对于发布到github page上的文章呢，图片资源怎么才能使用相对路径呢？ 就发现he">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sean10.github.io/.io//hexo%E7%BB%93%E5%90%88PasteImage%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87_2020-06-24-00-47-39.png">
-<meta property="article:published_time" content="2020-06-23T16:46:35.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.823Z">
+<meta property="article:published_time" content="2020-06-24T00:46:35.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.786Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="hexo">
 <meta property="article:tag" content="vs code">
@@ -141,7 +141,7 @@
         <h1 class="title">hexo结合PasteImage使用相对路径图片</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-06-23T16:46:35.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-06-24T00:46:35.000Z" itemprop="datePublished" class="page-time">
   2020-06-24
 </time>
 
@@ -174,7 +174,7 @@
     <div class="post-card">
         <h1 class="post-card-title">hexo结合PasteImage使用相对路径图片</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-06-24 00:46:35" datetime="2020-06-23T16:46:35.000Z"  itemprop="datePublished">2020-06-24</time>
+            <time class="post-time" title="2020-06-24 00:46:35" datetime="2020-06-24T00:46:35.000Z"  itemprop="datePublished">2020-06-24</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -193,8 +193,7 @@
 <p>最近发现用外部OSS图床，在本地处理归档文件资源时，不是那么的方便。且自己用的腾讯云COS的上传插件没做对剪切板中图片上传的功能，导致每次粘贴图片都得多一步去获取文件的绝对路径或者选中文件。</p>
 <p>然后发现<code>vs code</code>有个<code>Paste Image</code>的插件可以做到直接将剪切板的图片放到本地指定相对路径的功能。</p>
 <p>但是对于发布到<code>github page</code>上的文章呢，图片资源怎么才能使用相对路径呢？</p>
-<p>就发现<code>hexo 3</code>提供了一部分功能（即便现在4了，好像也暂时没有更进一步优化的计划，relative
-path没怎么搜到有人提PR了）。</p>
+<p>就发现<code>hexo 3</code>提供了一部分功能（即便现在4了，好像也暂时没有更进一步优化的计划，relative path没怎么搜到有人提PR了）。</p>
 <p>按照hexo的意思是不使用标准markdown语法，而是使用下面这种提供的外部语法来处理……</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_path slug %&#125;</span><br><span class="line">&#123;% asset_img slug [title] %&#125;</span><br><span class="line">&#123;% asset_link slug [title] %&#125;</span><br></pre></td></tr></table></figure>
 <p>不太能接受，然后发现配合一个好多年前的插件<code>hexo-asset-image</code>就可以做到对于用户可以无感知的使用相对路径的图片了。</p>
@@ -209,8 +208,7 @@ path没怎么搜到有人提PR了）。</p>
 </ol></li>
 </ol>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-  var endPos = link.lastIndexOf(&#x27;.&#x27;);</span></span><br><span class="line"><span class="addition">+  var endPos = link.length-1;</span></span><br></pre></td></tr></table></figure>
-<p>原始的<code>md</code>文件中的图片路径依旧可以用正常的相对路径<code>![](hexo结合PasteImage使用本地图片/hexo结合PasteImage使用本地图片_2020-06-24-00-47-39.png)</code>，
-在<code>hexo g</code>时生成的文件中的图片资源路径会被这个插件自动转换成url后静态文件相对于静态文件根目录的绝对路径。</p>
+<p>原始的<code>md</code>文件中的图片路径依旧可以用正常的相对路径<code>![](hexo结合PasteImage使用本地图片/hexo结合PasteImage使用本地图片_2020-06-24-00-47-39.png)</code>， 在<code>hexo g</code>时生成的文件中的图片资源路径会被这个插件自动转换成url后静态文件相对于静态文件根目录的绝对路径。</p>
 <h2 id="pasteimage配置">PasteImage配置</h2>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.namePrefix&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;currentFileNameWithoutExt&#125;_&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.defaultName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YMMDDHHmmss&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;currentFileDir&#125;/$&#123;currentFileNameWithoutExt&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.basePath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;currentFileDir&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.forceUnixStyleSeparator&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 <h3 id="图示配置如下">图示配置如下</h3>
@@ -223,10 +221,8 @@ path没怎么搜到有人提PR了）。</p>
             </figure>
 <h2 id="reference">Reference</h2>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="http://www.itomtan.com/2017/09/29/the-problem-when-use-post-asset-folder/">Hexo开启post_asset_folder后,
-安装hexo-asset-image,不起作用的问题 | Tomtan's Blog</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/xcodebuild/hexo-asset-image/issues/47">域名是xxx.io的情况下，图片路径会从原本/xxx.jpg变成
-/.io/xxx.jpg · Issue #47 · xcodebuild/hexo-asset-image</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.itomtan.com/2017/09/29/the-problem-when-use-post-asset-folder/">Hexo开启post_asset_folder后, 安装hexo-asset-image,不起作用的问题 | Tomtan's Blog</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/xcodebuild/hexo-asset-image/issues/47">域名是xxx.io的情况下，图片路径会从原本/xxx.jpg变成 /.io/xxx.jpg · Issue #47 · xcodebuild/hexo-asset-image</a></li>
 </ol>
 
         </div>
@@ -236,7 +232,7 @@ path没怎么搜到有人提PR了）。</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.823Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.786Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

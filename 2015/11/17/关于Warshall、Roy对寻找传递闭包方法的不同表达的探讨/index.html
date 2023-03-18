@@ -31,8 +31,8 @@
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_essay_0.png">
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_essay_1.png">
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/sean10/750413/o_essay_2.png">
-<meta property="article:published_time" content="2015-11-17T11:23:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.889Z">
+<meta property="article:published_time" content="2015-11-17T19:23:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.830Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="离散数学">
 <meta name="twitter:card" content="summary">
@@ -142,7 +142,7 @@
         <h1 class="title">关于Warshall、Roy对寻找传递闭包方法的不同表达的探讨</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-11-17T11:23:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-11-17T19:23:00.000Z" itemprop="datePublished" class="page-time">
   2015-11-17
 </time>
 
@@ -168,7 +168,7 @@
     <div class="post-card">
         <h1 class="post-card-title">关于Warshall、Roy对寻找传递闭包方法的不同表达的探讨</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-11-17 19:23:00" datetime="2015-11-17T11:23:00.000Z"  itemprop="datePublished">2015-11-17</time>
+            <time class="post-time" title="2015-11-17 19:23:00" datetime="2015-11-17T19:23:00.000Z"  itemprop="datePublished">2015-11-17</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -183,14 +183,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>一、引言
-在计算机科学中，Floyd-Warshell-Roy算法是用于在有向图或负权图中寻找最短路径的一种算法。运行一次能够找到所有两个顶点间的最短路径，不过并不输出所有路径。该算法同时也可以被用于寻找关系R的传递闭包。
-Floyd-Warshell算法是一个动态规划的例子，在1962年为Robert
-Floyd发表。然而，在1959年，相同的算法已经被Bernard
-Roy发表。同年，Stephen
-Warshell发表了找到传递闭包的这个算法。三人被认定为独立发现这个算法。
-该算法的主要作用是将常规算法的时间复杂度由Θ(n<sup>4)降低到了Θ(n</sup>3).
-本文中，我们出于寻找Roy、Warshall的算法被认定为独立发现的的缘由对两人的算法进行分析。</p>
+            <p>一、引言 在计算机科学中，Floyd-Warshell-Roy算法是用于在有向图或负权图中寻找最短路径的一种算法。运行一次能够找到所有两个顶点间的最短路径，不过并不输出所有路径。该算法同时也可以被用于寻找关系R的传递闭包。 Floyd-Warshell算法是一个动态规划的例子，在1962年为Robert Floyd发表。然而，在1959年，相同的算法已经被Bernard Roy发表。同年，Stephen Warshell发表了找到传递闭包的这个算法。三人被认定为独立发现这个算法。 该算法的主要作用是将常规算法的时间复杂度由Θ(n<sup>4)降低到了Θ(n</sup>3). 本文中，我们出于寻找Roy、Warshall的算法被认定为独立发现的的缘由对两人的算法进行分析。</p>
 <p>二、分析与讨论 1. Warshall 算法 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">procedure Warshall (MR : n × n zero–one matrix)</span><br><span class="line">W : = MR</span><br><span class="line">for k : = 1 to n</span><br><span class="line">   for i : = 1 to n</span><br><span class="line">      for j : = 1 to n</span><br><span class="line">         w_ij : = w_ij ∨ (w_ik)∧ w_kj )</span><br><span class="line">return W&#123;W = [w_ij] is MR∗&#125;</span><br></pre></td></tr></table></figure> <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -212,23 +205,9 @@ Warshell发表了找到传递闭包的这个算法。三人被认定为独立发
                 </div>
                 <div class="image-caption">essay</div>
             </figure>
-<p>三、结论 虽然Bernard Roy 提出该算法在Robert Floyd和Stephen
-Warshall之前，但他论文的主体依旧是以对图的定义为主，而Warshall
-和Floyd两人同年发表了成文的简单算法。所以，可能这是一部分影响单独发表的原因。</p>
-<p>四、展望
-根据[1]，我们知道了Roy的传递闭包计算方法是采用了Kleene已经提出了的深层技术，而Warshall和Floyd则是采用了第三个参数。不过基于时间以及水平原因，并没有能够找到这两者之间所说的深层技术，也并没能确定是否Warshall和Floyd所采用的关键技术是在于中间点k。因而，可以沿这个方向继续接下去进行查询发掘。</p>
-<p>五、参考文献 [1]. Jeff Erickson, Kleene-Roy-Floyd-Warshall.
-[https://courses.engr.illinois.edu/cs498dl1/sp2015/notes/22-apsp.pdf]
-[2]. Warshall, Stephen (January 1962). "A theorem on Boolean matrices".
-Journal of the ACM 9 (1): 11–12. doi:10.1145/321105.321107 . [3]. Roy,
-B. "Transitivité et connexité." C. R. Acad. Sci. Paris 249, 216-218,
-1959. [http://gallica.bnf.fr/ark:/12148/bpt6k3201c] [4]. Bouyssou, D.,
-Jacquet-Lagrèze, E., Perny, P., Slowiński, R., Vanderpooten, D., Vincke,
-P,《Aiding Decisions with Multiple Criteria: Essays in Honor of Bernard
-Roy》,24,2001. [5]. Wikipedia.
-[https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm] [6].
-Purdom, Paul, Jr. “A Transitive Closure Algorithm.” Bit 10, no. 1 (March
-1970): 76–94. doi:10.1007/BF01940892.</p>
+<p>三、结论 虽然Bernard Roy 提出该算法在Robert Floyd和Stephen Warshall之前，但他论文的主体依旧是以对图的定义为主，而Warshall 和Floyd两人同年发表了成文的简单算法。所以，可能这是一部分影响单独发表的原因。</p>
+<p>四、展望 根据[1]，我们知道了Roy的传递闭包计算方法是采用了Kleene已经提出了的深层技术，而Warshall和Floyd则是采用了第三个参数。不过基于时间以及水平原因，并没有能够找到这两者之间所说的深层技术，也并没能确定是否Warshall和Floyd所采用的关键技术是在于中间点k。因而，可以沿这个方向继续接下去进行查询发掘。</p>
+<p>五、参考文献 [1]. Jeff Erickson, Kleene-Roy-Floyd-Warshall. [https://courses.engr.illinois.edu/cs498dl1/sp2015/notes/22-apsp.pdf] [2]. Warshall, Stephen (January 1962). "A theorem on Boolean matrices". Journal of the ACM 9 (1): 11–12. doi:10.1145/321105.321107 . [3]. Roy, B. "Transitivité et connexité." C. R. Acad. Sci. Paris 249, 216-218, 1959. [http://gallica.bnf.fr/ark:/12148/bpt6k3201c] [4]. Bouyssou, D., Jacquet-Lagrèze, E., Perny, P., Slowiński, R., Vanderpooten, D., Vincke, P,《Aiding Decisions with Multiple Criteria: Essays in Honor of Bernard Roy》,24,2001. [5]. Wikipedia. [https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm] [6]. Purdom, Paul, Jr. “A Transitive Closure Algorithm.” Bit 10, no. 1 (March 1970): 76–94. doi:10.1007/BF01940892.</p>
 
         </div>
 
@@ -237,7 +216,7 @@ Purdom, Paul, Jr. “A Transitive Closure Algorithm.” Bit 10, no. 1 (March
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.889Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.830Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="之前没有用nvm管理node版本，导致node升级到9.5以后，hexo里的依赖都不能正常运作了，单独一个个升级依赖没能成功解决bug.">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-02-16T18:14:16.000Z">
-<meta property="article:modified_time" content="2018-02-24T08:00:00.000Z">
+<meta property="article:published_time" content="2018-02-17T02:14:16.000Z">
+<meta property="article:modified_time" content="2018-02-24T16:00:00.000Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="hexo">
 <meta property="article:tag" content="node">
@@ -139,7 +139,7 @@
         <h1 class="title">update hexo node9 and theme next</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-02-16T18:14:16.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-02-17T02:14:16.000Z" itemprop="datePublished" class="page-time">
   2018-02-17
 </time>
 
@@ -165,7 +165,7 @@
     <div class="post-card">
         <h1 class="post-card-title">update hexo node9 and theme next</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-02-17 02:14:16" datetime="2018-02-16T18:14:16.000Z"  itemprop="datePublished">2018-02-17</time>
+            <time class="post-time" title="2018-02-17 02:14:16" datetime="2018-02-17T02:14:16.000Z"  itemprop="datePublished">2018-02-17</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -182,28 +182,23 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             <p>之前没有用nvm管理node版本，导致node升级到9.5以后，hexo里的依赖都不能正常运作了，单独一个个升级依赖没能成功解决bug.</p>
 <span id="more"></span>
-<p>在hexo里已经支持了update时间，在模板里添加updated即可，在next
-主题配置里，修改post_meta为true即可</p>
+<p>在hexo里已经支持了update时间，在模板里添加updated即可，在next 主题配置里，修改post_meta为true即可</p>
 <p><strong>参考</strong> <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/front-matter.html">front-matter</a></p>
 <hr>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Error: write EPIPE</span><br><span class="line">at _errnoException (util.js)</span><br><span class="line"></span><br><span class="line">at WriteWrap.afterWrite [as oncomplete] (net.js)</span><br></pre></td></tr></table></figure>
-<p>遇到这个错误，重装好久，也没解决，在<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues/2913">#2913</a>里找到，更新了hexo-renderer-pandoc就no
-error了。</p>
+<p>遇到这个错误，重装好久，也没解决，在<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues/2913">#2913</a>里找到，更新了hexo-renderer-pandoc就no error了。</p>
 <hr>
 <p>中途，在一个个卸载plugin判断错误来源，发现卸载了hexo-renderer-stylus之后，就无法生成css样式了。</p>
 <hr>
 <p>遭遇白屏问题，似乎字号颜色渲染问题？只有下方的copyright可见，内容虽然可以点击，但是不可见，全选也看不到文字颜色反转（所以其实也不算字体颜色问题？）</p>
 <p>似乎这是一个next久远的bug.</p>
-<p>在network看到是fancybox.js的加载404，在console里看到的是config is not
-defined, next is not defined，导致后续无法识别.</p>
+<p>在network看到是fancybox.js的加载404，在console里看到的是config is not defined, next is not defined，导致后续无法识别.</p>
 <p>根据<a target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next/issues/1896">这条issue</a>关闭了motion就可以正常显示了。</p>
 <hr>
 <p>No layout问题。</p>
-<p>为了升级next，发现_config.yml是一个非常影响的文件，官方说hexo3支持了data
-file功能，可以将站点和主题config都放到到_data/next.yml中，在翻译的文档中都没有提到一点，原始的站点配置不能删除</p>
+<p>为了升级next，发现_config.yml是一个非常影响的文件，官方说hexo3支持了data file功能，可以将站点和主题config都放到到_data/next.yml中，在翻译的文档中都没有提到一点，原始的站点配置不能删除</p>
 <blockquote>
-<p>Then, in main site's hexo/_config.yml need to define theme: next
-option (and if needed, source_dir: source).</p>
+<p>Then, in main site's hexo/_config.yml need to define theme: next option (and if needed, source_dir: source).</p>
 </blockquote>
 <p><a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/DATA-FILES.md">来源</a></p>
 <p>弄了好久……，恢复站点配置文件之后，data-file就生效了</p>
@@ -220,7 +215,7 @@ option (and if needed, source_dir: source).</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2018-02-24T08:00:00.000Z" itemprop="dateUpdated">2018-02-24 16:00:00</time>
+    最后更新时间：<time datetime="2018-02-24T16:00:00.000Z" itemprop="dateUpdated">2018-02-24 16:00:00</time>
 </span><br>
 
 

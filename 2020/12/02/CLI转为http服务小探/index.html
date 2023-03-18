@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="背景 需要将现成的CLI转换为web服务的HTTP接口. 这个我记得之前看到哪篇文章推荐过, 但是一时想不起来了 想了想关键词  CLI command line http server web  终于把web这个带上之后, 用CLI to web server终于搜到一个相近的 w2c 这个python 程序  dongyx&#x2F;c2w: convert CLI programs to Web se">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-01T17:29:22.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.890Z">
+<meta property="article:published_time" content="2020-12-02T01:29:22.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.730Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="CLI">
 <meta property="article:tag" content="http">
@@ -140,7 +140,7 @@
         <h1 class="title">CLI转为http服务小探</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-12-01T17:29:22.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-12-02T01:29:22.000Z" itemprop="datePublished" class="page-time">
   2020-12-02
 </time>
 
@@ -173,7 +173,7 @@
     <div class="post-card">
         <h1 class="post-card-title">CLI转为http服务小探</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-12-02 01:29:22" datetime="2020-12-01T17:29:22.000Z"  itemprop="datePublished">2020-12-02</time>
+            <time class="post-time" title="2020-12-02 01:29:22" datetime="2020-12-02T01:29:22.000Z"  itemprop="datePublished">2020-12-02</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -202,93 +202,64 @@
 <li>终于把web这个带上之后, 用CLI to web server终于搜到一个相近的</li>
 <li>w2c 这个python 程序
 <ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/dongyx/c2w">dongyx/c2w: convert CLI
-programs to Web services</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dongyx/c2w">dongyx/c2w: convert CLI programs to Web services</a></li>
 </ul></li>
-<li>然后用这个里的描述, google终于找到了相似语义的, 我少了program,
-导致CLI应该被理解成了终端输入参数的web服务, 也就是常见的web服务...</li>
+<li>然后用这个里的描述, google终于找到了相似语义的, 我少了program, 导致CLI应该被理解成了终端输入参数的web服务, 也就是常见的web服务...</li>
 <li>converts a CLI program to a Web service
 <ul>
-<li><a target="_blank" rel="noopener" href="https://nordicapis.com/the-return-of-the-cli-clis-being-used-by-api-related-companies/">The
-Return of the CLI: CLIs Being Used by API-Related Companies | Nordic
-APIs |</a>
+<li><a target="_blank" rel="noopener" href="https://nordicapis.com/the-return-of-the-cli-clis-being-used-by-api-related-companies/">The Return of the CLI: CLIs Being Used by API-Related Companies | Nordic APIs |</a>
 <ul>
 <li>初看没看懂</li>
 </ul></li>
-<li><a target="_blank" rel="noopener" href="https://www.codeproject.com/Questions/1129689/How-can-I-convert-my-console-application-to-a-web">How
-can I convert my console application to a web service using visual
-studio 2013 - CodeProject</a>
+<li><a target="_blank" rel="noopener" href="https://www.codeproject.com/Questions/1129689/How-can-I-convert-my-console-application-to-a-web">How can I convert my console application to a web service using visual studio 2013 - CodeProject</a>
 <ul>
 <li>hhh, 一个咨询解决方案的, 问题一致.</li>
 <li>只不过我实现了一套, 现在想看看有没有更好的实现方案</li>
 </ul></li>
 </ul></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/adamkewley/jobson">adamkewley/jobson: A
-platform for transforming command-line applications into a job
-service.</a>
+<li><a target="_blank" rel="noopener" href="https://github.com/adamkewley/jobson">adamkewley/jobson: A platform for transforming command-line applications into a job service.</a>
 <ul>
 <li>这个东西似乎是转换成任务, 结果不知道有没有返回的地方</li>
 </ul></li>
-<li><a target="_blank" rel="noopener" href="https://www.reddit.com/r/linux/comments/i8p2fe/foss_convert_any_command_line_toolservice_into_a/">(1)
-[FOSS] Convert any command line tool/service into a asynchronous REST
-API. [Python] : linux</a>
+<li><a target="_blank" rel="noopener" href="https://www.reddit.com/r/linux/comments/i8p2fe/foss_convert_any_command_line_toolservice_into_a/">(1) [FOSS] Convert any command line tool/service into a asynchronous REST API. [Python] : linux</a>
 <ul>
 <li>又拿到一个关键词, shell2http</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/Eshaan7/Flask-Shell2HTTP">Eshaan7/Flask-Shell2HTTP:
-Execute shell commands via HTTP server (via flask's endpoints).</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/adnanh/webhook">adnanh/webhook: webhook
-is a lightweight incoming webhook server to run shell commands</a>
+<li><a target="_blank" rel="noopener" href="https://github.com/Eshaan7/Flask-Shell2HTTP">Eshaan7/Flask-Shell2HTTP: Execute shell commands via HTTP server (via flask's endpoints).</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/adnanh/webhook">adnanh/webhook: webhook is a lightweight incoming webhook server to run shell commands</a>
 <ul>
 <li>这个比较牛看起来, Star特别高, go实现</li>
 </ul></li>
 </ul></li>
-<li><a target="_blank" rel="noopener" href="http://techfeast-hiranya.blogspot.com/2015/06/expose-any-shell-command-or-script-as.html">The
-Tech Feast: Expose Any Shell Command or Script as a Web API</a>
+<li><a target="_blank" rel="noopener" href="http://techfeast-hiranya.blogspot.com/2015/06/expose-any-shell-command-or-script-as.html">The Tech Feast: Expose Any Shell Command or Script as a Web API</a>
 <ul>
 <li>bash2http, 和上面的shell2http差不多</li>
 </ul></li>
 </ul></li>
 <li>shell 2 http
 <ul>
-<li>remote sh这个工具看起来也不错, 只是在页面填写bash 脚本,
-然后指定服务器执行, 等同于web终端的感觉.</li>
+<li>remote sh这个工具看起来也不错, 只是在页面填写bash 脚本, 然后指定服务器执行, 等同于web终端的感觉.</li>
 </ul></li>
 <li>command web server</li>
 <li>expose shell scripts as web services
 <ul>
 <li>又一个关键词 API</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/lukasmartinelli/nigit">lukasmartinelli/nigit:
-Web server that wraps around programs and shell scripts and exposes them
-as API</a>
+<li><a target="_blank" rel="noopener" href="https://github.com/lukasmartinelli/nigit">lukasmartinelli/nigit: Web server that wraps around programs and shell scripts and exposes them as API</a>
 <ul>
 <li>wrap command to http API</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/phonkee/goexpose">phonkee/goexpose:
-Expose shellscripts, postgres queries, redis commands and other as rest
-server endpoints</a>
+<li><a target="_blank" rel="noopener" href="https://github.com/phonkee/goexpose">phonkee/goexpose: Expose shellscripts, postgres queries, redis commands and other as rest server endpoints</a>
 <ul>
 <li>上一个开发者不维护了, 推荐用这个</li>
 </ul></li>
 </ul></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/Andreweweith/Web-Based-Remote-Command-Server">Andreweweith/Web-Based-Remote-Command-Server:
-Web server and interface to remotely execute Linux shell commands and
-display the results</a>
+<li><a target="_blank" rel="noopener" href="https://github.com/Andreweweith/Web-Based-Remote-Command-Server">Andreweweith/Web-Based-Remote-Command-Server: Web server and interface to remotely execute Linux shell commands and display the results</a>
 <ul>
 <li>这个是C实现的一个http上输入命令底层执行,然后返回结果的那种.</li>
 </ul></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/bytestream/Web-Server">bytestream/Web-Server:
-During my time at the University of Miami whilst studying CSC524 -
-Computer Networks I was also asked to build a basic web server using
-pure C. The web server can be used to process GET and POST requests
-whereby GET requests will serve a static file and POST requests with the
-addition of POST data will execute the file as if it were CGI and pipe
-the output back to the client. Again for security reasons it only serves
-files in the current working directory, and will also only execute shell
-programs.</a>
+<li><a target="_blank" rel="noopener" href="https://github.com/bytestream/Web-Server">bytestream/Web-Server: During my time at the University of Miami whilst studying CSC524 - Computer Networks I was also asked to build a basic web server using pure C. The web server can be used to process GET and POST requests whereby GET requests will serve a static file and POST requests with the addition of POST data will execute the file as if it were CGI and pipe the output back to the client. Again for security reasons it only serves files in the current working directory, and will also only execute shell programs.</a>
 <ul>
 <li>别人的一个大作业的成果.也是C实现的一个把shell通过API暴露.</li>
 </ul></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/dotnet/command-line-api">dotnet/command-line-api:
-Command line parsing, invocation, and rendering of terminal output.</a>
+<li><a target="_blank" rel="noopener" href="https://github.com/dotnet/command-line-api">dotnet/command-line-api: Command line parsing, invocation, and rendering of terminal output.</a>
 <ul>
 <li>.Net实现的, 感觉我的实现架构比较贴近这个</li>
 </ul></li>
@@ -299,20 +270,13 @@ Command line parsing, invocation, and rendering of terminal output.</a>
 <ul>
 <li>看起来有点像需求的?</li>
 </ul></li>
-<li><a target="_blank" rel="noopener" href="https://www.genivia.com/dev.html">Genivia - Getting Started
-with C/C++ XML Data Bindings and XML SOAP/REST Web Services</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liushui-sky/p/9723397.html">gsoap使用总结
-- 苦涩的茶 - 博客园</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.genivia.com/dev.html">Genivia - Getting Started with C/C++ XML Data Bindings and XML SOAP/REST Web Services</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liushui-sky/p/9723397.html">gsoap使用总结 - 苦涩的茶 - 博客园</a></li>
 <li>WebService服务基本概念：就是一个应用程序，它向外界暴露出一个可以通过web进行调用的API，是分布式的服务组件。本质上就是要以标准的形式实现企业内外各个不同服务系统之间的互调和集成。</li>
-<li>所以以前其实这个实现形式叫做webservice. 只是我们不止是函数,
-包括命令.</li>
-<li>所以这里其实针对静态语言以前的思路是实现一个DSL,
-然后基于编写的DSL生成可编译的代码, 然后再编译出可执行程序, 对,
-针对静态语言,其实这也是个思路, 使用yacc等词法分析器?<br>
+<li>所以以前其实这个实现形式叫做webservice. 只是我们不止是函数, 包括命令.</li>
+<li>所以这里其实针对静态语言以前的思路是实现一个DSL, 然后基于编写的DSL生成可编译的代码, 然后再编译出可执行程序, 对, 针对静态语言,其实这也是个思路, 使用yacc等词法分析器?<br>
 </li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2240258/how-to-wrap-a-c-library-so-that-it-can-be-called-from-a-web-service">How
-to wrap a C library so that it can be called from a web service - Stack
-Overflow</a>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2240258/how-to-wrap-a-c-library-so-that-it-can-be-called-from-a-web-service">How to wrap a C library so that it can be called from a web service - Stack Overflow</a>
 <ul>
 <li>这里也提到了soaplib</li>
 <li>mod-xmlrpc2</li>
@@ -322,13 +286,11 @@ Overflow</a>
 <ul>
 <li>command webservice
 <ul>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3574127/consuming-web-service-from-c-cli">c#
-- Consuming Web Service from C++/CLI - Stack Overflow</a>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3574127/consuming-web-service-from-c-cli">c# - Consuming Web Service from C++/CLI - Stack Overflow</a>
 <ul>
 <li>emm.</li>
 </ul></li>
-<li><a target="_blank" rel="noopener" href="http://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc31727.0600/html/easws/CHDJGCDJ.htm">SyBooks
-Online</a></li>
+<li><a target="_blank" rel="noopener" href="http://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc31727.0600/html/easws/CHDJGCDJ.htm">SyBooks Online</a></li>
 </ul></li>
 </ul></li>
 <li>proxy 忽然想到, proxy其实和wrap在这个场景里是同义词.</li>
@@ -352,25 +314,18 @@ Online</a></li>
 </ul>
 <h2 id="思路">思路</h2>
 <ul>
-<li>针对支持运行时元编程能力的语言(如python, go), 和我实现思路基本一致,
-编写一套配置或叫做DSL, 运行时加载然后动态生成函数等.</li>
+<li>针对支持运行时元编程能力的语言(如python, go), 和我实现思路基本一致, 编写一套配置或叫做DSL, 运行时加载然后动态生成函数等.</li>
 <li>针对不具有上述能力的语言, 有两种思路
 <ul>
 <li>参数传入, 核心调度逻辑的函数基本只有一个
 <ul>
 <li>如果是CLI, 则作为参数传入, 有一个统一system调用的函数封装
 <ul>
-<li>如果是前置和后置逻辑需要用函数处理,
-则像下面一样用字符串找到符号表里的函数指针.</li>
+<li>如果是前置和后置逻辑需要用函数处理, 则像下面一样用字符串找到符号表里的函数指针.</li>
 </ul></li>
-<li>如果是函数,
-我想的就是通过动态库的<code>dlysm</code>或者<code>libeffi</code>来根据配置中填写的函数名,
-去进行调度.</li>
+<li>如果是函数, 我想的就是通过动态库的<code>dlysm</code>或者<code>libeffi</code>来根据配置中填写的函数名, 去进行调度.</li>
 </ul></li>
-<li>编写一套DSL, 在进入编译前, 根据编写的DSL生成一套代码,
-这样就支持各式各样的函数了, 就是定制性维护可能代码量膨胀的较快?
-gsoap和soaplib应该是这套思路吧, 好像有点像是10年前的思路,
-看snmp代码的时候也是这种思路, 从mib生成代码.
+<li>编写一套DSL, 在进入编译前, 根据编写的DSL生成一套代码, 这样就支持各式各样的函数了, 就是定制性维护可能代码量膨胀的较快? gsoap和soaplib应该是这套思路吧, 好像有点像是10年前的思路, 看snmp代码的时候也是这种思路, 从mib生成代码.
 <ul>
 <li>这个的实现方式应该就多种多样了.</li>
 </ul></li>
@@ -384,7 +339,7 @@ gsoap和soaplib应该是这套思路吧, 好像有点像是10年前的思路,
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.890Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.730Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

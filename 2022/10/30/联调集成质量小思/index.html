@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="问题背景 写本文的背景, 主要来源于项目开发过程中的一些问题, 属于是十分影响进度的那类.  联调期间发现一些与约定接口文档不同问题, 导致存在的重新联调.  变更比例相对较大.  业务的开发&#x2F;调试需要等待平台上游功能开发完.  如OS组和集群组的平台功能完毕后, 依赖这俩部分提供的基础系统与数据库的业务组件方能开工. 这部分过程中, 其他组其实无法投入这部分的开发. 但是联调又基本就是同一时间各">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-10-29T17:01:47.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.864Z">
+<meta property="article:published_time" content="2022-10-30T01:01:47.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="项目">
 <meta property="article:tag" content="流程">
@@ -139,7 +139,7 @@
         <h1 class="title">联调集成质量小思</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-10-29T17:01:47.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-10-30T01:01:47.000Z" itemprop="datePublished" class="page-time">
   2022-10-30
 </time>
 
@@ -161,12 +161,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">问题背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%97%AE%E9%A2%98%E7%90%86%E8%A7%A3"><span class="post-toc-number">2.</span> <span class="post-toc-text">问题理解</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%9C%80%E6%B1%82%E8%AE%BE%E8%AE%A1%E5%8F%98%E6%9B%B4"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">1. 需求&#x2F;设计变更</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9F%BA%E4%BA%8E%E5%B9%B3%E5%8F%B0%E7%9A%84%E4%B8%9A%E5%8A%A1%E5%8A%9F%E8%83%BD%E7%9A%84%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2.
-基于平台的业务功能的开发过程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BB%84%E8%A3%85%E5%BC%80%E6%BA%90%E7%BB%84%E4%BB%B6%E6%97%B6%E7%9A%84%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">3. 组装开源组件时的集成测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%83%A8%E7%BD%B2%E7%B1%BB%E4%BB%A3%E7%A0%81"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">部署类代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#io%E8%B7%AF%E5%BE%84%E7%9A%84%E6%A0%B8%E5%BF%83%E9%80%BB%E8%BE%91%E4%BB%A3%E7%A0%81"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">IO路径的核心逻辑代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%AE%A1%E7%90%86%E7%9A%84web%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BB%A3%E7%A0%81"><span class="post-toc-number">2.3.3.</span> <span class="post-toc-text">管理的web前后端代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%90%8E%E7%AB%AF"><span class="post-toc-number">2.3.3.1.</span> <span class="post-toc-text">后端</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%89%8D%E7%AB%AF"><span class="post-toc-number">2.3.3.2.</span> <span class="post-toc-text">前端</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%97%89%E7%94%B1%E6%96%B0%E7%89%88%E6%9C%AC%E9%9C%80%E6%B1%82-%E5%90%8C%E6%97%B6%E8%BF%9B%E8%A1%8C%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">4. 藉由新版本需求,
-同时进行功能开发</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E6%B4%BE%E5%8F%91-%E4%B8%8E-%E5%88%86%E6%89%B9%E6%AC%A1%E6%B4%BE%E5%8F%91"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">5. 多任务同时派发 与
-分批次派发</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#todo"><span class="post-toc-number">3.</span> <span class="post-toc-text">TODO</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BC%81%E4%B8%9A%E9%9B%86%E6%88%90%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E4%B8%AD%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E9%A1%B9%E7%9B%AE%E5%BB%B6%E6%9C%9F%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%E5%9C%A8%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E5%A6%82%E4%BD%95%E5%BA%94%E7%94%A8_%E5%81%9C%E6%AD%A2%E9%87%8D%E6%9E%84%E7%9A%84%E5%8D%9A%E5%AE%A2-csdn%E5%8D%9A%E5%AE%A2"><span class="post-toc-number">4.</span> <span class="post-toc-text">企业集成[^【网站架构】中大型网站如何防止项目延期？敏捷开发在实际项目如何应用？\_停止重构的博客\-CSDN博客]</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#openeuler"><span class="post-toc-number">5.</span> <span class="post-toc-text">OpenEuler</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A5%E5%B8%B8%E6%9E%84%E5%BB%BA%E6%B5%8B%E8%AF%95%E8%8C%83%E5%9B%B4"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">日常构建测试范围</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#alpha%E7%89%88%E6%9C%AC"><span class="post-toc-number">5.1.1.</span> <span class="post-toc-text">alpha版本</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#beta%E7%89%88%E6%9C%AC"><span class="post-toc-number">5.1.2.</span> <span class="post-toc-text">beta版本</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#release"><span class="post-toc-number">5.1.3.</span> <span class="post-toc-text">release</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85-%E6%B5%8B%E8%AF%95%E6%A0%87%E5%87%86"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">软件包 测试标准</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#todo%E6%BD%9C%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98-%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E9%82%A3%E7%A7%8D%E4%BE%9D%E8%B5%96%E8%BE%83%E5%A4%9A%E7%9A%84%E5%8C%85-%E5%A6%82ceph-%E6%9A%82%E6%9C%AA%E6%89%BE%E5%88%B0"><span class="post-toc-number">5.2.1.</span> <span class="post-toc-text">TODO:潜在的问题,
-如何解决那种依赖较多的包? 如ceph? 暂未找到</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">测试代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#openeulerintegration-test---%E7%A0%81%E4%BA%91---%E5%BC%80%E6%BA%90%E4%B8%AD%E5%9B%BD-%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E5%8C%85%E5%91%BD%E4%BB%A4%E7%9A%84%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95"><span class="post-toc-number">5.3.1.</span> <span class="post-toc-text">openEuler&#x2F;integration-test
-- 码云 - 开源中国 系统基础包&#x2F;命令的集成测试</span></a></li></ol></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">问题背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%97%AE%E9%A2%98%E7%90%86%E8%A7%A3"><span class="post-toc-number">2.</span> <span class="post-toc-text">问题理解</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%9C%80%E6%B1%82%E8%AE%BE%E8%AE%A1%E5%8F%98%E6%9B%B4"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">1. 需求&#x2F;设计变更</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9F%BA%E4%BA%8E%E5%B9%B3%E5%8F%B0%E7%9A%84%E4%B8%9A%E5%8A%A1%E5%8A%9F%E8%83%BD%E7%9A%84%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2. 基于平台的业务功能的开发过程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BB%84%E8%A3%85%E5%BC%80%E6%BA%90%E7%BB%84%E4%BB%B6%E6%97%B6%E7%9A%84%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">3. 组装开源组件时的集成测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%83%A8%E7%BD%B2%E7%B1%BB%E4%BB%A3%E7%A0%81"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">部署类代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#io%E8%B7%AF%E5%BE%84%E7%9A%84%E6%A0%B8%E5%BF%83%E9%80%BB%E8%BE%91%E4%BB%A3%E7%A0%81"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">IO路径的核心逻辑代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%AE%A1%E7%90%86%E7%9A%84web%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BB%A3%E7%A0%81"><span class="post-toc-number">2.3.3.</span> <span class="post-toc-text">管理的web前后端代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%90%8E%E7%AB%AF"><span class="post-toc-number">2.3.3.1.</span> <span class="post-toc-text">后端</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%89%8D%E7%AB%AF"><span class="post-toc-number">2.3.3.2.</span> <span class="post-toc-text">前端</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%97%89%E7%94%B1%E6%96%B0%E7%89%88%E6%9C%AC%E9%9C%80%E6%B1%82-%E5%90%8C%E6%97%B6%E8%BF%9B%E8%A1%8C%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">4. 藉由新版本需求, 同时进行功能开发</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E6%B4%BE%E5%8F%91-%E4%B8%8E-%E5%88%86%E6%89%B9%E6%AC%A1%E6%B4%BE%E5%8F%91"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">5. 多任务同时派发 与 分批次派发</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#todo"><span class="post-toc-number">3.</span> <span class="post-toc-text">TODO</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BC%81%E4%B8%9A%E9%9B%86%E6%88%90%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E4%B8%AD%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E9%A1%B9%E7%9B%AE%E5%BB%B6%E6%9C%9F%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%E5%9C%A8%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E5%A6%82%E4%BD%95%E5%BA%94%E7%94%A8_%E5%81%9C%E6%AD%A2%E9%87%8D%E6%9E%84%E7%9A%84%E5%8D%9A%E5%AE%A2-csdn%E5%8D%9A%E5%AE%A2"><span class="post-toc-number">4.</span> <span class="post-toc-text">企业集成[^【网站架构】中大型网站如何防止项目延期？敏捷开发在实际项目如何应用？\_停止重构的博客\-CSDN博客]</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#openeuler"><span class="post-toc-number">5.</span> <span class="post-toc-text">OpenEuler</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A5%E5%B8%B8%E6%9E%84%E5%BB%BA%E6%B5%8B%E8%AF%95%E8%8C%83%E5%9B%B4"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">日常构建测试范围</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#alpha%E7%89%88%E6%9C%AC"><span class="post-toc-number">5.1.1.</span> <span class="post-toc-text">alpha版本</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#beta%E7%89%88%E6%9C%AC"><span class="post-toc-number">5.1.2.</span> <span class="post-toc-text">beta版本</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#release"><span class="post-toc-number">5.1.3.</span> <span class="post-toc-text">release</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85-%E6%B5%8B%E8%AF%95%E6%A0%87%E5%87%86"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">软件包 测试标准</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#todo%E6%BD%9C%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98-%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E9%82%A3%E7%A7%8D%E4%BE%9D%E8%B5%96%E8%BE%83%E5%A4%9A%E7%9A%84%E5%8C%85-%E5%A6%82ceph-%E6%9A%82%E6%9C%AA%E6%89%BE%E5%88%B0"><span class="post-toc-number">5.2.1.</span> <span class="post-toc-text">TODO:潜在的问题, 如何解决那种依赖较多的包? 如ceph? 暂未找到</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">测试代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#openeulerintegration-test---%E7%A0%81%E4%BA%91---%E5%BC%80%E6%BA%90%E4%B8%AD%E5%9B%BD-%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E5%8C%85%E5%91%BD%E4%BB%A4%E7%9A%84%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95"><span class="post-toc-number">5.3.1.</span> <span class="post-toc-text">openEuler&#x2F;integration-test - 码云 - 开源中国 系统基础包&#x2F;命令的集成测试</span></a></li></ol></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -177,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">联调集成质量小思</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-10-30 01:01:47" datetime="2022-10-29T17:01:47.000Z"  itemprop="datePublished">2022-10-30</time>
+            <time class="post-time" title="2022-10-30 01:01:47" datetime="2022-10-30T01:01:47.000Z"  itemprop="datePublished">2022-10-30</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -193,8 +188,7 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h1 id="问题背景">问题背景</h1>
-<p>写本文的背景, 主要来源于项目开发过程中的一些问题,
-属于是十分影响进度的那类.</p>
+<p>写本文的背景, 主要来源于项目开发过程中的一些问题, 属于是十分影响进度的那类.</p>
 <ol type="1">
 <li>联调期间发现一些与约定接口文档不同问题, 导致存在的重新联调.
 <ol type="1">
@@ -202,14 +196,11 @@
 </ol></li>
 <li>业务的开发/调试需要等待平台上游功能开发完.
 <ol type="1">
-<li>如OS组和集群组的平台功能完毕后,
-依赖这俩部分提供的基础系统与数据库的业务组件方能开工.</li>
-<li>这部分过程中, 其他组其实无法投入这部分的开发.
-但是联调又基本就是同一时间各个组之间开展的.</li>
+<li>如OS组和集群组的平台功能完毕后, 依赖这俩部分提供的基础系统与数据库的业务组件方能开工.</li>
+<li>这部分过程中, 其他组其实无法投入这部分的开发. 但是联调又基本就是同一时间各个组之间开展的.</li>
 </ol></li>
 <li>ceph与业务层SAN/NAS之间的联动测试. SAN/NAS依赖ceph的实施能力</li>
-<li>新架构下, 尝试通过更高的功能需求, 对老代码进行重构.
-所需耗时就不单纯是开发的时间了.</li>
+<li>新架构下, 尝试通过更高的功能需求, 对老代码进行重构. 所需耗时就不单纯是开发的时间了.</li>
 </ol>
 <h1 id="问题理解">问题理解</h1>
 <h2 id="需求设计变更">1. 需求/设计变更</h2>
@@ -219,133 +210,65 @@
 <li>接口交互, 异常考虑周全</li>
 <li>清楚代码的历史包袱, 准备/沟通好变更.</li>
 </ol>
-<p>这里倒是有个需要注意的, 模块与设计应当是匹配的. 后续其实迭代模块,
-这些设计也是应该保留下来的. 仅在项目流程中出现一次,
-后续这个设计就不再维护迭代, 可能不太好.</p>
-<h2 id="基于平台的业务功能的开发过程">2.
-基于平台的业务功能的开发过程</h2>
-<p>一个新增业务功能, 需要平台提供新功能支持,
-而后业务部门方可开始开发.</p>
-<p>目前采用的方式是,
-业务小组的该功能相关的负责人会参与平台部门提供的业务功能配置的填写.
-需求方面, 参与度较少. 主要还是架构师与平台功能组澄清功能.</p>
-<p>从这个角度, 业务小组在这个开发过程的参与, 一般出现在平台功能组输出了
-规格文档, 平台功能组需要各业务组开始使用, 调试. 然后联调阶段.</p>
-<p>然后在联调阶段, 业务团队会发现平台团队的功能/环境存在的问题,
-此时平台方面开始处理修复. 然后继续联调.
-按照缺陷单和最终的输出上肯定是一样的. 但是是否可能通过分批上车,
-让平台功能的稳定性也能通过完整的闭环流程予以通过呢?</p>
-<p>这种情况下, 业务部门此时是否更适合作为需求方?
-而不是单纯的平台部门的联调方?</p>
-<p>从上面的描述来看, 其实一开始就参与也可以. 但是, 实际执行过程中,
-业务小组实际上在一开始阶段没有怎么投入人力, 但是基于项目管理的统计时,
-由于需求并不区分平台功能, 还是业务功能,
-此类需求最终统计人力资源消耗时其实也是将业务团队在一开始纳入了考量的.
-而实际, 这个功能是初期平台功能组投入, 后期各业务组投入. 所以这部分,
-可能按照[^## 5. 多任务同时派发 与 分批次派发]拆解成分批次的需求,
-可能更为恰当?</p>
-<p>TODO: 是否平台功能与业务功能, 是需要拆分的? 需求方面也应该区分对待?
-简单搜了下, 没搜到此类的区分. 在多团队组织中,
-是否确实是有必要区分处理?</p>
+<p>这里倒是有个需要注意的, 模块与设计应当是匹配的. 后续其实迭代模块, 这些设计也是应该保留下来的. 仅在项目流程中出现一次, 后续这个设计就不再维护迭代, 可能不太好.</p>
+<h2 id="基于平台的业务功能的开发过程">2. 基于平台的业务功能的开发过程</h2>
+<p>一个新增业务功能, 需要平台提供新功能支持, 而后业务部门方可开始开发.</p>
+<p>目前采用的方式是, 业务小组的该功能相关的负责人会参与平台部门提供的业务功能配置的填写. 需求方面, 参与度较少. 主要还是架构师与平台功能组澄清功能.</p>
+<p>从这个角度, 业务小组在这个开发过程的参与, 一般出现在平台功能组输出了 规格文档, 平台功能组需要各业务组开始使用, 调试. 然后联调阶段.</p>
+<p>然后在联调阶段, 业务团队会发现平台团队的功能/环境存在的问题, 此时平台方面开始处理修复. 然后继续联调. 按照缺陷单和最终的输出上肯定是一样的. 但是是否可能通过分批上车, 让平台功能的稳定性也能通过完整的闭环流程予以通过呢?</p>
+<p>这种情况下, 业务部门此时是否更适合作为需求方? 而不是单纯的平台部门的联调方?</p>
+<p>从上面的描述来看, 其实一开始就参与也可以. 但是, 实际执行过程中, 业务小组实际上在一开始阶段没有怎么投入人力, 但是基于项目管理的统计时, 由于需求并不区分平台功能, 还是业务功能, 此类需求最终统计人力资源消耗时其实也是将业务团队在一开始纳入了考量的. 而实际, 这个功能是初期平台功能组投入, 后期各业务组投入. 所以这部分, 可能按照[^## 5. 多任务同时派发 与 分批次派发]拆解成分批次的需求, 可能更为恰当?</p>
+<p>TODO: 是否平台功能与业务功能, 是需要拆分的? 需求方面也应该区分对待? 简单搜了下, 没搜到此类的区分. 在多团队组织中, 是否确实是有必要区分处理?</p>
 <h2 id="组装开源组件时的集成测试">3. 组装开源组件时的集成测试</h2>
 <h3 id="部署类代码">部署类代码</h3>
-<p>ceph产品的<code>cluster-&gt;osd-&gt;pool-&gt;rbd|cephfs|rgw-&gt;iSCSi|nfs|samba</code>的部署就是一个链式关系,
-这部分角度上来说, 关键是开源组件之间的接口依赖关系的联调测试的问题.</p>
-<p>根据ceph-ansible的情况来看<a target="_blank" rel="noopener" href="https://docs.ceph.com/projects/ceph-ansible/en/latest/testing/scenarios.html#test-scenarios">Test
-Scenarios — ceph-ansible documentation</a>, 是通过vagrant搭建虚拟机,
-然后拉起不同规格虚拟机来测试集群部署.</p>
+<p>ceph产品的<code>cluster-&gt;osd-&gt;pool-&gt;rbd|cephfs|rgw-&gt;iSCSi|nfs|samba</code>的部署就是一个链式关系, 这部分角度上来说, 关键是开源组件之间的接口依赖关系的联调测试的问题.</p>
+<p>根据ceph-ansible的情况来看<a target="_blank" rel="noopener" href="https://docs.ceph.com/projects/ceph-ansible/en/latest/testing/scenarios.html#test-scenarios">Test Scenarios — ceph-ansible documentation</a>, 是通过vagrant搭建虚拟机, 然后拉起不同规格虚拟机来测试集群部署.</p>
 <p>vagrant根据测试功能所需配置拉起对应盘的虚拟机, 然后运行.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">NOSDS           = settings[&#x27;osd_vms&#x27;]</span><br><span class="line">...</span><br><span class="line">(0..NOSDS - 1).each do |i|</span><br><span class="line">    config.vm.define &quot;#&#123;LABEL_PREFIX&#125;osd#&#123;i&#125;&quot; do |osd|</span><br><span class="line">      osd.vm.hostname = &quot;#&#123;LABEL_PREFIX&#125;osd#&#123;i&#125;&quot;</span><br><span class="line">      if ASSIGN_STATIC_IP</span><br><span class="line">        osd.vm.network :private_network,</span><br><span class="line">          ip: &quot;#&#123;PUBLIC_SUBNET&#125;.#&#123;$last_ip_pub_digit+=1&#125;&quot;</span><br><span class="line">        osd.vm.network :private_network,</span><br><span class="line">          ip: &quot;#&#123;CLUSTER_SUBNET&#125;.#&#123;$last_ip_cluster_digit+=1&#125;&quot;</span><br><span class="line">      end</span><br><span class="line">      # Virtualbox</span><br><span class="line">      osd.vm.provider :virtualbox do |vb|</span><br><span class="line">        # Create our own controller for consistency and to remove VM dependency</span><br><span class="line">        unless File.exist?(&quot;disk-#&#123;i&#125;-0.vdi&quot;)</span><br><span class="line">          # Adding OSD Controller;</span><br><span class="line">          # once the first disk is there assuming we don&#x27;t need to do this</span><br><span class="line">          vb.customize [&#x27;storagectl&#x27;, :id,</span><br><span class="line">                        &#x27;--name&#x27;, &#x27;OSD Controller&#x27;,</span><br><span class="line">                        &#x27;--add&#x27;, &#x27;scsi&#x27;]</span><br><span class="line">        end</span><br><span class="line"></span><br><span class="line">        (0..2).each do |d|</span><br><span class="line">          vb.customize [&#x27;createhd&#x27;,</span><br><span class="line">                        &#x27;--filename&#x27;, &quot;disk-#&#123;i&#125;-#&#123;d&#125;&quot;,</span><br><span class="line">                        &#x27;--size&#x27;, &#x27;11000&#x27;] unless File.exist?(&quot;disk-#&#123;i&#125;-#&#123;d&#125;.vdi&quot;)</span><br><span class="line">          vb.customize [&#x27;storageattach&#x27;, :id,</span><br><span class="line">                        &#x27;--storagectl&#x27;, &#x27;OSD Controller&#x27;,</span><br><span class="line">                        &#x27;--port&#x27;, 3 + d,</span><br><span class="line">                        &#x27;--device&#x27;, 0,</span><br><span class="line">                        &#x27;--type&#x27;, &#x27;hdd&#x27;,</span><br><span class="line">                        &#x27;--medium&#x27;, &quot;disk-#&#123;i&#125;-#&#123;d&#125;.vdi&quot;]</span><br><span class="line">        end</span><br><span class="line">        vb.customize [&#x27;modifyvm&#x27;, :id, &#x27;--memory&#x27;, &quot;#&#123;MEMORY&#125;&quot;]</span><br><span class="line">      end</span><br></pre></td></tr></table></figure>
-<p>根据ceph-ansible和openEuler的做法来看,
-部署类代码均藉由对虚拟机的控制的CICD来完成质量保障.</p>
-<p>这些操作, 关键是属于资源的调度, 如果撇去虚拟机提供的资源,
-实际上就无法测试到其对虚拟机内的硬盘等资源的实际分配了.</p>
-<p>如果是分配逻辑贴近业务, 则可以比如mock不同的配置进行单元测试,
-输出的也是一种配置形态.
-但是如果分配逻辑关键就是对虚拟机操作系统提供的基础API的兼容性确认,
-则就只能是藉由CICD完成质量闭环了.</p>
+<p>根据ceph-ansible和openEuler的做法来看, 部署类代码均藉由对虚拟机的控制的CICD来完成质量保障.</p>
+<p>这些操作, 关键是属于资源的调度, 如果撇去虚拟机提供的资源, 实际上就无法测试到其对虚拟机内的硬盘等资源的实际分配了.</p>
+<p>如果是分配逻辑贴近业务, 则可以比如mock不同的配置进行单元测试, 输出的也是一种配置形态. 但是如果分配逻辑关键就是对虚拟机操作系统提供的基础API的兼容性确认, 则就只能是藉由CICD完成质量闭环了.</p>
 <h3 id="io路径的核心逻辑代码">IO路径的核心逻辑代码</h3>
-<p>SAN/NAS对ceph存在依赖关系, 而ceph如果做大规模升级,
-经常会出现不兼容的问题, 此时SAN/NAS基本上就很难在ceph适配开发的同时,
-同时使用新版本进行开发.</p>
-<p>开发阶段, 手动搭建ceph环境即可. 联调/集成阶段,
-理论上下层接口如ceph自身的单元测试完成了一定程度的保障,
-剩下产品层面的完整功能集成这种确实只能依赖CICD.</p>
+<p>SAN/NAS对ceph存在依赖关系, 而ceph如果做大规模升级, 经常会出现不兼容的问题, 此时SAN/NAS基本上就很难在ceph适配开发的同时, 同时使用新版本进行开发.</p>
+<p>开发阶段, 手动搭建ceph环境即可. 联调/集成阶段, 理论上下层接口如ceph自身的单元测试完成了一定程度的保障, 剩下产品层面的完整功能集成这种确实只能依赖CICD.</p>
 <h3 id="管理的web前后端代码">管理的web前后端代码</h3>
 <h4 id="后端">后端</h4>
-<p>当前我们的web后端, 是直接依赖底层的具体响应, 属于协议转换层.
-而不是存在自身数据库设计的一个完整的管理平台后端,
-因此个人来看确实无法脱离底层接口与操作系统,
-自身进行这个web后端的业务逻辑的单元测试. 此时的话,
-确实只能在底层开发完毕后, 通过CICD来闭环自身的质量.</p>
-<p>如果是一个独立的后端, 底层只是作为一层数据来源, 以及具体实现层.
-底层异常时, 其实不影响页面的数据展示与交互. 只是下发的请求会超时/失败.
-但是不影响查询和展示. 这种层面的模块可能才能完成自身的单元测试吧.</p>
+<p>当前我们的web后端, 是直接依赖底层的具体响应, 属于协议转换层. 而不是存在自身数据库设计的一个完整的管理平台后端, 因此个人来看确实无法脱离底层接口与操作系统, 自身进行这个web后端的业务逻辑的单元测试. 此时的话, 确实只能在底层开发完毕后, 通过CICD来闭环自身的质量.</p>
+<p>如果是一个独立的后端, 底层只是作为一层数据来源, 以及具体实现层. 底层异常时, 其实不影响页面的数据展示与交互. 只是下发的请求会超时/失败. 但是不影响查询和展示. 这种层面的模块可能才能完成自身的单元测试吧.</p>
 <h4 id="前端">前端</h4>
-<p>前端模块主要就是依赖后端提供的协议设计了, 本身就具有mock能力.
-协议设计变了, mock也要跟着变.</p>
-<p>可能存在一方面因素就是, 由于目前CICD不完善,
-后端在开发过程中极度依赖底层的接口, 底层接口的设计变更导致链路的变更.
-从而工作量加大. 本身如果做好了解耦,
-可能前端,后端,底层三层之间不至于耦合这么紧密.</p>
-<h2 id="藉由新版本需求-同时进行功能开发">4. 藉由新版本需求,
-同时进行功能开发</h2>
-<p>按照我现在的理解, 一般情况下感觉因为有版本的功能需求,
-比如支持集群规模, 性能等存在了更高的要求,
-所以此时可以抛弃一大波历史包袱, 从而进行代码重构.</p>
+<p>前端模块主要就是依赖后端提供的协议设计了, 本身就具有mock能力. 协议设计变了, mock也要跟着变.</p>
+<p>可能存在一方面因素就是, 由于目前CICD不完善, 后端在开发过程中极度依赖底层的接口, 底层接口的设计变更导致链路的变更. 从而工作量加大. 本身如果做好了解耦, 可能前端,后端,底层三层之间不至于耦合这么紧密.</p>
+<h2 id="藉由新版本需求-同时进行功能开发">4. 藉由新版本需求, 同时进行功能开发</h2>
+<p>按照我现在的理解, 一般情况下感觉因为有版本的功能需求, 比如支持集群规模, 性能等存在了更高的要求, 所以此时可以抛弃一大波历史包袱, 从而进行代码重构.</p>
 <p>但是客观上, 实际进行的过程中也确实遇到了很严重的问题.</p>
 <p>代码的重构开发, 实际上需要的时间要比预估的多不少.</p>
 <blockquote>
 <p>重构是在项目整个过程当中的一种习惯，并非是其中的一个阶段。</p>
-<p>不要定下一两周时间，说这个工作是重构。应该在整个项目过程当中，随时开始，随时停止。每一次重构都是很细微。
-[^在感觉项目代码的构架不行的时候,你们会怎么办? -
-知乎](https://www.zhihu.com/question/47283785)</p>
+<p>不要定下一两周时间，说这个工作是重构。应该在整个项目过程当中，随时开始，随时停止。每一次重构都是很细微。 [^在感觉项目代码的构架不行的时候,你们会怎么办? - 知乎](https://www.zhihu.com/question/47283785)</p>
 </blockquote>
-<p>按照上文的表达, 其实一些工作, 可能不能在新项目上进行.
-而应该提前或者在日常过程中, 就开展了.
-新项目只做一个局部适配或者切换版本的工作,
-这样可以相当程度上降低需要的时间代价.</p>
-<h2 id="多任务同时派发-与-分批次派发">5. 多任务同时派发 与
-分批次派发</h2>
-<p>其实还是任务并行的问题, 如果是单纯的开发需求,
-那实际上开发时已有初稿设计, 如果大家都提前定义后,
-那确实后面开发的时间就无所谓, 互相之间没有依赖.</p>
-<p>但是对于一些新定义的平台需求,
-他基础平台开发完-&gt;自测通过-&gt;联调通过,
-这个过程中其实是存在需要拉其他业务团队来设计, 沟通, 联调的. 而此时,
-这就对其他团队的时间做出了限制, 这个阶段的时间由于要配合平台需求的落地,
-就只得拆解部分时间. 这方面是否对于业务团队, 是否有必要那么快开始?
-这个其实我现在来看, 还是个疑问.</p>
+<p>按照上文的表达, 其实一些工作, 可能不能在新项目上进行. 而应该提前或者在日常过程中, 就开展了. 新项目只做一个局部适配或者切换版本的工作, 这样可以相当程度上降低需要的时间代价.</p>
+<h2 id="多任务同时派发-与-分批次派发">5. 多任务同时派发 与 分批次派发</h2>
+<p>其实还是任务并行的问题, 如果是单纯的开发需求, 那实际上开发时已有初稿设计, 如果大家都提前定义后, 那确实后面开发的时间就无所谓, 互相之间没有依赖.</p>
+<p>但是对于一些新定义的平台需求, 他基础平台开发完-&gt;自测通过-&gt;联调通过, 这个过程中其实是存在需要拉其他业务团队来设计, 沟通, 联调的. 而此时, 这就对其他团队的时间做出了限制, 这个阶段的时间由于要配合平台需求的落地, 就只得拆解部分时间. 这方面是否对于业务团队, 是否有必要那么快开始? 这个其实我现在来看, 还是个疑问.</p>
 <p>考虑的可能的解决方式</p>
 <ol type="1">
-<li>分批次需求, 拆分轮次. 如平台功能, 提前进入. 如B1/B2轮次等,
-其他相关依赖第一波平台功能开启.
+<li>分批次需求, 拆分轮次. 如平台功能, 提前进入. 如B1/B2轮次等, 其他相关依赖第一波平台功能开启.
 <ol type="1">
-<li>需求的数量级太大, 局部拆解. 如需要长时间预研的,
-则纳入预研项目跟进进展. 在新项目的第一轮需求中不纳入考量.</li>
-<li>不能直接让多个资源组同时处理大批量需求,
-这样就完全取决于资源组的人力协调.
-这个协调成本每个阶段核对都会存在忽视风险.
+<li>需求的数量级太大, 局部拆解. 如需要长时间预研的, 则纳入预研项目跟进进展. 在新项目的第一轮需求中不纳入考量.</li>
+<li>不能直接让多个资源组同时处理大批量需求, 这样就完全取决于资源组的人力协调. 这个协调成本每个阶段核对都会存在忽视风险.
 <ol type="1">
-<li>比如OS组的包管理机制, 提供基础环境这种, 更适合提前开始.
-至少先提供出基础框架/可供开发的基于老版本的兼容性方案.
-如3-4月份优先复用老成果物提供基础方案也行.</li>
+<li>比如OS组的包管理机制, 提供基础环境这种, 更适合提前开始. 至少先提供出基础框架/可供开发的基于老版本的兼容性方案. 如3-4月份优先复用老成果物提供基础方案也行.</li>
 </ol></li>
-<li>并行任务最好一个人同一时间不要超过3个? 工作流, 要拆解的更加细.
-否则上下文切换带来的切换时间/环境准备时间等可能也会占用一部分?
+<li>并行任务最好一个人同一时间不要超过3个? 工作流, 要拆解的更加细. 否则上下文切换带来的切换时间/环境准备时间等可能也会占用一部分?
 <ol type="1">
-<li>项目中明确分批次验收, 甚至分子项目验收. 每个轮次出的成果物,
-后续的人需要审核审批, 审批的人的时间管理由项目经理控制.</li>
-<li>因为每个组阻塞一阵子, 上下游链路太长. 就仿佛ceph的链路一样,
-对于不知晓常见问题的人, 就只能一层层推进. 而不是一步到位.</li>
+<li>项目中明确分批次验收, 甚至分子项目验收. 每个轮次出的成果物, 后续的人需要审核审批, 审批的人的时间管理由项目经理控制.</li>
+<li>因为每个组阻塞一阵子, 上下游链路太长. 就仿佛ceph的链路一样, 对于不知晓常见问题的人, 就只能一层层推进. 而不是一步到位.</li>
 </ol></li>
 </ol></li>
 </ol>
 <h1 id="todo">TODO</h1>
-<p>TODO: 这款其实是可以参考下开源社区如何处理这部分的? ceph的话,
-这部分其实是通过qa集成测试完成的?</p>
-<p>TODO: 持续集成/基线开发,
-这部分应该跟测试所需的代码之间的解耦无关吧?</p>
+<p>TODO: 这款其实是可以参考下开源社区如何处理这部分的? ceph的话, 这部分其实是通过qa集成测试完成的?</p>
+<p>TODO: 持续集成/基线开发, 这部分应该跟测试所需的代码之间的解耦无关吧?</p>
 <p>TODO:ceph-ansible的测试是怎么跑? 是否要做隔离?</p>
 <h1 id="企业集成网站架构中大型网站如何防止项目延期敏捷开发在实际项目如何应用_停止重构的博客-csdn博客">企业集成[^【网站架构】中大型网站如何防止项目延期？敏捷开发在实际项目如何应用？\_停止重构的博客\-CSDN博客]</h1>
 <p>这里说的集成, 跟集成测试应该关联并不大. 跟ERP系统也有些关联.</p>
@@ -353,21 +276,14 @@ Scenarios — ceph-ansible documentation</a>, 是通过vagrant搭建虚拟机,
 <p>类似大中台的那种理解? 由中心代理服务来管理各组件之间的通信.</p>
 <p>更进一步就是</p>
 <p>基于消息的企业服务总线, 将组件之间关联通过一条总线完成管理</p>
-<p>当然这种管理机制, 如果总线不出问题的情况下,
-延时可接受的情况下问题不大. 猪油最新的那种RDMA等技术, 对延时有要求时,
-则物理总线会进行处理.</p>
+<p>当然这种管理机制, 如果总线不出问题的情况下, 延时可接受的情况下问题不大. 猪油最新的那种RDMA等技术, 对延时有要求时, 则物理总线会进行处理.</p>
 <blockquote>
-<p>ESB
-的定位，是一项采用开放标准的服务。这样就不需要为每个应用编写唯一的接口了。
-只需对应用进行最小幅度的更改，就能部署集成服务。 ESB
-依靠符合行业标准的开放协议和接口，简化新的部署。</p>
+<p>ESB 的定位，是一项采用开放标准的服务。这样就不需要为每个应用编写唯一的接口了。 只需对应用进行最小幅度的更改，就能部署集成服务。 ESB 依靠符合行业标准的开放协议和接口，简化新的部署。</p>
 </blockquote>
 <p>[^【网站架构】中大型网站如何防止项目延期？敏捷开发在实际项目如何应用？\_停止重构的博客\-CSDN博客](https://blog.csdn.net/Daniel_Leung/article/details/122347803)</p>
 <h1 id="openeuler">OpenEuler</h1>
 <h2 id="日常构建测试范围">日常构建测试范围</h2>
-<p><a target="_blank" rel="noopener" href="https://gitee.com/openeuler/QA">QA: QA repo provides rules
-about how QA team runs and how contributors to this project, also
-includes test cases and framework</a></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/openeuler/QA">QA: QA repo provides rules about how QA team runs and how contributors to this project, also includes test cases and framework</a></p>
 <h3 id="alpha版本">alpha版本</h3>
 <ul>
 <li><strong>安装部署</strong>
@@ -387,8 +303,7 @@ includes test cases and framework</a></p>
 <li>升级</li>
 <li>社区众测</li>
 </ul>
-<p>TODO:beta由qa团队组织, 是否会保存类似系统测试用例设计呢?
-这种是否有资料可以借鉴?</p>
+<p>TODO:beta由qa团队组织, 是否会保存类似系统测试用例设计呢? 这种是否有资料可以借鉴?</p>
 <h3 id="release">release</h3>
 <ul>
 <li>β版本测试内容</li>
@@ -398,15 +313,11 @@ includes test cases and framework</a></p>
 <li>文档测试</li>
 </ul>
 <h2 id="软件包-测试标准">软件包 测试标准</h2>
-<p>基本总结可以理解为, 是基于<a target="_blank" rel="noopener" href="https://gitee.com/openeuler/mugen">mugen: Test framework and test
-suites</a>框架, 对软件包提供的<code>CLI</code>接口进行测试验证,
-并完成安装卸载的. 有无痕要求.</p>
-<h3 id="todo潜在的问题-如何解决那种依赖较多的包-如ceph-暂未找到">TODO:潜在的问题,
-如何解决那种依赖较多的包? 如ceph? 暂未找到</h3>
+<p>基本总结可以理解为, 是基于<a target="_blank" rel="noopener" href="https://gitee.com/openeuler/mugen">mugen: Test framework and test suites</a>框架, 对软件包提供的<code>CLI</code>接口进行测试验证, 并完成安装卸载的. 有无痕要求.</p>
+<h3 id="todo潜在的问题-如何解决那种依赖较多的包-如ceph-暂未找到">TODO:潜在的问题, 如何解决那种依赖较多的包? 如ceph? 暂未找到</h3>
 <p><a target="_blank" rel="noopener" href="https://www.openeuler.org/zh/blog/20220629-sig-qa/20220629.html">开源实习经验分享：openEuler软件包加固测试</a></p>
 <h2 id="测试代码">测试代码</h2>
-<h3 id="openeulerintegration-test---码云---开源中国-系统基础包命令的集成测试"><a target="_blank" rel="noopener" href="https://gitee.com/openeuler/integration-test/tree/master/">openEuler/integration-test
-- 码云 - 开源中国</a> 系统基础包/命令的集成测试</h3>
+<h3 id="openeulerintegration-test---码云---开源中国-系统基础包命令的集成测试"><a target="_blank" rel="noopener" href="https://gitee.com/openeuler/integration-test/tree/master/">openEuler/integration-test - 码云 - 开源中国</a> 系统基础包/命令的集成测试</h3>
 
         </div>
 
@@ -415,7 +326,7 @@ suites</a>框架, 对软件包提供的<code>CLI</code>接口进行测试验证,
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.864Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

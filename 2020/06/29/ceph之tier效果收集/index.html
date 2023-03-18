@@ -29,8 +29,8 @@
 <meta property="og:description" content="数据整理 写入效果统计 \[ \frac{num\_write_{cache}}{num\_write_{cache} + num\_write_{base}} \] 读取效果统计 \[ \frac{num\_read_{cache}}{num\_read_{cache} + num\_read_{base}} \] 数据收集 osd daemon tier perf 实际还是pg的数据, 只是没">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sean10.github.io/.io//ceph%E5%8F%91%E5%B1%95_2020-06-28-21-11-24.png">
-<meta property="article:published_time" content="2020-06-29T06:01:18.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.904Z">
+<meta property="article:published_time" content="2020-06-29T14:01:18.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.774Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="源码">
 <meta property="article:tag" content="ceph">
@@ -142,7 +142,7 @@
         <h1 class="title">ceph之tier效果收集</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-06-29T06:01:18.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-06-29T14:01:18.000Z" itemprop="datePublished" class="page-time">
   2020-06-29
 </time>
 
@@ -175,7 +175,7 @@
     <div class="post-card">
         <h1 class="post-card-title">ceph之tier效果收集</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-06-29 14:01:18" datetime="2020-06-29T06:01:18.000Z"  itemprop="datePublished">2020-06-29</time>
+            <time class="post-time" title="2020-06-29 14:01:18" datetime="2020-06-29T14:01:18.000Z"  itemprop="datePublished">2020-06-29</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -213,8 +213,7 @@
                 </div>
                 <div class="image-caption"></div>
             </figure>
-<p>根据上面这张图以及<code>&lt;ceph源码分析&gt;</code>可知,
-主要的最后执行任务场景如下</p>
+<p>根据上面这张图以及<code>&lt;ceph源码分析&gt;</code>可知, 主要的最后执行任务场景如下</p>
 <h4 id="read">read</h4>
 <ul>
 <li>cache pool read op -&gt;
@@ -265,20 +264,15 @@
 </ul></li>
 </ul>
 <h4 id="汇总">汇总</h4>
-<p>可知,
-<code>promote</code>和<code>proxy</code>并不是强相关的,只有实际的<code>op</code>的<code>read</code>和<code>write</code>存在强相关性.</p>
-<p>只是由于<a href="#num_read计数op类型">read类型</a>和<a href="#num_write计数op类型">write类型</a>,可知元数据的读写也被统计了.
-不过在总体上来说, 每个对象相关的元数据是存在正比关系(理论上应该是),
-所以这个比值应该也是可靠的.</p>
+<p>可知, <code>promote</code>和<code>proxy</code>并不是强相关的,只有实际的<code>op</code>的<code>read</code>和<code>write</code>存在强相关性.</p>
+<p>只是由于<a href="#num_read计数op类型">read类型</a>和<a href="#num_write计数op类型">write类型</a>,可知元数据的读写也被统计了. 不过在总体上来说, 每个对象相关的元数据是存在正比关系(理论上应该是), 所以这个比值应该也是可靠的.</p>
 <h3 id="num_read计数op类型"><code>num_read</code>计数OP类型</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">case CEPH_OSD_OP_CMPEXT:</span><br><span class="line">case CEPH_OSD_OP_READ:</span><br><span class="line">case CEPH_OSD_OP_CHECKSUM:</span><br><span class="line">case CEPH_OSD_OP_MAPEXT:</span><br><span class="line">case CEPH_OSD_OP_CALL:</span><br><span class="line">case CEPH_OSD_OP_ISDIRTY:</span><br><span class="line">case CEPH_OSD_OP_GETXATTR:</span><br><span class="line">case CEPH_OSD_OP_GETXATTRS:</span><br><span class="line">case CEPH_OSD_OP_CMPXATTR:</span><br><span class="line">case CEPH_OSD_OP_ASSERT_VER:</span><br><span class="line">case CEPH_OSD_OP_LIST_WATCHERS:</span><br><span class="line">case CEPH_OSD_OP_LIST_SNAPS:</span><br><span class="line">case CEPH_OSD_OP_NOTIFY:</span><br><span class="line">case CEPH_OSD_OP_NOTIFY_ACK:</span><br><span class="line">case CEPH_OSD_OP_OMAPGETKEYS:</span><br><span class="line">case CEPH_OSD_OP_OMAPGETVALS:</span><br><span class="line">case CEPH_OSD_OP_OMAPGETHEADER:</span><br><span class="line">case CEPH_OSD_OP_OMAPGETVALSBYKEYS:</span><br><span class="line">case CEPH_OSD_OP_OMAP_CMP:</span><br><span class="line">case CEPH_OSD_OP_COPY_GET:</span><br></pre></td></tr></table></figure>
 <h3 id="num_write计数op类型">num_write计数OP类型</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">case CEPH_OSD_OP_UNDIRTY:</span><br><span class="line">case CEPH_OSD_OP_CACHE_TRY_FLUSH:</span><br><span class="line">case CEPH_OSD_OP_CACHE_FLUSH:</span><br><span class="line">case CEPH_OSD_OP_CACHE_EVICT:</span><br><span class="line">case CEPH_OSD_OP_SETALLOCHINT:</span><br><span class="line">case CEPH_OSD_OP_WRITE:</span><br><span class="line">case CEPH_OSD_OP_WRITEFULL:</span><br><span class="line">case CEPH_OSD_OP_WRITESAME:</span><br><span class="line">case CEPH_OSD_OP_ROLLBACK :</span><br><span class="line">case CEPH_OSD_OP_ZERO:</span><br><span class="line">case CEPH_OSD_OP_CREATE:</span><br><span class="line">case CEPH_OSD_OP_TRUNCATE:</span><br><span class="line">case CEPH_OSD_OP_DELETE:</span><br><span class="line">case CEPH_OSD_OP_WATCH:</span><br><span class="line">case CEPH_OSD_OP_CACHE_PIN:</span><br><span class="line">case CEPH_OSD_OP_CACHE_UNPIN:</span><br><span class="line">case CEPH_OSD_OP_SET_REDIRECT:</span><br><span class="line">case CEPH_OSD_OP_SETXATTR:</span><br><span class="line">case CEPH_OSD_OP_RMXATTR:</span><br><span class="line">case CEPH_OSD_OP_TMAPUP:</span><br><span class="line">case CEPH_OSD_OP_TMAP2OMAP:</span><br><span class="line">case CEPH_OSD_OP_OMAPSETVALS:</span><br><span class="line">case CEPH_OSD_OP_OMAPSETHEADER:</span><br><span class="line">case CEPH_OSD_OP_OMAPCLEAR:</span><br><span class="line">case CEPH_OSD_OP_OMAPRMKEYS:</span><br><span class="line">case CEPH_OSD_OP_COPY_FROM:</span><br></pre></td></tr></table></figure>
 <h2 id="todo问题">Todo问题</h2>
 <ol type="1">
-<li><p>针对当<code>cache</code>资源池满的时候,<code>write</code>的请求会进入<code>block_write_on_full_cache</code>,
-等到不满以后,再调用<code>requeue_ops</code>重新加入,因此对于<code>num_write</code>和<code>num_read</code>是体现不出这里的<code>block</code>的过程的.
-可能需要增加一个<code>latency</code>的数据展示.</p></li>
+<li><p>针对当<code>cache</code>资源池满的时候,<code>write</code>的请求会进入<code>block_write_on_full_cache</code>, 等到不满以后,再调用<code>requeue_ops</code>重新加入,因此对于<code>num_write</code>和<code>num_read</code>是体现不出这里的<code>block</code>的过程的. 可能需要增加一个<code>latency</code>的数据展示.</p></li>
 <li><p>该统计方式, 需要分场景独立统计后使用</p>
 <ol type="1">
 <li>cache为空时的写入</li>
@@ -300,7 +294,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.904Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.774Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="今年主要的感触在项目中, 基本上就是一些沟通与落地方面是否双向澄清,全环节负责的人是否都已经理解需求及实现了. 人月神话中的沟通的代价, 想来过程中的人员澄清应该占用了一部分. 即便简单的项目, 也存在SE, DE, 开发者三人的环节. 这种常见的一般都会一个会议, 或直接在工位旁边完成澄清的过程. 而对于今年主要遇到的跨大部门的大型项目, 一个OR基本上就存在了2倍的人员对接. 每个环境都可能是">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-01-11T14:28:02.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.864Z">
+<meta property="article:published_time" content="2021-01-11T22:28:02.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.730Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="总结">
@@ -139,7 +139,7 @@
         <h1 class="title">2020年终总结</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-01-11T14:28:02.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-01-11T22:28:02.000Z" itemprop="datePublished" class="page-time">
   2021-01-11
 </time>
 
@@ -165,7 +165,7 @@
     <div class="post-card">
         <h1 class="post-card-title">2020年终总结</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-01-11 22:28:02" datetime="2021-01-11T14:28:02.000Z"  itemprop="datePublished">2021-01-11</time>
+            <time class="post-time" title="2021-01-11 22:28:02" datetime="2021-01-11T22:28:02.000Z"  itemprop="datePublished">2021-01-11</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -181,8 +181,7 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <p>今年主要的感触在项目中, 基本上就是一些沟通与落地方面是否双向澄清,全环节负责的人是否都已经理解需求及实现了. 人月神话中的沟通的代价, 想来过程中的人员澄清应该占用了一部分. 即便简单的项目, 也存在SE, DE, 开发者三人的环节. 这种常见的一般都会一个会议, 或直接在工位旁边完成澄清的过程. 而对于今年主要遇到的跨大部门的大型项目, 一个OR基本上就存在了2倍的人员对接. 每个环境都可能是由对应的责任人进行对接, 3人时最多出现的排列组合, 6次也足够了. 而对于6人时, 一旦某个环节的澄清中出现某个细节点未澄清, 最坏的情况, 可能就会出现6!的多次沟通(当然, 大部分情况应该就花个几次.). </p>
-<p>在项目之外, 技术方面. 在年初时,
-主要针对全链路追踪做了调研和demo的实现. 这个全链路追踪的思想在社区里查看, 针对java的果然还是比较成熟, 翻了翻综合安防平台的报告, 实际上他们的微服务的业务方面的开发框架, 基本上是集成了这部分功能的. 而针对嵌入式相关的编译时语言, 如果原先不是基于某套开发框架开发的背景下, 比如我们的代码大部分都是直接调用的<code>syscall</code>,这种情况下, 我们如果想做无感知的埋点, 就只能利用<code>gcc</code>或者<code>clang</code>方面编译器提供的<code>pre</code>的<code>hook</code>函数的支持<code>--finstrument-functions</code>来设置每个函数执行前后的回调之类的.  不过这个的性能代价相对来说较大, 因为源码文件中所有的函数均会被埋点. 当每个埋点都存在一个rpc通信时, 代价较大.</p>
+<p>在项目之外, 技术方面. 在年初时, 主要针对全链路追踪做了调研和demo的实现. 这个全链路追踪的思想在社区里查看, 针对java的果然还是比较成熟, 翻了翻综合安防平台的报告, 实际上他们的微服务的业务方面的开发框架, 基本上是集成了这部分功能的. 而针对嵌入式相关的编译时语言, 如果原先不是基于某套开发框架开发的背景下, 比如我们的代码大部分都是直接调用的<code>syscall</code>,这种情况下, 我们如果想做无感知的埋点, 就只能利用<code>gcc</code>或者<code>clang</code>方面编译器提供的<code>pre</code>的<code>hook</code>函数的支持<code>--finstrument-functions</code>来设置每个函数执行前后的回调之类的.  不过这个的性能代价相对来说较大, 因为源码文件中所有的函数均会被埋点. 当每个埋点都存在一个rpc通信时, 代价较大.</p>
 <p>后续接触到ceph时, 对于pool,crush,pg,rados迅速有了一定的了解. 在这个过程中, 发现ceph基本上是应用了主流大部分的分布式技术方案. 然后, 逐渐意识到, 在分布式领域, 其实针对不同场景下的方案取舍, 存在很多种代价的组合. 在这其中发现虽然是称为分布式, 但是在程度上其实还是有差异的. 就目前的理解来说, mon等元数据管理机制其实都只是单点提供服务, 更多的管理节点完成的只是高可用(避免脑裂等问题). 而mon直接仍然存在单点性能的上限问题, 当然这个性能在一定规模下是不会成为瓶颈的. 比如, 假如说当管理的osd节点数量爆炸的高时, mon节点的性能的确开始成为瓶颈时, 是否就可以开始应用传统的垂直分割技术, 类似数据库垂直分表一般, 将传统技术在分布式领域的某些场景下再次应用, 就又可以突破一点. 诸如此类等等, 像是使用crush算法, 实际上算法始终存在分布不均匀问题.各公司在进行自研时, 是采用元数据管理服务器来提供分布来提供容量和性能, 还是为了让元数据管理服务器不成为功能上的瓶颈, 将选择节点过程迁移到客户端来进行, 暂时通过其他手段来解决crush带来的不均匀问题. 看起来都是根据自身的考量来说. 目前就目前的crush算法的限制, 以及个人的实验结果来看, 企业级产品, 目前可能这个资源占用的代价更愿意放到元数据管理服务器, 因为这个资源消耗相比性能的代价来看, 代价不如价值大. 但是, 对于社区来说, 前沿有意思的技术更有意思, 就像最初的ceph论文, 差异点主打的就是分布式. 且指不定忽然就出现了算法突破(比如可以通过配置不同的算法达成不同的虚节点分布, 一定程度上能够保障均衡), ceph的劣势一下子就不再是短板, 基本就完全碾压了基于元数据管理服务架构下的组件. </p>
 <p>回到目前源码的学习中, 一个比较入门的感触, 就是目前组内调试, 可能并没有充分利用起社区提供的工具?主要还是只是增加日志重新运行等方式, 像是比如<code>flame</code>火焰图等排查分析函数调用工具, 甚至其中之前做的全链路追踪, ceph中就有使用用户态链路追踪的工具<code>lttng</code>, 基于这个额外提供了<code>zipkin</code>的埋点对接. ceph采用的方法是目前<code>zipkin</code>社区主要做的, 针对静态编译式语言, 由开发者人工在需要封装的函数位置调用宏<code>tracepoint</code>, 通过编译时宏来进行控制是否启动埋点检测, 预计对于帮助理解代码, 会有比较好的效果.感觉这个是接下来有必要做的事情, 将这种快速学习代码逻辑的工具充分利用起来.</p>
 <p>总的来说, 今年在技术上发现了不少新的思路, 可扩展学习的方向<sub>希望早日能够打通ceph的整条路径中各节点的竞争方案</sub></p>
@@ -195,7 +194,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.864Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.730Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

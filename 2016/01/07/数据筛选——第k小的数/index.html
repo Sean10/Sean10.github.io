@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="总时间限制: 10000ms 单个测试点时间限制: 5000ms 内存限制: 3000kB 描述 小张需要从一批数量庞大的正整数中挑选出第k小的数，因为数据量太庞大，挑选起来很费劲，希望你能编程帮他进行挑选。 输入 第一行第一个是数据的个数n(10&lt;&#x3D;n&lt;&#x3D;106)，第二个是需要挑选出的数据的序号k(1&lt;&#x3D;k&lt;&#x3D;105)，n和k以空格分隔； 第二行以后是n个数据T(1&amp;lt">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2016-01-07T06:52:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.808Z">
+<meta property="article:published_time" content="2016-01-07T14:52:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">数据筛选——第k小的数</h1>
         <h5 class="subtitle">
             
-                <time datetime="2016-01-07T06:52:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2016-01-07T14:52:00.000Z" itemprop="datePublished" class="page-time">
   2016-01-07
 </time>
 
@@ -164,7 +164,7 @@
     <div class="post-card">
         <h1 class="post-card-title">数据筛选——第k小的数</h1>
         <div class="post-meta">
-            <time class="post-time" title="2016-01-07 14:52:00" datetime="2016-01-07T06:52:00.000Z"  itemprop="datePublished">2016-01-07</time>
+            <time class="post-time" title="2016-01-07 14:52:00" datetime="2016-01-07T14:52:00.000Z"  itemprop="datePublished">2016-01-07</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -179,20 +179,11 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>总时间限制: 10000ms 单个测试点时间限制: 5000ms 内存限制: 3000kB
-<strong>描述</strong>
-小张需要从一批数量庞大的正整数中挑选出第k小的数，因为数据量太庞大，挑选起来很费劲，希望你能编程帮他进行挑选。</p>
-<p><strong>输入</strong>
-第一行第一个是数据的个数n(10&lt;=n&lt;=106)，第二个是需要挑选出的数据的序号k(1&lt;=k&lt;=105)，n和k以空格分隔；
-第二行以后是n个数据T(1&lt;=T&lt;=109)，数据之间以空格或者换行符分隔。
-<strong>输出</strong>
-第k小数（如果有相同大小的也进行排序，例如对1,2,3,8,8，第4小的为8，第5小的也为8）。
-<strong>样例输入</strong> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">10 5</span><br><span class="line">1  3  8 20 2 </span><br><span class="line">9 10 12  8 9 </span><br></pre></td></tr></table></figure> <strong>样例输出</strong>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">8</span><br></pre></td></tr></table></figure></p>
+            <p>总时间限制: 10000ms 单个测试点时间限制: 5000ms 内存限制: 3000kB <strong>描述</strong> 小张需要从一批数量庞大的正整数中挑选出第k小的数，因为数据量太庞大，挑选起来很费劲，希望你能编程帮他进行挑选。</p>
+<p><strong>输入</strong> 第一行第一个是数据的个数n(10&lt;=n&lt;=106)，第二个是需要挑选出的数据的序号k(1&lt;=k&lt;=105)，n和k以空格分隔； 第二行以后是n个数据T(1&lt;=T&lt;=109)，数据之间以空格或者换行符分隔。 <strong>输出</strong> 第k小数（如果有相同大小的也进行排序，例如对1,2,3,8,8，第4小的为8，第5小的也为8）。 <strong>样例输入</strong> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">10 5</span><br><span class="line">1  3  8 20 2 </span><br><span class="line">9 10 12  8 9 </span><br></pre></td></tr></table></figure> <strong>样例输出</strong> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">8</span><br></pre></td></tr></table></figure></p>
 <p>这道题，由于提供的内存限制，1M的记录，都为整型，就达到了4M超出了3M的限制，必须要分组进行排序</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line">#include &lt;cmath&gt;</span><br><span class="line">#define N 200010</span><br><span class="line"></span><br><span class="line">int data[N];</span><br><span class="line"></span><br><span class="line">int cmp(const void* a,const void* b)&#123;</span><br><span class="line">    return *(int *)a-*(int *)b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    //freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">    int n,k;</span><br><span class="line">    scanf(&quot;%d%d&quot;,&amp;n,&amp;k);</span><br><span class="line">    for(int i = 0;i &lt; k;i++)&#123;</span><br><span class="line">        scanf(&quot;%d&quot;,&amp;data[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    qsort(data,k,sizeof(int),cmp);</span><br><span class="line">    n-=k;</span><br><span class="line">    while(n&gt;0)&#123;</span><br><span class="line">        if(n&gt;k)&#123;</span><br><span class="line">            for(int i = k;i&lt;2*k;i++)&#123;</span><br><span class="line">                scanf(&quot;%d&quot;,&amp;data[i]);</span><br><span class="line">            &#125;</span><br><span class="line">            qsort(data,2*k,sizeof(int),cmp);</span><br><span class="line">            n-=k;</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            for(int i = k;i &lt; n+k;i++)</span><br><span class="line">                scanf(&quot;%d&quot;,&amp;data[i]);</span><br><span class="line">            qsort(data,k+n,sizeof(int),cmp);</span><br><span class="line">            n-=n;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;%d\n&quot;,data[k-1]);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>参考资料
-[1].http://blog.csdn.net/u010663294/article/details/37612219</p>
+<p>参考资料 [1].http://blog.csdn.net/u010663294/article/details/37612219</p>
 
         </div>
 
@@ -201,7 +192,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.808Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

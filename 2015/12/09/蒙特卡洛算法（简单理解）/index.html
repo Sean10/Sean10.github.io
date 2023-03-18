@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="###蒙特卡洛算法(Monte Carlo Algorithm) 在这本书里面，前面我们已经学到的算法都是属于确定性算法。有这样一种情况，一个确定性算法不得不仔细判断大量的甚至指数级的可能事件。在这种情况下，我们用到了下面现在我们要学习的一种特殊类的概率算法。该算法在不同的运行步数下提供随机性的选择，在应对决策问题的情况下，这种算法叫做蒙特卡洛算法。  A Monte Carlo algorith">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-12-09T09:23:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.850Z">
+<meta property="article:published_time" content="2015-12-09T17:23:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="离散数学">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">蒙特卡洛算法（简单理解）</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-12-09T09:23:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-12-09T17:23:00.000Z" itemprop="datePublished" class="page-time">
   2015-12-09
 </time>
 
@@ -164,7 +164,7 @@
     <div class="post-card">
         <h1 class="post-card-title">蒙特卡洛算法（简单理解）</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-12-09 17:23:00" datetime="2015-12-09T09:23:00.000Z"  itemprop="datePublished">2015-12-09</time>
+            <time class="post-time" title="2015-12-09 17:23:00" datetime="2015-12-09T17:23:00.000Z"  itemprop="datePublished">2015-12-09</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -179,36 +179,16 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>###蒙特卡洛算法(Monte Carlo Algorithm)
-在这本书里面，前面我们已经学到的算法都是属于确定性算法。有这样一种情况，一个确定性算法不得不仔细判断大量的甚至指数级的可能事件。在这种情况下，我们用到了下面现在我们要学习的一种特殊类的概率算法。该算法在不同的运行步数下提供随机性的选择，在应对决策问题的情况下，这种算法叫做蒙特卡洛算法。</p>
+            <p>###蒙特卡洛算法(Monte Carlo Algorithm) 在这本书里面，前面我们已经学到的算法都是属于确定性算法。有这样一种情况，一个确定性算法不得不仔细判断大量的甚至指数级的可能事件。在这种情况下，我们用到了下面现在我们要学习的一种特殊类的概率算法。该算法在不同的运行步数下提供随机性的选择，在应对决策问题的情况下，这种算法叫做蒙特卡洛算法。</p>
 <blockquote>
-<p>A Monte Carlo algorithm for a decision problem uses a sequence of
-tests. The probability that the algorithm answers the decision problem
-correctly increases as more tests are carried out. At each step of the
-algorithm, possible responses are “true,” which means that the answer is
-“true” and no additional iterations are needed, or “unknown,” which
-means that the answer could be either “true” or “false.” After running
-all the iterations in such an algorithm, the final answer produced is
-“true” if at least one iteration yields the answer “true,” and the
-answer is “false” if every iteration yields the answer “unknown.” If the
-correct answer is “false,” then the algorithm answers “false,” because
-every iteration will yield “unknown.” However, if the correct answer is
-“true,” then the algorithm could answer either “true” or “false,”
-because it may be possible that each iteration produced the response
-“unknown” even though the correct response was “true.” We will show that
-this possibility becomes extremely unlikely as the number of tests
-increases.</p>
+<p>A Monte Carlo algorithm for a decision problem uses a sequence of tests. The probability that the algorithm answers the decision problem correctly increases as more tests are carried out. At each step of the algorithm, possible responses are “true,” which means that the answer is “true” and no additional iterations are needed, or “unknown,” which means that the answer could be either “true” or “false.” After running all the iterations in such an algorithm, the final answer produced is “true” if at least one iteration yields the answer “true,” and the answer is “false” if every iteration yields the answer “unknown.” If the correct answer is “false,” then the algorithm answers “false,” because every iteration will yield “unknown.” However, if the correct answer is “true,” then the algorithm could answer either “true” or “false,” because it may be possible that each iteration produced the response “unknown” even though the correct response was “true.” We will show that this possibility becomes extremely unlikely as the number of tests increases.</p>
 </blockquote>
-<p>决策问题只有“对”与“错”两种答案。在每一步迭代中，如果决策是“对”，意味着回答是“对”，并且与算法的其他迭代无关；也可能回应“未知”，意味着答案可能是“对”也可能是“错”。在全部均迭代过后，如果至少有一次迭代中生成了结果“对”，那么结果就为”对“；如果每个重复生成的回答都是”未知“，那么结果就为”错“。
-然而，如果正确答案是”对“，而算法可以回答”对“或”错“，有可能所有的迭代均得到的回答是”未知“。（这就是其中的小概率的错误概率。）
-（这一段是我对书上的翻译，我理解下来，这段描述的其实是拉斯维加斯算法吧，是不是我理解错了，希望明白的人能指正一下）</p>
+<p>决策问题只有“对”与“错”两种答案。在每一步迭代中，如果决策是“对”，意味着回答是“对”，并且与算法的其他迭代无关；也可能回应“未知”，意味着答案可能是“对”也可能是“错”。在全部均迭代过后，如果至少有一次迭代中生成了结果“对”，那么结果就为”对“；如果每个重复生成的回答都是”未知“，那么结果就为”错“。 然而，如果正确答案是”对“，而算法可以回答”对“或”错“，有可能所有的迭代均得到的回答是”未知“。（这就是其中的小概率的错误概率。） （这一段是我对书上的翻译，我理解下来，这段描述的其实是拉斯维加斯算法吧，是不是我理解错了，希望明白的人能指正一下）</p>
 <p>对于蒙特卡洛算法，是实验样例越多，得到的结果也就愈发靠近正确的结果。</p>
 <p>与蒙特卡洛算法相对的另一种随机算法，叫做拉斯维加斯算法，同样是随机抽样，样本数越多，这个算法增加的只有找到正确结果的概率，他得到的只有对与错，没找到正确的结果就没有意义。</p>
 <p>参考其他资料对蒙特卡洛算法的理解是，蒙特卡洛算法是利用一种满足平均分布的随机抽样达成的计算数学期望的方法。其主要计算的是近似真值。也就是说他主要是从样本数中找对的结果，然后计算”对“的结果占全部样本数的概率，其方法重点是在于抽样的过程。</p>
 <p>Ps.果然《离散数学》里面的各方面内容都只是各领域最简单的内容，关于蒙特卡洛算法，这里连抽样(sample)的单词都并没有用到，用了一些常用（多义）的单词，不看其他资料，完全不能理解呀。</p>
-<p>参考资料： [1]http://www.zhihu.com/question/20254139
-[2]http://www.cnblogs.com/daniel-D/p/3388724.html
-[3]https://en.wikipedia.org/wiki/Monte_Carlo_method</p>
+<p>参考资料： [1]http://www.zhihu.com/question/20254139 [2]http://www.cnblogs.com/daniel-D/p/3388724.html [3]https://en.wikipedia.org/wiki/Monte_Carlo_method</p>
 
         </div>
 
@@ -217,7 +197,7 @@ increases.</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.850Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

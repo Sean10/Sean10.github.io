@@ -20,7 +20,7 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="vscode,zotero">
+    <meta name="keywords" content="zotero,vscode">
     <meta name="description" content="需求 我的主要需求, 只是当我需要写引用时, 排序能够自动调整,而不是我手动去填写数字. 如果能够让最后的参考文献也能够像用Latex时一样自动生成就更好不过了. 初步的一个思路是, 因为我主要需要的是纯文本, 然后在使用hexo-render-pandoc生成为网页时, 能够把索引给使用上. 预计是在使用pandoc的生成过程中, 将markdown文件中的引用的key给转换成对应的索引. 目前">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vscode之markdown引用zotero参考文献">
@@ -28,11 +28,11 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="需求 我的主要需求, 只是当我需要写引用时, 排序能够自动调整,而不是我手动去填写数字. 如果能够让最后的参考文献也能够像用Latex时一样自动生成就更好不过了. 初步的一个思路是, 因为我主要需要的是纯文本, 然后在使用hexo-render-pandoc生成为网页时, 能够把索引给使用上. 预计是在使用pandoc的生成过程中, 将markdown文件中的引用的key给转换成对应的索引. 目前">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-01-17T08:40:53.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.892Z">
+<meta property="article:published_time" content="2021-01-17T16:40:53.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.818Z">
 <meta property="article:author" content="Sean10">
-<meta property="article:tag" content="vscode">
 <meta property="article:tag" content="zotero">
+<meta property="article:tag" content="vscode">
 <meta name="twitter:card" content="summary">
     
         <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
@@ -139,7 +139,7 @@
         <h1 class="title">vscode之markdown引用zotero参考文献</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-01-17T08:40:53.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-01-17T16:40:53.000Z" itemprop="datePublished" class="page-time">
   2021-01-17
 </time>
 
@@ -172,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">vscode之markdown引用zotero参考文献</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-01-17 16:40:53" datetime="2021-01-17T08:40:53.000Z"  itemprop="datePublished">2021-01-17</time>
+            <time class="post-time" title="2021-01-17 16:40:53" datetime="2021-01-17T16:40:53.000Z"  itemprop="datePublished">2021-01-17</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -188,39 +188,25 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h1 id="需求">需求</h1>
-<p>我的主要需求, 只是当我需要写引用时,
-排序能够自动调整,而不是我手动去填写数字.
-如果能够让最后的参考文献也能够像用<code>Latex</code>时一样自动生成就更好不过了.</p>
-<p>初步的一个思路是, 因为我主要需要的是纯文本,
-然后在使用<code>hexo-render-pandoc</code>生成为网页时,
-能够把索引给使用上. 预计是在使用<code>pandoc</code>的生成过程中,
-将<code>markdown</code>文件中的引用的<code>key</code>给转换成对应的索引.</p>
-<p>目前根据<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/103234043">Sci.Fun |
-如何使用markdown撰写论文？ - 知乎</a>这些来看,
-跟使用<code>pandoc</code>时导入<code>bib</code>的<code>library</code>基本一致.</p>
+<p>我的主要需求, 只是当我需要写引用时, 排序能够自动调整,而不是我手动去填写数字. 如果能够让最后的参考文献也能够像用<code>Latex</code>时一样自动生成就更好不过了.</p>
+<p>初步的一个思路是, 因为我主要需要的是纯文本, 然后在使用<code>hexo-render-pandoc</code>生成为网页时, 能够把索引给使用上. 预计是在使用<code>pandoc</code>的生成过程中, 将<code>markdown</code>文件中的引用的<code>key</code>给转换成对应的索引.</p>
+<p>目前根据<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/103234043">Sci.Fun | 如何使用markdown撰写论文？ - 知乎</a>这些来看, 跟使用<code>pandoc</code>时导入<code>bib</code>的<code>library</code>基本一致.</p>
 <p>搜集一下有没有现成的.</p>
 <p>暂时好像是没找到这个结论.</p>
 <h2 id="一个简易方案sspaipandoc">一个简易方案<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></h2>
-<p>在引用中使用<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>,
-在参考文献位置则是即可完成链接的功能.</p>
+<p>在引用中使用<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, 在参考文献位置则是即可完成链接的功能.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[^1]:xxx</span><br></pre></td></tr></table></figure>
-<p>更进阶的方案应该需要看使用的<code>render</code>,
-比如我的是<code>pandoc</code>,就看<code>pandoc</code>的引用相关的文档即可.</p>
-<p><a target="_blank" rel="noopener" href="https://pandoc.org/MANUAL.html#pandocs-markdown">Pandoc -
-Pandoc User’s Guide</a> Citation rendering</p>
+<p>更进阶的方案应该需要看使用的<code>render</code>, 比如我的是<code>pandoc</code>,就看<code>pandoc</code>的引用相关的文档即可.</p>
+<p><a target="_blank" rel="noopener" href="https://pandoc.org/MANUAL.html#pandocs-markdown">Pandoc - Pandoc User’s Guide</a> Citation rendering</p>
 <h3 id="问题">问题</h3>
 <h4 id="前面的引用的后面的链接的脚注编号变成从1开始">前面的引用的后面的链接的脚注编号变成从1开始</h4>
-<p>所以脚注内的内容, 最好不用编号, 而是实际的指代.
-且将参考文献直接放在该段后. 通过渲染自动挪到文章/页最后.</p>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<p>所以脚注内的内容, 最好不用编号, 而是实际的指代. 且将参考文献直接放在该段后. 通过渲染自动挪到文章/页最后.</p>
+<section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><a target="_blank" rel="noopener" href="https://sspai.com/post/57082">5.4 如何用
-Markdown 写论文？ - 少数派</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><a target="_blank" rel="noopener" href="https://pandoc.org/MANUAL.html#footnotes">Pandoc - Pandoc User’s
-Guide</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><a target="_blank" rel="noopener" href="https://github.com/mblode/vscode-zotero">mblode/vscode-zotero:
-Zotero Better Bibtex citations for VS Code</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://sspai.com/post/57082">5.4 如何用 Markdown 写论文？ - 少数派</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://pandoc.org/MANUAL.html#footnotes">Pandoc - Pandoc User’s Guide</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://github.com/mblode/vscode-zotero">mblode/vscode-zotero: Zotero Better Bibtex citations for VS Code</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -231,7 +217,7 @@ Zotero Better Bibtex citations for VS Code</a><a href="#fnref3" class="footnote-
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.892Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.818Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

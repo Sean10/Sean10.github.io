@@ -29,8 +29,8 @@
 <meta property="og:description" content="爬虫学习笔记 2016.10.27 在一开始按照例子写最简单的爬虫的时候居然都写错了，写成了如下的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sean10.github.io/2016/10/27/%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/original.jpg">
-<meta property="article:published_time" content="2016-10-27T12:49:28.000Z">
-<meta property="article:modified_time" content="2018-03-09T12:49:28.000Z">
+<meta property="article:published_time" content="2016-10-27T20:49:28.000Z">
+<meta property="article:modified_time" content="2018-03-09T20:49:28.000Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="爬虫">
@@ -142,7 +142,7 @@
         <h1 class="title">爬虫学习笔记</h1>
         <h5 class="subtitle">
             
-                <time datetime="2016-10-27T12:49:28.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2016-10-27T20:49:28.000Z" itemprop="datePublished" class="page-time">
   2016-10-27
 </time>
 
@@ -164,9 +164,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="post-toc-number">1.</span> <span class="post-toc-text">爬虫学习笔记</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AD%97%E8%8A%82%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">字节协议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%8D%A2%E8%A1%8C%E7%AC%A6%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">换行符协议</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E5%88%86%E5%89%B2%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">特殊字符分割协议</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AD%97%E7%AC%A6%E9%95%BF%E5%BA%A6%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">二进制字符长度定义协议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8301%E6%B0%B8%E4%B9%85%E9%87%8D%E5%AE%9A%E5%90%91%E5%91%A2"><span class="post-toc-number">1.1.3.1.</span> <span class="post-toc-text">为什么使用301永久重定向呢？</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#requests%E7%88%AC%E5%8F%96%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">requests爬取中文乱码</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#handle-special-case-for-httpblog.sina.com.cnsblog_5058502a01017j3j.html"><span class="post-toc-number">2.</span> <span class="post-toc-text">handle
-special case for
-http:&#x2F;&#x2F;blog.sina.com.cn&#x2F;s&#x2F;blog_5058502a01017j3j.html</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8"><span class="post-toc-number">3.</span> <span class="post-toc-text">框架使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#scrapy"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">scrapy</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AAparse%E5%87%BD%E6%95%B0%E7%9A%84%E8%BE%93%E5%87%BA%E4%BD%9C%E4%B8%BA%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%E7%9A%84%E8%BE%93%E5%85%A5"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">使用一个parse函数的输出作为另一个函数的输入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8A%A8%E6%80%81%E7%9B%AE%E5%BD%95%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">动态目录实现</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%AE%A2%E9%98%85%E6%BA%90-%E5%AD%A6%E4%B9%A0"><span class="post-toc-number">4.</span> <span class="post-toc-text">订阅源 学习</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#rsshub"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">rsshub</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#legado"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">legado</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B9%A6%E6%BA%90"><span class="post-toc-number">4.2.1.</span> <span class="post-toc-text">书源</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%AE%A2%E9%98%85%E6%BA%90"><span class="post-toc-number">4.2.2.</span> <span class="post-toc-text">订阅源</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E7%BB%88"><span class="post-toc-number">5.</span> <span class="post-toc-text">最终</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%88%AC%E8%99%AB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="post-toc-number">1.</span> <span class="post-toc-text">爬虫学习笔记</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AD%97%E8%8A%82%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">字节协议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%8D%A2%E8%A1%8C%E7%AC%A6%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">换行符协议</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E5%88%86%E5%89%B2%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">特殊字符分割协议</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AD%97%E7%AC%A6%E9%95%BF%E5%BA%A6%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">二进制字符长度定义协议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8301%E6%B0%B8%E4%B9%85%E9%87%8D%E5%AE%9A%E5%90%91%E5%91%A2"><span class="post-toc-number">1.1.3.1.</span> <span class="post-toc-text">为什么使用301永久重定向呢？</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#requests%E7%88%AC%E5%8F%96%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">requests爬取中文乱码</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#handle-special-case-for-httpblog.sina.com.cnsblog_5058502a01017j3j.html"><span class="post-toc-number">2.</span> <span class="post-toc-text">handle special case for http:&#x2F;&#x2F;blog.sina.com.cn&#x2F;s&#x2F;blog_5058502a01017j3j.html</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8"><span class="post-toc-number">3.</span> <span class="post-toc-text">框架使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#scrapy"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">scrapy</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AAparse%E5%87%BD%E6%95%B0%E7%9A%84%E8%BE%93%E5%87%BA%E4%BD%9C%E4%B8%BA%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%E7%9A%84%E8%BE%93%E5%85%A5"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">使用一个parse函数的输出作为另一个函数的输入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8A%A8%E6%80%81%E7%9B%AE%E5%BD%95%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">动态目录实现</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%AE%A2%E9%98%85%E6%BA%90-%E5%AD%A6%E4%B9%A0"><span class="post-toc-number">4.</span> <span class="post-toc-text">订阅源 学习</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#rsshub"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">rsshub</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#legado"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">legado</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B9%A6%E6%BA%90"><span class="post-toc-number">4.2.1.</span> <span class="post-toc-text">书源</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%AE%A2%E9%98%85%E6%BA%90"><span class="post-toc-number">4.2.2.</span> <span class="post-toc-text">订阅源</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E7%BB%88"><span class="post-toc-number">5.</span> <span class="post-toc-text">最终</span></a></li></ol>
         </nav>
     </aside>
 
@@ -177,7 +175,7 @@ http:&#x2F;&#x2F;blog.sina.com.cn&#x2F;s&#x2F;blog_5058502a01017j3j.html</span><
     <div class="post-card">
         <h1 class="post-card-title">爬虫学习笔记</h1>
         <div class="post-meta">
-            <time class="post-time" title="2016-10-27 20:49:28" datetime="2016-10-27T12:49:28.000Z"  itemprop="datePublished">2016-10-27</time>
+            <time class="post-time" title="2016-10-27 20:49:28" datetime="2016-10-27T20:49:28.000Z"  itemprop="datePublished">2016-10-27</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -200,52 +198,14 @@ http:&#x2F;&#x2F;blog.sina.com.cn&#x2F;s&#x2F;blog_5058502a01017j3j.html</span><
 <p>在<code>html = response.read()</code>这里少加了个括号，导致赋值的内容不是爬到的内容，而是read的属性？</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bound method _fileobject.read of &lt;socket._fileobject object at 0x7fea52107bd0&gt;&gt;</span><br></pre></td></tr></table></figure>
 <p>得到了这种奇怪的东西</p>
-<p>URLError
-通常，URLError在没有网络连接(没有路由到特定服务器)，或者服务器不存在的情况下产生。
-这种情况下，异常同样会带有"reason"属性，它是一个tuple（可以理解为不可变的数组），
-包含了一个错误号和一个错误信息。
-我们建一个urllib2_test06.py来感受一下异常的处理：</p>
+<p>URLError 通常，URLError在没有网络连接(没有路由到特定服务器)，或者服务器不存在的情况下产生。 这种情况下，异常同样会带有"reason"属性，它是一个tuple（可以理解为不可变的数组）， 包含了一个错误号和一个错误信息。 我们建一个urllib2_test06.py来感受一下异常的处理：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"></span><br><span class="line">req = urllib2.Request(<span class="string">&#x27;http://www.example.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;out.txt&quot;</span>,<span class="string">&quot;w&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>: urllib2.urlopen(req)</span><br><span class="line"></span><br><span class="line">有些东西用js解密的方法，python实在是不会啊</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">except</span> urllib2.URLError, e:</span><br><span class="line">	<span class="built_in">print</span> &gt;&gt;f ,e.reason</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>按下F5，可以看到打印出来的内容是： [Errno 11001] getaddrinfo failed
-也就是说，错误号是11001，内容是getaddrinfo failed</p>
+<p>按下F5，可以看到打印出来的内容是： [Errno 11001] getaddrinfo failed 也就是说，错误号是11001，内容是getaddrinfo failed</p>
 </blockquote>
 <p>i have no answer.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"></span><br><span class="line">req = urllib2.Request(<span class="string">&#x27;http://bbs.csdn.net/callmewhy&#x27;</span>)</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;out.txt&quot;</span>,<span class="string">&quot;w&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>: urllib2.urlopen(req)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">except</span> urllib2.URLError, e:</span><br><span class="line">	<span class="built_in">print</span> &gt;&gt;f ,e.reason</span><br><span class="line">	<span class="comment">#print &gt;&gt; f, e.code</span></span><br></pre></td></tr></table></figure>
-<p>2.HTTPError 服务器上每一个HTTP 应答对象response包含一个数字"状态码"。
-有时状态码指出服务器无法完成请求。默认的处理器会为你处理一部分这种应答。
-例如:假如response是一个"重定向"，需要客户端从别的地址获取文档，urllib2将为你处理。
-其他不能处理的，urlopen会产生一个HTTPError。
-典型的错误包含"404"(页面无法找到)，"403"(请求禁止)，和"401"(带验证请求)。
-HTTP状态码表示HTTP协议所返回的响应的状态。
-比如客户端向服务器发送请求，如果成功地获得请求的资源，则返回的状态码为200，表示响应成功。
-如果请求的资源不存在， 则通常返回404错误。
-HTTP状态码通常分为5种类型，分别以1～5五个数字开头，由3位整数组成：
-------------------------------------------------------------------------------------------------
-200：请求成功 处理方式：获得响应的内容，进行处理
-201：请求完成，结果是创建了新资源。新创建资源的URI可在响应的实体中得到
-处理方式：爬虫中不会遇到 202：请求被接受，但处理尚未完成
-处理方式：阻塞等待 204：服务器端已经实现了请求，但是没有返回新的信
-息。如果客户是用户代理，则无须为此更新自身的文档视图。 处理方式：丢弃
-300：该状态码不被HTTP/1.0的应用程序直接使用，
-只是作为3XX类型回应的默认解释。存在多个可用的被请求资源。
-处理方式：若程序中能够处理，则进行进一步处理，如果程序中不能处理，则丢弃
-301：请求到的资源都会分配一个永久的URL，这样就可以在将来通过该URL来访问此资源
-处理方式：重定向到分配的URL 302：请求到的资源在一个不同的URL处临时保存
-处理方式：重定向到临时的URL 304 请求的资源未更新 处理方式：丢弃 400
-非法请求 处理方式：丢弃 401 未授权 处理方式：丢弃 403 禁止
-处理方式：丢弃 404 没有找到 处理方式：丢弃 5XX
-回应代码以“5”开头的状态码表示服务器端发现自己出现错误，不能继续执行请求
-处理方式：丢弃
-------------------------------------------------------------------------------------------------
-HTTPError实例产生后会有一个整型'code'属性，是服务器发送的相关错误号。
-Error Codes错误码
-因为默认的处理器处理了重定向(300以外号码)，并且100-299范围的号码指示成功，所以你只能看到400-599的错误号码。
-BaseHTTPServer.BaseHTTPRequestHandler.response是一个很有用的应答号码字典，显示了HTTP协议使用的所有的应答号。
-当一个错误号产生后，服务器返回一个HTTP错误号，和一个错误页面。
-你可以使用HTTPError实例作为页面返回的应答对象response。
-这表示和错误属性一样，它同样包含了read,geturl,和info方法。
-我们建一个urllib2_test07.py来感受一下：</p>
+<p>2.HTTPError 服务器上每一个HTTP 应答对象response包含一个数字"状态码"。 有时状态码指出服务器无法完成请求。默认的处理器会为你处理一部分这种应答。 例如:假如response是一个"重定向"，需要客户端从别的地址获取文档，urllib2将为你处理。 其他不能处理的，urlopen会产生一个HTTPError。 典型的错误包含"404"(页面无法找到)，"403"(请求禁止)，和"401"(带验证请求)。 HTTP状态码表示HTTP协议所返回的响应的状态。 比如客户端向服务器发送请求，如果成功地获得请求的资源，则返回的状态码为200，表示响应成功。 如果请求的资源不存在， 则通常返回404错误。 HTTP状态码通常分为5种类型，分别以1～5五个数字开头，由3位整数组成： ------------------------------------------------------------------------------------------------ 200：请求成功 处理方式：获得响应的内容，进行处理 201：请求完成，结果是创建了新资源。新创建资源的URI可在响应的实体中得到 处理方式：爬虫中不会遇到 202：请求被接受，但处理尚未完成 处理方式：阻塞等待 204：服务器端已经实现了请求，但是没有返回新的信 息。如果客户是用户代理，则无须为此更新自身的文档视图。 处理方式：丢弃 300：该状态码不被HTTP/1.0的应用程序直接使用， 只是作为3XX类型回应的默认解释。存在多个可用的被请求资源。 处理方式：若程序中能够处理，则进行进一步处理，如果程序中不能处理，则丢弃 301：请求到的资源都会分配一个永久的URL，这样就可以在将来通过该URL来访问此资源 处理方式：重定向到分配的URL 302：请求到的资源在一个不同的URL处临时保存 处理方式：重定向到临时的URL 304 请求的资源未更新 处理方式：丢弃 400 非法请求 处理方式：丢弃 401 未授权 处理方式：丢弃 403 禁止 处理方式：丢弃 404 没有找到 处理方式：丢弃 5XX 回应代码以“5”开头的状态码表示服务器端发现自己出现错误，不能继续执行请求 处理方式：丢弃 ------------------------------------------------------------------------------------------------ HTTPError实例产生后会有一个整型'code'属性，是服务器发送的相关错误号。 Error Codes错误码 因为默认的处理器处理了重定向(300以外号码)，并且100-299范围的号码指示成功，所以你只能看到400-599的错误号码。 BaseHTTPServer.BaseHTTPRequestHandler.response是一个很有用的应答号码字典，显示了HTTP协议使用的所有的应答号。 当一个错误号产生后，服务器返回一个HTTP错误号，和一个错误页面。 你可以使用HTTPError实例作为页面返回的应答对象response。 这表示和错误属性一样，它同样包含了read,geturl,和info方法。 我们建一个urllib2_test07.py来感受一下：</p>
 <p>i have no answer</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;http://www.someserver.com/cgi-bin/register.cgi&#x27;</span></span><br><span class="line">user_agent = <span class="string">&#x27;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36&#x27;</span></span><br><span class="line">values = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Michael Foord&#x27;</span>,</span><br><span class="line">          <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;Northampton&#x27;</span>,</span><br><span class="line">          <span class="string">&#x27;language&#x27;</span>: <span class="string">&#x27;Python&#x27;</span> &#125;</span><br><span class="line">headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: user_agent&#125;</span><br><span class="line"></span><br><span class="line">data = urllib.urlencode(values)</span><br><span class="line">req = urllib2.Request(url, data, headers)</span><br><span class="line">response = urllib2.urlopen(req)</span><br><span class="line">the_page = response.read()</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;out.txt&quot;</span>,<span class="string">&quot;w&quot;</span>)</span><br><span class="line"><span class="built_in">print</span> &gt;&gt; f, the_page</span><br></pre></td></tr></table></figure>
 <p>this has been unacceptable.</p>
@@ -273,12 +233,10 @@ BaseHTTPServer.BaseHTTPRequestHandler.response是一个很有用的应答号码�
 <td>GET是从服务器上获取指定页面信息，POST是向服务器提交数据并获取页面信息。</td>
 </tr>
 <tr class="odd">
-<td>GET请求参数都显示在URL上，服务器根据该请求所包含URL中的参数来产生响应内容。
-"Get" 请求的参数 是URL的一部分。</td>
+<td>GET请求参数都显示在URL上，服务器根据该请求所包含URL中的参数来产生响应内容。 "Get" 请求的参数 是URL的一部分。</td>
 </tr>
 <tr class="even">
-<td>POST请求参数在请求体当中，消息长度没有限制而且以隐式的方式进行发送，通常用来向HTTP服务器提交量比较大的数据（比如请求中包含许多参数或者文件上传操作等）。
-"POST"请求的参数 不在URL中，而在请求体中。</td>
+<td>POST请求参数在请求体当中，消息长度没有限制而且以隐式的方式进行发送，通常用来向HTTP服务器提交量比较大的数据（比如请求中包含许多参数或者文件上传操作等）。 "POST"请求的参数 不在URL中，而在请求体中。</td>
 </tr>
 <tr class="odd">
 <td>页面的form表单一般都有method属性，默认值是"get"。</td>
@@ -287,17 +245,14 @@ BaseHTTPServer.BaseHTTPRequestHandler.response是一个很有用的应答号码�
 <td>举个栗子，登录时提交用户名和密码：</td>
 </tr>
 <tr class="odd">
-<td>如果用"get"方式，提交表单后，则用户输入的用户名和密码将在地址栏中暴露无遗；
-如果设置为"post，则提交表单后，地址栏不会有用户名和密码的显示。
-所以处理登录页面的form表单时，发送的请求都是"POST"方式。</td>
+<td>如果用"get"方式，提交表单后，则用户输入的用户名和密码将在地址栏中暴露无遗； 如果设置为"post，则提交表单后，地址栏不会有用户名和密码的显示。 所以处理登录页面的form表单时，发送的请求都是"POST"方式。</td>
 </tr>
 </tbody>
 </table>
 <p>wsgi协议</p>
 <hr>
 <h2 id="字节协议">字节协议</h2>
-<p>没找到为什么，python
-socket建立服务器的时候，浏览器始终接收不到数据，接收到也显示不出来，不明白为什么</p>
+<p>没找到为什么，python socket建立服务器的时候，浏览器始终接收不到数据，接收到也显示不出来，不明白为什么</p>
 <p>chrome和safari不显示，但是firefox显示了，先用firefox,以后再想这几个之间的区别</p>
 <p>去掉了HTTP/1.1的表头，居然还能显示出来</p>
 <h3 id="换行符协议">换行符协议</h3>
@@ -306,13 +261,9 @@ socket建立服务器的时候，浏览器始终接收不到数据，接收到�
 <h4 id="为什么使用301永久重定向呢">为什么使用301永久重定向呢？</h4>
 <p>一个解答是为了SEO</p>
 <p>启动和停止ssdb服务</p>
-<p>启动：ssdb-server /usr/local/etc/ssdb.conf 守护进程启动方式
-ssdb-server -d /usr/local/etc/ssdb.conf 停止： ssdb-server
-/usr/local/etc/ssdb.conf -s stop 重启：停止： ssdb-server
-/usr/local/etc/ssdb.conf -s restart 启动客户端:ssdb-cli</p>
+<p>启动：ssdb-server /usr/local/etc/ssdb.conf 守护进程启动方式 ssdb-server -d /usr/local/etc/ssdb.conf 停止： ssdb-server /usr/local/etc/ssdb.conf -s stop 重启：停止： ssdb-server /usr/local/etc/ssdb.conf -s restart 启动客户端:ssdb-cli</p>
 <p>支持数据类型</p>
-<p>SSDB ⽀持三种数据类型, 别分是 KV(key-value), Hashmap(map),
-Zset(sorted set).</p>
+<p>SSDB ⽀持三种数据类型, 别分是 KV(key-value), Hashmap(map), Zset(sorted set).</p>
 <h2 id="requests爬取中文乱码">requests爬取中文乱码</h2>
 <p>使用str(html.content,"utf-8")搞定</p>
 <p>http://www.cnblogs.com/bitpeng/p/4748872.html</p>
@@ -338,40 +289,28 @@ Zset(sorted set).</p>
 <p>Cookie保存与处理</p>
 <p>自动触发技术</p>
 <p>抓包分析技术+自动触发技术</p>
-<p>有效地存储（数据库应该怎样安排）
-有效地判重（这里指网页判重，咱可不想把人民日报和抄袭它的大民日报都爬一遍）
-有效地信息抽取（比如怎么样抽取出网页上所有的地址抽取出来，“朝阳区奋进路中华道”），搜索引擎通常不需要存储所有的信息，比如图片我存来干嘛...
-及时更新（预测这个网页多久会更新一次）</p>
+<p>有效地存储（数据库应该怎样安排） 有效地判重（这里指网页判重，咱可不想把人民日报和抄袭它的大民日报都爬一遍） 有效地信息抽取（比如怎么样抽取出网页上所有的地址抽取出来，“朝阳区奋进路中华道”），搜索引擎通常不需要存储所有的信息，比如图片我存来干嘛... 及时更新（预测这个网页多久会更新一次）</p>
 <p>BeautifulSoup找不到解析的元素的原因，似乎是因为网页编码问题，比如学校教务系统用的是GBK,不是utf-8，就不好搞了</p>
 <p>在使用Beautifulsoup过程中，对于大多数html源码，通过指定正确的编码，或者本身是默认UTF-8编码而无需指定编码类型，其都可以正确解析html源码，得到对应的soup变量。</p>
 <p>然后就接着去利用soup实现你所想要的功能了。</p>
 <p>但是有时候会发现，有些html解析后，有些标签等内容丢失了，即所得到的soup不是所期望的完整的html的内容。</p>
 <p>这时候，很可能遇到了非法的html，即其中可能包含了一些不合法的html标签等内容，导致Beautifulsoup虽然可以解析，没有报错，但是实际上得到的soup变量，内容缺失了一部分了。</p>
 <p>比如我就遇到过不少这样的例子：</p>
-<p>部分Blogbus的帖子的html中非html5和html5的代码混合导致Beautifulsoup解析错误
-之前在为BlogsToWordPress添加Blogbus支持过程中去解析Blogbus的帖子的时候，遇到一个特殊的帖子：http://ronghuihou.blogbus.com/logs/89099700.html，其中一堆的非html5的代码中，包含了这样一段html5的代码的写法，即标签属性值不加括号的：</p>
+<p>部分Blogbus的帖子的html中非html5和html5的代码混合导致Beautifulsoup解析错误 之前在为BlogsToWordPress添加Blogbus支持过程中去解析Blogbus的帖子的时候，遇到一个特殊的帖子：http://ronghuihou.blogbus.com/logs/89099700.html，其中一堆的非html5的代码中，包含了这样一段html5的代码的写法，即标签属性值不加括号的：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">SCRIPT</span> <span class="attr">language</span>=<span class="string">JavaScript</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">oncontextmenu</span>=<span class="keyword">new</span> <span class="title class_">Function</span>(<span class="string">&quot;event.returnValue=false;&quot;</span>); <span class="comment">//禁止右键功能,单击右键将无任何反应</span></span></span><br><span class="line"><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">onselectstart</span>=<span class="keyword">new</span> <span class="title class_">Function</span>( <span class="string">&quot;event.returnValue=false;&quot;</span>); <span class="comment">//禁止先择,也就是无法复制</span></span></span><br><span class="line"><span class="language-javascript">&lt;/<span class="variable constant_">SCRIPT</span> language=<span class="title class_">JavaScript</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>结果导致Beautifulsoup解析错误，得到的soup中，找不到所需要的各种class等属性值。</p>
 <p>对应的解决办法就是，把这部分的代码删除掉，然后再解析就可以了：</p>
 <p>其中一堆的非html5的代码中，包含了这样一段html5的代码的写法，即标签属性值不加括号的：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">foundInvliadScript = re.search(<span class="string">&quot;&lt;SCRIPT language=JavaScript&gt;.+&lt;/SCRIPT language=JavaScript&gt;&quot;</span>, html, re.I | re.S );</span><br><span class="line">logging.debug(<span class="string">&quot;foundInvliadScript=%s&quot;</span>, foundInvliadScript);</span><br><span class="line"><span class="keyword">if</span>(foundInvliadScript):</span><br><span class="line">    invalidScriptStr = foundInvliadScript.group(<span class="number">0</span>);</span><br><span class="line">    logging.debug(<span class="string">&quot;invalidScriptStr=%s&quot;</span>, invalidScriptStr);</span><br><span class="line">    html = html.replace(invalidScriptStr, <span class="string">&quot;&quot;</span>);</span><br><span class="line">    logging.debug(<span class="string">&quot;filter out invalid script OK&quot;</span>);</span><br><span class="line"></span><br><span class="line">soup = htmlToSoup(html);</span><br></pre></td></tr></table></figure>
-<p>判断浏览器版本的相关代码，导致Beautifulsoup解析不正常
-之前在给BlogsToWordpress添加新浪博客的支持的过程中</p>
+<p>判断浏览器版本的相关代码，导致Beautifulsoup解析不正常 之前在给BlogsToWordpress添加新浪博客的支持的过程中</p>
 <p>遇到很多新浪博客的帖子的html中，包含很多判断浏览器版本的相关代码：</p>
 <p>&lt;!–[if lte IE 6]&gt; xxx xxx &lt;[endif]–&gt;</p>
 <p>由此导致Beautifulsoup解析html不正常。</p>
-<p>font标签嵌套层次太多，导致Beautifulsoup无法解析html
-接上面那个解析新浪博客帖子的例子，期间又遇到另外一个问题，对于一些特殊帖子：http://blog.sina.com.cn/s/blog_5058502a01017j3j.html</p>
+<p>font标签嵌套层次太多，导致Beautifulsoup无法解析html 接上面那个解析新浪博客帖子的例子，期间又遇到另外一个问题，对于一些特殊帖子：http://blog.sina.com.cn/s/blog_5058502a01017j3j.html</p>
 <p>其包含特殊的好几十个font标签且是一个个嵌套的代码，导致无法Beautifulsoup无法解析html，后来把对应嵌套的font标签删除掉，才可以正常解析。</p>
 <p>相关python代码为：</p>
-<h1 id="handle-special-case-for-httpblog.sina.com.cnsblog_5058502a01017j3j.html">handle
-special case for
-http://blog.sina.com.cn/s/blog_5058502a01017j3j.html</h1>
-<p>processedHtml =
-processedHtml.replace('<font color="#6D4F19"><font color="#7AAF5A"><font color="#7AAF5A"><font color="#6D4F19"><font color="#7AAF5A"><font color="#7AAF5A">',
-""); processedHtml =
-processedHtml.replace("",
-"");</font></font></font></font></font></font></p>
+<h1 id="handle-special-case-for-httpblog.sina.com.cnsblog_5058502a01017j3j.html">handle special case for http://blog.sina.com.cn/s/blog_5058502a01017j3j.html</h1>
+<p>processedHtml = processedHtml.replace('<font color="#6D4F19"><font color="#7AAF5A"><font color="#7AAF5A"><font color="#6D4F19"><font color="#7AAF5A"><font color="#7AAF5A">', ""); processedHtml = processedHtml.replace("", "");</font></font></font></font></font></font></p>
 <p>遇到其他类似的问题，也可以去删除或替换出错代码，即可解决问题。</p>
 <p>不过需要说明的是，很多时候，你未必很容易就找到出错的代码。</p>
 <p>想要找到出错的代码，更多的时候，需要你一点点调试，一点点的删除看似可疑的一些html源码，然后最终才能定位到出错的代码，然后删除掉后，才可以正常工作的。</p>
@@ -382,16 +321,14 @@ processedHtml.replace("",
 <p>图片懒加载,简单来说就是在页面渲染过程中,图片不会一次性全部加载,会在需要的时候加载,比如当滚动条滚动到某一个位置时触发事件加载图片,如下代码:</p>
 <p>通过js将img标签的data-src属性赋值给src属性</p>
 <p>但是如果是用base64的，在dom里属性就消失不见了</p>
-<p>针对decode
-base64编码的图片比较慢的问题,我们可以选择使用canvas来加速.当向canvas发出绘画命令时,浏览器直接将指令发到图形加速器而不需要开发者更多的干预,硬件图形加速器则以难以执行的运算速度实时绘画和渲染图形.因此,我们可以使用canvas来渲染base64编码后的图片</p>
-<p>Inlined Placeholder Image To reduce the amount of request you can use
-data uri images as the placeholder.</p>
+<p>针对decode base64编码的图片比较慢的问题,我们可以选择使用canvas来加速.当向canvas发出绘画命令时,浏览器直接将指令发到图形加速器而不需要开发者更多的干预,硬件图形加速器则以难以执行的运算速度实时绘画和渲染图形.因此,我们可以使用canvas来渲染base64编码后的图片</p>
+<p>Inlined Placeholder Image To reduce the amount of request you can use data uri images as the placeholder.</p>
 <p><img src="/.io//gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="original.jpg" width="1024" height="768"></p>
 <p>最后解析出来的base64居然不是图片，也是怪奇怪的</p>
 <p>http://api.nicodic.jp/</p>
 <p>豆瓣获取url还是非常简单的，就是被403了，明天再看了吧，还有个数据库连接池多线程的问题需要试试。</p>
 <hr>
-<p>python的json.dumps方法默认会输出成这种格式"35aba26ed",。</p>
+<p>python的json.dumps方法默认会输出成这种格式"",。</p>
 <p>要输出中文需要指定ensure_ascii参数为False.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = json.dump(jsonData,targetFile,ensure_ascii=False,indent=4)</span><br></pre></td></tr></table></figure>
 <p>在输出的时候，对文件制定特定的UTF-8编码：</p>
@@ -403,25 +340,18 @@ data uri images as the placeholder.</p>
 <p>剩下主要是item和spider之间组合的问题</p>
 <h3 id="使用一个parse函数的输出作为另一个函数的输入">使用一个parse函数的输出作为另一个函数的输入</h3>
 <p>通过对parse函数的callback嵌套触发Request</p>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4886940/using-multiple-spiders-at-in-the-project-in-scrapy">Using
-multiple spiders at in the project in Scrapy - Stack Overflow</a></p>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5825880/scrapy-parse-a-page-to-extract-items-then-follow-and-store-item-url-contents">python
-- Scrapy - parse a page to extract items - then follow and store item
-url contents - Stack Overflow</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4886940/using-multiple-spiders-at-in-the-project-in-scrapy">Using multiple spiders at in the project in Scrapy - Stack Overflow</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5825880/scrapy-parse-a-page-to-extract-items-then-follow-and-store-item-url-contents">python - Scrapy - parse a page to extract items - then follow and store item url contents - Stack Overflow</a></p>
 <h3 id="动态目录实现">动态目录实现</h3>
 <p>关键是以下两个<code>ImagesPipeline</code>的函数重载</p>
 <ul>
 <li><code>get_media_requests</code></li>
 <li><code>image_paths</code></li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c12d2ac7d55f">Scrapy框架之利用ImagesPipeline下载图片
-- 简书</a></p>
-<p><a target="_blank" rel="noopener" href="https://docs.scrapy.org/en/latest/topics/media-pipeline.html?highlight=get_media_requests#std-setting-MEDIA_ALLOW_REDIRECTS">Downloading
-and processing files and images — Scrapy 2.8.0 documentation</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c12d2ac7d55f">Scrapy框架之利用ImagesPipeline下载图片 - 简书</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.scrapy.org/en/latest/topics/media-pipeline.html?highlight=get_media_requests#std-setting-MEDIA_ALLOW_REDIRECTS">Downloading and processing files and images — Scrapy 2.8.0 documentation</a></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def file_path(self, request, response=None, info=None, *, item=None):</span><br><span class="line">    image_guid = hashlib.sha1(to_bytes(request.url)).hexdigest()</span><br><span class="line">    return f&quot;full/&#123;image_guid&#125;.jpg&quot;</span><br></pre></td></tr></table></figure>
-<p>奇怪, 如果按照<code>ImagesPipeline</code>的函数, 这里应该是full才对,
-所以到底file_path是什么时候感知到settings里的<code>IMAGES_STORE</code>的呢?
-## PySpider</p>
+<p>奇怪, 如果按照<code>ImagesPipeline</code>的函数, 这里应该是full才对, 所以到底file_path是什么时候感知到settings里的<code>IMAGES_STORE</code>的呢? ## PySpider</p>
 <h1 id="订阅源-学习">订阅源 学习</h1>
 <h2 id="rsshub">rsshub</h2>
 <h2 id="legado">legado</h2>
@@ -436,7 +366,7 @@ and processing files and images — Scrapy 2.8.0 documentation</a></p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2018-03-09T12:49:28.000Z" itemprop="dateUpdated">2018-03-09 20:49:28</time>
+    最后更新时间：<time datetime="2018-03-09T20:49:28.000Z" itemprop="dateUpdated">2018-03-09 20:49:28</time>
 </span><br>
 
 

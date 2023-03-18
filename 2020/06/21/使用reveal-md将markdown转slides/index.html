@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="前段时间看到了vue-mark-display这套功能，直接基于markdown生成slides，都不用去专门学习beamer那套，直接就能基于现有的markdown生成，感觉相当不错。 不过在折腾这套工具的时候，遇到一个问题，自己展示的时候用html没有问题，但是归档发布给其他人的时候，当然最好还是以pdf的形式嘛。这套工具不知道是以为没适配高分屏还是什么原因，通过Chrome和decktype">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-21T08:57:16.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.891Z">
+<meta property="article:published_time" content="2020-06-21T16:57:16.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.826Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="工具">
 <meta property="article:tag" content="node-js">
@@ -141,7 +141,7 @@
         <h1 class="title">使用reveal-md将markdown转slides</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-06-21T08:57:16.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-06-21T16:57:16.000Z" itemprop="datePublished" class="page-time">
   2020-06-21
 </time>
 
@@ -174,7 +174,7 @@
     <div class="post-card">
         <h1 class="post-card-title">使用reveal-md将markdown转slides</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-06-21 16:57:16" datetime="2020-06-21T08:57:16.000Z"  itemprop="datePublished">2020-06-21</time>
+            <time class="post-time" title="2020-06-21 16:57:16" datetime="2020-06-21T16:57:16.000Z"  itemprop="datePublished">2020-06-21</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -216,20 +216,12 @@
 <h2 id="通过decktape输出pdf支持mathjax但暂时存在标题与图片间隙过大问题未修复pinned状态">通过Decktape输出pdf(支持mathjax，但暂时存在标题与图片间隙过大问题未修复，pinned状态)</h2>
 <p>使用<code>reveal-md</code>提供的生成Static文件的方式，再通过<code>decktape</code>将静态网页转成pdf。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reveal-md temp.md --static static</span><br><span class="line">decktape index.html new.pdf</span><br></pre></td></tr></table></figure>
-<p>根据下面[^2]里提到的问题，目前找到的有两种解决方式 1.
-使用screenshots输出，再写个脚本拼接成pdf，可能会丢失一些动态效果？如果尺寸比图片小，也会丢失下面的内容……不过这个和html是表现一致的，所以如果图片在html有问题，还可以调整。
-2.
-使用增加size的方式，直到找到可以正确显示的方式。但是这样的size针对不同的图片大小，还需要手动调整……
-3.
-使用1.0.0版本的decktape，这个版本还在使用phantomjs，但是我发现在高分屏幕环境，似乎存在一点问题.只能显示一部分，原本的中间的内容跑到了右下角去了。
-4.
-使用原生的print-pdf，但是好像我这边生成的好像怎么都加载不了css，位置始终在左侧.</p>
+<p>根据下面[^2]里提到的问题，目前找到的有两种解决方式 1. 使用screenshots输出，再写个脚本拼接成pdf，可能会丢失一些动态效果？如果尺寸比图片小，也会丢失下面的内容……不过这个和html是表现一致的，所以如果图片在html有问题，还可以调整。 2. 使用增加size的方式，直到找到可以正确显示的方式。但是这样的size针对不同的图片大小，还需要手动调整…… 3. 使用1.0.0版本的decktape，这个版本还在使用phantomjs，但是我发现在高分屏幕环境，似乎存在一点问题.只能显示一部分，原本的中间的内容跑到了右下角去了。 4. 使用原生的print-pdf，但是好像我这边生成的好像怎么都加载不了css，位置始终在左侧.</p>
 <p>常用尺寸： * 2048x1536 * 1920x1080 * 2560x1440(screenshots)</p>
 <h3 id="存在图片和标题间距过大问题2">存在图片和标题间距过大问题[^2]</h3>
 <p>绕过方式如下:</p>
 <blockquote>
-<p>A workaround seems to be increasing (very much) the size. For example
-using --size='2048x1536' instead of --size='1024x768' works for me.</p>
+<p>A workaround seems to be increasing (very much) the size. For example using --size='2048x1536' instead of --size='1024x768' works for me.</p>
 </blockquote>
 <p>但是这个存在一个问题，因为图片分辨率一旦超过设置的宽度，他这边就会无法显示了。</p>
 <p>可能相比之下还不如刚才那样直接输出。如果使用screenshots输出倒是没有一点问题。</p>
@@ -241,13 +233,10 @@ using --size='2048x1536' instead of --size='1024x768' works for me.</p>
 <p>本以为直接是按照目录结构保证的，但是实际上来看，和我写的目录结构并不是完全匹配的。</p>
 <p>还得具体了解一下。</p>
 <blockquote>
-<p>横向的幻灯片代表一章,
-纵向的幻灯片代表一章中的一节。那么横向的幻灯片在播放时是左右切换的,
-而纵向的幻灯片是上下切换的。</p>
+<p>横向的幻灯片代表一章, 纵向的幻灯片代表一章中的一节。那么横向的幻灯片在播放时是左右切换的, 而纵向的幻灯片是上下切换的。</p>
 </blockquote>
 <blockquote>
-<p>Reveal.js
-里页面有两种页面类型，横向的一级页面、纵向的子页面。后者务必嵌套在前者里面。所谓的纵横比较好理解，键盘上的左右箭头控制一级页面，上下键移动子页面。</p>
+<p>Reveal.js 里页面有两种页面类型，横向的一级页面、纵向的子页面。后者务必嵌套在前者里面。所谓的纵横比较好理解，键盘上的左右箭头控制一级页面，上下键移动子页面。</p>
 </blockquote>
 <p>说是这么说的.根据[^7]也是有人直接改了，让可以在section切换时，能够直接进入下一个section的开头，而不是按<code>Esc</code>看到的布局的右侧位置。</p>
 <p>又仔细翻了下文档，其实是由开关控制，决定是否要继承当前所在的section下属的纵向index的，关闭<code>navigationMode</code>就可以了。[^8]的<code>Navigation Mode</code>有提开关,既然有空格可以工作，暂时就不动这个了。</p>
@@ -257,25 +246,14 @@ using --size='2048x1536' instead of --size='1024x768' works for me.</p>
 <p>在调试过程中，发现主要痛点在于默认主题的标题全部被强制大写了，导致看上去不是很符合我的预期，找了下可以在英文外增加代码符号```来完成绕过。</p>
 <h2 id="reference">Reference</h2>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://github.com/webpro/reveal-md#theme">webpro/reveal-md:
-reveal.js on steroids! Get beautiful reveal.js presentations from any
-Markdown file</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/astefanutti/decktape/issues/151">weird
-spacing with reveal · Issue #151 · astefanutti/decktape</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/astefanutti/decktape">astefanutti/decktape: PDF
-exporter for HTML presentations</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.npmtrends.com/remark-vs-remark-slide-vs-reveal-md-vs-reveal.js-vs-spectacle">remark
-vs remark-slide vs reveal-md vs reveal.js vs spectacle | npm
-trends</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/hakimel/reveal.js/issues/404">Presenter
-mode · Issue #404 · hakimel/reveal.js</a></li>
-<li><a target="_blank" rel="noopener" href="https://sspai.com/post/40657">Reveal.js：把你的 Markdown
-文稿变成 PPT - 少数派</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/hakimel/reveal.js/issues/2504">Forces
-left/right to go to top of previous/next section · Issue #2504 ·
-hakimel/reveal.js</a></li>
-<li><a target="_blank" rel="noopener" href="https://revealjs.com/vertical-slides/">Vertical Slides |
-reveal.js</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/webpro/reveal-md#theme">webpro/reveal-md: reveal.js on steroids! Get beautiful reveal.js presentations from any Markdown file</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/astefanutti/decktape/issues/151">weird spacing with reveal · Issue #151 · astefanutti/decktape</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/astefanutti/decktape">astefanutti/decktape: PDF exporter for HTML presentations</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.npmtrends.com/remark-vs-remark-slide-vs-reveal-md-vs-reveal.js-vs-spectacle">remark vs remark-slide vs reveal-md vs reveal.js vs spectacle | npm trends</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hakimel/reveal.js/issues/404">Presenter mode · Issue #404 · hakimel/reveal.js</a></li>
+<li><a target="_blank" rel="noopener" href="https://sspai.com/post/40657">Reveal.js：把你的 Markdown 文稿变成 PPT - 少数派</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hakimel/reveal.js/issues/2504">Forces left/right to go to top of previous/next section · Issue #2504 · hakimel/reveal.js</a></li>
+<li><a target="_blank" rel="noopener" href="https://revealjs.com/vertical-slides/">Vertical Slides | reveal.js</a></li>
 </ol>
 
         </div>
@@ -285,7 +263,7 @@ reveal.js</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.891Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.826Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

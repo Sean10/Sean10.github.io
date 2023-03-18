@@ -31,8 +31,8 @@
 <meta property="og:image" content="https://sean10.github.io/.io//ceph%E4%B9%8Bdashboard_2021-12-02-16-03-44.png">
 <meta property="og:image" content="https://sean10.github.io/.io//ceph%E4%B9%8Bdashboard_2021-12-02-16-40-00.png">
 <meta property="og:image" content="https://sean10.github.io/.io//ceph%E4%B9%8Bdashboard_2021-12-02-16-40-35.png">
-<meta property="article:published_time" content="2021-12-02T11:26:04.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.811Z">
+<meta property="article:published_time" content="2021-12-02T19:26:04.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.766Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="dashboard">
@@ -143,7 +143,7 @@
         <h1 class="title">ceph之dashboard社区状态小探</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-12-02T11:26:04.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-12-02T19:26:04.000Z" itemprop="datePublished" class="page-time">
   2021-12-02
 </time>
 
@@ -165,10 +165,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%9A%E4%BD%8D"><span class="post-toc-number">1.</span> <span class="post-toc-text">定位</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#dashboard"><span class="post-toc-number">2.</span> <span class="post-toc-text">dashboard</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9B%B4%E6%96%B0%E8%83%8C%E6%99%AF"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">更新背景</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#api%E6%9D%A5%E6%BA%90"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">API来源</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E5%B8%A6cephadm%E7%9A%84dashboard"><span class="post-toc-number">3.</span> <span class="post-toc-text">运行一个带cephadm的dashboard</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#luminous%E7%89%88%E6%9C%AC%E5%B1%80%E9%99%90%E5%8A%9F%E8%83%BD"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Luminous版本局限功能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#health"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">health</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#objectdata-usedcapacity"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">object&#x2F;data used&#x2F;capacity</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#mon%E6%95%B0%E9%87%8F%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.3.</span> <span class="post-toc-text">mon数量监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#meta-services-%E6%95%B0%E9%87%8F%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.4.</span> <span class="post-toc-text">meta services 数量监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#osd-up-in%E6%95%B0%E9%87%8F%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.5.</span> <span class="post-toc-text">OSD up, in数量监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#manager-%E7%8A%B6%E6%80%81%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.6.</span> <span class="post-toc-text">manager 状态监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pool%E4%B8%8Bpg%E7%8A%B6%E6%80%81-usage-iops%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.7.</span> <span class="post-toc-text">pool下pg状态, usage, IOPS监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#cluster-log"><span class="post-toc-number">3.1.8.</span> <span class="post-toc-text">cluster log</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%9B%86%E7%BE%A4%E8%A7%92%E8%89%B2%E5%88%97%E8%A1%A8-%E6%AF%8F%E4%B8%AA%E8%8A%82%E7%82%B9%E4%B8%8A%E9%83%A8%E7%BD%B2%E7%9A%84mon-osd"><span class="post-toc-number">3.1.9.</span> <span class="post-toc-text">集群角色列表,
-每个节点上部署的mon, osd</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#osds-iops-%E5%90%9E%E5%90%90%E9%87%8F-%E7%BA%A625s%E5%B7%A6%E5%8F%B3%E7%9A%845%E6%AC%A1%E5%B7%A6%E5%8F%B3%E7%9A%84%E6%97%B6%E9%97%B4%E7%AA%97%E5%8F%A3%E7%9A%84%E6%8A%98%E7%BA%BF%E5%9B%BE"><span class="post-toc-number">3.1.10.</span> <span class="post-toc-text">OSDS
-IOPS, 吞吐量, 约25s左右的5次左右的时间窗口的折线图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ceph%E5%8E%9F%E7%94%9F%E9%85%8D%E7%BD%AE"><span class="post-toc-number">3.1.11.</span> <span class="post-toc-text">ceph原生配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#rbd-mirror"><span class="post-toc-number">3.1.12.</span> <span class="post-toc-text">rbd mirror</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#iscsi"><span class="post-toc-number">3.1.13.</span> <span class="post-toc-text">iSCSI</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%AF%8F%E4%B8%AApool%E7%9A%84rbd-sizeobjectsobject-size-snap%E6%A6%82%E5%BF%B5"><span class="post-toc-number">3.1.14.</span> <span class="post-toc-text">每个pool的rbd
-size&#x2F;objects&#x2F;object size, snap概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#filesystem."><span class="post-toc-number">3.1.15.</span> <span class="post-toc-text">filesystem.</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E6%97%B6%E6%95%88%E6%80%A7"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">数据时效性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E6%94%AF%E6%8C%81%E9%A1%B5%E9%9D%A2%E4%BF%AE%E6%94%B9%E9%9B%86%E7%BE%A4"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">是否支持页面修改集群?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%AA%E6%8F%90%E4%BE%9B%E8%BF%99%E4%BA%9B%E5%B1%95%E7%A4%BA%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%BC%98%E7%94%B13"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">只提供这些展示的设计缘由?[^3]</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%8A%B6%E6%80%81%E7%AA%97%E5%8F%A3"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">状态窗口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%80%A7%E8%83%BD%E7%AA%97%E5%8F%A3"><span class="post-toc-number">3.4.2.</span> <span class="post-toc-text">性能窗口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%B9%E9%87%8F%E7%AA%97%E5%8F%A3"><span class="post-toc-number">3.4.3.</span> <span class="post-toc-text">容量窗口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#dashboard-%E8%B4%A6%E6%88%B7%E6%9D%83%E9%99%90%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">3.4.4.</span> <span class="post-toc-text">dashboard 账户权限系统</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%9B%86%E7%BE%A4%E5%85%B7%E4%BD%93%E4%BF%A1%E6%81%AF"><span class="post-toc-number">3.4.5.</span> <span class="post-toc-text">集群具体信息</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#prometheus-grafana"><span class="post-toc-number">4.</span> <span class="post-toc-text">prometheus + grafana</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">5.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%9A%E4%BD%8D"><span class="post-toc-number">1.</span> <span class="post-toc-text">定位</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#dashboard"><span class="post-toc-number">2.</span> <span class="post-toc-text">dashboard</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9B%B4%E6%96%B0%E8%83%8C%E6%99%AF"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">更新背景</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#api%E6%9D%A5%E6%BA%90"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">API来源</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E5%B8%A6cephadm%E7%9A%84dashboard"><span class="post-toc-number">3.</span> <span class="post-toc-text">运行一个带cephadm的dashboard</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#luminous%E7%89%88%E6%9C%AC%E5%B1%80%E9%99%90%E5%8A%9F%E8%83%BD"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Luminous版本局限功能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#health"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">health</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#objectdata-usedcapacity"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">object&#x2F;data used&#x2F;capacity</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#mon%E6%95%B0%E9%87%8F%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.3.</span> <span class="post-toc-text">mon数量监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#meta-services-%E6%95%B0%E9%87%8F%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.4.</span> <span class="post-toc-text">meta services 数量监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#osd-up-in%E6%95%B0%E9%87%8F%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.5.</span> <span class="post-toc-text">OSD up, in数量监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#manager-%E7%8A%B6%E6%80%81%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.6.</span> <span class="post-toc-text">manager 状态监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pool%E4%B8%8Bpg%E7%8A%B6%E6%80%81-usage-iops%E7%9B%91%E6%8E%A7"><span class="post-toc-number">3.1.7.</span> <span class="post-toc-text">pool下pg状态, usage, IOPS监控</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#cluster-log"><span class="post-toc-number">3.1.8.</span> <span class="post-toc-text">cluster log</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%9B%86%E7%BE%A4%E8%A7%92%E8%89%B2%E5%88%97%E8%A1%A8-%E6%AF%8F%E4%B8%AA%E8%8A%82%E7%82%B9%E4%B8%8A%E9%83%A8%E7%BD%B2%E7%9A%84mon-osd"><span class="post-toc-number">3.1.9.</span> <span class="post-toc-text">集群角色列表, 每个节点上部署的mon, osd</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#osds-iops-%E5%90%9E%E5%90%90%E9%87%8F-%E7%BA%A625s%E5%B7%A6%E5%8F%B3%E7%9A%845%E6%AC%A1%E5%B7%A6%E5%8F%B3%E7%9A%84%E6%97%B6%E9%97%B4%E7%AA%97%E5%8F%A3%E7%9A%84%E6%8A%98%E7%BA%BF%E5%9B%BE"><span class="post-toc-number">3.1.10.</span> <span class="post-toc-text">OSDS IOPS, 吞吐量, 约25s左右的5次左右的时间窗口的折线图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ceph%E5%8E%9F%E7%94%9F%E9%85%8D%E7%BD%AE"><span class="post-toc-number">3.1.11.</span> <span class="post-toc-text">ceph原生配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#rbd-mirror"><span class="post-toc-number">3.1.12.</span> <span class="post-toc-text">rbd mirror</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#iscsi"><span class="post-toc-number">3.1.13.</span> <span class="post-toc-text">iSCSI</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%AF%8F%E4%B8%AApool%E7%9A%84rbd-sizeobjectsobject-size-snap%E6%A6%82%E5%BF%B5"><span class="post-toc-number">3.1.14.</span> <span class="post-toc-text">每个pool的rbd size&#x2F;objects&#x2F;object size, snap概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#filesystem."><span class="post-toc-number">3.1.15.</span> <span class="post-toc-text">filesystem.</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E6%97%B6%E6%95%88%E6%80%A7"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">数据时效性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%98%AF%E5%90%A6%E6%94%AF%E6%8C%81%E9%A1%B5%E9%9D%A2%E4%BF%AE%E6%94%B9%E9%9B%86%E7%BE%A4"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">是否支持页面修改集群?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%AA%E6%8F%90%E4%BE%9B%E8%BF%99%E4%BA%9B%E5%B1%95%E7%A4%BA%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%BC%98%E7%94%B13"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">只提供这些展示的设计缘由?[^3]</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%8A%B6%E6%80%81%E7%AA%97%E5%8F%A3"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">状态窗口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%80%A7%E8%83%BD%E7%AA%97%E5%8F%A3"><span class="post-toc-number">3.4.2.</span> <span class="post-toc-text">性能窗口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%B9%E9%87%8F%E7%AA%97%E5%8F%A3"><span class="post-toc-number">3.4.3.</span> <span class="post-toc-text">容量窗口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#dashboard-%E8%B4%A6%E6%88%B7%E6%9D%83%E9%99%90%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">3.4.4.</span> <span class="post-toc-text">dashboard 账户权限系统</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%9B%86%E7%BE%A4%E5%85%B7%E4%BD%93%E4%BF%A1%E6%81%AF"><span class="post-toc-number">3.4.5.</span> <span class="post-toc-text">集群具体信息</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#prometheus-grafana"><span class="post-toc-number">4.</span> <span class="post-toc-text">prometheus + grafana</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">5.</span> <span class="post-toc-text">Reference</span></a></li></ol>
         </nav>
     </aside>
 
@@ -179,7 +176,7 @@ size&#x2F;objects&#x2F;object size, snap概念</span></a></li><li class="post-to
     <div class="post-card">
         <h1 class="post-card-title">ceph之dashboard社区状态小探</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-12-02 19:26:04" datetime="2021-12-02T11:26:04.000Z"  itemprop="datePublished">2021-12-02</time>
+            <time class="post-time" title="2021-12-02 19:26:04" datetime="2021-12-02T19:26:04.000Z"  itemprop="datePublished">2021-12-02</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -206,13 +203,11 @@ size&#x2F;objects&#x2F;object size, snap概念</span></a></li><li class="post-to
 <ul>
 <li>那是否对接ceph-ansible?
 <ul>
-<li>不对接, 但是ceph-ansible似乎也对接了cephadm,
-作为cephadm的上层统一管理?</li>
+<li>不对接, 但是ceph-ansible似乎也对接了cephadm, 作为cephadm的上层统一管理?</li>
 </ul></li>
 <li>ceph-orch的能力?
 <ul>
-<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/mgr/orchestrator/#configuring-the-orchestrator-cli">Orchestrator
-CLI — Ceph Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/mgr/orchestrator/#configuring-the-orchestrator-cli">Orchestrator CLI — Ceph Documentation</a></li>
 <li>根据这里看到的, 对接了cephadm后支持了基本上所有的服务能力</li>
 </ul></li>
 </ul></li>
@@ -221,48 +216,21 @@ CLI — Ceph Documentation</a></li>
 <h1 id="dashboard">dashboard</h1>
 <h2 id="更新背景">更新背景</h2>
 <blockquote>
-<p>The original Ceph Dashboard that was shipped with Ceph Luminous
-started out as a simple read-only view into run-time information and
-performance data of Ceph clusters. It used a very simple architecture to
-achieve the original goal. However, there was growing demand for richer
-web-based management capabilities, to make it easier to administer Ceph
-for users that prefer a WebUI over the CLI.</p>
+<p>The original Ceph Dashboard that was shipped with Ceph Luminous started out as a simple read-only view into run-time information and performance data of Ceph clusters. It used a very simple architecture to achieve the original goal. However, there was growing demand for richer web-based management capabilities, to make it easier to administer Ceph for users that prefer a WebUI over the CLI.</p>
 </blockquote>
-<p>12版本的定位还是单纯的只读.
-后面版本引入了<code>OpenATTIC</code>的组件.</p>
+<p>12版本的定位还是单纯的只读. 后面版本引入了<code>OpenATTIC</code>的组件.</p>
 <blockquote>
-<p>On 9 November 2016, SUSE announced the acquisition of assets relating
-to the OpenAttic storage management assets from the German IT firm
-it-novum.[16] OpenAttic was integrated into SUSE Enterprise Storage as a
-graphical tool to manage and monitor Ceph-based storage clusters. --<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/SUSE#Acquisition_of_OpenAttic">SUSE
-- Wikipedia</a></p>
+<p>On 9 November 2016, SUSE announced the acquisition of assets relating to the OpenAttic storage management assets from the German IT firm it-novum.[16] OpenAttic was integrated into SUSE Enterprise Storage as a graphical tool to manage and monitor Ceph-based storage clusters. --<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/SUSE#Acquisition_of_OpenAttic">SUSE - Wikipedia</a></p>
 </blockquote>
-<p>Suse以前提供<code>Calamari</code>的管理页面,
-在<code>Luminos</code>发布前一年收购了<code>OpenATTIC</code>(当时就是提供ceph支持的web
-UI)替换<code>Calamari</code>, 在<code>Luminous</code>在2017-08-01发布时,
-社区自己也开发了一个只读的<code>dashboard_v1</code>.</p>
-<p>在<code>Nautilus</code>发布时2019-03-19, <a target="_blank" rel="noopener" href="https://openattic.org/posts/the-openattic-project-enters-maintenance-mode/">The
-openATTIC project enters maintenance mode |
-openATTIC</a>在2019-08-22正式宣布,<code>openATTIC</code>只做维护,
-所有开发直接在上游ceph进行. 实际上,
-在<code>Mimic</code>版本就开始合入提供这个新的<code>dashboard</code>支持了,
-只是在<code>Nautilus</code>提供了第一个稳定的支持多功能的<code>dashboard_v2</code>.
-<a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/20103">mgr/dashboard_v2:
-Initial submission of a web-based management UI (replacement for the
-existing dashboard) by LenzGr · Pull Request #20103 · ceph/ceph</a></p>
-<p>2020年末suse在渠道中<a target="_blank" rel="noopener" href="https://lists.ceph.io/hyperkitty/list/ceph-users@ceph.io/thread/KCDYH55OLK6N46HV6VSDRFRR5W2NX245/">SUSE
-POC - Dead in the water - ceph-users -
-lists.ceph.io</a>宣布最后一个基于ceph的企业存储版本,
-同期收购了<code>Rancher Labs</code>, 后续将投入<code>Longhorn</code></p>
+<p>Suse以前提供<code>Calamari</code>的管理页面, 在<code>Luminos</code>发布前一年收购了<code>OpenATTIC</code>(当时就是提供ceph支持的web UI)替换<code>Calamari</code>, 在<code>Luminous</code>在2017-08-01发布时, 社区自己也开发了一个只读的<code>dashboard_v1</code>.</p>
+<p>在<code>Nautilus</code>发布时2019-03-19, <a target="_blank" rel="noopener" href="https://openattic.org/posts/the-openattic-project-enters-maintenance-mode/">The openATTIC project enters maintenance mode | openATTIC</a>在2019-08-22正式宣布,<code>openATTIC</code>只做维护, 所有开发直接在上游ceph进行. 实际上, 在<code>Mimic</code>版本就开始合入提供这个新的<code>dashboard</code>支持了, 只是在<code>Nautilus</code>提供了第一个稳定的支持多功能的<code>dashboard_v2</code>. <a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/20103">mgr/dashboard_v2: Initial submission of a web-based management UI (replacement for the existing dashboard) by LenzGr · Pull Request #20103 · ceph/ceph</a></p>
+<p>2020年末suse在渠道中<a target="_blank" rel="noopener" href="https://lists.ceph.io/hyperkitty/list/ceph-users@ceph.io/thread/KCDYH55OLK6N46HV6VSDRFRR5W2NX245/">SUSE POC - Dead in the water - ceph-users - lists.ceph.io</a>宣布最后一个基于ceph的企业存储版本, 同期收购了<code>Rancher Labs</code>, 后续将投入<code>Longhorn</code></p>
 <p>TODO: 所以是否suse还在提供dashboard的维护支持?</p>
-<p>dashboard模块负责人 <code>Ernesto Puerta</code>,
-RedHat等人依旧在维护.</p>
+<p>dashboard模块负责人 <code>Ernesto Puerta</code>, RedHat等人依旧在维护.</p>
 <p><code>Tatjana Dehler</code>和<code>Kiefer Chang</code>等SUSE成员自20年12月已停止继续提交到ceph中.</p>
 <p>另外dashboard/的许可证是否确实是LGPL? 或者AGPL, 导致无法使用?</p>
-<p><code>Free software (LGPL 2.1).</code>所以修改是必须遵守的,
-要拆分Python和js框架, 不太确认.</p>
-<p>grafana在21年修改为AGPL3.0, Grafana
-8版本以前还是<code>Apache 2.0</code>可以使用</p>
+<p><code>Free software (LGPL 2.1).</code>所以修改是必须遵守的, 要拆分Python和js框架, 不太确认.</p>
+<p>grafana在21年修改为AGPL3.0, Grafana 8版本以前还是<code>Apache 2.0</code>可以使用</p>
 <p>初步来看, 是支持<code>cephadm</code>提供的所有能力. <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -272,18 +240,12 @@ RedHat等人依旧在维护.</p>
             </figure></p>
 <h2 id="api来源">API来源</h2>
 <blockquote>
-<p>The dashboard module’s backend code uses the CherryPy framework and
-implements a custom REST API.</p>
+<p>The dashboard module’s backend code uses the CherryPy framework and implements a custom REST API.</p>
 </blockquote>
-<p>TODO: 所以是配合mgr提供的API能力, 还是自己重新写的调用呢?
-内部走的mgr的rados接口, 只是封装成OpenAPI3.0的协议.
-<code>src/pybind/mgr/dashboard/controllers/crush_rule.py</code>比如这里就可以看到</p>
+<p>TODO: 所以是配合mgr提供的API能力, 还是自己重新写的调用呢? 内部走的mgr的rados接口, 只是封装成OpenAPI3.0的协议. <code>src/pybind/mgr/dashboard/controllers/crush_rule.py</code>比如这里就可以看到</p>
 <p>一个计划做的: crush map的自定义能力. 目前依旧不支持自定义能力.</p>
 <p>osd的实施界面, 计划仿2004</p>
-<p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/dev/cephadm/design/storage_devices_and_osds/">Storage
-Devices and OSDs Management Workflows — Ceph Documentation</a>
-这里的设计也是类2004那种, 需要手动指定db,wal的. 2020年9月时的设计,
-目前未更新.</p>
+<p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/dev/cephadm/design/storage_devices_and_osds/">Storage Devices and OSDs Management Workflows — Ceph Documentation</a> 这里的设计也是类2004那种, 需要手动指定db,wal的. 2020年9月时的设计, 目前未更新.</p>
 <p>目前的, 看到的主要是将cephadm集成入dashboard</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
@@ -300,11 +262,7 @@ Devices and OSDs Management Workflows — Ceph Documentation</a>
                 <div class="image-caption"></div>
             </figure>
 <p>根据service来看, 是将所有进程同等管理?</p>
-<p>SUSE的文档基本足够了<a target="_blank" rel="noopener" href="https://documentation.suse.com/ses/7/html/ses-all/dashboard-about.html">About
-the Ceph Dashboard | Administration and Operations Guide | SUSE
-Enterprise Storage 7</a> RH也是这个界面的文档<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/dev/cephadm/design/storage_devices_and_osds/">Storage
-Devices and OSDs Management Workflows — Ceph Documentation</a>
-ceph-ansible似乎也对接了cephadm. 具体还没看</p>
+<p>SUSE的文档基本足够了<a target="_blank" rel="noopener" href="https://documentation.suse.com/ses/7/html/ses-all/dashboard-about.html">About the Ceph Dashboard | Administration and Operations Guide | SUSE Enterprise Storage 7</a> RH也是这个界面的文档<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/dev/cephadm/design/storage_devices_and_osds/">Storage Devices and OSDs Management Workflows — Ceph Documentation</a> ceph-ansible似乎也对接了cephadm. 具体还没看</p>
 <h1 id="运行一个带cephadm的dashboard">运行一个带cephadm的dashboard</h1>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">MON=1 MGR=1 OSD=3 MDS=1 ../src/vstart.sh -d -n -x --cephadm -i 0.0.0.0</span><br><span class="line"></span><br><span class="line">0.0.0.0不行, 因为这里还设置mon的绑定ip.</span><br><span class="line"></span><br><span class="line"><span class="comment"># cephadm需要asyncssh</span></span><br><span class="line">pip3 install asyncssh</span><br><span class="line"><span class="comment"># 配置ssh免密</span></span><br><span class="line"><span class="built_in">cd</span> ~/.ssh/ &amp;&amp; ssh-keygen  </span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/id_rsa</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_host</span><br><span class="line"><span class="comment"># cephadm需要部署docker或者podman</span></span><br><span class="line">dnf install docker-ce</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ceph config <span class="built_in">set</span> mgr mgr/dashboard/server_addr 0.0.0.0</span><br><span class="line">ceph mgr module <span class="built_in">disable</span> dashboard</span><br><span class="line">ceph mgr module <span class="built_in">enable</span> dashboard</span><br></pre></td></tr></table></figure>
 <hr>
@@ -318,15 +276,12 @@ ceph-ansible似乎也对接了cephadm. 具体还没看</p>
 <h3 id="manager-状态监控">manager 状态监控</h3>
 <h3 id="pool下pg状态-usage-iops监控">pool下pg状态, usage, IOPS监控</h3>
 <h3 id="cluster-log">cluster log</h3>
-<h3 id="集群角色列表-每个节点上部署的mon-osd">集群角色列表,
-每个节点上部署的mon, osd</h3>
-<h3 id="osds-iops-吞吐量-约25s左右的5次左右的时间窗口的折线图">OSDS
-IOPS, 吞吐量, 约25s左右的5次左右的时间窗口的折线图</h3>
+<h3 id="集群角色列表-每个节点上部署的mon-osd">集群角色列表, 每个节点上部署的mon, osd</h3>
+<h3 id="osds-iops-吞吐量-约25s左右的5次左右的时间窗口的折线图">OSDS IOPS, 吞吐量, 约25s左右的5次左右的时间窗口的折线图</h3>
 <h3 id="ceph原生配置">ceph原生配置</h3>
 <h3 id="rbd-mirror">rbd mirror</h3>
 <h3 id="iscsi">iSCSI</h3>
-<h3 id="每个pool的rbd-sizeobjectsobject-size-snap概念">每个pool的rbd
-size/objects/object size, snap概念</h3>
+<h3 id="每个pool的rbd-sizeobjectsobject-size-snap概念">每个pool的rbd size/objects/object size, snap概念</h3>
 <h3 id="filesystem.">filesystem.</h3>
 <h2 id="数据时效性">数据时效性</h2>
 <ul>
@@ -335,13 +290,7 @@ size/objects/object size, snap概念</h3>
 <ul>
 <li>Nautilus新增的应该.</li>
 <li><blockquote>
-<p>Additionally, the Ceph Dashboard’s “Block” tab now includes a new
-“Overall Performance” sub-tab which will display an embedded Grafana
-dashboard of high-level RBD metrics. This provides a quick at-a-glance
-view of the overall block workloads’ IOPS, throughput, and average
-latency. It also displays the top 10 images that are using the highest
-IOPS and throughput, and as well as the images with the highest request
-latency.[^1]</p>
+<p>Additionally, the Ceph Dashboard’s “Block” tab now includes a new “Overall Performance” sub-tab which will display an embedded Grafana dashboard of high-level RBD metrics. This provides a quick at-a-glance view of the overall block workloads’ IOPS, throughput, and average latency. It also displays the top 10 images that are using the highest IOPS and throughput, and as well as the images with the highest request latency.[^1]</p>
 </blockquote></li>
 </ul></li>
 </ul>
@@ -360,9 +309,7 @@ latency.[^1]</p>
 </ul></li>
 </ul>
 <h2 id="只提供这些展示的设计缘由3">只提供这些展示的设计缘由?[^3]</h2>
-<p>不知道有没有这个设计的理由,
-因为看起来,像是<code>grafana+prometheus</code>的历史数据折线图展示并没有出现在这里.
-只提供实时信息展示有什么特别的理由吗?</p>
+<p>不知道有没有这个设计的理由, 因为看起来,像是<code>grafana+prometheus</code>的历史数据折线图展示并没有出现在这里. 只提供实时信息展示有什么特别的理由吗?</p>
 <h3 id="状态窗口">状态窗口</h3>
 <ul>
 <li>cluster
@@ -417,8 +364,7 @@ latency.[^1]</p>
 <h3 id="dashboard-账户权限系统">dashboard 账户权限系统</h3>
 <p>设置各权限账户的增删改查权限.</p>
 <h3 id="集群具体信息">集群具体信息</h3>
-<p>这里好像<code>monitors</code>,<code>osd</code>级别都只能看,
-从<code>pool</code>开始才能做创建修改</p>
+<p>这里好像<code>monitors</code>,<code>osd</code>级别都只能看, 从<code>pool</code>开始才能做创建修改</p>
 <ul>
 <li>cluster nodes
 <ul>
@@ -515,12 +461,9 @@ latency.[^1]</p>
 </ul>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://ceph.io/rbd/new-in-nautilus-rbd-performance-monitoring/">Ceph
-New in Nautilus: RBD Performance Monitoring - Ceph</a></li>
-<li><a target="_blank" rel="noopener" href="https://documentation.suse.com/ses/6/html/ses-all/ceph-dashboard.html">Ceph
-Dashboard | Administration Guide | SUSE Enterprise Storage 6</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/mgr/dashboard/#enabling-the-embedding-of-grafana-dashboards">Ceph
-Dashboard — Ceph Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://ceph.io/rbd/new-in-nautilus-rbd-performance-monitoring/">Ceph New in Nautilus: RBD Performance Monitoring - Ceph</a></li>
+<li><a target="_blank" rel="noopener" href="https://documentation.suse.com/ses/6/html/ses-all/ceph-dashboard.html">Ceph Dashboard | Administration Guide | SUSE Enterprise Storage 6</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/mgr/dashboard/#enabling-the-embedding-of-grafana-dashboards">Ceph Dashboard — Ceph Documentation</a></li>
 </ol>
 
         </div>
@@ -530,7 +473,7 @@ Dashboard — Ceph Documentation</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.811Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.766Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="最近iTerm每开一个tab都要等4、5秒的时间，按照ssd的加载速度来说这是本不应该发生的事情。 顶部栏是从python-&gt;ruby等等的变化，最后才到菜单栏。 猜想应该是导入的配置文件中导入了过多。 找了一下其他人遇到的问题，发现果然主要都是nvm造成的影响，把nvm的导入注释掉，就恢复到了1、2s加载速度。 不过，除此之外，iTerm默认是从系统的&#x2F;usr&#x2F;bin&#x2F;login启动，启动">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-03-16T12:31:12.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.831Z">
+<meta property="article:published_time" content="2018-03-16T20:31:12.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.786Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="mac">
 <meta property="article:tag" content="iTerm">
@@ -139,7 +139,7 @@
         <h1 class="title">iTerm &amp; zsh加载缓慢</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-03-16T12:31:12.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-03-16T20:31:12.000Z" itemprop="datePublished" class="page-time">
   2018-03-16
 </time>
 
@@ -172,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">iTerm & zsh加载缓慢</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-03-16 20:31:12" datetime="2018-03-16T12:31:12.000Z"  itemprop="datePublished">2018-03-16</time>
+            <time class="post-time" title="2018-03-16 20:31:12" datetime="2018-03-16T20:31:12.000Z"  itemprop="datePublished">2018-03-16</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -191,20 +191,17 @@
 <p>顶部栏是从python-&gt;ruby等等的变化，最后才到菜单栏。</p>
 <p>猜想应该是导入的配置文件中导入了过多。</p>
 <p>找了一下其他人遇到的问题，发现果然主要都是nvm造成的影响，把nvm的导入注释掉，就恢复到了1、2s加载速度。</p>
-<p>不过，除此之外，iTerm默认是从系统的/usr/bin/login启动，启动时需要读取apple
-系统日志(apple system log)，所以这里有两种解决方案。</p>
+<p>不过，除此之外，iTerm默认是从系统的/usr/bin/login启动，启动时需要读取apple 系统日志(apple system log)，所以这里有两种解决方案。</p>
 <ol type="1">
 <li>清除日志</li>
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rm /private/var/log/asl/*.asl</span><br></pre></td></tr></table></figure>
 <ol start="2" type="1">
-<li>更换启动shell 在Iterm Perferences&gt;Profile&gt;General&gt;Command
-设置为/bin/zsh</li>
+<li>更换启动shell 在Iterm Perferences&gt;Profile&gt;General&gt;Command 设置为/bin/zsh</li>
 </ol>
 <h1 id="参考资料">参考资料</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://blog.jonslow.com/iterm2-launch-accelerate/">iTerm
-2、Terminal 启动加速</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.jonslow.com/iterm2-launch-accelerate/">iTerm 2、Terminal 启动加速</a></li>
 </ol>
 
         </div>
@@ -214,7 +211,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.831Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.786Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

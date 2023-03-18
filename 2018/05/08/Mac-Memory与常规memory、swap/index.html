@@ -29,8 +29,8 @@
 <meta property="og:description" content="在跑Tensorflow的时候，在Mac上没有出现的内存耗尽导致的dead问题，出现在了ubuntu上，本以为会和mac一样用硬盘来进行交换内存，而不只是使用默认设置的swap空间，结果并没有如想象的那样。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1fr5g16dvejj30m30gcafa.jpg">
-<meta property="article:published_time" content="2018-05-08T15:45:18.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.906Z">
+<meta property="article:published_time" content="2018-05-08T23:45:18.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.754Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="Memory">
 <meta property="article:tag" content="OS">
@@ -141,7 +141,7 @@
         <h1 class="title">mac OS memory与常规memory、swap</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-05-08T15:45:18.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-05-08T23:45:18.000Z" itemprop="datePublished" class="page-time">
   2018-05-08
 </time>
 
@@ -174,7 +174,7 @@
     <div class="post-card">
         <h1 class="post-card-title">mac OS memory与常规memory、swap</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-05-08 23:45:18" datetime="2018-05-08T15:45:18.000Z"  itemprop="datePublished">2018-05-08</time>
+            <time class="post-time" title="2018-05-08 23:45:18" datetime="2018-05-08T23:45:18.000Z"  itemprop="datePublished">2018-05-08</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -198,30 +198,22 @@
 <li>Memory Used:
 <ul>
 <li>App Memory: APP使用的内存量，包含其虚拟内存和物理内存</li>
-<li>Wired Memory:
-系统核心占用的，此内存中的信息无法移动到硬盘，因此必须保留在 RAM
-中。联动内存的大小取决于当前使用的应用程序</li>
+<li>Wired Memory: 系统核心占用的，此内存中的信息无法移动到硬盘，因此必须保留在 RAM 中。联动内存的大小取决于当前使用的应用程序</li>
 <li>Compressed: RAM中被压缩的部分,从而让出一些RAM的空间给其他进程，</li>
 </ul></li>
-<li>Cached Files:
-最近使用的内存被临时存储，在使用其他应用前再次打开会直接从这里访问，加快访问速度</li>
+<li>Cached Files: 最近使用的内存被临时存储，在使用其他应用前再次打开会直接从这里访问，加快访问速度</li>
 <li>Swap Used: 硬盘中用来交换RAM中无用内容的大小</li>
 </ul>
 <h2 id="内存详细">内存详细</h2>
 <ul>
 <li>Real Memory Size: 被进程使用的实际内存</li>
-<li>Virtual Memory Size:
-进程空间大小，64bit内存地址空间，所以会很大，不重要</li>
-<li>Shared Memory Size:
-表示已经被加载到物理内存中的进程私有数据所对应的虚拟内存地址空间大小。</li>
-<li>Private Memory Size:
-表示已经被加载到物理内存中的进程私有数据所对应的虚拟内存地址空间大小。</li>
+<li>Virtual Memory Size: 进程空间大小，64bit内存地址空间，所以会很大，不重要</li>
+<li>Shared Memory Size: 表示已经被加载到物理内存中的进程私有数据所对应的虚拟内存地址空间大小。</li>
+<li>Private Memory Size: 表示已经被加载到物理内存中的进程私有数据所对应的虚拟内存地址空间大小。</li>
 </ul>
 <h2 id="比较">比较</h2>
-<p>在操作系统书中讲述的内存管理，其实mac
-OS并没有与他有太大差别，现在理解来看大致思想还是相近的。</p>
-<p>看下mac
-OS是在哪个部分能够出现30G占用这种情况，是swap空间没有设置上限吗？</p>
+<p>在操作系统书中讲述的内存管理，其实mac OS并没有与他有太大差别，现在理解来看大致思想还是相近的。</p>
+<p>看下mac OS是在哪个部分能够出现30G占用这种情况，是swap空间没有设置上限吗？</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -229,20 +221,14 @@ OS是在哪个部分能够出现30G占用这种情况，是swap空间没有设�
                 </div>
                 <div class="image-caption"></div>
             </figure>
-<p>看下面的swap大小与上面的virtual memory
-size的确对上了，的确是swap空间够大的原因……而检测过程中，占用大量内存的问题所在是tensorboard,暂时只好手动导出数据用matplot画了。</p>
+<p>看下面的swap大小与上面的virtual memory size的确对上了，的确是swap空间够大的原因……而检测过程中，占用大量内存的问题所在是tensorboard,暂时只好手动导出数据用matplot画了。</p>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Instrument-ActivityMonitor.html">Apple
-Activity Monitor Instrument</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/36188357">Mac 的 memory 和
-real size memory 有什么区别</a></li>
-<li><a target="_blank" rel="noopener" href="http://elf8848.iteye.com/blog/1373854">Mac OS
-内存管理知识</a></li>
-<li><a target="_blank" rel="noopener" href="https://apple.stackexchange.com/questions/107578/memory-terminology-in-mavericks-activity-monitory">Memory
-terminology in Mavericks Activity Monitory</a></li>
-<li><a target="_blank" rel="noopener" href="https://support.apple.com/en-us/HT201464">How to use
-Activity Monitor on your Mac</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Instrument-ActivityMonitor.html">Apple Activity Monitor Instrument</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/36188357">Mac 的 memory 和 real size memory 有什么区别</a></li>
+<li><a target="_blank" rel="noopener" href="http://elf8848.iteye.com/blog/1373854">Mac OS 内存管理知识</a></li>
+<li><a target="_blank" rel="noopener" href="https://apple.stackexchange.com/questions/107578/memory-terminology-in-mavericks-activity-monitory">Memory terminology in Mavericks Activity Monitory</a></li>
+<li><a target="_blank" rel="noopener" href="https://support.apple.com/en-us/HT201464">How to use Activity Monitor on your Mac</a></li>
 </ol>
 
         </div>
@@ -252,7 +238,7 @@ Activity Monitor on your Mac</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.906Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.754Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

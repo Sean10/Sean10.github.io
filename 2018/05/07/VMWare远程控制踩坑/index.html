@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="最近做毕设跑tensorflow占用资源挺大的，就想用旧电脑来跑，本来计划的是用旧电脑双系统里装好的ubuntu来跑，不过最近发现跑完保存模型和tensorboard，甚至在跑的时候就用了很多虚拟内存，至少mac上就达到了30G。这样的话，只给分配了20个G的ubuntu就相当不够用了。只好在windows上开虚拟机再配置一下远程了。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-05-07T10:14:08.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.869Z">
+<meta property="article:published_time" content="2018-05-07T18:14:08.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.762Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="VMWare">
 <meta property="article:tag" content="jupyter">
@@ -139,7 +139,7 @@
         <h1 class="title">VMWare远程控制tensorflow踩坑</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-05-07T10:14:08.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-05-07T18:14:08.000Z" itemprop="datePublished" class="page-time">
   2018-05-07
 </time>
 
@@ -172,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">VMWare远程控制tensorflow踩坑</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-05-07 18:14:08" datetime="2018-05-07T10:14:08.000Z"  itemprop="datePublished">2018-05-07</time>
+            <time class="post-time" title="2018-05-07 18:14:08" datetime="2018-05-07T18:14:08.000Z"  itemprop="datePublished">2018-05-07</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -194,8 +194,7 @@
 <p>不过在使用VMWare共享文件夹给ubuntu的时候倒是遭遇了一些问题。</p>
 <h1 id="legacy-install">1. legacy install</h1>
 <p>一开始为了减少桌面环境的资源占用，修改了grub的选项，默认启动命令行界面了。理论上这个部分对我之后安装vmware-tools是没有什么影响的，照常挂载cdrom,<code>mount -t auto /dev/cdrom /mnt/cdrom</code>，然后解压到根目录执行就好。</p>
-<p>vmware据说是安装了vmware
-tools以后就可以访问共享文件夹，但是在ubuntu里安装失败多次，成功一次以后依旧没能发现那个文件夹。</p>
+<p>vmware据说是安装了vmware tools以后就可以访问共享文件夹，但是在ubuntu里安装失败多次，成功一次以后依旧没能发现那个文件夹。</p>
 <p><code>sudo ./vmware-install.pl -d</code>之后是完全不够的</p>
 <p>需要按照2对tools打一个补丁，</p>
 <p>然后使用更新的vmfuse替换mount，``之后就能访问共享文件夹了。</p>
@@ -222,13 +221,9 @@ tools以后就可以访问共享文件夹，但是在ubuntu里安装失败多次
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://ask.csdn.net/questions/163546">vmhgfs-fuse替换mount</a></li>
 <li><a target="_blank" rel="noopener" href="https://askubuntu.com/questions/762755/no-vmhgfs-file-system-installed-to-use-use-shared-folder">vmware-tools-patches</a></li>
-<li><a target="_blank" rel="noopener" href="https://pip.pypa.io/en/stable/installing/">pip install
-doc</a></li>
-<li><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/help/pypi/">tsinghua
-pypi</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31074090">Anaconda &amp;
-ipython路径问题 &amp; jupyter notebook
-启动核心问题（使用方法&amp;不常见的问题）</a></li>
+<li><a target="_blank" rel="noopener" href="https://pip.pypa.io/en/stable/installing/">pip install doc</a></li>
+<li><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/help/pypi/">tsinghua pypi</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31074090">Anaconda &amp; ipython路径问题 &amp; jupyter notebook 启动核心问题（使用方法&amp;不常见的问题）</a></li>
 <li><a target="_blank" rel="noopener" href="https://letianfeng.github.io/python/2018/04/24/jupyter_and_python_kernel.html">jupyter与python的内核</a></li>
 </ol>
 
@@ -239,7 +234,7 @@ ipython路径问题 &amp; jupyter notebook
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.869Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.762Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

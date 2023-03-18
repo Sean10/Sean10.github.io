@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="背景 需求是把微信多个对话里的语音全部保存下来, 保存到一个文件或者一份链接. 指向多个文件. 调查 目前主流的方案是手动点击收藏, 然后把语音转存为笔记, 然后实际就变成了一份silk文件, 在android或者在pc上就能够从目录里提取出来, 进行编码转换. wechatExporter导出ios设备 wxbackup导出ios设备 微痕迹 app 微信语音导出助手 for android 手">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-09-17T17:02:34.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.874Z">
+<meta property="article:published_time" content="2021-09-18T01:02:34.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.830Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="wechat">
 <meta property="article:tag" content="ffmpeg">
@@ -139,7 +139,7 @@
         <h1 class="title">微信聊天记录及语音导出方案实践</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-09-17T17:02:34.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-09-18T01:02:34.000Z" itemprop="datePublished" class="page-time">
   2021-09-18
 </time>
 
@@ -161,17 +161,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%B0%83%E6%9F%A5"><span class="post-toc-number">2.</span> <span class="post-toc-text">调查</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%9B%AE%E5%89%8D%E4%B8%BB%E6%B5%81%E7%9A%84%E6%96%B9%E6%A1%88%E6%98%AF%E6%89%8B%E5%8A%A8%E7%82%B9%E5%87%BB%E6%94%B6%E8%97%8F-%E7%84%B6%E5%90%8E%E6%8A%8A%E8%AF%AD%E9%9F%B3%E8%BD%AC%E5%AD%98%E4%B8%BA%E7%AC%94%E8%AE%B0-%E7%84%B6%E5%90%8E%E5%AE%9E%E9%99%85%E5%B0%B1%E5%8F%98%E6%88%90%E4%BA%86%E4%B8%80%E4%BB%BDsilk%E6%96%87%E4%BB%B6-%E5%9C%A8android%E6%88%96%E8%80%85%E5%9C%A8pc%E4%B8%8A%E5%B0%B1%E8%83%BD%E5%A4%9F%E4%BB%8E%E7%9B%AE%E5%BD%95%E9%87%8C%E6%8F%90%E5%8F%96%E5%87%BA%E6%9D%A5-%E8%BF%9B%E8%A1%8C%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2."><span class="post-toc-number">2.1.</span> <span class="post-toc-text">目前主流的方案是手动点击收藏,
-然后把语音转存为笔记, 然后实际就变成了一份silk文件,
-在android或者在pc上就能够从目录里提取出来, 进行编码转换.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#wechatexporter%E5%AF%BC%E5%87%BAios%E8%AE%BE%E5%A4%87"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">wechatExporter导出ios设备</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#wxbackup%E5%AF%BC%E5%87%BAios%E8%AE%BE%E5%A4%87"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">wxbackup导出ios设备</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%BE%AE%E7%97%95%E8%BF%B9-app"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">微痕迹 app</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%BE%AE%E4%BF%A1%E8%AF%AD%E9%9F%B3%E5%AF%BC%E5%87%BA%E5%8A%A9%E6%89%8B-for-android"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">微信语音导出助手 for android</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%89%8B%E5%8A%A8%E5%AF%BC%E5%87%BA%E8%BD%AC%E6%8D%A2%E8%AF%AD%E9%9F%B3"><span class="post-toc-number">3.</span> <span class="post-toc-text">手动导出转换语音</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BF%9B%E5%85%A5%E5%BE%AE%E4%BF%A1%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%E6%89%80%E5%9C%A8%E4%BD%8D%E7%BD%AE"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">0. 进入微信聊天记录所在位置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%8D%E5%88%B6%E5%87%BA%E9%9F%B3%E9%A2%91-%E6%8C%89%E7%85%A7%E6%97%B6%E9%97%B4%E9%A1%BA%E5%BA%8F%E9%87%8D%E5%91%BD%E5%90%8D."><span class="post-toc-number">3.2.</span> <span class="post-toc-text">1. 复制出音频,
-按照时间顺序重命名.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#silk%E8%A7%A3%E7%A0%81%E8%BD%AC%E6%8D%A2%E4%B8%BAmp3"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">2. silk解码转换为mp3</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85ffmpeg"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">3. 安装ffmpeg</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AD%9B%E9%80%89%E5%90%8E-%E6%8B%BC%E6%8E%A5mp3"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">4. 筛选后, 拼接mp3</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A0%A1%E9%AA%8C%E6%8B%BC%E6%8E%A5%E5%90%8E%E7%9A%84mp3%E9%95%BF%E5%BA%A6%E5%92%8C"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">5.
-校验拼接后的mp3长度和</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8wxbackup%E5%AE%8C%E6%95%B4%E5%AF%BC%E5%87%BA%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95"><span class="post-toc-number">4.</span> <span class="post-toc-text">使用wxbackup完整导出聊天记录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E8%87%AA%E5%B8%A6%E7%9A%84%E8%BF%81%E7%A7%BB%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%E5%8A%9F%E8%83%BD%E8%BF%81%E7%A7%BB%E5%88%B0ipadiphone%E4%B8%8A"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">1.
-使用微信自带的迁移聊天记录功能迁移到ipad&#x2F;iphone上</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B0%86ipad%E8%BF%9E%E6%8E%A5%E5%88%B0macpc%E4%B8%8A-%E5%B0%86ios%E8%AE%BE%E5%A4%87%E8%BF%9B%E8%A1%8C%E6%95%B4%E6%9C%BA%E5%A4%87%E4%BB%BD"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">2.
-将ipad连接到mac&#x2F;pc上,
-将ios设备进行整机备份</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%87%E4%BB%BD%E5%90%8E-%E4%BD%BF%E7%94%A8wxbackup%E7%9A%84%E8%BD%AF%E4%BB%B6-%E6%8C%87%E5%AE%9Aios%E8%AE%BE%E5%A4%87%E5%9C%A8macpc%E9%87%8C%E7%9A%84%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B7%AF%E5%BE%84"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">3.
-备份后, 使用wxbackup的软件,
-指定ios设备在mac&#x2F;pc里的备份数据库路径</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%82%B9%E8%BF%9B%E5%90%84%E4%B8%AA%E5%AF%B9%E8%AF%9D%E7%9B%AE%E5%BD%95%E9%87%8Cindex.html%E6%9F%A5%E7%9C%8B%E5%92%8C%E5%BE%AE%E4%BF%A1%E4%B8%80%E8%88%AC%E7%9A%84web%E9%A1%B5%E9%9D%A2%E6%9D%A5%E7%9C%8B%E8%AE%B0%E5%BD%95%E5%90%A7"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">4.
-点进各个对话目录里index.html查看和微信一般的web页面来看记录吧</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">5.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%B0%83%E6%9F%A5"><span class="post-toc-number">2.</span> <span class="post-toc-text">调查</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%9B%AE%E5%89%8D%E4%B8%BB%E6%B5%81%E7%9A%84%E6%96%B9%E6%A1%88%E6%98%AF%E6%89%8B%E5%8A%A8%E7%82%B9%E5%87%BB%E6%94%B6%E8%97%8F-%E7%84%B6%E5%90%8E%E6%8A%8A%E8%AF%AD%E9%9F%B3%E8%BD%AC%E5%AD%98%E4%B8%BA%E7%AC%94%E8%AE%B0-%E7%84%B6%E5%90%8E%E5%AE%9E%E9%99%85%E5%B0%B1%E5%8F%98%E6%88%90%E4%BA%86%E4%B8%80%E4%BB%BDsilk%E6%96%87%E4%BB%B6-%E5%9C%A8android%E6%88%96%E8%80%85%E5%9C%A8pc%E4%B8%8A%E5%B0%B1%E8%83%BD%E5%A4%9F%E4%BB%8E%E7%9B%AE%E5%BD%95%E9%87%8C%E6%8F%90%E5%8F%96%E5%87%BA%E6%9D%A5-%E8%BF%9B%E8%A1%8C%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2."><span class="post-toc-number">2.1.</span> <span class="post-toc-text">目前主流的方案是手动点击收藏, 然后把语音转存为笔记, 然后实际就变成了一份silk文件, 在android或者在pc上就能够从目录里提取出来, 进行编码转换.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#wechatexporter%E5%AF%BC%E5%87%BAios%E8%AE%BE%E5%A4%87"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">wechatExporter导出ios设备</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#wxbackup%E5%AF%BC%E5%87%BAios%E8%AE%BE%E5%A4%87"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">wxbackup导出ios设备</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%BE%AE%E7%97%95%E8%BF%B9-app"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">微痕迹 app</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%BE%AE%E4%BF%A1%E8%AF%AD%E9%9F%B3%E5%AF%BC%E5%87%BA%E5%8A%A9%E6%89%8B-for-android"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">微信语音导出助手 for android</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%89%8B%E5%8A%A8%E5%AF%BC%E5%87%BA%E8%BD%AC%E6%8D%A2%E8%AF%AD%E9%9F%B3"><span class="post-toc-number">3.</span> <span class="post-toc-text">手动导出转换语音</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BF%9B%E5%85%A5%E5%BE%AE%E4%BF%A1%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%E6%89%80%E5%9C%A8%E4%BD%8D%E7%BD%AE"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">0. 进入微信聊天记录所在位置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%8D%E5%88%B6%E5%87%BA%E9%9F%B3%E9%A2%91-%E6%8C%89%E7%85%A7%E6%97%B6%E9%97%B4%E9%A1%BA%E5%BA%8F%E9%87%8D%E5%91%BD%E5%90%8D."><span class="post-toc-number">3.2.</span> <span class="post-toc-text">1. 复制出音频, 按照时间顺序重命名.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#silk%E8%A7%A3%E7%A0%81%E8%BD%AC%E6%8D%A2%E4%B8%BAmp3"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">2. silk解码转换为mp3</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85ffmpeg"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">3. 安装ffmpeg</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AD%9B%E9%80%89%E5%90%8E-%E6%8B%BC%E6%8E%A5mp3"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">4. 筛选后, 拼接mp3</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A0%A1%E9%AA%8C%E6%8B%BC%E6%8E%A5%E5%90%8E%E7%9A%84mp3%E9%95%BF%E5%BA%A6%E5%92%8C"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">5. 校验拼接后的mp3长度和</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8wxbackup%E5%AE%8C%E6%95%B4%E5%AF%BC%E5%87%BA%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95"><span class="post-toc-number">4.</span> <span class="post-toc-text">使用wxbackup完整导出聊天记录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E8%87%AA%E5%B8%A6%E7%9A%84%E8%BF%81%E7%A7%BB%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%E5%8A%9F%E8%83%BD%E8%BF%81%E7%A7%BB%E5%88%B0ipadiphone%E4%B8%8A"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">1. 使用微信自带的迁移聊天记录功能迁移到ipad&#x2F;iphone上</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B0%86ipad%E8%BF%9E%E6%8E%A5%E5%88%B0macpc%E4%B8%8A-%E5%B0%86ios%E8%AE%BE%E5%A4%87%E8%BF%9B%E8%A1%8C%E6%95%B4%E6%9C%BA%E5%A4%87%E4%BB%BD"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">2. 将ipad连接到mac&#x2F;pc上, 将ios设备进行整机备份</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%87%E4%BB%BD%E5%90%8E-%E4%BD%BF%E7%94%A8wxbackup%E7%9A%84%E8%BD%AF%E4%BB%B6-%E6%8C%87%E5%AE%9Aios%E8%AE%BE%E5%A4%87%E5%9C%A8macpc%E9%87%8C%E7%9A%84%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B7%AF%E5%BE%84"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">3. 备份后, 使用wxbackup的软件, 指定ios设备在mac&#x2F;pc里的备份数据库路径</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%82%B9%E8%BF%9B%E5%90%84%E4%B8%AA%E5%AF%B9%E8%AF%9D%E7%9B%AE%E5%BD%95%E9%87%8Cindex.html%E6%9F%A5%E7%9C%8B%E5%92%8C%E5%BE%AE%E4%BF%A1%E4%B8%80%E8%88%AC%E7%9A%84web%E9%A1%B5%E9%9D%A2%E6%9D%A5%E7%9C%8B%E8%AE%B0%E5%BD%95%E5%90%A7"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">4. 点进各个对话目录里index.html查看和微信一般的web页面来看记录吧</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">5.</span> <span class="post-toc-text">Reference</span></a></li></ol>
         </nav>
     </aside>
 
@@ -182,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">微信聊天记录及语音导出方案实践</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-09-18 01:02:34" datetime="2021-09-17T17:02:34.000Z"  itemprop="datePublished">2021-09-18</time>
+            <time class="post-time" title="2021-09-18 01:02:34" datetime="2021-09-18T01:02:34.000Z"  itemprop="datePublished">2021-09-18</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -198,12 +188,9 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h1 id="背景">背景</h1>
-<p>需求是把微信多个对话里的语音全部保存下来, 保存到一个文件或者一份链接.
-指向多个文件.</p>
+<p>需求是把微信多个对话里的语音全部保存下来, 保存到一个文件或者一份链接. 指向多个文件.</p>
 <h1 id="调查">调查</h1>
-<h2 id="目前主流的方案是手动点击收藏-然后把语音转存为笔记-然后实际就变成了一份silk文件-在android或者在pc上就能够从目录里提取出来-进行编码转换.">目前主流的方案是手动点击收藏,
-然后把语音转存为笔记, 然后实际就变成了一份silk文件,
-在android或者在pc上就能够从目录里提取出来, 进行编码转换.</h2>
+<h2 id="目前主流的方案是手动点击收藏-然后把语音转存为笔记-然后实际就变成了一份silk文件-在android或者在pc上就能够从目录里提取出来-进行编码转换.">目前主流的方案是手动点击收藏, 然后把语音转存为笔记, 然后实际就变成了一份silk文件, 在android或者在pc上就能够从目录里提取出来, 进行编码转换.</h2>
 <h2 id="wechatexporter导出ios设备">wechatExporter导出ios设备</h2>
 <h2 id="wxbackup导出ios设备">wxbackup导出ios设备</h2>
 <h2 id="微痕迹-app">微痕迹 app</h2>
@@ -211,14 +198,10 @@
 <h1 id="手动导出转换语音">手动导出转换语音</h1>
 <h2 id="进入微信聊天记录所在位置">0. 进入微信聊天记录所在位置</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> ~/Downloads/voice</span><br><span class="line"><span class="built_in">cd</span> ~/Library/Containers/com.tencent.xinWeChat/Data </span><br></pre></td></tr></table></figure>
-<h2 id="复制出音频-按照时间顺序重命名.">1. 复制出音频,
-按照时间顺序重命名.</h2>
+<h2 id="复制出音频-按照时间顺序重命名.">1. 复制出音频, 按照时间顺序重命名.</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find . -name <span class="string">&#x27;*.silk&#x27;</span> | xargs -L1 -I &#123;&#125; <span class="built_in">cp</span> -af &#123;&#125; ~/Downloads/voice/ </span><br><span class="line"><span class="built_in">cd</span> ~/Downloads/voice/</span><br><span class="line">i=1; <span class="keyword">for</span> x <span class="keyword">in</span> `<span class="built_in">ls</span> -<span class="built_in">tr</span> *.silk`; <span class="keyword">do</span> <span class="built_in">cp</span> -af <span class="variable">$x</span> <span class="string">&quot;<span class="variable">$i</span>&quot;</span>.silk; <span class="built_in">let</span> i=i+1; <span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
 <h2 id="silk解码转换为mp3">2. silk解码转换为mp3</h2>
-<p><a target="_blank" rel="noopener" href="https://github.com/kn007/silk-v3-decoder">kn007/silk-v3-decoder:
-[Skype Silk Codec SDK]Decode silk v3 audio files (like wechat amr, aud
-files, qq slk files) and convert to other format (like mp3). Batch
-conversion support.</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/kn007/silk-v3-decoder">kn007/silk-v3-decoder: [Skype Silk Codec SDK]Decode silk v3 audio files (like wechat amr, aud files, qq slk files) and convert to other format (like mp3). Batch conversion support.</a></p>
 <p>主要使用以上脚本</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh converter.sh ~/Downloads/voice ~/Downloads/out mp3</span><br></pre></td></tr></table></figure>
 <h3 id="安装ffmpeg">3. 安装<code>ffmpeg</code></h3>
@@ -226,57 +209,32 @@ conversion support.</a></p>
 <h2 id="筛选后-拼接mp3">4. 筛选后, 拼接mp3</h2>
 <p>生成要拼接的文件的目录. <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> ./ | xargs -I &#123;&#125;  <span class="built_in">realpath</span> &#123;&#125; | xargs -I &#123;&#125; <span class="built_in">echo</span> <span class="string">&quot;file &#x27;&quot;</span><span class="string">&quot;&#123;&#125;&quot;</span><span class="string">&quot;&#x27;&quot;</span> &gt;&gt; ~/Downloads/filelist.txt</span><br></pre></td></tr></table></figure></p>
 <p>使用<code>ffmpeg</code>进行拼接 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -f concat -safe 0 -i filelist.txt -y output.mp3</span><br></pre></td></tr></table></figure></p>
-<h2 id="校验拼接后的mp3长度和">5.
-校验拼接后的<code>mp3</code>长度和</h2>
+<h2 id="校验拼接后的mp3长度和">5. 校验拼接后的<code>mp3</code>长度和</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 xx.py <span class="variable">$&#123;mp3_path&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>输出的结果和我上面拼接后的文件的长度一致, ok<sub>没问题</sub></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/python3</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_file_duration</span>(<span class="params">file</span>):</span><br><span class="line">    process = subprocess.Popen(<span class="string">&quot;ffprobe &#123;&#125; -print_format json -show_format -show_streams&quot;</span>.<span class="built_in">format</span>(file), shell=<span class="literal">True</span>, stdout=subprocess.PIPE, stderr=subprocess.PIPE)</span><br><span class="line">    stdout = process.communicate()[<span class="number">0</span>]</span><br><span class="line">    logging.debug(<span class="string">f&quot;stdout: <span class="subst">&#123;stdout&#125;</span>&quot;</span>)</span><br><span class="line">    format_data = json.loads(stdout)</span><br><span class="line">    duration = parse_duration(file, format_data)</span><br><span class="line">    <span class="keyword">return</span> duration</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parse_duration</span>(<span class="params">file, data</span>):</span><br><span class="line">    format_data = data.get(<span class="string">&#x27;format&#x27;</span>, &#123;&#125;)</span><br><span class="line">    res = <span class="built_in">float</span>(format_data.get(<span class="string">&#x27;duration&#x27;</span>))</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> res:</span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        logging.error(<span class="string">f&quot;<span class="subst">&#123;file&#125;</span> cannot get duration&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_mp3_files</span>(<span class="params">path</span>):</span><br><span class="line">    files = <span class="built_in">list</span>(glob.glob(os.path.join(path, <span class="string">&quot;*.mp3&quot;</span>)))</span><br><span class="line">    <span class="keyword">return</span> files</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calc_duration</span>(<span class="params">data_list</span>):</span><br><span class="line">    res = <span class="built_in">sum</span>(data_list)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    logging.basicConfig(level=logging.INFO)</span><br><span class="line">    result = []</span><br><span class="line">    files = get_mp3_files(sys.argv[<span class="number">1</span>])</span><br><span class="line">    logging.debug(files)</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> files:</span><br><span class="line">        result.append(get_file_duration(file))</span><br><span class="line">    <span class="built_in">print</span>(calc_duration(result))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="使用wxbackup完整导出聊天记录">使用wxbackup完整导出聊天记录</h1>
-<h2 id="使用微信自带的迁移聊天记录功能迁移到ipadiphone上">1.
-使用微信自带的迁移聊天记录功能迁移到ipad/iphone上</h2>
-<p>用<code>ipad/iphone</code>登录同一个微信账号,
-需要安卓机和<code>ios</code>设备在同一个局域网(即同一<code>Wifi</code>里),
-然后进入<code>设置 -&gt; 聊天 -&gt; 聊天记录备份与迁移</code>.</p>
-<h2 id="将ipad连接到macpc上-将ios设备进行整机备份">2.
-将ipad连接到<code>mac</code>/<code>pc</code>上,
-将ios设备进行整机备份</h2>
-<p>高版本<code>macOS</code>比如<code>10.15</code>是在<code>finder</code>里进行的备份,
-低版本则在<code>itunes</code>中.</p>
-<p>参照<code>apple</code>官方文档即可, <a target="_blank" rel="noopener" href="https://support.apple.com/zh-cn/HT203977">如何备份您的
-iPhone、iPad 和 iPod touch - Apple 支持 (中国)</a>
-备份速度通过lightning转usb-c, 最快也只有40MB/s, <a target="_blank" rel="noopener" href="https://discussions.apple.com/thread/7168951">how long should an
-initial backup take on… - Apple Community</a></p>
-<h2 id="备份后-使用wxbackup的软件-指定ios设备在macpc里的备份数据库路径">3.
-备份后, 使用wxbackup的软件,
-指定<code>ios</code>设备在<code>mac/pc</code>里的备份数据库路径</h2>
-<p>可能因为<code>finder</code>高版本导致默认打开软件时没找到备份路径,
-手动指定到<code>~/Library/Application Support/MobileSync/Backup</code>即可.
-就立刻会显示出微信的聊天记录了.</p>
+<h2 id="使用微信自带的迁移聊天记录功能迁移到ipadiphone上">1. 使用微信自带的迁移聊天记录功能迁移到ipad/iphone上</h2>
+<p>用<code>ipad/iphone</code>登录同一个微信账号, 需要安卓机和<code>ios</code>设备在同一个局域网(即同一<code>Wifi</code>里), 然后进入<code>设置 -&gt; 聊天 -&gt; 聊天记录备份与迁移</code>.</p>
+<h2 id="将ipad连接到macpc上-将ios设备进行整机备份">2. 将ipad连接到<code>mac</code>/<code>pc</code>上, 将ios设备进行整机备份</h2>
+<p>高版本<code>macOS</code>比如<code>10.15</code>是在<code>finder</code>里进行的备份, 低版本则在<code>itunes</code>中.</p>
+<p>参照<code>apple</code>官方文档即可, <a target="_blank" rel="noopener" href="https://support.apple.com/zh-cn/HT203977">如何备份您的 iPhone、iPad 和 iPod touch - Apple 支持 (中国)</a> 备份速度通过lightning转usb-c, 最快也只有40MB/s, <a target="_blank" rel="noopener" href="https://discussions.apple.com/thread/7168951">how long should an initial backup take on… - Apple Community</a></p>
+<h2 id="备份后-使用wxbackup的软件-指定ios设备在macpc里的备份数据库路径">3. 备份后, 使用wxbackup的软件, 指定<code>ios</code>设备在<code>mac/pc</code>里的备份数据库路径</h2>
+<p>可能因为<code>finder</code>高版本导致默认打开软件时没找到备份路径, 手动指定到<code>~/Library/Application Support/MobileSync/Backup</code>即可. 就立刻会显示出微信的聊天记录了.</p>
 <p>不过似乎存在一个缺憾, 不能全选导出. 只能一个个选择导出.</p>
-<h2 id="点进各个对话目录里index.html查看和微信一般的web页面来看记录吧">4.
-点进各个对话目录里<code>index.html</code>查看和微信一般的<code>web</code>页面来看记录吧</h2>
+<h2 id="点进各个对话目录里index.html查看和微信一般的web页面来看记录吧">4. 点进各个对话目录里<code>index.html</code>查看和微信一般的<code>web</code>页面来看记录吧</h2>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://kn007.net/topics/batch-convert-silk-v3-audio-files-to-mp3-in-windows/">Windows下批量转换Silk
-v3音频文件为MP3格式 | kn007的个人博客</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/mryqu/mryqu.github.io/blob/f48df2cb1fc0e604eca4c5452b5c7498fe5717bd/content/post/%E5%BE%AE%E4%BF%A1%E8%AF%AD%E9%9F%B3%E5%AF%BC%E5%87%BA%E5%92%8C%E8%BD%AC%E6%8D%A2.md">mryqu.github.io/微信语音导出和转换.md
-at f48df2cb1fc0e604eca4c5452b5c7498fe5717bd ·
-mryqu/mryqu.github.io</a></li>
+<li><a target="_blank" rel="noopener" href="https://kn007.net/topics/batch-convert-silk-v3-audio-files-to-mp3-in-windows/">Windows下批量转换Silk v3音频文件为MP3格式 | kn007的个人博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mryqu/mryqu.github.io/blob/f48df2cb1fc0e604eca4c5452b5c7498fe5717bd/content/post/%E5%BE%AE%E4%BF%A1%E8%AF%AD%E9%9F%B3%E5%AF%BC%E5%87%BA%E5%92%8C%E8%BD%AC%E6%8D%A2.md">mryqu.github.io/微信语音导出和转换.md at f48df2cb1fc0e604eca4c5452b5c7498fe5717bd · mryqu/mryqu.github.io</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.yinxiang.com/everhub/note/1157fbcf-0363-4bd4-b015-e2a95aad59c3">关于微信语音导出，这个方法强烈建议~</a></li>
-<li><a target="_blank" rel="noopener" href="https://ds666.fun/2019/08/02/%E6%89%B9%E9%87%8F%E5%AF%BC%E5%87%BA%E5%BE%AE%E4%BF%A1%E8%AF%AD%E9%9F%B3%E6%B6%88%E6%81%AF%E4%B8%BAmp3%E5%B9%B6%E9%99%84python%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E8%84%9A%E6%9C%AC/">批量导出微信语音消息为mp3并附python修改文件名脚本
-| 韶华尐沐</a></li>
-<li><a target="_blank" rel="noopener" href="https://vector0902.ml:5444/blog/?p=2692">批量导出微信语音的方法（技术向）
-– vector090's blog</a></li>
+<li><a target="_blank" rel="noopener" href="https://ds666.fun/2019/08/02/%E6%89%B9%E9%87%8F%E5%AF%BC%E5%87%BA%E5%BE%AE%E4%BF%A1%E8%AF%AD%E9%9F%B3%E6%B6%88%E6%81%AF%E4%B8%BAmp3%E5%B9%B6%E9%99%84python%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%E8%84%9A%E6%9C%AC/">批量导出微信语音消息为mp3并附python修改文件名脚本 | 韶华尐沐</a></li>
+<li><a target="_blank" rel="noopener" href="https://vector0902.ml:5444/blog/?p=2692">批量导出微信语音的方法（技术向） – vector090's blog</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.123455.xyz/2021/04/blog-post_3.html">微信聊天记录导出方案总结</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30112442">(1 封私信 / 20
-条消息) 如何导出微信【收藏】中的语音文件？ - 知乎</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/tsycnh/WeChatExporter">tsycnh/WeChatExporter:
-一个可以快速导出、查看你的微信聊天记录的工具</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30112442">(1 封私信 / 20 条消息) 如何导出微信【收藏】中的语音文件？ - 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tsycnh/WeChatExporter">tsycnh/WeChatExporter: 一个可以快速导出、查看你的微信聊天记录的工具</a></li>
 <li><a target="_blank" rel="noopener" href="http://wxbackup.imxfd.com/">微信聊天记录导出</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/RobertWang/Collections/blob/c9901d41cb43ba8cbb04d8331b853fd3da13a3bf/2021/06/06/GitHub%20%E5%87%BA%E5%93%81%EF%BC%9A%E4%B8%80%E9%94%AE%E5%AF%BC%E5%87%BA%E8%A7%A3%E5%AF%86%E5%BE%AE%E4%BF%A1%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95.md">Collections/GitHub
-出品：一键导出解密微信聊天记录.md at
-c9901d41cb43ba8cbb04d8331b853fd3da13a3bf ·
-RobertWang/Collections</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/RobertWang/Collections/blob/c9901d41cb43ba8cbb04d8331b853fd3da13a3bf/2021/06/06/GitHub%20%E5%87%BA%E5%93%81%EF%BC%9A%E4%B8%80%E9%94%AE%E5%AF%BC%E5%87%BA%E8%A7%A3%E5%AF%86%E5%BE%AE%E4%BF%A1%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95.md">Collections/GitHub 出品：一键导出解密微信聊天记录.md at c9901d41cb43ba8cbb04d8331b853fd3da13a3bf · RobertWang/Collections</a></li>
 </ol>
 
         </div>
@@ -286,7 +244,7 @@ RobertWang/Collections</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.874Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.830Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

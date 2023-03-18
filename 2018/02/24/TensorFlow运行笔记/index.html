@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="为了防止环境问题，所以使用了docker配置的TensorFlow环境，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-02-24T05:24:58.000Z">
-<meta property="article:modified_time" content="2018-03-01T17:00:00.000Z">
+<meta property="article:published_time" content="2018-02-24T13:24:58.000Z">
+<meta property="article:modified_time" content="2018-03-02T01:00:00.000Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="TensorFlow">
 <meta property="article:tag" content="docker">
@@ -139,7 +139,7 @@
         <h1 class="title">Docker TensorFlow运行笔记</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-02-24T05:24:58.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-02-24T13:24:58.000Z" itemprop="datePublished" class="page-time">
   2018-02-24
 </time>
 
@@ -161,8 +161,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="post-toc-number">1.</span> <span class="post-toc-text">部署</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#tensorflow%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95"><span class="post-toc-number">2.</span> <span class="post-toc-text">Tensorflow错误记录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BE%93%E5%85%A5%E7%BB%B4%E5%BA%A6%E9%94%99%E8%AF%AF"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">输入维度错误</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dynamic_rnn"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">dynamic_rnn</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#graph%E7%9A%84%E6%9D%83%E5%80%BC%E5%81%8F%E7%BD%AE%E5%80%BC%E5%A4%8D%E7%94%A87"><span class="post-toc-number">3.</span> <span class="post-toc-text">graph的权值偏置值复用[7]</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#lstm-%E5%87%86%E7%A1%AE%E7%8E%87%E8%BF%87%E4%BD%8E"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">lstm 准确率过低</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#tf.truncated_normal"><span class="post-toc-number">4.</span> <span class="post-toc-text">tf.truncated_normal()</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#bi-lstm%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">5.</span> <span class="post-toc-text">bi-lstm实现</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#weight%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%BC%E8%87%B4%E6%97%A0%E6%B3%95%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="post-toc-number">6.</span> <span class="post-toc-text">weight初始化导致无法梯度下降</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#basicrnncell%E4%BD%BF%E7%94%A8%E4%B8%8A%E9%9C%80%E8%A6%81%E5%9C%A8lstmcell%E5%9F%BA%E7%A1%80%E4%B8%8A%E4%BF%AE%E6%94%B9%E4%B8%80%E4%BA%9B%E5%9C%B0%E6%96%B9"><span class="post-toc-number">7.</span> <span class="post-toc-text">basicRNNCell使用上需要在LSTMCell基础上修改一些地方</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8multirnncell%E7%9A%84%E6%97%B6%E5%80%99"><span class="post-toc-number">8.</span> <span class="post-toc-text">使用MultiRNNCell的时候</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#tf.metric.recall%E4%BD%BF%E7%94%A8%E5%89%8D%E9%9C%80%E8%A6%81initilizer"><span class="post-toc-number">9.</span> <span class="post-toc-text">tf.metric.recall使用前需要initilizer</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E5%92%8C%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8%E5%A6%82%E4%BD%95%E4%BB%8E%E6%8C%87%E6%A0%87%E4%B8%8A%E5%88%A4%E6%96%AD%E5%87%BA%E6%9D%A5"><span class="post-toc-number">10.</span> <span class="post-toc-text">梯度消失和梯度爆炸，如何从指标上判断出来</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%85%B3%E4%BA%8Erecallf1%E7%AD%89%E6%8C%87%E6%A0%87%E8%AE%A1%E7%AE%97"><span class="post-toc-number">11.</span> <span class="post-toc-text">关于recall,f1等指标计算</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8indrnn-%E6%8A%A5%E9%94%99%E4%BC%BC%E4%B9%8E%E5%92%8Cwhile_loop%E6%9C%89%E5%85%B3"><span class="post-toc-number">12.</span> <span class="post-toc-text">使用IndRNN
-报错，似乎和while_loop有关</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="post-toc-number">13.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="post-toc-number">1.</span> <span class="post-toc-text">部署</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#tensorflow%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95"><span class="post-toc-number">2.</span> <span class="post-toc-text">Tensorflow错误记录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BE%93%E5%85%A5%E7%BB%B4%E5%BA%A6%E9%94%99%E8%AF%AF"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">输入维度错误</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dynamic_rnn"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">dynamic_rnn</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#graph%E7%9A%84%E6%9D%83%E5%80%BC%E5%81%8F%E7%BD%AE%E5%80%BC%E5%A4%8D%E7%94%A87"><span class="post-toc-number">3.</span> <span class="post-toc-text">graph的权值偏置值复用[7]</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#lstm-%E5%87%86%E7%A1%AE%E7%8E%87%E8%BF%87%E4%BD%8E"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">lstm 准确率过低</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#tf.truncated_normal"><span class="post-toc-number">4.</span> <span class="post-toc-text">tf.truncated_normal()</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#bi-lstm%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">5.</span> <span class="post-toc-text">bi-lstm实现</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#weight%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%BC%E8%87%B4%E6%97%A0%E6%B3%95%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="post-toc-number">6.</span> <span class="post-toc-text">weight初始化导致无法梯度下降</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#basicrnncell%E4%BD%BF%E7%94%A8%E4%B8%8A%E9%9C%80%E8%A6%81%E5%9C%A8lstmcell%E5%9F%BA%E7%A1%80%E4%B8%8A%E4%BF%AE%E6%94%B9%E4%B8%80%E4%BA%9B%E5%9C%B0%E6%96%B9"><span class="post-toc-number">7.</span> <span class="post-toc-text">basicRNNCell使用上需要在LSTMCell基础上修改一些地方</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8multirnncell%E7%9A%84%E6%97%B6%E5%80%99"><span class="post-toc-number">8.</span> <span class="post-toc-text">使用MultiRNNCell的时候</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#tf.metric.recall%E4%BD%BF%E7%94%A8%E5%89%8D%E9%9C%80%E8%A6%81initilizer"><span class="post-toc-number">9.</span> <span class="post-toc-text">tf.metric.recall使用前需要initilizer</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E5%92%8C%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8%E5%A6%82%E4%BD%95%E4%BB%8E%E6%8C%87%E6%A0%87%E4%B8%8A%E5%88%A4%E6%96%AD%E5%87%BA%E6%9D%A5"><span class="post-toc-number">10.</span> <span class="post-toc-text">梯度消失和梯度爆炸，如何从指标上判断出来</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%85%B3%E4%BA%8Erecallf1%E7%AD%89%E6%8C%87%E6%A0%87%E8%AE%A1%E7%AE%97"><span class="post-toc-number">11.</span> <span class="post-toc-text">关于recall,f1等指标计算</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8indrnn-%E6%8A%A5%E9%94%99%E4%BC%BC%E4%B9%8E%E5%92%8Cwhile_loop%E6%9C%89%E5%85%B3"><span class="post-toc-number">12.</span> <span class="post-toc-text">使用IndRNN 报错，似乎和while_loop有关</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="post-toc-number">13.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
         </nav>
     </aside>
 
@@ -173,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Docker TensorFlow运行笔记</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-02-24 13:24:58" datetime="2018-02-24T05:24:58.000Z"  itemprop="datePublished">2018-02-24</time>
+            <time class="post-time" title="2018-02-24 13:24:58" datetime="2018-02-24T13:24:58.000Z"  itemprop="datePublished">2018-02-24</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -195,25 +194,20 @@
 <h1 id="部署">部署</h1>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker pull tensorflow/tensorflow</span><br><span class="line">docker run -it tensorflow/tensorflow bash</span><br><span class="line"></span><br><span class="line">发现这个仓库只能在1.1版本下跑，重新下载了个</span><br><span class="line">docker pull tensorflow/tensorflow:1.1.0-py3</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>Your CPU supports instructions that this TensorFlow binary was not
-compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA</p>
+<p>Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA</p>
 </blockquote>
 <p>一开始在使用tf.Session()时就报了这个错误。暂时没理会。</p>
 <hr>
-<p>但是对docker
-不那么熟悉，不知道代码和数据应该存在哪个位置，在那还是决定代码通过volume挂载到docker内。</p>
+<p>但是对docker 不那么熟悉，不知道代码和数据应该存在哪个位置，在那还是决定代码通过volume挂载到docker内。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 7777:8888 --name=tensorflow_sean10 -v /Users/sean10/Code/LSTM-Sentiment-Analysis:/LSTM-Sentiment-Analysis -it tensorflow/tensorflow  bash</span><br><span class="line"></span><br><span class="line">这个版本tensorflow支持python3</span><br><span class="line">docker run -p 7777:8888 --name=tensorflow_sean10_py3 -v /Users/sean10/Code/LSTM-Sentiment-Analysis:/LSTM-Sentiment-Analysis -it tensorflow/tensorflow:latest-py3  bash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker ps -a -l</span><br><span class="line">docker rm $container_id</span><br><span class="line">docker rmi $image_id</span><br><span class="line">docker stop tensorflow_sean10_1.1.0_py3</span><br><span class="line">docker start -i tensorflow_sean10_1.1.0_py3</span><br><span class="line"></span><br><span class="line">docker attach tensorflow_sean10_1.1.0_py3</span><br><span class="line">docker exec -t -i tensorflow_sean10_1.1.0_py3 bash</span><br><span class="line"></span><br><span class="line">docker run -p 7777:8888 -v /Users/sean10/Code/LSTM-Sentiment-Analysis:/LSTM-Sentiment-Analysis -it tensorflow/tensorflow:1.1.0-py3 bash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>对运行中的docker进行网络映射 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker port tensorflow_sean10_1.1.0_py3</span><br><span class="line">docker inspect tensorflow_sean10_1.1.0_py3 | grep IPAddress</span><br><span class="line"></span><br><span class="line">pfctl</span><br></pre></td></tr></table></figure></p>
 <p>然后又接触到了jupyter,才逐渐明白这个做的不是ide的任务，有更多其他有意思的功能。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook --no-browser --ip=0.0.0.0 --allow-root</span><br><span class="line"></span><br><span class="line">想要再次获取</span><br><span class="line">docker exec -it &lt;docker_container_name&gt;</span><br><span class="line">jupyter notebook list</span><br></pre></td></tr></table></figure>
 <p>然后在主机浏览器内访问<code>http://localhost:7777?token=xxxxxf</code></p>
-<p>然后运行代码时，显示已经使用了python3的内核，但实际运行弹出的错误来源始终是python2.7，查到的说是默认的tensorflow
-image只有python2.7安装了tensorflow包，需要pull
-python3-latest版本才行。的确更换后就可以了……</p>
+<p>然后运行代码时，显示已经使用了python3的内核，但实际运行弹出的错误来源始终是python2.7，查到的说是默认的tensorflow image只有python2.7安装了tensorflow包，需要pull python3-latest版本才行。的确更换后就可以了……</p>
 <hr>
 <p>jupyter默认没有配置自动wrap,</p>
-<p>创建~/.jupyter/nbconfig/notebook.json配置文件，追加这一段
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;MarkdownCell&quot;: &#123;</span><br><span class="line">    &quot;cm_config&quot;: &#123;</span><br><span class="line">      &quot;lineWrapping&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;CodeCell&quot;: &#123;</span><br><span class="line">    &quot;cm_config&quot;: &#123;</span><br><span class="line">      &quot;lineWrapping&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>创建~/.jupyter/nbconfig/notebook.json配置文件，追加这一段 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;MarkdownCell&quot;: &#123;</span><br><span class="line">    &quot;cm_config&quot;: &#123;</span><br><span class="line">      &quot;lineWrapping&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;CodeCell&quot;: &#123;</span><br><span class="line">    &quot;cm_config&quot;: &#123;</span><br><span class="line">      &quot;lineWrapping&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
 <hr>
 <p><code>No module named ipykernel</code></p>
 <p>jupyter install 后 无法找到ipykernel_launcher</p>
@@ -222,28 +216,19 @@ python3-latest版本才行。的确更换后就可以了……</p>
 <h1 id="tensorflow错误记录">Tensorflow错误记录</h1>
 <h2 id="输入维度错误">输入维度错误</h2>
 <blockquote>
-<p>ValueError: Input 0 of layer basic_lstm_cell_1 is incompatible with
-the layer: expected ndim=2, found ndim=1. Full shape received: [400]</p>
+<p>ValueError: Input 0 of layer basic_lstm_cell_1 is incompatible with the layer: expected ndim=2, found ndim=1. Full shape received: [400]</p>
 </blockquote>
 <p>输入数据占位符的维度错误了</p>
 <blockquote>
-<p>basicRNNCell ValueError: Shape must be rank 2 but is rank 1 for
-'MatMul' (op: 'MatMul') with input shapes: [64], [64,32].</p>
+<p>basicRNNCell ValueError: Shape must be rank 2 but is rank 1 for 'MatMul' (op: 'MatMul') with input shapes: [64], [64,32].</p>
 </blockquote>
 <p>将BasicLSTMCell更换成BasicRNNCell时，始终出现错误。唉，在占位符embiding时没注意到传错数了，导致很久都没debug出来……</p>
 <h2 id="dynamic_rnn">dynamic_rnn</h2>
 <p>Dynamic_Rnn与Static_rnn主要区别在于输入数据的结构上。</p>
 <blockquote>
-<p>static_rnn
-输入的list的大小[序列长度,batch_size,embed大小]，所以一一般在经过embed层后，使用x
-= tf.unstack(embed, seq_len,
-1)变换为[序列长度,batch_size,embed大小]，然后输入到static_rnn，输出也是list，大小形状为[seq_len,batch_size,hidden_size],所以我们取最后一个的输出就直接为static_rnn_out[-1],但是我们的dynamic_rnn不是这样，它的输入是[batch,seq_len,input],所以一般经过embeding层后不需要变化直接输入dynamic_rnn里面，然后输出结果为dynamic_rnn_out，他的shape为[batch,seq_len,hidden_size]
-,这样我们要取到最后一个的输出，需要多维度进行一个转化：tf.transpose(dynamic_rnn_out,
-[1, 0, 2])，然后才可以去计算loss和accuracy等。[5]</p>
-<p>tensorflow
-的dynamic_rnn方法，我们用一个小例子来说明其用法，假设你的RNN的输入input是[2,20,128]，其中2是batch_size,20是文本最大长度，128是embedding_size，可以看出，有两个example，我们假设第二个文本长度只有13，剩下的7个是使用0-padding方法填充的。dynamic返回的是两个参数：outputs,last_states，其中outputs是[2,20,128]，也就是每一个迭代隐状态的输出,last_states是由(c,h)组成的tuple，均为[batch,128]。</p>
-<p>到这里并没有什么不同，但是dynamic有个参数：sequence_length，这个参数用来指定每个example的长度，比如上面的例子中，我们令
-sequence_length为[20,13]，表示第一个example有效长度为20，第二个example有效长度为13，当我们传入这个参数的时候，对于第二个example，TensorFlow对于13以后的padding就不计算了，其last_states将重复第13步的last_states直至第20步，而outputs中超过13步的结果将会被置零。[6]</p>
+<p>static_rnn 输入的list的大小[序列长度,batch_size,embed大小]，所以一一般在经过embed层后，使用x = tf.unstack(embed, seq_len, 1)变换为[序列长度,batch_size,embed大小]，然后输入到static_rnn，输出也是list，大小形状为[seq_len,batch_size,hidden_size],所以我们取最后一个的输出就直接为static_rnn_out[-1],但是我们的dynamic_rnn不是这样，它的输入是[batch,seq_len,input],所以一般经过embeding层后不需要变化直接输入dynamic_rnn里面，然后输出结果为dynamic_rnn_out，他的shape为[batch,seq_len,hidden_size] ,这样我们要取到最后一个的输出，需要多维度进行一个转化：tf.transpose(dynamic_rnn_out, [1, 0, 2])，然后才可以去计算loss和accuracy等。[5]</p>
+<p>tensorflow 的dynamic_rnn方法，我们用一个小例子来说明其用法，假设你的RNN的输入input是[2,20,128]，其中2是batch_size,20是文本最大长度，128是embedding_size，可以看出，有两个example，我们假设第二个文本长度只有13，剩下的7个是使用0-padding方法填充的。dynamic返回的是两个参数：outputs,last_states，其中outputs是[2,20,128]，也就是每一个迭代隐状态的输出,last_states是由(c,h)组成的tuple，均为[batch,128]。</p>
+<p>到这里并没有什么不同，但是dynamic有个参数：sequence_length，这个参数用来指定每个example的长度，比如上面的例子中，我们令 sequence_length为[20,13]，表示第一个example有效长度为20，第二个example有效长度为13，当我们传入这个参数的时候，对于第二个example，TensorFlow对于13以后的padding就不计算了，其last_states将重复第13步的last_states直至第20步，而outputs中超过13步的结果将会被置零。[6]</p>
 </blockquote>
 <p>如果由于batch一次读入过大，可以使用API中的eval_in_batches(https://github.com/petewarden/tensorflow_makefile/blob/master/tensorflow/models/image/mnist/convolutional.py#L255)</p>
 <h1 id="graph的权值偏置值复用7">graph的权值偏置值复用[7]</h1>
@@ -251,12 +236,10 @@ sequence_length为[20,13]，表示第一个example有效长度为20，第二个e
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tf.get_variable_scope().reuse_variables()</span><br></pre></td></tr></table></figure>
 <h2 id="lstm-准确率过低">lstm 准确率过低</h2>
 <p>输出的训练集上的loss还算正常，但是acc连50%都没有</p>
-<p>根据知乎大神所说，二分类问题50%的准确率就等同于没有学习到，没有进行优化。
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">lSTM</span><br><span class="line">loss:5.716831 batch_Acc: 0.5 acc:0.525</span><br><span class="line">loss:0.16445649 batch_Acc: 0.9583333 acc:0.2225</span><br><span class="line">loss:0.21239458 batch_Acc: 0.9583333 acc:0.2075</span><br><span class="line">loss:0.07486567 batch_Acc: 1.0 acc:0.23</span><br><span class="line">loss:0.015121219 batch_Acc: 1.0 acc:0.275</span><br><span class="line">loss:0.10024478 batch_Acc: 0.9583333 acc:0.2475</span><br><span class="line">loss:0.056348186 batch_Acc: 0.9583333 acc:0.25</span><br><span class="line">loss:0.018785348 batch_Acc: 1.0 acc:0.255</span><br><span class="line">loss:0.017489845 batch_Acc: 1.0 acc:0.255</span><br><span class="line">loss:0.0008791888 batch_Acc: 1.0 acc:0.275</span><br><span class="line">loss:0.0012423135 batch_Acc: 1.0 acc:0.27</span><br><span class="line">loss:0.010488756 batch_Acc: 1.0 acc:0.2525</span><br><span class="line">loss:0.008405162 batch_Acc: 1.0 acc:0.245</span><br><span class="line">loss:0.0038538638 batch_Acc: 1.0 acc:0.2125</span><br><span class="line">loss:0.00075430545 batch_Acc: 1.0 acc:0.2375</span><br><span class="line">loss:0.0011128571 batch_Acc: 1.0 acc:0.2275</span><br><span class="line">loss:0.014299699 batch_Acc: 1.0 acc:0.325</span><br><span class="line">loss:0.00064932863 batch_Acc: 1.0 acc:0.3775</span><br><span class="line">loss:0.0039427895 batch_Acc: 1.0 acc:0.425</span><br><span class="line">loss:0.0043920926 batch_Acc: 1.0 acc:0.4025</span><br><span class="line">loss:0.0037787214 batch_Acc: 1.0 acc:0.41</span><br></pre></td></tr></table></figure></p>
+<p>根据知乎大神所说，二分类问题50%的准确率就等同于没有学习到，没有进行优化。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">lSTM</span><br><span class="line">loss:5.716831 batch_Acc: 0.5 acc:0.525</span><br><span class="line">loss:0.16445649 batch_Acc: 0.9583333 acc:0.2225</span><br><span class="line">loss:0.21239458 batch_Acc: 0.9583333 acc:0.2075</span><br><span class="line">loss:0.07486567 batch_Acc: 1.0 acc:0.23</span><br><span class="line">loss:0.015121219 batch_Acc: 1.0 acc:0.275</span><br><span class="line">loss:0.10024478 batch_Acc: 0.9583333 acc:0.2475</span><br><span class="line">loss:0.056348186 batch_Acc: 0.9583333 acc:0.25</span><br><span class="line">loss:0.018785348 batch_Acc: 1.0 acc:0.255</span><br><span class="line">loss:0.017489845 batch_Acc: 1.0 acc:0.255</span><br><span class="line">loss:0.0008791888 batch_Acc: 1.0 acc:0.275</span><br><span class="line">loss:0.0012423135 batch_Acc: 1.0 acc:0.27</span><br><span class="line">loss:0.010488756 batch_Acc: 1.0 acc:0.2525</span><br><span class="line">loss:0.008405162 batch_Acc: 1.0 acc:0.245</span><br><span class="line">loss:0.0038538638 batch_Acc: 1.0 acc:0.2125</span><br><span class="line">loss:0.00075430545 batch_Acc: 1.0 acc:0.2375</span><br><span class="line">loss:0.0011128571 batch_Acc: 1.0 acc:0.2275</span><br><span class="line">loss:0.014299699 batch_Acc: 1.0 acc:0.325</span><br><span class="line">loss:0.00064932863 batch_Acc: 1.0 acc:0.3775</span><br><span class="line">loss:0.0039427895 batch_Acc: 1.0 acc:0.425</span><br><span class="line">loss:0.0043920926 batch_Acc: 1.0 acc:0.4025</span><br><span class="line">loss:0.0037787214 batch_Acc: 1.0 acc:0.41</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">传统RNN</span><br><span class="line">loss:4.7681885 acc:0.51</span><br><span class="line">loss:1.3538479 acc:0.48</span><br><span class="line">loss:1.7510027 acc:0.4825</span><br><span class="line">loss:1.2965189 acc:0.5175</span><br><span class="line">loss:0.8639291 acc:0.4725</span><br><span class="line">loss:0.7651406 acc:0.48</span><br><span class="line">loss:0.5035551 acc:0.4725</span><br><span class="line">loss:0.7856639 acc:0.5125</span><br><span class="line">loss:0.41615644 acc:0.535</span><br><span class="line">loss:0.63352686 acc:0.515</span><br><span class="line">loss:0.8058832 acc:0.5125</span><br><span class="line">loss:0.715534 acc:0.5225</span><br><span class="line">loss:0.58976775 acc:0.49</span><br><span class="line">loss:0.6922045 acc:0.4875</span><br><span class="line">loss:0.6963689 acc:0.5225</span><br><span class="line">loss:0.6474119 acc:0.48</span><br><span class="line">loss:0.6436865 acc:0.4725</span><br><span class="line">loss:0.79238504 acc:0.4925</span><br><span class="line">loss:0.63156253 acc:0.535</span><br><span class="line">loss:0.6858673 acc:0.51</span><br><span class="line">loss:0.65090233 acc:0.52</span><br><span class="line">answer</span><br></pre></td></tr></table></figure>
 <p>模型暂时和原本的初版差别不大，训练集也还是原本的随机出的，测试集顺序理论上应该没有影响才对</p>
-<p>就是上面那个weight和bias复用的问题……我定义在def
-model里了，导致reuse根本没有可以存下来</p>
+<p>就是上面那个weight和bias复用的问题……我定义在def model里了，导致reuse根本没有可以存下来</p>
 <hr>
 <h1 id="tf.truncated_normal">tf.truncated_normal()</h1>
 <p>这个函数产生正太分布，均值和标准差自己设定。这是一个截断的产生正太分布的函数，就是说产生正太分布的值如果与均值的差值大于两倍的标准差，那就重新生成。</p>
@@ -268,58 +251,40 @@ model里了，导致reuse根本没有可以存下来</p>
 <p>参考[13]的代码修改的，原来在rnncell的时候就直接取当前state计算就可以ile</p>
 <h1 id="使用multirnncell的时候">使用MultiRNNCell的时候</h1>
 <blockquote>
-<p>InvalidArgumentError: Dimensions must be equal, but are 128 and 464
-for 'rnn/while/rnn/multi_rnn_cell/cell_0/basic_rnn_cell/MatMul_1' (op:
-'MatMul') with input shapes: [24,128], [464,64].</p>
+<p>InvalidArgumentError: Dimensions must be equal, but are 128 and 464 for 'rnn/while/rnn/multi_rnn_cell/cell_0/basic_rnn_cell/MatMul_1' (op: 'MatMul') with input shapes: [24,128], [464,64].</p>
 </blockquote>
 <p>要用python迭代器生成list，而不能直接用乘法，并且需要从函数来获取多个cell,不能直接对一个cell进行迭代</p>
 <h1 id="tf.metric.recall使用前需要initilizer">tf.metric.recall使用前需要initilizer</h1>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sess.run(tf.local_variables_initializer())</span><br></pre></td></tr></table></figure>
-<p>使用完 发现
-这个值依旧是不能用的，因为这个统计的是整个session周期内的</p>
+<p>使用完 发现 这个值依旧是不能用的，因为这个统计的是整个session周期内的</p>
 <h1 id="梯度消失和梯度爆炸如何从指标上判断出来">梯度消失和梯度爆炸，如何从指标上判断出来</h1>
 <p>梯度消失似乎主要指的是多层效果反而没有浅层的好</p>
 <h1 id="关于recallf1等指标计算">关于recall,f1等指标计算</h1>
 <p>按照[16]条执行，成功跑出来了。</p>
-<h1 id="使用indrnn-报错似乎和while_loop有关">使用IndRNN
-报错，似乎和while_loop有关</h1>
+<h1 id="使用indrnn-报错似乎和while_loop有关">使用IndRNN 报错，似乎和while_loop有关</h1>
 <blockquote>
-<p>ValueError: Cannot use
-'rnn/while/rnn/multi_rnn_cell/cell_0/ind_rnn_cell/Mul_1' as input to
-'rnn/while/rnn/multi_rnn_cell/cell_0/ind_rnn_cell/clip_by_value' because
-they are in different while loops. See info log for more details.</p>
+<p>ValueError: Cannot use 'rnn/while/rnn/multi_rnn_cell/cell_0/ind_rnn_cell/Mul_1' as input to 'rnn/while/rnn/multi_rnn_cell/cell_0/ind_rnn_cell/clip_by_value' because they are in different while loops. See info log for more details.</p>
 </blockquote>
 <p>看了下源码，出现了clip_by_value位置的只有设置了recurrent_abs_max的时候，所以把这个参数先取消看看，成功跑起来了~hhh</p>
 <p>性能和普通的lstm差不多，之后再和官方的lstmcell比较一下源码，看看怎么改能够跑起来</p>
 <p>发现问题，由于最初对tensorflow认识不足，导致训练集和测试集虽然复用了weight和bias，但是实际是运行在不同的网络中的，而IndRNN可能由于没能针对Tensorflow处理好这些问题，因此无法应用。在修改后的代码中，复用同一个网络后，这个参数添加后就没有报错了。</p>
 <h1 id="参考资料">参考资料</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="http://yuenshome.cn/?p=4633">本地访问远程服务器的Docker容器的Jupyter
-Notebook</a></li>
+<li><a target="_blank" rel="noopener" href="http://yuenshome.cn/?p=4633">本地访问远程服务器的Docker容器的Jupyter Notebook</a></li>
 <li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/ivictor/p/4834864.html">关于Docker目录挂载的总结</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/36419342/how-to-wrap-code-text-in-jupyter-notebooks">wrap
-jupyter config</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/jupyter/notebook/issues/1558">No module
-named ipykernel</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/36419342/how-to-wrap-code-text-in-jupyter-notebooks">wrap jupyter config</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jupyter/notebook/issues/1558">No module named ipykernel</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq1483661204/article/details/78997644">tensorflow中dynamic_rnn与static_rnn区别</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010223750/article/details/71079036">tensorflow高阶教程:tf.dynamic_rnn</a>
-# Reference</li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/rocketfan/p/5773373.html">Tensorflow
-变量的共享</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/linyx/p/6979119.html">tensorflow
-bilstm官方示例</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Felaim/article/details/70300362">TensorFlow实战12：Bidirectional
-LSTM Classifier</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012436149/article/details/71080601">tensorflow学习笔记(三十九)
-: 双向rnn (BiRNN)</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.leiphone.com/news/201703/3qMp45aQtbxTdzmK.html">谷歌工程师：聊一聊深度学习的weight
-initialization</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010223750/article/details/71079036">tensorflow高阶教程:tf.dynamic_rnn</a> # Reference</li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/rocketfan/p/5773373.html">Tensorflow 变量的共享</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/linyx/p/6979119.html">tensorflow bilstm官方示例</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Felaim/article/details/70300362">TensorFlow实战12：Bidirectional LSTM Classifier</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012436149/article/details/71080601">tensorflow学习笔记(三十九) : 双向rnn (BiRNN)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.leiphone.com/news/201703/3qMp45aQtbxTdzmK.html">谷歌工程师：聊一聊深度学习的weight initialization</a></li>
 <li><a target="_blank" rel="noopener" href="https://lguduy.github.io/2017/05/20/TensorFlow%E6%95%99%E7%A8%8B-%E5%A4%84%E7%90%86%E8%87%AA%E5%B7%B1%E7%9A%84%E6%95%B0%E6%8D%AE/">ensorFlow教程：利用TensorFlow处理自己的数据</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/8e96b7ee1421">RNN入门：利用TF的API（二）</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow/issues/14897">A
-bug in tensorflow r1.4 when applying MultiRNNCell</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/dennybritz/cnn-text-classification-tf/issues/71">Add
-precision and recall summaries</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow/issues/14897">A bug in tensorflow r1.4 when applying MultiRNNCell</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dennybritz/cnn-text-classification-tf/issues/71">Add precision and recall summaries</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/appleml/article/details/58647585">tensorflow中precision,recall和F1</a></li>
 <li><a href></a></li>
 </ol>
@@ -331,7 +296,7 @@ precision and recall summaries</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2018-03-01T17:00:00.000Z" itemprop="dateUpdated">2018-03-02 01:00:00</time>
+    最后更新时间：<time datetime="2018-03-02T01:00:00.000Z" itemprop="dateUpdated">2018-03-02 01:00:00</time>
 </span><br>
 
 

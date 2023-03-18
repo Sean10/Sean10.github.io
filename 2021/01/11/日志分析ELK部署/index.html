@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="部署 12345docker pull sebp&#x2F;elkdocker run -p 5601:5601 -p 9200:9200  -p 5044:5044 \    -v &#x2F;Users&#x2F;sean10&#x2F;Code&#x2F;docker-volume&#x2F;elk:&#x2F;var&#x2F;lib&#x2F;elasticsearch \    -v &#x2F;Users&#x2F;sean10&#x2F;Code&#x2F;Algorithm_code&#x2F;elk&#x2F;logstas">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-01-10T19:03:17.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.867Z">
+<meta property="article:published_time" content="2021-01-11T03:03:17.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="ELK">
@@ -139,7 +139,7 @@
         <h1 class="title">日志分析ELK部署</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-01-10T19:03:17.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-01-11T03:03:17.000Z" itemprop="datePublished" class="page-time">
   2021-01-11
 </time>
 
@@ -161,8 +161,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="post-toc-number">1.</span> <span class="post-toc-text">部署</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#filebeat"><span class="post-toc-number">2.</span> <span class="post-toc-text">Filebeat</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#logstash"><span class="post-toc-number">3.</span> <span class="post-toc-text">logstash</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">配置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E9%AA%8C"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">实验</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AF%BC%E5%85%A5log"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">导入log</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%80%E8%88%AC%E6%B5%81%E7%A8%8B"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">一般流程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%AF%E8%83%BD%E7%9A%84%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">可能的问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%B4%A2%E5%BC%95%E8%BF%87%E5%A4%9A-%E5%AF%BC%E8%87%B4elasticsearch-429"><span class="post-toc-number">3.5.1.</span> <span class="post-toc-text">索引过多, 导致elasticsearch
-429</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#elasticsearch"><span class="post-toc-number">4.</span> <span class="post-toc-text">elasticsearch</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#kibana"><span class="post-toc-number">5.</span> <span class="post-toc-text">kibana</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">6.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="post-toc-number">1.</span> <span class="post-toc-text">部署</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#filebeat"><span class="post-toc-number">2.</span> <span class="post-toc-text">Filebeat</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#logstash"><span class="post-toc-number">3.</span> <span class="post-toc-text">logstash</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">配置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E9%AA%8C"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">实验</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AF%BC%E5%85%A5log"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">导入log</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%80%E8%88%AC%E6%B5%81%E7%A8%8B"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">一般流程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%AF%E8%83%BD%E7%9A%84%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">可能的问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%B4%A2%E5%BC%95%E8%BF%87%E5%A4%9A-%E5%AF%BC%E8%87%B4elasticsearch-429"><span class="post-toc-number">3.5.1.</span> <span class="post-toc-text">索引过多, 导致elasticsearch 429</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#elasticsearch"><span class="post-toc-number">4.</span> <span class="post-toc-text">elasticsearch</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#kibana"><span class="post-toc-number">5.</span> <span class="post-toc-text">kibana</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">6.</span> <span class="post-toc-text">Reference</span></a></li></ol>
         </nav>
     </aside>
 
@@ -173,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">日志分析ELK部署</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-01-11 03:03:17" datetime="2021-01-10T19:03:17.000Z"  itemprop="datePublished">2021-01-11</time>
+            <time class="post-time" title="2021-01-11 03:03:17" datetime="2021-01-11T03:03:17.000Z"  itemprop="datePublished">2021-01-11</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -195,40 +194,25 @@
 <ul>
 <li>与logstash直接配置本地文件的读取是否存在差别呢?</li>
 </ul>
-<p>把<code>elk-logstash</code>的证书[^6],
-和这个证书对应的域名加到hosts里解析, 成功导入了宿主机里的日志.
-不过这种不修改<code>filter</code>的逻辑的日志,
-只是把log的每行都记录成message了, 其实索引没利用起来的感觉.
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">output:</span></span><br><span class="line">  <span class="attr">logstash:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">hosts:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">elk:5044</span></span><br><span class="line">    <span class="attr">timeout:</span> <span class="number">15</span></span><br><span class="line">    <span class="attr">ssl:</span></span><br><span class="line">      <span class="attr">certificate_authorities:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">/etc/certs/logstash-beats.crt</span></span><br><span class="line"></span><br><span class="line"><span class="attr">filebeat:</span></span><br><span class="line">  <span class="attr">inputs:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">&quot;/var/log/ceph/*.log&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>把<code>elk-logstash</code>的证书[^6], 和这个证书对应的域名加到hosts里解析, 成功导入了宿主机里的日志. 不过这种不修改<code>filter</code>的逻辑的日志, 只是把log的每行都记录成message了, 其实索引没利用起来的感觉. <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">output:</span></span><br><span class="line">  <span class="attr">logstash:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">hosts:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">elk:5044</span></span><br><span class="line">    <span class="attr">timeout:</span> <span class="number">15</span></span><br><span class="line">    <span class="attr">ssl:</span></span><br><span class="line">      <span class="attr">certificate_authorities:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">/etc/certs/logstash-beats.crt</span></span><br><span class="line"></span><br><span class="line"><span class="attr">filebeat:</span></span><br><span class="line">  <span class="attr">inputs:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">&quot;/var/log/ceph/*.log&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name filebeat  --user=root -v /Users/sean10/Code/ceph/ceph-14.2.9/src/out:/var/log/ceph -v /Users/sean10/Code/Algorithm_code/elk/logstash-beats.crt:/etc/certs/logstash-beats.crt -v /Users/sean10/Code/Algorithm_code/elk/filebeat.yml:/usr/share/filebeat/filebeat.yml -v /Users/sean10/Code/Algorithm_code/elk/hosts:/etc/hosts elastic/filebeat:7.10.1</span><br></pre></td></tr></table></figure>
 <h1 id="logstash">logstash</h1>
 <h2 id="配置">配置</h2>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">input</span><br><span class="line">    file &#123;</span><br><span class="line">        path =&gt; [&quot;/var/log/*.log&quot;, &quot;/var/log/message&quot;]</span><br><span class="line">        type =&gt; &quot;system&quot;</span><br><span class="line">        start_position =&gt; &quot;beginning&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">#  if [type] == &quot;cephlog&quot; &#123;</span><br><span class="line"> grok &#123;</span><br><span class="line"> # https://github.com/ceph/ceph/blob/master/src/log/Entry.h</span><br><span class="line"> match =&gt; &#123; &quot;message&quot; =&gt; &quot;%&#123;TIMESTAMP_ISO8601:stamp&#125;\s%&#123;GREEDYDATA:msg&#125;&quot; &#125;</span><br><span class="line"> match =&gt; &#123; &quot;message&quot; =&gt; &quot;(?m)%&#123;TIMESTAMP_ISO8601:stamp&#125;\s%&#123;NOTSPACE:thread&#125;\s*%</span><br><span class="line">&#123;INT:prio&#125;\s(%&#123;WORD:subsys&#125;|):?\s%&#123;GREEDYDATA:msg&#125;&quot; &#125;</span><br><span class="line"> # https://github.com/ceph/ceph/blob/master/src/common/LogEntry.h</span><br><span class="line"> match =&gt; &#123; &quot;message&quot; =&gt; &quot;%&#123;TIMESTAMP_ISO8601:stamp&#125;\s%&#123;NOTSPACE:name&#125;\s%</span><br><span class="line">&#123;NOTSPACE:who_type&#125;\s%&#123;NOTSPACE:who_addr&#125;\s%&#123;INT:seq&#125;\s:\s%&#123;PROG:channel&#125;\s\[%</span><br><span class="line">&#123;WORD:prio&#125;\]\s%&#123;GREEDYDATA:msg&#125;&quot; &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> date &#123; match =&gt; [ &quot;stamp&quot;, &quot;yyyy-MM-dd HH:mm:ss.SSSSSS&quot;, &quot;ISO8601&quot; ] &#125;</span><br><span class="line">#  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从ceph文档里找来的Filter, 不过好像匹配失败了,
-可能跟版本有关系吧.版本太低? 用第一个,至少时间戳出来了.</p>
+<p>从ceph文档里找来的Filter, 不过好像匹配失败了, 可能跟版本有关系吧.版本太低? 用第一个,至少时间戳出来了.</p>
 <h2 id="实验">实验</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/opt/logstash/bin/logstash --path.data /tmp/logstash/data \</span><br><span class="line">    -e <span class="string">&#x27;input &#123; stdin &#123; &#125; &#125; output &#123; elasticsearch &#123; hosts =&gt; [&quot;localhost&quot;] &#125; &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
 <h2 id="导入log">导入log</h2>
-<p>似乎要导入log, 默认的<code>elk</code>的配置不行,
-需要修改<code>logstash</code>的配置, 增加一些属性.</p>
+<p>似乎要导入log, 默认的<code>elk</code>的配置不行, 需要修改<code>logstash</code>的配置, 增加一些属性.</p>
 <h2 id="一般流程">一般流程</h2>
 <blockquote>
-<p>在日志存储服务器上安装filebeat
-filebeat将log存储目录下的所有log全部读取，发送到kafka
-logstash从kafka上读取日志，格式化后发送到elasticsearch
-elasticsearch正确索引后，response给logstash
-logstash更新kafka的offset，读取新的记录
-一直循环以上步骤，直到所有的log都被写入到elasticsearch当中</p>
+<p>在日志存储服务器上安装filebeat filebeat将log存储目录下的所有log全部读取，发送到kafka logstash从kafka上读取日志，格式化后发送到elasticsearch elasticsearch正确索引后，response给logstash logstash更新kafka的offset，读取新的记录 一直循环以上步骤，直到所有的log都被写入到elasticsearch当中</p>
 </blockquote>
 <h2 id="可能的问题">可能的问题</h2>
-<h3 id="索引过多-导致elasticsearch-429">索引过多, 导致elasticsearch
-429</h3>
+<h3 id="索引过多-导致elasticsearch-429">索引过多, 导致elasticsearch 429</h3>
 <blockquote>
-<p>正确的处理大量历史数据的导入
-不过很诧异，我很难在网络上搜到有人提过429的问题。仔细回想以下，一定是我的集群太low了。整个elasticsearch
-cluster的索引处理能力太弱鸡。。。所以，在你的集群比较弱鸡的情况下该怎么处理？</p>
-<p>当然，最直接的方法就是减少索引的量，比如，你要导入10月1号之前的所有log，你直接把索引的名字命名为platform-2017-10-1，而不是platform-%{+YYYY.MM.dd}。就算是只有一个eleasticsearch
-node，2C4G，亦能在5分钟之内把1G的log全部索引完。等索引完这些历史数据之后，你再把logstash上的output规则改为platform-%{+YYYY.MM.dd}。</p>
+<p>正确的处理大量历史数据的导入 不过很诧异，我很难在网络上搜到有人提过429的问题。仔细回想以下，一定是我的集群太low了。整个elasticsearch cluster的索引处理能力太弱鸡。。。所以，在你的集群比较弱鸡的情况下该怎么处理？</p>
+<p>当然，最直接的方法就是减少索引的量，比如，你要导入10月1号之前的所有log，你直接把索引的名字命名为platform-2017-10-1，而不是platform-%{+YYYY.MM.dd}。就算是只有一个eleasticsearch node，2C4G，亦能在5分钟之内把1G的log全部索引完。等索引完这些历史数据之后，你再把logstash上的output规则改为platform-%{+YYYY.MM.dd}。</p>
 </blockquote>
 <h1 id="elasticsearch">elasticsearch</h1>
 <p>还是使用<code>volume</code>挂载 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">path:</span></span><br><span class="line">  <span class="attr">data:</span> <span class="string">/var/data/elasticsearch</span></span><br><span class="line">  <span class="attr">logs:</span> <span class="string">/var/log/elasticsearch</span></span><br></pre></td></tr></table></figure></p>
@@ -236,13 +220,11 @@ node，2C4G，亦能在5分钟之内把1G的log全部索引完。等索引完这
 <p>导入是导入成功了, 基本的搜索也有了, 但是显示出来的冗余内容有点多.</p>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://github.com/spujadas/elk-docker">spujadas/elk-docker:
-Elasticsearch, Logstash, Kibana (ELK) Docker image</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/spujadas/elk-docker">spujadas/elk-docker: Elasticsearch, Logstash, Kibana (ELK) Docker image</a></li>
 <li><a target="_blank" rel="noopener" href="https://elk-docker.readthedocs.io/#usage">elk-docker</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/alan_liuyue/article/details/92582101">ELK生态：Logstash增量读取log文件数据，导入到Elasticsearch_alan_liuyue的博客-CSDN博客</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013613428/article/details/78216068">用ELK导入历史log的正确姿势_点火三周的专栏-CSDN博客</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/107346014">手把手教你实战docker容器下的ELK环境搭建
-- 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/107346014">手把手教你实战docker容器下的ELK环境搭建 - 知乎</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/xinluke/article/details/52121906">fileBeat和Elk整合的问题_xinluke的专栏-CSDN博客</a></li>
 </ol>
 
@@ -253,7 +235,7 @@ Elasticsearch, Logstash, Kibana (ELK) Docker image</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.867Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

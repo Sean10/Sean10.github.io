@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="总时间限制: 1000ms 内存限制: 65536kB 描述 给出三维空间中的n个点（不超过10个）,求出n个点两两之间的距离,并按距离由大到小依次输出两个点的坐标及它们之间的距离。 输入 输入包括两行，第一行包含一个整数n表示点的个数，第二行包含每个点的坐标(坐标都是整数)。点的坐标的范围是0到100，输入数据中不存在坐标相同的点。 输出 对于大小为n的输入数据，输出n*(n-1)&#x2F;2行格式如下">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2016-01-06T08:56:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.866Z">
+<meta property="article:published_time" content="2016-01-06T16:56:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.838Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">距离排序</h1>
         <h5 class="subtitle">
             
-                <time datetime="2016-01-06T08:56:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2016-01-06T16:56:00.000Z" itemprop="datePublished" class="page-time">
   2016-01-06
 </time>
 
@@ -164,7 +164,7 @@
     <div class="post-card">
         <h1 class="post-card-title">距离排序</h1>
         <div class="post-meta">
-            <time class="post-time" title="2016-01-06 16:56:00" datetime="2016-01-06T08:56:00.000Z"  itemprop="datePublished">2016-01-06</time>
+            <time class="post-time" title="2016-01-06 16:56:00" datetime="2016-01-06T16:56:00.000Z"  itemprop="datePublished">2016-01-06</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -179,15 +179,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>总时间限制: 1000ms 内存限制: 65536kB <strong>描述</strong>
-给出三维空间中的n个点（不超过10个）,求出n个点两两之间的距离,并按距离由大到小依次输出两个点的坐标及它们之间的距离。
-<strong>输入</strong>
-输入包括两行，第一行包含一个整数n表示点的个数，第二行包含每个点的坐标(坐标都是整数)。点的坐标的范围是0到100，输入数据中不存在坐标相同的点。
-<strong>输出</strong>
-对于大小为n的输入数据，输出n*(n-1)/2行格式如下的距离信息：
-(x1,y1,z1)-(x2,y2,z2)=距离 其中距离保留到数点后面2位。
-(用cout输出时保留到小数点后2位的方法:cout&lt;&lt;fixed&lt;&lt;setprecision(2)&lt;&lt;x)
-样例输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4</span><br><span class="line">0 0 0 1 0 0 1 1 0 1 1 1</span><br></pre></td></tr></table></figure> 样例输出 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(0,0,0)-(1,1,1)=1.73</span><br><span class="line">(0,0,0)-(1,1,0)=1.41</span><br><span class="line">(1,0,0)-(1,1,1)=1.41</span><br><span class="line">(0,0,0)-(1,0,0)=1.00</span><br><span class="line">(1,0,0)-(1,1,0)=1.00</span><br><span class="line">(1,1,0)-(1,1,1)=1.00</span><br></pre></td></tr></table></figure></p>
+            <p>总时间限制: 1000ms 内存限制: 65536kB <strong>描述</strong> 给出三维空间中的n个点（不超过10个）,求出n个点两两之间的距离,并按距离由大到小依次输出两个点的坐标及它们之间的距离。 <strong>输入</strong> 输入包括两行，第一行包含一个整数n表示点的个数，第二行包含每个点的坐标(坐标都是整数)。点的坐标的范围是0到100，输入数据中不存在坐标相同的点。 <strong>输出</strong> 对于大小为n的输入数据，输出n*(n-1)/2行格式如下的距离信息： (x1,y1,z1)-(x2,y2,z2)=距离 其中距离保留到数点后面2位。 (用cout输出时保留到小数点后2位的方法:cout&lt;&lt;fixed&lt;&lt;setprecision(2)&lt;&lt;x) 样例输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4</span><br><span class="line">0 0 0 1 0 0 1 1 0 1 1 1</span><br></pre></td></tr></table></figure> 样例输出 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(0,0,0)-(1,1,1)=1.73</span><br><span class="line">(0,0,0)-(1,1,0)=1.41</span><br><span class="line">(1,0,0)-(1,1,1)=1.41</span><br><span class="line">(0,0,0)-(1,0,0)=1.00</span><br><span class="line">(1,0,0)-(1,1,0)=1.00</span><br><span class="line">(1,1,0)-(1,1,1)=1.00</span><br></pre></td></tr></table></figure></p>
 <p>代码 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line">#include &lt;cmath&gt;</span><br><span class="line"></span><br><span class="line">typedef struct point&#123;</span><br><span class="line">    int x,y,z;</span><br><span class="line">&#125;Point;</span><br><span class="line"></span><br><span class="line">typedef struct data&#123;</span><br><span class="line">    int a,b;</span><br><span class="line">    double len;</span><br><span class="line">&#125;Data;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    //freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">    int n;</span><br><span class="line">    Point data[11];</span><br><span class="line">    Data len[110];</span><br><span class="line">    scanf(&quot;%d&quot;,&amp;n);</span><br><span class="line">    for(int i = 0;i &lt; n;i++)&#123;</span><br><span class="line">        scanf(&quot;%d%d%d&quot;,&amp;data[i].x,&amp;data[i].y,&amp;data[i].z);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int start = 0;</span><br><span class="line">    double length;</span><br><span class="line">    int k;</span><br><span class="line">    for(int i = 0;i &lt; n-1;i++)&#123;</span><br><span class="line">        for(int j = i+1;j &lt; n;j++)&#123;</span><br><span class="line">            length = sqrt((data[i].x-data[j].x)*(data[i].x-data[j].x)</span><br><span class="line">                                    +(data[i].y-data[j].y)*(data[i].y-data[j].y)</span><br><span class="line">                                    +(data[i].z-data[j].z)*(data[i].z-data[j].z));</span><br><span class="line">            for(k = 0;k &lt; start &amp;&amp; length-len[k].len &lt;= 1e-10;k++);</span><br><span class="line">            for(int l = start;l &gt; k;l--)</span><br><span class="line">                len[l] = len[l-1];</span><br><span class="line">            len[k].a = i;</span><br><span class="line">            len[k].b = j;</span><br><span class="line">            len[k].len = length;</span><br><span class="line">            start++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for(int i = 0;i &lt; start;i++)&#123;</span><br><span class="line">        printf(&quot;(%d,%d,%d)-(%d,%d,%d)=%.2f\n&quot;,data[len[i].a].x,data[len[i].a].y,data[len[i].a].z,</span><br><span class="line">                                            data[len[i].b].x,data[len[i].b].y,data[len[i].b].z,len[i].len);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
         </div>
@@ -197,7 +189,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.866Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.838Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

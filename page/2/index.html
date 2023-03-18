@@ -154,7 +154,7 @@
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-06-23 09:21:25" datetime="2021-06-23T01:21:25.000Z"  itemprop="datePublished">2021-06-23</time>
+        <time class="post-time" title="2021-06-23 09:21:25" datetime="2021-06-23T09:21:25.000Z"  itemprop="datePublished">2021-06-23</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -203,7 +203,7 @@
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-05-15 21:34:46" datetime="2021-05-15T13:34:46.000Z"  itemprop="datePublished">2021-05-15</time>
+        <time class="post-time" title="2021-05-15 21:34:46" datetime="2021-05-15T21:34:46.000Z"  itemprop="datePublished">2021-05-15</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -251,7 +251,7 @@
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-04-26 19:56:42" datetime="2021-04-26T11:56:42.000Z"  itemprop="datePublished">2021-04-26</time>
+        <time class="post-time" title="2021-04-26 19:56:42" datetime="2021-04-26T19:56:42.000Z"  itemprop="datePublished">2021-04-26</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -276,12 +276,9 @@
 
     
         背景
-在使用12.2.1版本时,
-发现经常会出现需要10+秒才能返回ceph -s的现象,
-偶尔又1s内就返回了.
+在使用12.2.1版本时, 发现经常会出现需要10+秒才能返回ceph -s的现象, 偶尔又1s内就返回了.
 排查
-首先,
-time ceph -s --debug_monc 40 --debug_ms 40看下详细日志有没有记录在哪呢?
+首先, time ceph -s --debug_monc 40 --debug_ms 40看下详细日志有没有记录在哪呢?
 看了下, 应该是在跟mon通信过程, 但是好像不知道发生了什么.
 咨询了一下大神给了个关键词, objecter, 打开debug后看到一部分内容了...
     
@@ -306,7 +303,7 @@ time ceph -s --debug_monc 40 --debug_ms 40看下详细日志有没有记�
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-04-10 23:47:41" datetime="2021-04-10T15:47:41.000Z"  itemprop="datePublished">2021-04-10</time>
+        <time class="post-time" title="2021-04-10 23:47:41" datetime="2021-04-10T23:47:41.000Z"  itemprop="datePublished">2021-04-10</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -331,11 +328,7 @@ time ceph -s --debug_monc 40 --debug_ms 40看下详细日志有没有记�
 
     
         背景
-这个问题其实之前遇到的还挺多的, 简单来说, 就是某个A服务启动B服务,
-但是B服务又必须等待另一个服务启动完毕(比如A服务), 产生了一定的死锁.
-而在ps的进程表中看到的就是systemd-tty-ask-password-agent这样一个agent进程卡住.
-一般查一下当前卡住的service和他依赖的after,before的几个服务,
-就知道了, 一般就是循环死锁了.
+这个问题其实之前遇到的还挺多的, 简单来说, 就是某个A服务启动B服务, 但是B服务又必须等待另一个服务启动完毕(比如A服务), 产生了一定的死锁. 而在ps的进程表中看到的就是systemd-tty-ask-password-agent这样一个agent进程卡住. 一般查一下当前卡住的service和他依赖的after,before的几个服务, 就知道了, 一般就是循环死锁了.
 具体...
     
 
@@ -359,7 +352,7 @@ time ceph -s --debug_monc 40 --debug_ms 40看下详细日志有没有记�
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-04-10 20:44:10" datetime="2021-04-10T12:44:10.000Z"  itemprop="datePublished">2021-04-10</time>
+        <time class="post-time" title="2021-04-10 20:44:10" datetime="2021-04-10T20:44:10.000Z"  itemprop="datePublished">2021-04-10</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -408,7 +401,7 @@ time ceph -s --debug_monc 40 --debug_ms 40看下详细日志有没有记�
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-04-08 19:50:07" datetime="2021-04-08T11:50:07.000Z"  itemprop="datePublished">2021-04-08</time>
+        <time class="post-time" title="2021-04-08 19:50:07" datetime="2021-04-08T19:50:07.000Z"  itemprop="datePublished">2021-04-08</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -433,13 +426,9 @@ time ceph -s --debug_monc 40 --debug_ms 40看下详细日志有没有记�
 
     
         背景
-在看到这篇论文之前,
-我所知道的只是linux上自带的时间戳和ntp协议,
-以及内核里有一个每次开机启动时开始记录的monotonic clock可以用来保障时间一定是连续的.
+在看到这篇论文之前, 我所知道的只是linux上自带的时间戳和ntp协议, 以及内核里有一个每次开机启动时开始记录的monotonic clock可以用来保障时间一定是连续的.
 但是对于分布式设备之间怎么判断互相的时间先后性, 这块是未知的.
-比如针对leader节点发送一次自己的认证失效时间,
-假如自己的物理时间戳比那个时间还早, 但真实世界的时间戳已经超期了,
-到底是按失效还是有...
+比如针对leader节点发送一次自己的认证失效时间, 假如自己的物理时间戳比那个时间还早, 但真实世界的时间戳已经超期了, 到底是按失效还是有...
     
 
         <a href="/2021/04/08/%E5%88%86%E5%B8%83%E5%BC%8F%E6%97%B6%E9%92%9F%E4%B9%8BLamport%E9%80%BB%E8%BE%91%E6%97%B6%E9%92%9F/" class="post-more waves-effect waves-button">
@@ -462,7 +451,7 @@ time ceph -s --debug_monc 40 --debug_ms 40看下详细日志有没有记�
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-04-07 20:29:19" datetime="2021-04-07T12:29:19.000Z"  itemprop="datePublished">2021-04-07</time>
+        <time class="post-time" title="2021-04-07 20:29:19" datetime="2021-04-07T20:29:19.000Z"  itemprop="datePublished">2021-04-07</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -486,14 +475,10 @@ time ceph -s --debug_monc 40 --debug_ms 40看下详细日志有没有记�
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        DistCache:
-Provable Load Balancing for LargeScale Storage Systems with Distributed
-Caching[^1]
-Small Cache解决的Ball into
-bins 问题
+        DistCache: Provable Load Balancing for LargeScale Storage Systems with Distributed Caching[^1]
+Small Cache解决的Ball into bins 问题
 
-Balls into bins 问题讲的是如果有 M 个小球随机等概率地扔进 N 个垃圾桶,
-那么装球最多的那个垃圾桶大概率会有多少个球?...
+Balls into bins 问题讲的是如果有 M 个小球随机等概率地扔进 N 个垃圾桶, 那么装球最多的那个垃圾桶大概率会有多少个球?...
     
 
         <a href="/2021/04/07/DistCache%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/" class="post-more waves-effect waves-button">
@@ -516,7 +501,7 @@ Balls into bins 问题讲的是如果有 M 个小球随机等概率地扔进 N �
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-04-06 23:07:08" datetime="2021-04-06T15:07:08.000Z"  itemprop="datePublished">2021-04-06</time>
+        <time class="post-time" title="2021-04-06 23:07:08" datetime="2021-04-06T23:07:08.000Z"  itemprop="datePublished">2021-04-06</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -540,8 +525,7 @@ Balls into bins 问题讲的是如果有 M 个小球随机等概率地扔进 N �
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        论文
-
+        论文 
 
 可扩展弱一致性感染型进程组成员协议
 进程组的成员关系协议
@@ -580,7 +564,7 @@ SWIM是通过Gossip实现的Membership保持协议，也就是维护分布式系
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-03-21 21:55:55" datetime="2021-03-21T13:55:55.000Z"  itemprop="datePublished">2021-03-21</time>
+        <time class="post-time" title="2021-03-21 21:55:55" datetime="2021-03-21T21:55:55.000Z"  itemprop="datePublished">2021-03-21</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -606,14 +590,8 @@ SWIM是通过Gossip实现的Membership保持协议，也就是维护分布式系
     
         arch安装实验
 1pacman -Syy ceph
-安装完发生了一个奇怪的问题,
-ceph -v执行报缺rados库,
-python3-rados装到了python3.9的site-package里,
-但是我设备里pacman目前只装了python3.8,
-这个的包里没有看到这个库
-执行了pacman -Syy python升级到3.9,
-可以用了,
-升级过程中python3.9的库里少了...
+安装完发生了一个奇怪的问题, ceph -v执行报缺rados库, python3-rados装到了python3.9的site-package里, 但是我设备里pacman目前只装了python3.8, 这个的包里没有看到这个库
+执行了pacman -Syy python升级到3.9, 可以用了, 升级过程中python3.9的库里少了...
     
 
         <a href="/2021/03/21/ceph%E4%B9%8BArch%E9%83%A8%E7%BD%B2Octopus%E7%89%88%E6%9C%AC/" class="post-more waves-effect waves-button">
@@ -636,7 +614,7 @@ python3-rados装到了python3.9的site-package里,
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2021-02-18 19:36:07" datetime="2021-02-18T11:36:07.000Z"  itemprop="datePublished">2021-02-18</time>
+        <time class="post-time" title="2021-02-18 19:36:07" datetime="2021-02-18T19:36:07.000Z"  itemprop="datePublished">2021-02-18</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -661,11 +639,7 @@ python3-rados装到了python3.9的site-package里,
 
     
         理解
-大家最受影响的就是一半时间开发, 一半时间运维的这个问题.
-利用一个成熟的配置文件, 快速部署起自己需要的环境,
-而不是一步步通过页面控制点击, 这是一个很省力的事情.
-将运维中与部署相关的事情通过一些成熟的模板化的配置文件来提供,
-最好不过了.
+大家最受影响的就是一半时间开发, 一半时间运维的这个问题. 利用一个成熟的配置文件, 快速部署起自己需要的环境, 而不是一步步通过页面控制点击, 这是一个很省力的事情. 将运维中与部署相关的事情通过一些成熟的模板化的配置文件来提供, 最好不过了.
 ansible比较大的几个优点
 
 由于是开源框架, 基于ansible的针对其他开源软件的配套代价较多

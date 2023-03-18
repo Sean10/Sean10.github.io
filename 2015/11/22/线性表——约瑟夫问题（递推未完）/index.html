@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="题目链接 总时间限制: 1000ms 内存限制: 65536kB 描述 有n只猴子，按顺时针方向围成一圈选大王（编号从1到n），从第1号开始报数，一直数到m，数到m的猴子退出圈外，剩下的猴子再接着从1开始报数。就这样，直到圈内只剩下一只猴子时，这个猴子就是猴王，编程求输入n，m后，输出最后猴王的编号。 输入 输入包含两个整数，第一个是n，第二个是m (0 &lt; m,n &lt;&#x3D;300)。 输">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2015-11-22T05:43:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.884Z">
+<meta property="article:published_time" content="2015-11-22T13:43:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.834Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="线性表">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">线性表——约瑟夫问题（递推未完）</h1>
         <h5 class="subtitle">
             
-                <time datetime="2015-11-22T05:43:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2015-11-22T13:43:00.000Z" itemprop="datePublished" class="page-time">
   2015-11-22
 </time>
 
@@ -164,7 +164,7 @@
     <div class="post-card">
         <h1 class="post-card-title">线性表——约瑟夫问题（递推未完）</h1>
         <div class="post-meta">
-            <time class="post-time" title="2015-11-22 13:43:00" datetime="2015-11-22T05:43:00.000Z"  itemprop="datePublished">2015-11-22</time>
+            <time class="post-time" title="2015-11-22 13:43:00" datetime="2015-11-22T13:43:00.000Z"  itemprop="datePublished">2015-11-22</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/algorithm/">算法</a></li></ul>
@@ -179,21 +179,13 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p><a target="_blank" rel="noopener" href="http://dsalgo.openjudge.cn/201409week2/1/">题目链接</a>
-总时间限制: 1000ms 内存限制: 65536kB 描述
-有n只猴子，按顺时针方向围成一圈选大王（编号从1到n），从第1号开始报数，一直数到m，数到m的猴子退出圈外，剩下的猴子再接着从1开始报数。就这样，直到圈内只剩下一只猴子时，这个猴子就是猴王，编程求输入n，m后，输出最后猴王的编号。</p>
-<p>输入 输入包含两个整数，第一个是n，第二个是m (0 &lt; m,n &lt;=300)。
-输出 输出包含一行，即最后猴王的编号。 样例输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12 4</span><br></pre></td></tr></table></figure> 样例输出
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure></p>
+            <p><a target="_blank" rel="noopener" href="http://dsalgo.openjudge.cn/201409week2/1/">题目链接</a> 总时间限制: 1000ms 内存限制: 65536kB 描述 有n只猴子，按顺时针方向围成一圈选大王（编号从1到n），从第1号开始报数，一直数到m，数到m的猴子退出圈外，剩下的猴子再接着从1开始报数。就这样，直到圈内只剩下一只猴子时，这个猴子就是猴王，编程求输入n，m后，输出最后猴王的编号。</p>
+<p>输入 输入包含两个整数，第一个是n，第二个是m (0 &lt; m,n &lt;=300)。 输出 输出包含一行，即最后猴王的编号。 样例输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12 4</span><br></pre></td></tr></table></figure> 样例输出 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure></p>
 <p>这道题是有好几种解法的。 首先是数组。</p>
-<p>1.链表模拟
-分析：建立一个循环链表，递推，一个个删除直到只剩下一个，输出即可。</p>
-<p>2.静态链表模拟
-分析：用数组模拟链表，就是数组里存的是下一个位置的下标。</p>
+<p>1.链表模拟 分析：建立一个循环链表，递推，一个个删除直到只剩下一个，输出即可。</p>
+<p>2.静态链表模拟 分析：用数组模拟链表，就是数组里存的是下一个位置的下标。</p>
 <p>以上两种的时间复杂度均为O(n*m);</p>
-<p>3.数组模拟
-分析：先初始化整个数组为1，接下来在循环中只对数值为1的进行计数，满n置0，最后遍历最后一个数值为1的数，输出其下标。
-这种的时间复杂度最大，为O(n^2);</p>
+<p>3.数组模拟 分析：先初始化整个数组为1，接下来在循环中只对数值为1的进行计数，满n置0，最后遍历最后一个数值为1的数，输出其下标。 这种的时间复杂度最大，为O(n^2);</p>
 <p>4.递推算法 待考试周过去后写</p>
 <p>1.链表遍历算法 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#define N 10000</span><br><span class="line"></span><br><span class="line">typedef struct node&#123;</span><br><span class="line">    int data;</span><br><span class="line">    struct node* next;</span><br><span class="line">&#125;node,*nodePtr;</span><br><span class="line"></span><br><span class="line">void Create(nodePtr head, int n )&#123;</span><br><span class="line">    nodePtr temp, last = head;</span><br><span class="line">    for(int i = 1;i &lt;= n;i++)&#123;</span><br><span class="line">        temp = (nodePtr)calloc(1,sizeof(node));</span><br><span class="line">        if(temp == NULL) return ;</span><br><span class="line">        temp -&gt; data = i;</span><br><span class="line">        last -&gt; next = temp;</span><br><span class="line">        //printf(&quot;%p\t%p\t%p\t%p\n&quot;,NULL,head,last,last-&gt;next);</span><br><span class="line">        last = temp;</span><br><span class="line">        //printf(&quot;%d\n&quot;,last-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line">    last -&gt; next = head -&gt; next;</span><br><span class="line">    //printf(&quot;%p\t%p\t%p\t%p\n&quot;,NULL,head,last,last-&gt;next);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Del(nodePtr prev, nodePtr &amp;curr)&#123;</span><br><span class="line">    nodePtr temp = curr;</span><br><span class="line">    prev-&gt;next = curr -&gt; next;</span><br><span class="line">    curr = prev;</span><br><span class="line">    free(temp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">nodePtr Josephus(nodePtr head,int m)&#123;</span><br><span class="line">    nodePtr temp = head,prev = NULL;</span><br><span class="line">    while(head-&gt;next != head)&#123;</span><br><span class="line">        for(int i = 0;i &lt; m;i++)&#123;</span><br><span class="line">            prev = head;</span><br><span class="line">            head = head -&gt; next;</span><br><span class="line">            //printf(&quot;%p\t%p\n&quot;,prev,head);</span><br><span class="line">        &#125;</span><br><span class="line">        //printf(&quot;%d\n&quot;,head-&gt;data);</span><br><span class="line">        Del(prev,head);</span><br><span class="line">    &#125;</span><br><span class="line">    free(temp);</span><br><span class="line">    return head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    //freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">    int n,m;</span><br><span class="line">    while(~scanf(&quot;%d%d&quot;,&amp;n,&amp;m))&#123;</span><br><span class="line">        nodePtr head = NULL;</span><br><span class="line">        head = (nodePtr)malloc(sizeof(node));</span><br><span class="line">        head -&gt; next = NULL;</span><br><span class="line">        Create(head, n);</span><br><span class="line">        printf(&quot;%d\n&quot;,Josephus(head,m)-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>2.静态链表算法 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">#define N 10000</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    int a[N];</span><br><span class="line">    int n,m;</span><br><span class="line">    scanf(&quot;%d%d&quot;,&amp;n,&amp;m);</span><br><span class="line"></span><br><span class="line">    for(int i = 0;i &lt; n;i++)&#123;</span><br><span class="line">        a[i] = i+1;</span><br><span class="line">    &#125;</span><br><span class="line">    a[n] = 1;</span><br><span class="line"></span><br><span class="line">    int k = 0;</span><br><span class="line">    int prev;</span><br><span class="line">    while(a[k] != k)&#123;</span><br><span class="line">        for(int i = 1;i &lt;= m;i++)&#123;</span><br><span class="line">            prev = k;</span><br><span class="line">            k = a[k];</span><br><span class="line">        &#125;</span><br><span class="line">        a[prev] = a[k];</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;%d\n&quot;,k);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -206,7 +198,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.884Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.834Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

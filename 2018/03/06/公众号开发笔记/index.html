@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="试着用微信公众号来做一些bot的任务，这里稍稍记些笔记吧。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-03-06T07:49:46.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.863Z">
+<meta property="article:published_time" content="2018-03-06T15:49:46.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.830Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="微信">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
         <h1 class="title">公众号开发笔记</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-03-06T07:49:46.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-03-06T15:49:46.000Z" itemprop="datePublished" class="page-time">
   2018-03-06
 </time>
 
@@ -171,7 +171,7 @@
     <div class="post-card">
         <h1 class="post-card-title">公众号开发笔记</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-03-06 15:49:46" datetime="2018-03-06T07:49:46.000Z"  itemprop="datePublished">2018-03-06</time>
+            <time class="post-time" title="2018-03-06 15:49:46" datetime="2018-03-06T15:49:46.000Z"  itemprop="datePublished">2018-03-06</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -194,8 +194,7 @@
 <h1 id="遇到问题">遇到问题:</h1>
 <h2 id="在用搬瓦工服务器处理消息时似乎那边收不到我的消息但是认证token那个收发包过程还是通过了的暂时怀疑是服务器端口冲突了但是iptables并没有查到冲突问题用nginx映射时倒是才提示端口已占用">在用搬瓦工服务器处理消息时，似乎那边收不到我的消息，但是认证token那个收发包过程还是通过了的，暂时怀疑是服务器端口冲突了。但是iptables并没有查到冲突问题，用nginx映射时倒是才提示端口已占用。</h2>
 <h2 id="在centos6安装python时出现了">在centos6安装python时，出现了</h2>
-<p><code>ModuleNotFoundError: No module named '_sqlite3'</code>,在<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1210664/no-module-named-sqlite3">SF</a>，似乎是python3.6移除了3.5中的_sqlite3.so，不过按照最高票的cp
-python2的module过去再altinstall会引发新的<code>ImportError: dynamic module does not define module export function (PyInit__sqlite3)</code></p>
+<p><code>ModuleNotFoundError: No module named '_sqlite3'</code>,在<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1210664/no-module-named-sqlite3">SF</a>，似乎是python3.6移除了3.5中的_sqlite3.so，不过按照最高票的cp python2的module过去再altinstall会引发新的<code>ImportError: dynamic module does not define module export function (PyInit__sqlite3)</code></p>
 <p>最后，只是configure时(添加个动态库选项)[http://blog.csdn.net/jaket5219999/article/details/53512071]就可以了。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./configure --enable-loadable-sqlite-extensions</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
 <h1 id="参考资料">参考资料:</h1>
@@ -212,7 +211,7 @@ python2的module过去再altinstall会引发新的<code>ImportError: dynamic mod
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.863Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.830Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

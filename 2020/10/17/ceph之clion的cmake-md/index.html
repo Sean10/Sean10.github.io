@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="调查 按照一般的编译过程, 是可以在CentOS或者Debian系的环境里直接执行do_cmake.sh然后自动安装install-deps.sh, 然后关闭一堆功能触发cmake的. 不过因为暂时没找到可以进行环境隔离比如通过在docker内编译ceph(初步尝试, deps中出现了systemd, 而docker内使用使用的一个fake-systemd, 这俩产生了冲突, 不知道有没有专门针对">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-17T06:43:31.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.888Z">
+<meta property="article:published_time" content="2020-10-17T14:43:31.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.766Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="编译">
@@ -139,7 +139,7 @@
         <h1 class="title">ceph之clion的cmake.md</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-10-17T06:43:31.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-10-17T14:43:31.000Z" itemprop="datePublished" class="page-time">
   2020-10-17
 </time>
 
@@ -161,15 +161,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%B0%83%E6%9F%A5"><span class="post-toc-number">1.</span> <span class="post-toc-text">调查</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#docker%E8%B0%83%E8%AF%95%E7%94%A8%E8%BF%90%E8%A1%8C"><span class="post-toc-number">2.</span> <span class="post-toc-text">docker调试用运行</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#vstart.sh"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">vstart.sh</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cephdaemon9"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">ceph&#x2F;daemon[^9]</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%87%AA%E5%88%B6docker%E8%B0%83%E8%AF%95"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">自制Docker调试</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#opensuse-ceph-dev-docker"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">opensuse ceph-dev-docker</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#python-devel-not-found."><span class="post-toc-number">2.4.1.</span> <span class="post-toc-text">python-devel not found.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#tmubleweed-%E7%9A%84repo%E8%B7%AF%E5%BE%84"><span class="post-toc-number">2.4.1.1.</span> <span class="post-toc-text">tmubleweed 的repo路径</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%9F%90%E4%BA%9B%E7%96%91%E4%BC%BC%E9%95%9C%E5%83%8F%E6%BA%90%E4%B8%AD%E4%BC%BC%E4%B9%8E%E8%BF%98%E6%9C%89python2%E7%9A%84%E5%BA%93"><span class="post-toc-number">2.4.1.2.</span> <span class="post-toc-text">某些疑似镜像源中似乎还有python2的库</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%A8%B3%E5%AE%9A%E7%9A%84leap-15%E7%89%88%E6%9C%AC%E7%9A%84nautilus%E7%BC%96%E8%AF%91"><span class="post-toc-number">2.4.2.</span> <span class="post-toc-text">稳定的Leap
-15版本的nautilus编译</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#ccache-make--j8-ceph-mon"><span class="post-toc-number">2.4.2.1.</span> <span class="post-toc-text">ccache make -j8 ceph-mon</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#vstart.sh-erasure-code"><span class="post-toc-number">2.4.2.2.</span> <span class="post-toc-text">vstart.sh erasure-code</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#vstart.sh-error-error-creating-empty-object-store-in-datacephbuilddevosd0-22-invalid-argument"><span class="post-toc-number">2.4.2.3.</span> <span class="post-toc-text">vstart.sh
-ERROR: error creating empty object store in &#x2F;data&#x2F;ceph&#x2F;build&#x2F;dev&#x2F;osd0:
-(22) Invalid argument</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="post-toc-number">3.</span> <span class="post-toc-text">实践</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#docker%E7%BC%96%E8%AF%91"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Docker编译</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%98%E6%96%B9ci10"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">官方CI[^10]</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#luminous"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">Luminous</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%80%E5%90%8E%E6%8C%89%E7%85%A7%E4%B8%8B%E8%BF%B0%E6%96%B9%E6%A1%88%E5%A4%84%E7%90%86%E5%A5%BD%E8%BD%AF%E9%93%BE%E5%92%8C%E5%AE%89%E8%A3%85%E5%8C%85%E4%B9%8B%E5%90%8E%E7%9A%84cmake%E9%80%89%E9%A1%B9"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">最后按照下述方案处理好软链和安装包之后的cmake选项</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%96%B9%E6%A1%88"><span class="post-toc-number">3.3.2.</span> <span class="post-toc-text">官方文档方案</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%87%BA%E7%8E%B0%E7%9A%84%E6%8A%A5%E9%94%99"><span class="post-toc-number">3.3.3.</span> <span class="post-toc-text">出现的报错</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#build-nss_include_dirs-nss_include_dir-notfound"><span class="post-toc-number">3.3.3.1.</span> <span class="post-toc-text">BUILD
-NSS_INCLUDE_DIRS: NSS_INCLUDE_DIR-NOTFOUND</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#not-find-pythonlibs-found-unsuitable-version-2.7.10-but-required3"><span class="post-toc-number">3.3.3.2.</span> <span class="post-toc-text">NOT
-find PythonLibs: Found unsuitable version &quot;2.7.10&quot;, but
-required[^3]</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#testbigendian.cmake49-message-no-suitable-type-found"><span class="post-toc-number">3.3.3.3.</span> <span class="post-toc-text">TestBigEndian.cmake:49
-(message): no suitable type found</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#nautilus"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">Nautilus</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">遇到的问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#findboost-unknown-compiler-appleclang"><span class="post-toc-number">3.4.1.1.</span> <span class="post-toc-text">findboost unknown
-compiler: AppleClang</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#master"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">master</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%B0%83%E8%AF%95%E5%A2%9E%E5%8A%A0%E9%80%89%E9%A1%B9"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">调试增加选项</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#github%E7%89%88%E6%9C%ACcmake%E6%8A%A5%E7%BC%BA%E5%A4%B1rocksdb%E5%92%8Czstd"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">github版本cmake报缺失rocksdb和zstd</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#todo"><span class="post-toc-number">4.</span> <span class="post-toc-text">todo</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">5.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%B0%83%E6%9F%A5"><span class="post-toc-number">1.</span> <span class="post-toc-text">调查</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#docker%E8%B0%83%E8%AF%95%E7%94%A8%E8%BF%90%E8%A1%8C"><span class="post-toc-number">2.</span> <span class="post-toc-text">docker调试用运行</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#vstart.sh"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">vstart.sh</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cephdaemon9"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">ceph&#x2F;daemon[^9]</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%87%AA%E5%88%B6docker%E8%B0%83%E8%AF%95"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">自制Docker调试</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#opensuse-ceph-dev-docker"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">opensuse ceph-dev-docker</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#python-devel-not-found."><span class="post-toc-number">2.4.1.</span> <span class="post-toc-text">python-devel not found.</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#tmubleweed-%E7%9A%84repo%E8%B7%AF%E5%BE%84"><span class="post-toc-number">2.4.1.1.</span> <span class="post-toc-text">tmubleweed 的repo路径</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%9F%90%E4%BA%9B%E7%96%91%E4%BC%BC%E9%95%9C%E5%83%8F%E6%BA%90%E4%B8%AD%E4%BC%BC%E4%B9%8E%E8%BF%98%E6%9C%89python2%E7%9A%84%E5%BA%93"><span class="post-toc-number">2.4.1.2.</span> <span class="post-toc-text">某些疑似镜像源中似乎还有python2的库</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%A8%B3%E5%AE%9A%E7%9A%84leap-15%E7%89%88%E6%9C%AC%E7%9A%84nautilus%E7%BC%96%E8%AF%91"><span class="post-toc-number">2.4.2.</span> <span class="post-toc-text">稳定的Leap 15版本的nautilus编译</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#ccache-make--j8-ceph-mon"><span class="post-toc-number">2.4.2.1.</span> <span class="post-toc-text">ccache make -j8 ceph-mon</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#vstart.sh-erasure-code"><span class="post-toc-number">2.4.2.2.</span> <span class="post-toc-text">vstart.sh erasure-code</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#vstart.sh-error-error-creating-empty-object-store-in-datacephbuilddevosd0-22-invalid-argument"><span class="post-toc-number">2.4.2.3.</span> <span class="post-toc-text">vstart.sh ERROR: error creating empty object store in &#x2F;data&#x2F;ceph&#x2F;build&#x2F;dev&#x2F;osd0: (22) Invalid argument</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="post-toc-number">3.</span> <span class="post-toc-text">实践</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#docker%E7%BC%96%E8%AF%91"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Docker编译</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%98%E6%96%B9ci10"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">官方CI[^10]</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#luminous"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">Luminous</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%80%E5%90%8E%E6%8C%89%E7%85%A7%E4%B8%8B%E8%BF%B0%E6%96%B9%E6%A1%88%E5%A4%84%E7%90%86%E5%A5%BD%E8%BD%AF%E9%93%BE%E5%92%8C%E5%AE%89%E8%A3%85%E5%8C%85%E4%B9%8B%E5%90%8E%E7%9A%84cmake%E9%80%89%E9%A1%B9"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">最后按照下述方案处理好软链和安装包之后的cmake选项</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%96%B9%E6%A1%88"><span class="post-toc-number">3.3.2.</span> <span class="post-toc-text">官方文档方案</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%87%BA%E7%8E%B0%E7%9A%84%E6%8A%A5%E9%94%99"><span class="post-toc-number">3.3.3.</span> <span class="post-toc-text">出现的报错</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#build-nss_include_dirs-nss_include_dir-notfound"><span class="post-toc-number">3.3.3.1.</span> <span class="post-toc-text">BUILD NSS_INCLUDE_DIRS: NSS_INCLUDE_DIR-NOTFOUND</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#not-find-pythonlibs-found-unsuitable-version-2.7.10-but-required3"><span class="post-toc-number">3.3.3.2.</span> <span class="post-toc-text">NOT find PythonLibs: Found unsuitable version &quot;2.7.10&quot;, but required[^3]</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#testbigendian.cmake49-message-no-suitable-type-found"><span class="post-toc-number">3.3.3.3.</span> <span class="post-toc-text">TestBigEndian.cmake:49 (message): no suitable type found</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#nautilus"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">Nautilus</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">遇到的问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#findboost-unknown-compiler-appleclang"><span class="post-toc-number">3.4.1.1.</span> <span class="post-toc-text">findboost unknown compiler: AppleClang</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#master"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">master</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%B0%83%E8%AF%95%E5%A2%9E%E5%8A%A0%E9%80%89%E9%A1%B9"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">调试增加选项</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#github%E7%89%88%E6%9C%ACcmake%E6%8A%A5%E7%BC%BA%E5%A4%B1rocksdb%E5%92%8Czstd"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">github版本cmake报缺失rocksdb和zstd</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#todo"><span class="post-toc-number">4.</span> <span class="post-toc-text">todo</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number">5.</span> <span class="post-toc-text">Reference</span></a></li></ol>
         </nav>
     </aside>
 
@@ -180,7 +172,7 @@ compiler: AppleClang</span></a></li></ol></li></ol></li><li class="post-toc-item
     <div class="post-card">
         <h1 class="post-card-title">ceph之clion的cmake.md</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-10-17 14:43:31" datetime="2020-10-17T06:43:31.000Z"  itemprop="datePublished">2020-10-17</time>
+            <time class="post-time" title="2020-10-17 14:43:31" datetime="2020-10-17T14:43:31.000Z"  itemprop="datePublished">2020-10-17</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -196,37 +188,20 @@ compiler: AppleClang</span></a></li></ol></li></ol></li><li class="post-toc-item
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h1 id="调查">调查</h1>
-<p>按照一般的编译过程,
-是可以在<code>CentOS</code>或者<code>Debian</code>系的环境里直接执行<code>do_cmake.sh</code>然后自动安装<code>install-deps.sh</code>,
-然后关闭一堆功能触发<code>cmake</code>的.</p>
-<p>不过因为暂时没找到可以进行环境隔离比如通过在<code>docker</code>内编译ceph(初步尝试,
-deps中出现了systemd, 而docker内使用使用的一个fake-systemd,
-这俩产生了冲突, 不知道有没有专门针对docker做的一个fake版本),
-从而绕过弄坏<code>OSX</code>宿主机的依赖的风险的.
-在这个安装依赖的脚本中是有针对<code>freeBSD</code>的<code>pkg</code>安装命令的,
-但是和目前主流推荐的<code>brew</code>还是不一样的,
-<code>pkg</code>还是给服务端使用为主. 怕产生污染,
-所以我暂时选择手动来处理这个依赖的问题.</p>
-<p>当然, 如果有远程服务器, 可以利用<code>remote develop</code>,
-通过服务器编译也能把成功建立索引.</p>
+<p>按照一般的编译过程, 是可以在<code>CentOS</code>或者<code>Debian</code>系的环境里直接执行<code>do_cmake.sh</code>然后自动安装<code>install-deps.sh</code>, 然后关闭一堆功能触发<code>cmake</code>的.</p>
+<p>不过因为暂时没找到可以进行环境隔离比如通过在<code>docker</code>内编译ceph(初步尝试, deps中出现了systemd, 而docker内使用使用的一个fake-systemd, 这俩产生了冲突, 不知道有没有专门针对docker做的一个fake版本), 从而绕过弄坏<code>OSX</code>宿主机的依赖的风险的. 在这个安装依赖的脚本中是有针对<code>freeBSD</code>的<code>pkg</code>安装命令的, 但是和目前主流推荐的<code>brew</code>还是不一样的, <code>pkg</code>还是给服务端使用为主. 怕产生污染, 所以我暂时选择手动来处理这个依赖的问题.</p>
+<p>当然, 如果有远程服务器, 可以利用<code>remote develop</code>, 通过服务器编译也能把成功建立索引.</p>
 <h1 id="docker调试用运行">docker调试用运行</h1>
 <h2 id="vstart.sh">vstart.sh</h2>
 <h2 id="cephdaemon9">ceph/daemon[^9]</h2>
-<p>根据[^11]的<code>image</code>的<code>build</code>仓库来看,
-这个docker也是可以来触发编译的?</p>
+<p>根据[^11]的<code>image</code>的<code>build</code>仓库来看, 这个docker也是可以来触发编译的?</p>
 <blockquote>
-<p>make CEPH_DEVEL=true FLAVORS="luminous-12.2.13,centos,7" build
-单看这个脚本, 看起来可以编出来的样子.</p>
+<p>make CEPH_DEVEL=true FLAVORS="luminous-12.2.13,centos,7" build 单看这个脚本, 看起来可以编出来的样子.</p>
 </blockquote>
 <blockquote>
-<p>make CEPH_DEVEL=true FLAVORS="nautilus,centos,7" build
-这里为什么这个版本的centos里装的是真实的systemd?,
-我之前拿官方的centos的image就是<code>fake-systemd</code>呢... 搜了下,
-用<code>fakesystemd</code>是为了<code>cgroup</code>与宿主机的隔离.
-手动卸载再安装其实也是可以的.</p>
+<p>make CEPH_DEVEL=true FLAVORS="nautilus,centos,7" build 这里为什么这个版本的centos里装的是真实的systemd?, 我之前拿官方的centos的image就是<code>fake-systemd</code>呢... 搜了下, 用<code>fakesystemd</code>是为了<code>cgroup</code>与宿主机的隔离. 手动卸载再安装其实也是可以的.</p>
 </blockquote>
-<p>不对,
-这个镜像里是直接配置的<code>yum install -y ceph-mon</code>等...不是编译出来的...</p>
+<p>不对, 这个镜像里是直接配置的<code>yum install -y ceph-mon</code>等...不是编译出来的...</p>
 <h2 id="自制docker调试">自制Docker调试</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --name centos-test centos:centos7</span><br></pre></td></tr></table></figure>
 <h2 id="opensuse-ceph-dev-docker">opensuse ceph-dev-docker</h2>
@@ -234,139 +209,69 @@ deps中出现了systemd, 而docker内使用使用的一个fake-systemd,
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#src.rpm 12.2.13</span></span><br><span class="line">docker run -itd \</span><br><span class="line">  -v /Users/sean10/Code/ceph/ceph-12.2.13:/ceph \</span><br><span class="line">  -v /Users/sean10/Code/ceph/ceph-ccache-12.2.13:/root/.ccache \</span><br><span class="line">  -v /Users/sean10/Code/ceph-dev-docker/shared:/shared \</span><br><span class="line">  --net=host \</span><br><span class="line">  --name=ceph-dev \</span><br><span class="line">  --hostname=ceph-dev \</span><br><span class="line">  --add-host=ceph-dev:127.0.0.1 \</span><br><span class="line">  ceph-dev-docker</span><br><span class="line"><span class="comment"># luminous版本</span></span><br><span class="line">docker run -itd \</span><br><span class="line">  -v /Users/sean10/Code/ceph/ceph-14.2.9:/ceph \</span><br><span class="line">  -v /Users/sean10/Code/ceph/ceph-ccache-14.2.9:/root/.ccache \</span><br><span class="line">  -v /Users/sean10/Code/ceph-dev-docker/shared:/shared \</span><br><span class="line">  --net=host \</span><br><span class="line">  --name=ceph-dev \</span><br><span class="line">  --hostname=ceph-dev \</span><br><span class="line">  --add-host=ceph-dev:127.0.0.1 \</span><br><span class="line">  ceph-dev-docker</span><br><span class="line"><span class="comment"># nautilus</span></span><br><span class="line">docker run -itd \</span><br><span class="line">  -v /Users/sean10/Code/ceph/master/ceph:/ceph \</span><br><span class="line">  -v /Users/sean10/Code/ceph/ceph-ccache-branch-luminous:/root/.ccache \</span><br><span class="line">  -v /Users/sean10/Code/ceph-dev-docker/shared:/shared \</span><br><span class="line">  --net=host \</span><br><span class="line">  --name=ceph-dev \</span><br><span class="line">  --hostname=ceph-dev \</span><br><span class="line">  --add-host=ceph-dev:127.0.0.1 \</span><br><span class="line">  ceph-dev-docker</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker attach ceph-dev</span><br><span class="line"></span><br><span class="line">NPROC=4 ./setup-ceph.sh</span><br><span class="line">docker <span class="built_in">exec</span> -it ceph-dev /bin/zsh</span><br></pre></td></tr></table></figure>
 <p>通过传给<code>cmake</code>的<code>CMAKE_BUILD_TYPE</code>来确认编译出来的是否携带debuginfo.[^13]</p>
 <blockquote>
-<p>Release ——
-不可以打断点调试，程序开发完成后发行使用的版本，占的体积小。
-它对代码做了优化，因此速度会非常快， 在编译器中使用命令： -O3 -DNDEBUG
-可选择此版本。 Debug ——调试的版本，体积大。 在编译器中使用命令： -g
-可选择此版本。 MinSizeRel—— 最小体积版本 在编译器中使用命令：-Os
--DNDEBUG可选择此版本。 RelWithDebInfo—— 既优化又能调试。
-在编译器中使用命令：-O2 -g -DNDEBUG可选择此版本。</p>
+<p>Release —— 不可以打断点调试，程序开发完成后发行使用的版本，占的体积小。 它对代码做了优化，因此速度会非常快， 在编译器中使用命令： -O3 -DNDEBUG 可选择此版本。 Debug ——调试的版本，体积大。 在编译器中使用命令： -g 可选择此版本。 MinSizeRel—— 最小体积版本 在编译器中使用命令：-Os -DNDEBUG可选择此版本。 RelWithDebInfo—— 既优化又能调试。 在编译器中使用命令：-O2 -g -DNDEBUG可选择此版本。</p>
 </blockquote>
-<p>默认是<code>RelWithDebInfo</code>,
-我给他传了俩参数<code>-DWITH_LTTNG=ON -DDWITH_BABELTRACE=ON</code></p>
+<p>默认是<code>RelWithDebInfo</code>, 我给他传了俩参数<code>-DWITH_LTTNG=ON -DDWITH_BABELTRACE=ON</code></p>
 <h3 id="python-devel-not-found.">python-devel not found.</h3>
-<p>结论:
-看上去是<code>suse</code>的<code>tumbleweed</code>现在的源里没<code>python2</code>的包了[^14]?
-而这个仓库里的<code>master</code>分支如果编<code>ceph</code>还没去除<code>python2</code>的版本,
-就会有问题.</p>
-<p>根据这个来看<a target="_blank" rel="noopener" href="https://lists.opensuse.org/opensuse-factory/2020-01/msg00126.html">Re:
-[opensuse-factory] Removal of Python2 from openSUSE Tumbleweed</a></p>
-<p>高版本的suse把python2彻底抛弃了, 但是是不是也有办法加回来安装呢?
-搜了一圈, 主流的思路是这种大版本迭代, 如果始终要考虑老版本兼容性,
-始终去兼容<code>python2</code>, 对于开发的迭代并不利,
-不如让开源软件去遵循这个规则, 统一进行大版本升级. 这种在商业产品里,
-做法已经比较成熟了, 都是软件去适配系统.
-只是<code>linux</code>系统在<code>python</code>以前可能没依赖性这么强的类似基础框架组件性质的部分,
-所以对于彻底不兼容的软件会相对少一点. hhh, 说到这个,
-这种换到公司里的代码开发, 就是为了兼容性, 当单元测试少时, 就不重构,
-变成垃圾代码. 而开源的, 就看开发者的能力了.
-好像见到的一般都有大神在把控代码质量的~</p>
-<p>所以理论上其实ceph应该不完全依赖python2了.
-我应该通过其他方式去判断是否要编python2相关.</p>
-<p>根据不同版本的<code>ceph</code>的<code>install-deps.sh</code>和<code>ceph.spec</code>,
-可知<code>mimic</code>和<code>nautilus</code>的版本还没有完全可以免去<code>python2.7</code>,
-而<code>Octopus</code>里彻底去除了<code>python2</code>的编译.</p>
+<p>结论: 看上去是<code>suse</code>的<code>tumbleweed</code>现在的源里没<code>python2</code>的包了[^14]? 而这个仓库里的<code>master</code>分支如果编<code>ceph</code>还没去除<code>python2</code>的版本, 就会有问题.</p>
+<p>根据这个来看<a target="_blank" rel="noopener" href="https://lists.opensuse.org/opensuse-factory/2020-01/msg00126.html">Re: [opensuse-factory] Removal of Python2 from openSUSE Tumbleweed</a></p>
+<p>高版本的suse把python2彻底抛弃了, 但是是不是也有办法加回来安装呢? 搜了一圈, 主流的思路是这种大版本迭代, 如果始终要考虑老版本兼容性, 始终去兼容<code>python2</code>, 对于开发的迭代并不利, 不如让开源软件去遵循这个规则, 统一进行大版本升级. 这种在商业产品里, 做法已经比较成熟了, 都是软件去适配系统. 只是<code>linux</code>系统在<code>python</code>以前可能没依赖性这么强的类似基础框架组件性质的部分, 所以对于彻底不兼容的软件会相对少一点. hhh, 说到这个, 这种换到公司里的代码开发, 就是为了兼容性, 当单元测试少时, 就不重构, 变成垃圾代码. 而开源的, 就看开发者的能力了. 好像见到的一般都有大神在把控代码质量的~</p>
+<p>所以理论上其实ceph应该不完全依赖python2了. 我应该通过其他方式去判断是否要编python2相关.</p>
+<p>根据不同版本的<code>ceph</code>的<code>install-deps.sh</code>和<code>ceph.spec</code>, 可知<code>mimic</code>和<code>nautilus</code>的版本还没有完全可以免去<code>python2.7</code>, 而<code>Octopus</code>里彻底去除了<code>python2</code>的编译.</p>
 <h4 id="tmubleweed-的repo路径">tmubleweed 的repo路径</h4>
-<p>Factory 和 Tumbleweed 合并了, 所以直接使用 factory 的源就好.
-不过大多数镜像只提供了 repo-oss 和 repo-non-oss 这两个源</p>
-<p>https://download.opensuse.org/repositories/openSUSE:Factory/standard/openSUSE:Factory.repo
-搜出来显示这个,但是这个路径实际上已经不存在了...不知道怎么给他们提</p>
-<p><a target="_blank" rel="noopener" href="https://software.opensuse.org/download.html?project=devel%3Alanguages%3Apython%3AFactory&amp;package=python">Install
-package devel:languages:python:Factory / python</a> <a target="_blank" rel="noopener" href="https://software.opensuse.org/download.html?project=devel%3Alanguages%3Apython&amp;package=python-virtualenv">Install
-package devel:languages:python / python-virtualenv</a></p>
-<p><a target="_blank" rel="noopener" href="https://zh.opensuse.org/openSUSE:Build_Service_%E4%BB%93%E5%BA%93%E8%AF%A6%E8%A7%A3">openSUSE:Build
-Service 仓库详解 - openSUSE Wiki</a></p>
-<p>看上去这上面源里的是src.rpm. 咋Search能看到, 就是提示转不上呢?
-我先配置上面这个, 给装上去了.</p>
+<p>Factory 和 Tumbleweed 合并了, 所以直接使用 factory 的源就好. 不过大多数镜像只提供了 repo-oss 和 repo-non-oss 这两个源</p>
+<p>https://download.opensuse.org/repositories/openSUSE:Factory/standard/openSUSE:Factory.repo 搜出来显示这个,但是这个路径实际上已经不存在了...不知道怎么给他们提</p>
+<p><a target="_blank" rel="noopener" href="https://software.opensuse.org/download.html?project=devel%3Alanguages%3Apython%3AFactory&amp;package=python">Install package devel:languages:python:Factory / python</a> <a target="_blank" rel="noopener" href="https://software.opensuse.org/download.html?project=devel%3Alanguages%3Apython&amp;package=python-virtualenv">Install package devel:languages:python / python-virtualenv</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.opensuse.org/openSUSE:Build_Service_%E4%BB%93%E5%BA%93%E8%AF%A6%E8%A7%A3">openSUSE:Build Service 仓库详解 - openSUSE Wiki</a></p>
+<p>看上去这上面源里的是src.rpm. 咋Search能看到, 就是提示转不上呢? 我先配置上面这个, 给装上去了.</p>
 <h4 id="某些疑似镜像源中似乎还有python2的库">某些疑似镜像源中似乎还有python2的库</h4>
-<p><a target="_blank" rel="noopener" href="https://ftp.lysator.liu.se/pub/opensuse/tumbleweed/repo/oss/x86_64/?C=M&amp;O=A">Index
-of /pub/opensuse/tumbleweed/repo/oss/x86_64/</a></p>
+<p><a target="_blank" rel="noopener" href="https://ftp.lysator.liu.se/pub/opensuse/tumbleweed/repo/oss/x86_64/?C=M&amp;O=A">Index of /pub/opensuse/tumbleweed/repo/oss/x86_64/</a></p>
 <p>但是下面这个源里明明也是oss, 但是却有呢?</p>
-<h3 id="稳定的leap-15版本的nautilus编译">稳定的Leap
-15版本的nautilus编译</h3>
+<h3 id="稳定的leap-15版本的nautilus编译">稳定的Leap 15版本的nautilus编译</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">export NAME=ceph-dev-nautilus</span><br><span class="line">export VERSION=nautilus</span><br><span class="line">export CEPH=/Users/sean10/Code/ceph/ceph-14.2.9</span><br><span class="line">export CCACHE=/Users/sean10/Code/ceph/ceph-ccache-14.2.9</span><br><span class="line">cd /share/bin/nautilus</span><br><span class="line">bash -x ./setup.sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>这个倒是安装成功, 开始触发编译了.</p>
-<p>不过中间<code>dashboard</code>的<code>frontend</code>在安装pip时报了点<code>Input/Output Error</code>,
-暂时不是重点,
-在<code>setup-ceph.sh</code>里设置<code>-DWITH_MGR_DASHBOARD_FRONTEND=OFF</code>,
-就可以通过编译了. 就是本地编译有点慢...</p>
+<p>不过中间<code>dashboard</code>的<code>frontend</code>在安装pip时报了点<code>Input/Output Error</code>, 暂时不是重点, 在<code>setup-ceph.sh</code>里设置<code>-DWITH_MGR_DASHBOARD_FRONTEND=OFF</code>, 就可以通过编译了. 就是本地编译有点慢...</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /ceph/src</span><br><span class="line">OSD=3 MON=3 MGR=1 CEPH_BUILD_ROOT=/ceph/build bash -x ./vstart.sh -n </span><br></pre></td></tr></table></figure>
 <h4 id="ccache-make--j8-ceph-mon">ccache make -j8 ceph-mon</h4>
 <blockquote>
-<p>[ 97%] Building CXX object
-src/mon/CMakeFiles/mon.dir/AuthMonitor.cc.o c++: internal compiler
-error: Killed (program cc1plus) Please submit a full bug report, with
-preprocessed source if appropriate. See <a target="_blank" rel="noopener" href="https://bugs.opensuse.org/" class="uri">https://bugs.opensuse.org/</a> for instructions. make[3]:
-*** [src/mon/CMakeFiles/mon.dir/build.make:351:
-src/mon/CMakeFiles/mon.dir/MonmapMonitor.cc.o] Error 4</p>
+<p>[ 97%] Building CXX object src/mon/CMakeFiles/mon.dir/AuthMonitor.cc.o c++: internal compiler error: Killed (program cc1plus) Please submit a full bug report, with preprocessed source if appropriate. See <a target="_blank" rel="noopener" href="https://bugs.opensuse.org/" class="uri">https://bugs.opensuse.org/</a> for instructions. make[3]: *** [src/mon/CMakeFiles/mon.dir/build.make:351: src/mon/CMakeFiles/mon.dir/MonmapMonitor.cc.o] Error 4</p>
 </blockquote>
 <p>看着跟<code>OOM</code>的表现有点像.</p>
-<p>根据<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/30887143/make-j-8-g-internal-compiler-error-killed-program-cc1plus">linux
-- make -j 8 g++: internal compiler error: Killed (program cc1plus) -
-Stack Overflow</a>这篇说的, 可能是我开的线程太多,
-给他分配的内存又没那么多引起的? 我试试</p>
+<p>根据<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/30887143/make-j-8-g-internal-compiler-error-killed-program-cc1plus">linux - make -j 8 g++: internal compiler error: Killed (program cc1plus) - Stack Overflow</a>这篇说的, 可能是我开的线程太多, 给他分配的内存又没那么多引起的? 我试试</p>
 <p>降低以后的确编过了.</p>
 <h4 id="vstart.sh-erasure-code">vstart.sh erasure-code</h4>
 <blockquote>
-<p>load dlopen(/ceph/build/lib/erasure-code/libec_jerasure.so):
-/ceph/build/lib/erasure-code/libec_jerasure.so: cannot open shared
-object file: No such file or directory</p>
+<p>load dlopen(/ceph/build/lib/erasure-code/libec_jerasure.so): /ceph/build/lib/erasure-code/libec_jerasure.so: cannot open shared object file: No such file or directory</p>
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">╭─root@ceph-dev-nautilus /ceph </span><br><span class="line">╰─<span class="comment"># cat src/vstart.sh | grep erasure-code  </span></span><br><span class="line">        [ -z <span class="string">&quot;<span class="variable">$EC_PATH</span>&quot;</span> ] &amp;&amp; EC_PATH=<span class="variable">$CEPH_LIB</span>/erasure-code</span><br></pre></td></tr></table></figure>
-<p>暂时没找到怎么只是make ,
-生成到<code>build/lib/erasure-code</code>目录下的功能.</p>
-<h4 id="vstart.sh-error-error-creating-empty-object-store-in-datacephbuilddevosd0-22-invalid-argument">vstart.sh
-ERROR: error creating empty object store in /data/ceph/build/dev/osd0:
-(22) Invalid argument</h4>
-<p>根据<a target="_blank" rel="noopener" href="https://tracker.ceph.com/issues/23433">Support #23433:
-Ceph cluster doesn't start - ERROR: error creating empty object store in
-/data/ceph/build/dev/osd0: (22) Invalid argument - bluestore -
-Ceph</a>这里的回复, 看起来这个是因为毕竟是虚拟化的,
-所以指向的/dev/目录下的内容并不是块设备引起的吧?</p>
+<p>暂时没找到怎么只是make , 生成到<code>build/lib/erasure-code</code>目录下的功能.</p>
+<h4 id="vstart.sh-error-error-creating-empty-object-store-in-datacephbuilddevosd0-22-invalid-argument">vstart.sh ERROR: error creating empty object store in /data/ceph/build/dev/osd0: (22) Invalid argument</h4>
+<p>根据<a target="_blank" rel="noopener" href="https://tracker.ceph.com/issues/23433">Support #23433: Ceph cluster doesn't start - ERROR: error creating empty object store in /data/ceph/build/dev/osd0: (22) Invalid argument - bluestore - Ceph</a>这里的回复, 看起来这个是因为毕竟是虚拟化的, 所以指向的/dev/目录下的内容并不是块设备引起的吧?</p>
 <h1 id="实践">实践</h1>
-<p>采用官方给的关闭的大部分配置文件的方案[^1], 可以避过大部分坑,
-至少<code>Luminous</code>版本做到了.</p>
+<p>采用官方给的关闭的大部分配置文件的方案[^1], 可以避过大部分坑, 至少<code>Luminous</code>版本做到了.</p>
 <h2 id="docker编译">Docker编译</h2>
 <p>根据[^7], 还有有参考价值的.</p>
 <h2 id="官方ci10">官方CI[^10]</h2>
-<p>似乎这里主要运行<code>test</code>和<code>image</code>,
-那个<code>dev</code>的镜像看起来是给调试镜像版本用的,
-并不是直接提供运行<code>vstart.sh</code>来调试编译版本的.</p>
+<p>似乎这里主要运行<code>test</code>和<code>image</code>, 那个<code>dev</code>的镜像看起来是给调试镜像版本用的, 并不是直接提供运行<code>vstart.sh</code>来调试编译版本的.</p>
 <h2 id="luminous">Luminous</h2>
 <h3 id="最后按照下述方案处理好软链和安装包之后的cmake选项">最后按照下述方案处理好软链和安装包之后的cmake选项</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-DCMAKE_C_COMPILER=/usr/bin/clang   -DCMAKE_CXX_COMPILER=/usr/bin/clang++   -DCMAKE_EXE_LINKER_FLAGS=&quot;-L/usr/local/opt/llvm/lib&quot;   -DENABLE_GIT_VERSION=OFF   -DSNAPPY_ROOT_DIR=/usr/local/Cellar/snappy/1.1.7_1   -DWITH_BABELTRACE=OFF   -DWITH_BLUESTORE=OFF   -DWITH_CCACHE=OFF   -DWITH_CEPHFS=OFF   -DWITH_KRBD=OFF   -DWITH_LIBCEPHFS=OFF   -DWITH_LTTNG=OFF   -DWITH_LZ4=OFF   -DWITH_MANPAGE=ON   -DWITH_MGR=OFF   -DWITH_MGR_DASHBOARD_FRONTEND=OFF   -DWITH_RADOSGW=OFF   -DWITH_RDMA=OFF   -DWITH_SPDK=OFF   -DWITH_SYSTEMD=OFF   -DWITH_TESTS=OFF  -DWITH_XFS=OFF -DCMAKE_C_COMPILER=/usr/bin/clang   -DCMAKE_CXX_COMPILER=/usr/bin/clang++   -DCMAKE_EXE_LINKER_FLAGS=&quot;-L/usr/local/opt/llvm/lib&quot;   -DENABLE_GIT_VERSION=OFF   -DSNAPPY_ROOT_DIR=/usr/local/Cellar/snappy/1.1.7_1   -DWITH_BABELTRACE=OFF   -DWITH_BLUESTORE=OFF   -DWITH_CCACHE=OFF   -DWITH_CEPHFS=OFF   -DWITH_KRBD=OFF   -DWITH_LIBCEPHFS=OFF   -DWITH_LTTNG=OFF   -DWITH_LZ4=OFF   -DWITH_MANPAGE=ON   -DWITH_MGR=OFF   -DWITH_MGR_DASHBOARD_FRONTEND=OFF   -DWITH_RADOSGW=OFF   -DWITH_RDMA=OFF   -DWITH_SPDK=OFF   -DWITH_SYSTEMD=OFF   -DWITH_TESTS=OFF  -DWITH_XFS=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=on  -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 -DPYTHON3_LIBRARY=$(python3-config --prefix)/lib/libpython3.9.dylib -DPYTHON3_INCLUDE_DIR=$(python3-config --prefix)/include/python3.9 -DOPENSSL_ROOT_DIR=/usr/local/Cellar/openssl@1.1/1.1.1o/</span><br></pre></td></tr></table></figure>
 <h3 id="官方文档方案">官方文档方案</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">brew install llvm</span><br><span class="line">brew install snappy ccache cmake pkg-config</span><br><span class="line">pip install cython</span><br><span class="line">pip3 install cython</span><br><span class="line">brew cask install osxfuse</span><br><span class="line"><span class="built_in">mkdir</span> build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line"><span class="built_in">export</span> PKG_CONFIG_PATH=/usr/local/Cellar/nss/3.48/lib/pkgconfig:/usr/local/Cellar/openssl/1.0.2t/lib/pkgconfig</span><br><span class="line">cmake .. -DBOOST_J=4 \</span><br><span class="line">  -DCMAKE_C_COMPILER=/usr/local/opt/llvm/bin/clang \</span><br><span class="line">  -DCMAKE_CXX_COMPILER=/usr/local/opt/llvm/bin/clang++ \</span><br><span class="line">  -DCMAKE_EXE_LINKER_FLAGS=<span class="string">&quot;-L/usr/local/opt/llvm/lib&quot;</span> \</span><br><span class="line">  -DENABLE_GIT_VERSION=OFF \</span><br><span class="line">  -DSNAPPY_ROOT_DIR=/usr/local/Cellar/snappy/1.1.7_1 \</span><br><span class="line">  -DWITH_BABELTRACE=OFF \</span><br><span class="line">  -DWITH_BLUESTORE=OFF \</span><br><span class="line">  -DWITH_CCACHE=OFF \</span><br><span class="line">  -DWITH_CEPHFS=OFF \</span><br><span class="line">  -DWITH_KRBD=OFF \</span><br><span class="line">  -DWITH_LIBCEPHFS=OFF \</span><br><span class="line">  -DWITH_LTTNG=OFF \</span><br><span class="line">  -DWITH_LZ4=OFF \</span><br><span class="line">  -DWITH_MANPAGE=ON \</span><br><span class="line">  -DWITH_MGR=OFF \</span><br><span class="line">  -DWITH_MGR_DASHBOARD_FRONTEND=OFF \</span><br><span class="line">  -DWITH_RADOSGW=OFF \</span><br><span class="line">  -DWITH_RDMA=OFF \</span><br><span class="line">  -DWITH_SPDK=OFF \</span><br><span class="line">  -DWITH_SYSTEMD=OFF \</span><br><span class="line">  -DWITH_TESTS=OFF \</span><br><span class="line">  -DWITH_XFS=OFF</span><br></pre></td></tr></table></figure>
-<p>由于我的主要目的是在<code>CLion</code>中使用,
-所以我在<code>Perference-&gt;Build,Execution,Deployment-&gt;Cmake-&gt;Cmake Options</code>中添加的是上面的配置的单行形式.</p>
+<p>由于我的主要目的是在<code>CLion</code>中使用, 所以我在<code>Perference-&gt;Build,Execution,Deployment-&gt;Cmake-&gt;Cmake Options</code>中添加的是上面的配置的单行形式.</p>
 <h3 id="出现的报错">出现的报错</h3>
-<h4 id="build-nss_include_dirs-nss_include_dir-notfound">BUILD
-NSS_INCLUDE_DIRS: NSS_INCLUDE_DIR-NOTFOUND</h4>
-<p>查看<code>find_package(NSS)</code>中调用的其实是<code>pkg-config</code>来查找<code>nss.pc</code>,
-使用<code>pkg-config --cflags --libs nss</code>报不存在,
-所以说明<code>pkg-config</code>的扫描路径中没有上面这个<code>pc</code>文件.</p>
-<p>通过<code>brew list nss</code>查找到<code>nss.pc</code>文件所在,
-通过<code>pkg-config --variable pc_path pkg-config</code>找到<code>pc</code>的默认搜索路径,
-有两种方案 1. 做个软链到<code>pkg-config</code>的默认搜索路径中
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> -s /usr/local/Cellar/nss/3.35/lib/pkgconfig/nss.pc  /usr/local/lib/pkgconfig/nss.pc </span><br></pre></td></tr></table></figure> 2.
-<code>pkg_config</code>使用的搜索环境变量<code>PKG_CONFIG_PATH</code>中导入
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PKG_CONFIG_PATH=/usr/local/Cellar/nss/3.48/lib/pkgconfig:/usr/local/Cellar/</span><br></pre></td></tr></table></figure></p>
-<p>我采用的第一种方案.
-同理,还会出现<code>nspr</code>等需要这样处理的库.</p>
-<h4 id="not-find-pythonlibs-found-unsuitable-version-2.7.10-but-required3">NOT
-find PythonLibs: Found unsuitable version "2.7.10", but
-required[^3]</h4>
+<h4 id="build-nss_include_dirs-nss_include_dir-notfound">BUILD NSS_INCLUDE_DIRS: NSS_INCLUDE_DIR-NOTFOUND</h4>
+<p>查看<code>find_package(NSS)</code>中调用的其实是<code>pkg-config</code>来查找<code>nss.pc</code>, 使用<code>pkg-config --cflags --libs nss</code>报不存在, 所以说明<code>pkg-config</code>的扫描路径中没有上面这个<code>pc</code>文件.</p>
+<p>通过<code>brew list nss</code>查找到<code>nss.pc</code>文件所在, 通过<code>pkg-config --variable pc_path pkg-config</code>找到<code>pc</code>的默认搜索路径, 有两种方案 1. 做个软链到<code>pkg-config</code>的默认搜索路径中 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> -s /usr/local/Cellar/nss/3.35/lib/pkgconfig/nss.pc  /usr/local/lib/pkgconfig/nss.pc </span><br></pre></td></tr></table></figure> 2. <code>pkg_config</code>使用的搜索环境变量<code>PKG_CONFIG_PATH</code>中导入 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PKG_CONFIG_PATH=/usr/local/Cellar/nss/3.48/lib/pkgconfig:/usr/local/Cellar/</span><br></pre></td></tr></table></figure></p>
+<p>我采用的第一种方案. 同理,还会出现<code>nspr</code>等需要这样处理的库.</p>
+<h4 id="not-find-pythonlibs-found-unsuitable-version-2.7.10-but-required3">NOT find PythonLibs: Found unsuitable version "2.7.10", but required[^3]</h4>
 <p>在CMake选项中增加指定下述的python库和头文件路径 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.<span class="number">7</span>.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/<span class="keyword">include</span>/python2.<span class="number">7</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="testbigendian.cmake49-message-no-suitable-type-found">TestBigEndian.cmake:49
-(message): no suitable type found</h4>
-<p>暂时看到的资料都是说需要看测试代码和修改cmake文件的样子,
-我并不需要编译, 只是需要建立索引,
-所以我暂时注释了这部分的检查[^4,5,6]</p>
+<h4 id="testbigendian.cmake49-message-no-suitable-type-found">TestBigEndian.cmake:49 (message): no suitable type found</h4>
+<p>暂时看到的资料都是说需要看测试代码和修改cmake文件的样子, 我并不需要编译, 只是需要建立索引, 所以我暂时注释了这部分的检查[^4,5,6]</p>
 <h2 id="nautilus">Nautilus</h2>
 <p>采用同样的方案, 暂时未去推进.</p>
 <h3 id="遇到的问题">遇到的问题</h3>
-<h4 id="findboost-unknown-compiler-appleclang">findboost unknown
-compiler: AppleClang</h4>
+<h4 id="findboost-unknown-compiler-appleclang">findboost unknown compiler: AppleClang</h4>
 <p>报了一个暂时没去尝试解决的错误, 识别不了<code>clang</code>?</p>
 <h2 id="master">master</h2>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PKG_CONFIG_PATH=/usr/local/Cellar/nss/3.35/lib/pkgconfig:/usr/local/Cellar/openssl@1.1/1.1.1o/lib/pkgconfig</span><br></pre></td></tr></table></figure>
@@ -376,8 +281,7 @@ compiler: AppleClang</h4>
 <h2 id="调试增加选项">调试增加选项</h2>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure CFLAGS=&#x27;-g3 -O0&#x27; CXXFLAGS=&#x27;-g3 -O0&#x27;.</span><br></pre></td></tr></table></figure>
 <h2 id="github版本cmake报缺失rocksdb和zstd">github版本cmake报缺失rocksdb和zstd</h2>
-<p>git里面有一些submodule, 这部分我没能拖回来, 导致这些目录是空的,
-静态编译没能启动.</p>
+<p>git里面有一些submodule, 这部分我没能拖回来, 导致这些目录是空的, 静态编译没能启动.</p>
 <ul>
 <li>rocksdb</li>
 <li>zstd</li>
@@ -392,56 +296,33 @@ compiler: AppleClang</h4>
 </ul>
 <h1 id="todo">todo</h1>
 <blockquote>
-<p>问题并不是真正的CMakeLists.txt.
-CLion解析了cmake中引用的所有源文件,以启用大多数功能(导航,code-completion,重构).根据我的经验,索引大型项目可以花费几分钟(十分钟).</p>
+<p>问题并不是真正的CMakeLists.txt. CLion解析了cmake中引用的所有源文件,以启用大多数功能(导航,code-completion,重构).根据我的经验,索引大型项目可以花费几分钟(十分钟).</p>
 </blockquote>
 <blockquote>
-<p>减轻这个问题的一种方法是标记项目的“第三方”目录:右键单击您的common目录和Mark
-directory as... &gt;
-Libraries.如果需要,您甚至可以将目录排除在项目之外.</p>
+<p>减轻这个问题的一种方法是标记项目的“第三方”目录:右键单击您的common目录和Mark directory as... &gt; Libraries.如果需要,您甚至可以将目录排除在项目之外.</p>
 <p>还请注意,CLion索引的结果被缓存:在初始索引之后,即使在重新启动项目时,只应修复经修改的文件(注意,修改CMakeLists中的构建选项可能触发完整的reindex)</p>
 </blockquote>
-<p>索引代码理论上只需要选择这些代码文件就可以,
-但是实际上像ceph如果我cmake工程没能成功编译,他也是并没有把函数的调用关系给分析出来的.
-哎, 静态分析功能还是得依赖clang.</p>
+<p>索引代码理论上只需要选择这些代码文件就可以, 但是实际上像ceph如果我cmake工程没能成功编译,他也是并没有把函数的调用关系给分析出来的. 哎, 静态分析功能还是得依赖clang.</p>
 <ul>
-<li>根据CI里的log来看, 的确只是yum install
-ceph这种形式直接安装成果物构造image.
-那src.rpm编译出成果物是在哪个jenkins里做的呢?</li>
+<li>根据CI里的log来看, 的确只是yum install ceph这种形式直接安装成果物构造image. 那src.rpm编译出成果物是在哪个jenkins里做的呢?</li>
 </ul>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/dev/macos/">build on MacOS
-— Ceph Documentation</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/flyinggod/p/12465966.html">pkg-config
-路径问题 - 采男孩的小蘑菇 - 博客园</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/pybind/pybind11/issues/99">CMake finding
-Python library and Python interpreter mismatch during pybind11 build ·
-Issue #99 · pybind/pybind11</a></li>
-<li><a target="_blank" rel="noopener" href="https://hypernews.slac.stanford.edu/HyperNews/geant4/get/installconfig/1889/1.html%3Finline=1.html">Re:
-Weird CMake failures building 10.4 on MacOS High Sierra (10.13)</a></li>
-<li><a target="_blank" rel="noopener" href="https://gitlab.kitware.com/cmake/cmake/-/issues/16283">TestBigEndian.cmake:51
-(messag no suitable type found (#16283) · Issues · CMake / CMake ·
-GitLab</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/13255491/cmake-internal-error-test-big-endian">windows
-- CMake internal error (TEST_BIG_ENDIAN) - Stack Overflow</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/98625873">dockerize
-ceph集群和shell脚本编程 - 知乎</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.shalandis.com/original/2016/05/19/CEPH-CRUSH-algorithm-source-code-analysis/">CEPH
-CRUSH algorithm source code analysis</a></li>
-<li><a target="_blank" rel="noopener" href="https://hub.docker.com/r/ceph/daemon">ceph/daemon - Docker
-Hub</a></li>
-<li><a target="_blank" rel="noopener" href="https://quay.io/repository/ceph-ci/ceph/manifest/sha256:7d170b95bd9861be7279a1d7cda1c3a5dd39469ebc5ff94c84e5c4e1ebbce42d">Quay
-Container Registry · Quay</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph-container">ceph/ceph-container:
-Docker files and images to run Ceph in containers</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/dev/macos/">build on MacOS — Ceph Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/flyinggod/p/12465966.html">pkg-config 路径问题 - 采男孩的小蘑菇 - 博客园</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pybind/pybind11/issues/99">CMake finding Python library and Python interpreter mismatch during pybind11 build · Issue #99 · pybind/pybind11</a></li>
+<li><a target="_blank" rel="noopener" href="https://hypernews.slac.stanford.edu/HyperNews/geant4/get/installconfig/1889/1.html%3Finline=1.html">Re: Weird CMake failures building 10.4 on MacOS High Sierra (10.13)</a></li>
+<li><a target="_blank" rel="noopener" href="https://gitlab.kitware.com/cmake/cmake/-/issues/16283">TestBigEndian.cmake:51 (messag no suitable type found (#16283) · Issues · CMake / CMake · GitLab</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/13255491/cmake-internal-error-test-big-endian">windows - CMake internal error (TEST_BIG_ENDIAN) - Stack Overflow</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/98625873">dockerize ceph集群和shell脚本编程 - 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.shalandis.com/original/2016/05/19/CEPH-CRUSH-algorithm-source-code-analysis/">CEPH CRUSH algorithm source code analysis</a></li>
+<li><a target="_blank" rel="noopener" href="https://hub.docker.com/r/ceph/daemon">ceph/daemon - Docker Hub</a></li>
+<li><a target="_blank" rel="noopener" href="https://quay.io/repository/ceph-ci/ceph/manifest/sha256:7d170b95bd9861be7279a1d7cda1c3a5dd39469ebc5ff94c84e5c4e1ebbce42d">Quay Container Registry · Quay</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph-container">ceph/ceph-container: Docker files and images to run Ceph in containers</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/ricardoasmarques/ceph-dev-docker">ricardoasmarques/ceph-dev-docker</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/install/build-ceph/">Build
-Ceph — Ceph Documentation</a></li>
-<li><a target="_blank" rel="noopener" href="https://forums.opensuse.org/showthread.php/540286-Cant-install-python-lxml-Opensuse-Tumbleweed">TUMBLEWEED
-Cant install python-lxml Opensuse Tumbleweed</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.itocm.com/a/127B85AF17F747AE9C864B7246E91248">ceph
-luminous版本编译及部署 | itocm.com</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/install/build-ceph/">Build Ceph — Ceph Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://forums.opensuse.org/showthread.php/540286-Cant-install-python-lxml-Opensuse-Tumbleweed">TUMBLEWEED Cant install python-lxml Opensuse Tumbleweed</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.itocm.com/a/127B85AF17F747AE9C864B7246E91248">ceph luminous版本编译及部署 | itocm.com</a></li>
 </ol>
 
         </div>
@@ -451,7 +332,7 @@ luminous版本编译及部署 | itocm.com</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.888Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.766Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

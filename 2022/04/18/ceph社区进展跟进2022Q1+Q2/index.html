@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="17.2.0 正式发布 Ceph.io — v17.2.0 Quincy released * telementry report优化, 是否可以满足性能问题定位?  the &quot;kvs&quot; Ceph object class is not packaged anymore.  这个是什么能力?   crimson相关 根据History for src&#x2F;crimson -quincy ceph&#x2F;ce">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-04-18T03:02:36.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.896Z">
+<meta property="article:published_time" content="2022-04-18T11:02:36.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.786Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="community">
@@ -139,7 +139,7 @@
         <h1 class="title">ceph社区进展跟进2022Q1+Q2</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-04-18T03:02:36.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-04-18T11:02:36.000Z" itemprop="datePublished" class="page-time">
   2022-04-18
 </time>
 
@@ -161,8 +161,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%AD%A3%E5%BC%8F%E5%8F%91%E5%B8%83"><span class="post-toc-number">1.</span> <span class="post-toc-text">17.2.0 正式发布</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#crimson%E7%9B%B8%E5%85%B3"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">crimson相关</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ceph-leadership-team-meeting"><span class="post-toc-number">2.</span> <span class="post-toc-text">Ceph Leadership Team meeting</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">2022-05-25</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-1"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2022-04-06</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#cds-reef-crimson%E4%BC%9A%E8%AE%AE"><span class="post-toc-number">3.</span> <span class="post-toc-text">CDS Reef Crimson会议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E9%83%A8%E7%BD%B2"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">稳定性和部署</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#seastore-metrics"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">seastore metrics</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#seastore-internals"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">Seastore Internals</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#crimson-reef%E8%AE%A1%E5%88%92"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">crimson reef计划</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#seastore-reef%E8%AE%A1%E5%88%92"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">seastore reef计划</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%AF%E7%94%A8%E6%80%A7%E6%B5%8B%E8%AF%95"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">可用性&#x2F;测试</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#crimson%E8%AE%A8%E8%AE%BA"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">crimson讨论</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%BB%8F%E5%85%B8osd%E7%9A%84%E6%B5%8B%E8%AF%95"><span class="post-toc-number">3.7.1.</span> <span class="post-toc-text">经典osd的测试</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#gc%E7%AD%96%E7%95%A5-yangson"><span class="post-toc-number">3.7.2.</span> <span class="post-toc-text">gc策略 yangson</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reef-%E6%80%A7%E8%83%BD%E4%BC%9A%E8%AE%AE"><span class="post-toc-number">4.</span> <span class="post-toc-text">Reef 性能会议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#rgw%E5%AE%9E%E7%8E%B0%E5%AF%B9%E6%8E%A5daos"><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">rgw实现对接daos</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ceph-user-dev-monthly-meeting"><span class="post-toc-number">5.</span> <span class="post-toc-text">Ceph User + Dev Monthly
-Meeting</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ceph-developer-monthly"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">2022-06-01 ceph developer monthly</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-2"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">2022-02-02</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ceph-crimsonseastore"><span class="post-toc-number">6.</span> <span class="post-toc-text">Ceph Crimson&#x2F;SeaStore</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-3"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">2022-06-07</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#performance-weekly"><span class="post-toc-number">7.</span> <span class="post-toc-text">performance weekly</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-4"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">2022-05-05</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-5"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">2022-04-13</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-6"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">2022-04-07</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#master%E5%88%86%E6%94%AF%E4%B8%80%E8%88%AC%E4%BC%9A%E6%90%9E%E7%A0%B8%E6%80%A7%E8%83%BD"><span class="post-toc-number">7.3.1.</span> <span class="post-toc-text">master分支一般会搞砸性能</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#avl%E5%88%86%E9%85%8D%E5%99%A8"><span class="post-toc-number">7.3.2.</span> <span class="post-toc-text">avl分配器</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9D%A5%E6%BA%90"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">来源</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%AD%A3%E5%BC%8F%E5%8F%91%E5%B8%83"><span class="post-toc-number">1.</span> <span class="post-toc-text">17.2.0 正式发布</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#crimson%E7%9B%B8%E5%85%B3"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">crimson相关</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ceph-leadership-team-meeting"><span class="post-toc-number">2.</span> <span class="post-toc-text">Ceph Leadership Team meeting</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">2022-05-25</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-1"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2022-04-06</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#cds-reef-crimson%E4%BC%9A%E8%AE%AE"><span class="post-toc-number">3.</span> <span class="post-toc-text">CDS Reef Crimson会议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E9%83%A8%E7%BD%B2"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">稳定性和部署</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#seastore-metrics"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">seastore metrics</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#seastore-internals"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">Seastore Internals</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#crimson-reef%E8%AE%A1%E5%88%92"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">crimson reef计划</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#seastore-reef%E8%AE%A1%E5%88%92"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">seastore reef计划</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%AF%E7%94%A8%E6%80%A7%E6%B5%8B%E8%AF%95"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">可用性&#x2F;测试</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#crimson%E8%AE%A8%E8%AE%BA"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">crimson讨论</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%BB%8F%E5%85%B8osd%E7%9A%84%E6%B5%8B%E8%AF%95"><span class="post-toc-number">3.7.1.</span> <span class="post-toc-text">经典osd的测试</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#gc%E7%AD%96%E7%95%A5-yangson"><span class="post-toc-number">3.7.2.</span> <span class="post-toc-text">gc策略 yangson</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reef-%E6%80%A7%E8%83%BD%E4%BC%9A%E8%AE%AE"><span class="post-toc-number">4.</span> <span class="post-toc-text">Reef 性能会议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#rgw%E5%AE%9E%E7%8E%B0%E5%AF%B9%E6%8E%A5daos"><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">rgw实现对接daos</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ceph-user-dev-monthly-meeting"><span class="post-toc-number">5.</span> <span class="post-toc-text">Ceph User + Dev Monthly Meeting</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ceph-developer-monthly"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">2022-06-01 ceph developer monthly</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-2"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">2022-02-02</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ceph-crimsonseastore"><span class="post-toc-number">6.</span> <span class="post-toc-text">Ceph Crimson&#x2F;SeaStore</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-3"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">2022-06-07</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#performance-weekly"><span class="post-toc-number">7.</span> <span class="post-toc-text">performance weekly</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-4"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">2022-05-05</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-5"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">2022-04-13</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#section-6"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">2022-04-07</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#master%E5%88%86%E6%94%AF%E4%B8%80%E8%88%AC%E4%BC%9A%E6%90%9E%E7%A0%B8%E6%80%A7%E8%83%BD"><span class="post-toc-number">7.3.1.</span> <span class="post-toc-text">master分支一般会搞砸性能</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#avl%E5%88%86%E9%85%8D%E5%99%A8"><span class="post-toc-number">7.3.2.</span> <span class="post-toc-text">avl分配器</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9D%A5%E6%BA%90"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">来源</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -173,7 +172,7 @@ Meeting</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-l
     <div class="post-card">
         <h1 class="post-card-title">ceph社区进展跟进2022Q1+Q2</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-04-18 11:02:36" datetime="2022-04-18T03:02:36.000Z"  itemprop="datePublished">2022-04-18</time>
+            <time class="post-time" title="2022-04-18 11:02:36" datetime="2022-04-18T11:02:36.000Z"  itemprop="datePublished">2022-04-18</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -189,9 +188,7 @@ Meeting</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-l
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h1 id="正式发布">17.2.0 正式发布</h1>
-<p><a target="_blank" rel="noopener" href="https://ceph.io/en/news/blog/2022/v17-2-0-quincy-released/">Ceph.io
-— v17.2.0 Quincy released</a> * telementry report优化,
-是否可以满足性能问题定位?</p>
+<p><a target="_blank" rel="noopener" href="https://ceph.io/en/news/blog/2022/v17-2-0-quincy-released/">Ceph.io — v17.2.0 Quincy released</a> * telementry report优化, 是否可以满足性能问题定位?</p>
 <ul>
 <li>the "kvs" Ceph object class is not packaged anymore.
 <ul>
@@ -199,38 +196,12 @@ Meeting</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-l
 </ul></li>
 </ul>
 <h2 id="crimson相关">crimson相关</h2>
-<p>根据<a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/commits/quincy/src/crimson">History
-for src/crimson -quincy ceph/ceph</a>来看,
-好像是官方不准备在这个版本上这个功能了.</p>
-<p>相比<a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/commits/master?after=ee4fdcd6e15b7df0241ee17b32894c625b599320+34&amp;branch=master&amp;path%5B%5D=src&amp;path%5B%5D=crimson">History
-for src/crimson -master ceph/ceph</a>已经差了大概2个月的更新了.</p>
+<p>根据<a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/commits/quincy/src/crimson">History for src/crimson -quincy ceph/ceph</a>来看, 好像是官方不准备在这个版本上这个功能了.</p>
+<p>相比<a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/commits/master?after=ee4fdcd6e15b7df0241ee17b32894c625b599320+34&amp;branch=master&amp;path%5B%5D=src&amp;path%5B%5D=crimson">History for src/crimson -master ceph/ceph</a>已经差了大概2个月的更新了.</p>
 <h1 id="ceph-leadership-team-meeting">Ceph Leadership Team meeting</h1>
 <h2 id="section">2022-05-25</h2>
 <p>These are the topics discussed in today's meeting:</p>
-<p>Change in the release process Patrick suggesting version bump PRs vs
-current commit push approach Commits are not signed Avoids freezing the
-branch during hotfixes Both for hotfixes and regular dot releases Needs
-further discussion
-https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
-&lt;-- more closely matches current model + proposed changes re: PRs,
-with the addition of a development branch
-https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development
-ceph-Jenkins account needs admin privs to ceph.git in order to push
-directly to branches doesn't apply to PR version bump publishing
-(Windows) binaries signed by cloudbase? Issues with Linux/Ceph
-Foundation RH might provide the signed binaries Probably don't publish
-binaries signed by Cloudbase b/c we wouldn't get telemetry data back
-from crashes etc. master-main rename rename completed there are still
-issues with some Jenkins jobs quincy blogs 17.2.1 readiness 3 PRs left
-release candidate by Jun 1st week 16.2.8 issue retrospective:
-https://docs.google.com/presentation/d/1hbwo_GW48O4nnM78US2ghVXglxZw5TRwmWUOy_oxam8/
-scale testing stricter backport policy lack of reviews in the backport
-mgr component is orphaned (RADOS, lack of experience in other teams)
-conflict solving was not properly documented mgr has become too critical
-(due to cephadm it is now key) don't merge with 1 approval reviewers on
-sensitive PRs/files should acknowledge they understand the code changes
-different standards across teams try out requiring reviews from
-CODEOWNERS on the pacific branch</p>
+<p>Change in the release process Patrick suggesting version bump PRs vs current commit push approach Commits are not signed Avoids freezing the branch during hotfixes Both for hotfixes and regular dot releases Needs further discussion https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow &lt;-- more closely matches current model + proposed changes re: PRs, with the addition of a development branch https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development ceph-Jenkins account needs admin privs to ceph.git in order to push directly to branches doesn't apply to PR version bump publishing (Windows) binaries signed by cloudbase? Issues with Linux/Ceph Foundation RH might provide the signed binaries Probably don't publish binaries signed by Cloudbase b/c we wouldn't get telemetry data back from crashes etc. master-main rename rename completed there are still issues with some Jenkins jobs quincy blogs 17.2.1 readiness 3 PRs left release candidate by Jun 1st week 16.2.8 issue retrospective: https://docs.google.com/presentation/d/1hbwo_GW48O4nnM78US2ghVXglxZw5TRwmWUOy_oxam8/ scale testing stricter backport policy lack of reviews in the backport mgr component is orphaned (RADOS, lack of experience in other teams) conflict solving was not properly documented mgr has become too critical (due to cephadm it is now key) don't merge with 1 approval reviewers on sensitive PRs/files should acknowledge they understand the code changes different standards across teams try out requiring reviews from CODEOWNERS on the pacific branch</p>
 <h2 id="section-1">2022-04-06</h2>
 <h1 id="cds-reef-crimson会议">CDS Reef Crimson会议</h1>
 <h2 id="稳定性和部署">稳定性和部署</h2>
@@ -245,8 +216,7 @@ CODEOWNERS on the pacific branch</p>
 <li>优化/修复 crimson的bluestore support.</li>
 </ul>
 <h2 id="seastore-metrics">seastore metrics</h2>
-<p>seastore去年变化很多, 现在有了一批监控seastore的metrics能力,
-有助于未来的优化</p>
+<p>seastore去年变化很多, 现在有了一批监控seastore的metrics能力, 有助于未来的优化</p>
 <ul>
 <li>新的有助于理解seastore的性能模式的指标
 <ul>
@@ -269,9 +239,7 @@ CODEOWNERS on the pacific branch</p>
 <li>journal coalescing</li>
 </ul></li>
 </ul>
-<p>quincy的crimson, 应该支持在没有快照的情况下在crimson测试rbd负载,
-用单个reactor配置下基于cyanstore或者seastore后端,
-用rook或者cephadm部署.</p>
+<p>quincy的crimson, 应该支持在没有快照的情况下在crimson测试rbd负载, 用单个reactor配置下基于cyanstore或者seastore后端, 用rook或者cephadm部署.</p>
 <h2 id="crimson-reef计划">crimson reef计划</h2>
 <p>后续规划里, crimson比较巨大的事情是</p>
 <ul>
@@ -280,16 +248,14 @@ CODEOWNERS on the pacific branch</p>
 <li>快照</li>
 <li>scrub</li>
 </ul>
-<p>快照是Baton负责开发的一个相当核心的功能, 已经填好了rbd测试用例,
-后续多核会比较严峻.</p>
+<p>快照是Baton负责开发的一个相当核心的功能, 已经填好了rbd测试用例, 后续多核会比较严峻.</p>
 <h2 id="seastore-reef计划">seastore reef计划</h2>
 <ul>
 <li>后续在多设备和分层的gc机制上上会有进一步改进</li>
 <li>在nvme设备的基于随机块管理器和多核的gc机制上.</li>
 <li>多核支持
 <ul>
-<li>后续一开始会对nvme划多个分区运行seastore来得到性能基线,
-后续用于评估元数据结构.</li>
+<li>后续一开始会对nvme划多个分区运行seastore来得到性能基线, 后续用于评估元数据结构.</li>
 </ul></li>
 </ul>
 <h2 id="可用性测试">可用性/测试</h2>
@@ -299,13 +265,10 @@ CODEOWNERS on the pacific branch</p>
 <li><p>保持debug_*配置选项</p></li>
 <li><p>pg log messages格式保持和传统一致</p></li>
 <li><p>vstart, teuthology 集群日志到和传统一样的文件里</p></li>
-<li><p>尽量使用debug common选项, 快速收集到一些问题原因.
-尽量确保所有人在调试的同一个页面上. 包括vstart和teuthology的日志,
-这块与传统osd不太一样.</p></li>
+<li><p>尽量使用debug common选项, 快速收集到一些问题原因. 尽量确保所有人在调试的同一个页面上. 包括vstart和teuthology的日志, 这块与传统osd不太一样.</p></li>
 <li><p>后续计划增加一个teuthology套件测试所有的pr.</p></li>
 <li><p>如果有人愿意做审计, 会非常好</p></li>
-<li><p>基础日志框架上, 有一个差异是, 20等级在传统上已经是debug,
-而crimson不止.</p>
+<li><p>基础日志框架上, 有一个差异是, 20等级在传统上已经是debug, 而crimson不止.</p>
 <ul>
 <li>目前只有debug_ms这块比较好, 1就会打印所有的消息.</li>
 <li>最好不仅仅是debug_ms</li>
@@ -320,41 +283,26 @@ CODEOWNERS on the pacific branch</p>
 </ul>
 <h2 id="crimson讨论">crimson讨论</h2>
 <p>qlc, zns讨论 qlc比tlc更密集</p>
-<p>我的策略是, 要么足够快, 可以被视为随机(block)块管理器, 或者足够慢,
-被视为(segment)段管理器, 被落入到与zns相同的存储桶汇总.</p>
+<p>我的策略是, 要么足够快, 可以被视为随机(block)块管理器, 或者足够慢, 被视为(segment)段管理器, 被落入到与zns相同的存储桶汇总.</p>
 <p>RedHat 分享性能基准, 如果期望早点测试rbd</p>
 <p>今年不会太稳定, 但是几年会有所改善,</p>
-<p>行业正在转向accuracy,而不是tlc. TODO: 这里有疑问,
-这里的accuracy指的是什么新介质还是什么?</p>
+<p>行业正在转向accuracy,而不是tlc. TODO: 这里有疑问, 这里的accuracy指的是什么新介质还是什么?</p>
 <p>看到了该领域的兴趣, 看看crimson如何帮助从tlc过度</p>
-<p>seastore目前进度落后于crimson, 所以成熟会有点困难
-不过应该可以工作了.</p>
+<p>seastore目前进度落后于crimson, 所以成熟会有点困难 不过应该可以工作了.</p>
 <h3 id="经典osd的测试">经典osd的测试</h3>
 <p>最新版本通过用于人们的测试</p>
 <p>但是Crimson, 不期望人们在quincy测试</p>
 <p>也许每月一次或者每周一次, 某种自动构建的快照.</p>
 <p>我们不做任何测试, 也不提供后端端口.</p>
-<p>只是提供下载和运行的时间点快照,
-给人们提供一些更频繁地测试crimson的方法比每年的发布.</p>
+<p>只是提供下载和运行的时间点快照, 给人们提供一些更频繁地测试crimson的方法比每年的发布.</p>
 <p>如果有一些图像和说明, 会更好.</p>
 <p>从bluestore转到crimson, 这是新贡献者可以做的另一个地方.</p>
 <p>这个也可以作为一个强制功能来改进发布pipeline.</p>
-<p>crimson可以在quincy一起使用, 但是没有快照, 所以还需要继续改进rbd,
-以及得到rgw, cephfs的支持.</p>
-<p>rbd一直是我们的主要目标, 因为从a cpu per io的角度,
-rbd大多数情况下最苛刻, 所以一直是我们的重点.</p>
+<p>crimson可以在quincy一起使用, 但是没有快照, 所以还需要继续改进rbd, 以及得到rgw, cephfs的支持.</p>
+<p>rbd一直是我们的主要目标, 因为从a cpu per io的角度, rbd大多数情况下最苛刻, 所以一直是我们的重点.</p>
 <h3 id="gc策略-yangson">gc策略 yangson</h3>
-<p><a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1PQ_qWQsQmVdSwQqOA7RPCVDomq0a0q0Z-lBk7BzkuTw/edit">SeaStore
-Generational Segment Cleaning - Google Docs</a>
-接下来讨论的链接是这个</p>
-<p>这块gc没细看, 跳过...详见<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Q9xdqEYOAjM&amp;t=4s">CDS Reef:
-Crimson - YouTube</a> &gt; seastar把Extent存储到磁盘.
-每个extent具有标记热的character, 意味着root extent或者logical lba
-extent, 或者未知的, 元数据. &gt; &gt; 可以是想对象数据块或者omap
-leave的代码 &gt; &gt; 每个extent有一个Age, 具有lfs的设计.
-将相同字符和相似age的分组. &gt; &gt; 根据论文,
-有一个成本效益的垃圾收集策略.
-如果实现将相似的extent合并到同一个segment中进行回收会更有效.</p>
+<p><a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1PQ_qWQsQmVdSwQqOA7RPCVDomq0a0q0Z-lBk7BzkuTw/edit">SeaStore Generational Segment Cleaning - Google Docs</a> 接下来讨论的链接是这个</p>
+<p>这块gc没细看, 跳过...详见<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Q9xdqEYOAjM&amp;t=4s">CDS Reef: Crimson - YouTube</a> &gt; seastar把Extent存储到磁盘. 每个extent具有标记热的character, 意味着root extent或者logical lba extent, 或者未知的, 元数据. &gt; &gt; 可以是想对象数据块或者omap leave的代码 &gt; &gt; 每个extent有一个Age, 具有lfs的设计. 将相同字符和相似age的分组. &gt; &gt; 根据论文, 有一个成本效益的垃圾收集策略. 如果实现将相似的extent合并到同一个segment中进行回收会更有效.</p>
 <blockquote>
 <p>device tier</p>
 </blockquote>
@@ -367,34 +315,25 @@ leave的代码 &gt; &gt; 每个extent有一个Age, 具有lfs的设计.
 <p>rocksdb增加merge pg log.</p>
 <p>recycling pidgey lobe</p>
 <p>a mapping from the real pg info to the pg log key 导致性能下降.</p>
-<p>more or less working implementation now poc at the moment and the
-idea is</p>
-<p>yeah to replace roxdb write ahead log with 用外部日志替换 roxdb
-预写日志，</p>
+<p>more or less working implementation now poc at the moment and the idea is</p>
+<p>yeah to replace roxdb write ahead log with 用外部日志替换 roxdb 预写日志，</p>
 <p>external one residing to store 以便</p>
 <p>implementation for write the hedge log 实现附近写入对冲日志</p>
 <p>bluestore 性能提升.</p>
-<p>you prototyped moving the pg log out of rocks db completely and you
-stop because</p>
+<p>you prototyped moving the pg log out of rocks db completely and you stop because</p>
 <p>it increased our iops by 20</p>
-<p>yeah the first one is about you write a headlock and the second one
-is about making well removing uh pg lock implementation at all along
-with all this replication stuff</p>
+<p>yeah the first one is about you write a headlock and the second one is about making well removing uh pg lock implementation at all along with all this replication stuff</p>
 <p>iops增长20%</p>
 <p>igor</p>
 <p>早期</p>
-<p>just write out um pg log updates to 64k allocations in bluefest and
-um</p>
+<p>just write out um pg log updates to 64k allocations in bluefest and um</p>
 <p>她没有看到任何好处，所以她很快就放弃</p>
-<p>it sounds like igor you're you're having much better success with it
-with your i</p>
+<p>it sounds like igor you're you're having much better success with it with your i</p>
 <p>with roxdb iterator boundaries</p>
 <p>corey ?</p>
 <h3 id="rgw实现对接daos">rgw实现对接daos</h3>
-<p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/45888">rgw: add DAOS SAL
-implementation by zalsader · Pull Request #45888 · ceph/ceph</a></p>
-<h1 id="ceph-user-dev-monthly-meeting">Ceph User + Dev Monthly
-Meeting</h1>
+<p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/45888">rgw: add DAOS SAL implementation by zalsader · Pull Request #45888 · ceph/ceph</a></p>
+<h1 id="ceph-user-dev-monthly-meeting">Ceph User + Dev Monthly Meeting</h1>
 <h2 id="ceph-developer-monthly">2022-06-01 ceph developer monthly</h2>
 <ul>
 <li>block deduction feature</li>
@@ -414,37 +353,25 @@ Meeting</h1>
 <ul>
 <li>zipf分布?</li>
 </ul></li>
-<li>考虑在Seastore上增加一些采样, 用于观察调整zipf用的参数 ##
-2022-05-11</li>
+<li>考虑在Seastore上增加一些采样, 用于观察调整zipf用的参数 ## 2022-05-11</li>
 </ul></li>
 <li>seastore concurrent 讨论</li>
 </ul>
 <h1 id="performance-weekly">performance weekly</h1>
 <h2 id="section-4">2022-05-05</h2>
 <blockquote>
-<p>closed: https://github.com/ceph/ceph/pull/46095 (kv/RocksDBStore:
-Remove ability to bound WholeSpaceIterator, aclamk) &lt;-- merged to
-master by yuriw https://github.com/ceph/ceph/pull/45993 (crimson/osd:
-fix argument parsing after seastar changes, markhpc) &lt;-- merged to
-master by markhpc</p>
-<p>updated: https://github.com/ceph/ceph/pull/46062 (crimson: Enable
-tcmalloc when using seastar, markhpc) &lt;-- Discussion, updates
-https://github.com/ceph/ceph/pull/45771 (os/bluestore: Switch to
-time-based adaptive near-fit alogrithm, markhpc) &lt;-- disccusion
-https://github.com/ceph/ceph/pull/45888 (rgw: add DAOS SAL
-implementation, zalsader) &lt;-- discussion, review, needs rebase</p>
+<p>closed: https://github.com/ceph/ceph/pull/46095 (kv/RocksDBStore: Remove ability to bound WholeSpaceIterator, aclamk) &lt;-- merged to master by yuriw https://github.com/ceph/ceph/pull/45993 (crimson/osd: fix argument parsing after seastar changes, markhpc) &lt;-- merged to master by markhpc</p>
+<p>updated: https://github.com/ceph/ceph/pull/46062 (crimson: Enable tcmalloc when using seastar, markhpc) &lt;-- Discussion, updates https://github.com/ceph/ceph/pull/45771 (os/bluestore: Switch to time-based adaptive near-fit alogrithm, markhpc) &lt;-- disccusion https://github.com/ceph/ceph/pull/45888 (rgw: add DAOS SAL implementation, zalsader) &lt;-- discussion, review, needs rebase</p>
 </blockquote>
 <p>igor的bluestore实现, 下周分享.</p>
 <h2 id="section-5">2022-04-13</h2>
 <p>视频未上传,</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- CURRENT STATUS OF PULL REQUESTS (since 2021-04-07):</span><br><span class="line"></span><br><span class="line">   new:</span><br><span class="line">       https://github.com/ceph/ceph/pull/45904 (os/bluestore: set upper and lower bounds on rocksdb omap iterators, cfsnyder) &lt;-- cbodley reviews</span><br><span class="line">       https://github.com/ceph/ceph/pull/45888 (rgw: add DAOS SAL implementation, zalsader) &lt;-- new PR</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   closed:</span><br><span class="line">       https://github.com/ceph/ceph/pull/45884 (os/bluestore: Always update the cursor position in AVL near-fit search, markhpc) &lt;-- Merged to master by Yuri</span><br><span class="line">       https://github.com/ceph/ceph/pull/45755 (common/options: Disable AVL allocator first-fit optimizations, markhpc) &lt;-- superceded by #45884 and #45771</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   updated:</span><br><span class="line">       https://github.com/ceph/ceph/pull/45771 (os/bluestore: Switch to time-based adaptive near-fit alogrithm, markhpc) &lt;-- disccusion</span><br><span class="line">       https://github.com/ceph/ceph/pull/44684 (tracer: set tracing compiled in by default, zenomri) &lt;-- reviews, updates, discussion, more testing, ideepika reviews, updates</span><br><span class="line">       https://github.com/ceph/ceph/pull/31694 (♪ I&#x27;ve got the world on a string, sittin&#x27; on a rainbow ♪, adamemerson) &lt;-- cbodley reviews, mbenjamin reviews, needs-rebase, anything left to merge?</span><br></pre></td></tr></table></figure>
 <h2 id="section-6">2022-04-07</h2>
-<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=F34BvWvEDf4&amp;t=240s">Ceph
-Performance Meeting 2022-04-07 - YouTube</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=F34BvWvEDf4&amp;t=240s">Ceph Performance Meeting 2022-04-07 - YouTube</a></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- CURRENT STATUS OF PULL REQUESTS (since 2021-03-31):</span><br><span class="line"></span><br><span class="line">   new:</span><br><span class="line">       https://github.com/ceph/ceph/pull/45771 (os/bluestore: Switch to time-based adaptive near-fit alogrithm, markhpc) &lt;-- disccusion</span><br><span class="line">       https://github.com/ceph/ceph/pull/45755 (common/options: Disable AVL allocator first-fit optimizations, markhpc) &lt;-- discussion</span><br><span class="line"></span><br><span class="line">   closed:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   updated:</span><br><span class="line">       https://github.com/ceph/ceph/pull/44684 (tracer: set tracing compiled in by default, zenomri) &lt;-- reviews, updates, discussion, more testing, review req for ideepika and markhpc</span><br></pre></td></tr></table></figure>
 <h3 id="master分支一般会搞砸性能">master分支一般会搞砸性能</h3>
-<p>gabby's talking 关于fast nvme test nodes, 在基线上得到了较好的结果?
-70K-80K的小对象随机iops</p>
+<p>gabby's talking 关于fast nvme test nodes, 在基线上得到了较好的结果? 70K-80K的小对象随机iops</p>
 <p>但是现在master分支只有20-30K.</p>
 <p>mako notes and still saw high</p>
 <p>performance</p>
@@ -453,32 +380,17 @@ Performance Meeting 2022-04-07 - YouTube</a></p>
 <p>we</p>
 <p>determine when to go into</p>
 <p>best fit mode in the avl allocator替换去年夏天的fit mode?</p>
-<p>在三星硬盘上, 大块顺序写性能大量的slow down. 看起来是动态调整分配模式
-,而不是线性分配.</p>
-<p>写64K这种io模型似乎不太适配三星硬盘.
-后续尝试增加4x或者8x的参数来让他适配? 这个有帮助,
-不过并不能解决问题.</p>
-<p>可能主要体现在搜索空间的耗时上.
-所以写了这个基于cycles和字节来选择最优拟合. 超过1ms, 就切换到快速模式?
-在pacific 16.2.7版本似乎更好. 将64K划分64个块.
-可能是这些硬盘的模式针对我们的修改, 并不喜欢?导致很容易进入性能下降.
-不管是其他nvme, 包括基于intel p3700的硬盘的性能?差异都不大, 但在三星上,
-差异就大.</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/45771">os/bluestore:
-Switch to time-based adaptive near-fit alogrithm by markhpc · Pull
-Request #45771 · ceph/ceph</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/45755">common/options:
-Disable AVL allocator first-fit optimizations by markhpc · Pull Request
-#45755 · ceph/ceph</a></p>
+<p>在三星硬盘上, 大块顺序写性能大量的slow down. 看起来是动态调整分配模式 ,而不是线性分配.</p>
+<p>写64K这种io模型似乎不太适配三星硬盘. 后续尝试增加4x或者8x的参数来让他适配? 这个有帮助, 不过并不能解决问题.</p>
+<p>可能主要体现在搜索空间的耗时上. 所以写了这个基于cycles和字节来选择最优拟合. 超过1ms, 就切换到快速模式? 在pacific 16.2.7版本似乎更好. 将64K划分64个块. 可能是这些硬盘的模式针对我们的修改, 并不喜欢?导致很容易进入性能下降. 不管是其他nvme, 包括基于intel p3700的硬盘的性能?差异都不大, 但在三星上, 差异就大.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/45771">os/bluestore: Switch to time-based adaptive near-fit alogrithm by markhpc · Pull Request #45771 · ceph/ceph</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/45755">common/options: Disable AVL allocator first-fit optimizations by markhpc · Pull Request #45755 · ceph/ceph</a></p>
 <p>这张图里好像有性能测试的图? 从而决定要关闭或采取上面的优化方案的?</p>
 <p>david galloway ?</p>
 <p>workload test相关</p>
 <p>dp compaction . avl分配器在4K情况下, 看到了70-700ms的情况.</p>
 <p>stupid和hybrid分配器?</p>
-<p>主要还是64K的申请上? 当分配器花2ms找2个连续的块的时候,
-会锁住其他在相同块上的操作的处理.
-导致没买哦只有500的分配能力?当我申请500K的chunk时, 实际分配单元是64K,
-但是空间本身可能会用16K的块碎片.</p>
+<p>主要还是64K的申请上? 当分配器花2ms找2个连续的块的时候, 会锁住其他在相同块上的操作的处理. 导致没买哦只有500的分配能力?当我申请500K的chunk时, 实际分配单元是64K, 但是空间本身可能会用16K的块碎片.</p>
 <p>目前修改后的stupid分配器没有原版的(没合入这个patch)的性能更好</p>
 <p>...</p>
 <p>后面都是针对这个分配逻辑的讨论了, 未了解, 后续了解后再翻译.</p>
@@ -499,7 +411,7 @@ Disable AVL allocator first-fit optimizations by markhpc · Pull Request
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.896Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.786Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

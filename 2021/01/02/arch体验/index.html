@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="背景 有点用腻了mbp的mac os系统的感觉,想换arch了. 因为总觉得mac系统里好乱, 好多感知不到的空间管理. 而且终究只是unix, 并不是linux. 但是嘛, 都用了一段时间之后回来想想, 最近我比较倾向于arch的原因主要是最近工作所需一直在用linux规范下的systemd控制下的CentOS, 用的比较熟悉了, 对目录结构比较清楚了, 而对于自己非常不熟悉的freeBSD基础">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-01-02T15:03:56.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.855Z">
+<meta property="article:published_time" content="2021-01-02T23:03:56.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.762Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="arch">
 <meta property="article:tag" content="laptop">
@@ -139,7 +139,7 @@
         <h1 class="title">arch体验</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-01-02T15:03:56.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-01-02T23:03:56.000Z" itemprop="datePublished" class="page-time">
   2021-01-02
 </time>
 
@@ -161,12 +161,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%A1%AC%E4%BB%B6"><span class="post-toc-number">2.</span> <span class="post-toc-text">硬件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#xpsarch%E6%8E%A8%E8%8D%90%E6%AF%94%E8%BE%83%E5%A4%9A%E7%9A%84%E6%98%AF%E8%BF%99%E4%B8%AA%E4%BD%86%E6%98%AF%E5%9B%A0%E4%B8%BA%E5%93%81%E6%8E%A7%E9%97%AE%E9%A2%98%E4%B8%8D%E6%8E%A8%E8%8D%90%E7%9A%84%E4%B9%9F%E6%98%AF%E8%BF%99%E4%B8%AA"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">XPS(arch推荐比较多的是这个,但是因为品控问题不推荐的也是这个)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#thinkpad-x1c"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">thinkpad x1c</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#matebook"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">matebook</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85%E8%B8%A9%E5%9D%91"><span class="post-toc-number"></span> <span class="post-toc-text">安装踩坑</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#manjaro%E8%B8%A9%E5%9D%91"><span class="post-toc-number">1.</span> <span class="post-toc-text">manjaro踩坑</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#bootloader%E4%B8%80%E7%9B%B4%E6%B2%A1%E8%83%BD%E6%AD%A3%E5%B8%B8%E4%BD%BF%E7%94%A8"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">bootloader一直没能正常使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#arch%E5%AE%89%E8%A3%85"><span class="post-toc-number">2.</span> <span class="post-toc-text">arch安装</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#todo"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">todo</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%BA%E5%95%A5%E6%88%91%E5%AE%89%E8%A3%85%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%BC%A0%E6%A0%87%E6%94%BE%E5%9C%A8linux%E7%95%8C%E9%9D%A2%E5%86%8D%E6%8C%AA%E5%87%BA%E5%8E%BB%E5%A4%A7%E5%B0%8F%E5%86%99%E9%94%AE%E7%9B%98%E6%80%BB%E6%98%AF%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E5%91%A2%E7%94%A8%E7%9A%84vmware-ubuntu.%E5%A6%82%E5%9B%BE"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">为啥我安装的虚拟机鼠标放在Linux界面再挪出去，大小写键盘总是自动切换呢？用的vmware
-ubuntu.如图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#vmware-tools%E5%AE%89%E8%A3%85%E8%BF%90%E8%A1%8C"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">vmware-tools安装运行</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%87%8D%E7%82%B9"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">重点</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BC%91%E7%9C%A0"><span class="post-toc-number">3.</span> <span class="post-toc-text">休眠</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#systemd-swap"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">systemd-swap</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BA"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">手动创建</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#systemd-boot%E5%92%8C-grub"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">systemd-boot和 grub</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#uefi%E5%90%AF%E5%8A%A8"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">UEFI启动</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BC%BC%E4%B9%8E%E6%88%91%E7%9A%84boot%E5%88%86%E5%8C%BA%E5%88%92%E5%88%86%E5%87%BA%E9%97%AE%E9%A2%98%E4%BA%86-efi%E6%97%A0%E6%B3%95%E6%89%BE%E5%88%B0s"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">似乎我的&#x2F;boot分区划分出问题了,
-efi无法找到s</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%86%E5%8C%BAlvm"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">分区lvm</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#lvm%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E8%A2%AB%E5%BC%95%E5%AF%BC"><span class="post-toc-number">3.5.1.</span> <span class="post-toc-text">lvm不能直接被引导?</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#boot%E5%88%86%E5%8C%BA%E7%8B%AC%E7%AB%8B%E5%88%86%E5%8C%BA%E7%9A%84%E6%84%8F%E4%B9%89"><span class="post-toc-number">3.5.2.</span> <span class="post-toc-text">boot分区独立分区的意义?</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="post-toc-number"></span> <span class="post-toc-text">使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%BA%90"><span class="post-toc-number">1.</span> <span class="post-toc-text">源</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pacman-%E5%8D%87%E7%BA%A7python-%E4%BC%BC%E4%B9%8E%E6%B2%A1%E5%88%A0%E6%8E%89%E6%97%A7%E5%86%85%E5%AE%B9"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">pacman 升级python,
-似乎没删掉旧内容?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9B%B4%E6%96%B0python%E4%B9%8B%E5%90%8E-i3-sensible-terminal%E6%97%A0%E6%B3%95%E5%B7%A5%E4%BD%9C%E4%BA%86"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">更新python之后,
-i3-sensible-terminal无法工作了</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#timeout"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">timeout</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%86%85%E6%A0%B8%E5%BC%82%E5%B8%B8"><span class="post-toc-number">2.</span> <span class="post-toc-text">内核异常</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8D%A1%E5%9C%A8loading-initial-ramdisk"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">卡在loading initial ramdisk</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%89%93%E5%BC%80%E8%B0%83%E8%AF%95%E6%97%A5%E5%BF%97"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">打开调试日志</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%91%A8%E6%9C%9F%E5%86%85%E6%A0%B8%E5%8D%87%E7%BA%A7"><span class="post-toc-number">3.</span> <span class="post-toc-text">周期内核升级</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#terminal"><span class="post-toc-number">4.</span> <span class="post-toc-text">terminal</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#i3-sensible-terminal"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">i3-sensible-terminal</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE-shortcuts"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">快捷键 shortcuts</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BD%91%E7%BB%9C"><span class="post-toc-number">5.</span> <span class="post-toc-text">网络</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BE%93%E5%85%A5%E6%B3%95"><span class="post-toc-number">6.</span> <span class="post-toc-text">输入法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#kde%E6%9C%80%E7%A8%B3%E5%A6%A5"><span class="post-toc-number">7.</span> <span class="post-toc-text">kde最稳妥</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A1%8C%E9%9D%A2i3wm"><span class="post-toc-number">8.</span> <span class="post-toc-text">桌面:i3wm</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#i3lock"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">i3lock</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#urxvt"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">urxvt</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E9%BB%98%E8%AE%A4%E7%9A%84%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4"><span class="post-toc-number">8.2.1.</span> <span class="post-toc-text">默认的复制粘贴</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#unable-to-load-base-fontset"><span class="post-toc-number">8.2.2.</span> <span class="post-toc-text">unable to load base fontset</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9B%BE%E7%89%87%E5%92%8C%E5%A3%81%E7%BA%B8-feh"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">图片和壁纸 feh</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#hidpi7"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">HiDPI[^7]</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#xresources8"><span class="post-toc-number">8.5.</span> <span class="post-toc-text">.Xresources[^8]</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%80%E5%90%8E%E6%88%90%E5%8A%9F%E7%89%88%E6%9C%AC910"><span class="post-toc-number">8.6.</span> <span class="post-toc-text">最后成功版本[^9][^10]</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6-x11%E8%BF%9C%E7%A8%8B%E5%92%8C%E6%9C%AC%E5%9C%B0%E6%B8%B2%E6%9F%93%E4%B8%8D%E5%90%8C"><span class="post-toc-number">9.</span> <span class="post-toc-text">远程控制:
-x11远程和本地渲染不同?</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#manjaro"><span class="post-toc-number"></span> <span class="post-toc-text">manjaro</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#i3wm-%E4%BD%BF%E7%94%A8"><span class="post-toc-number"></span> <span class="post-toc-text">i3wm 使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%99%A8"><span class="post-toc-number">1.</span> <span class="post-toc-text">程序启动器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#dmenu"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">dmenu</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#wayland%E4%BB%8D%E6%9C%AA%E6%88%90%E7%86%9F"><span class="post-toc-number"></span> <span class="post-toc-text">Wayland仍未成熟</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#sway"><span class="post-toc-number">1.</span> <span class="post-toc-text">Sway</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%A9%B1%E5%8A%A8"><span class="post-toc-number"></span> <span class="post-toc-text">驱动</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number"></span> <span class="post-toc-text">Reference</span></a>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%A1%AC%E4%BB%B6"><span class="post-toc-number">2.</span> <span class="post-toc-text">硬件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#xpsarch%E6%8E%A8%E8%8D%90%E6%AF%94%E8%BE%83%E5%A4%9A%E7%9A%84%E6%98%AF%E8%BF%99%E4%B8%AA%E4%BD%86%E6%98%AF%E5%9B%A0%E4%B8%BA%E5%93%81%E6%8E%A7%E9%97%AE%E9%A2%98%E4%B8%8D%E6%8E%A8%E8%8D%90%E7%9A%84%E4%B9%9F%E6%98%AF%E8%BF%99%E4%B8%AA"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">XPS(arch推荐比较多的是这个,但是因为品控问题不推荐的也是这个)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#thinkpad-x1c"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">thinkpad x1c</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#matebook"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">matebook</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85%E8%B8%A9%E5%9D%91"><span class="post-toc-number"></span> <span class="post-toc-text">安装踩坑</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#manjaro%E8%B8%A9%E5%9D%91"><span class="post-toc-number">1.</span> <span class="post-toc-text">manjaro踩坑</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#bootloader%E4%B8%80%E7%9B%B4%E6%B2%A1%E8%83%BD%E6%AD%A3%E5%B8%B8%E4%BD%BF%E7%94%A8"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">bootloader一直没能正常使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#arch%E5%AE%89%E8%A3%85"><span class="post-toc-number">2.</span> <span class="post-toc-text">arch安装</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#todo"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">todo</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%BA%E5%95%A5%E6%88%91%E5%AE%89%E8%A3%85%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%BC%A0%E6%A0%87%E6%94%BE%E5%9C%A8linux%E7%95%8C%E9%9D%A2%E5%86%8D%E6%8C%AA%E5%87%BA%E5%8E%BB%E5%A4%A7%E5%B0%8F%E5%86%99%E9%94%AE%E7%9B%98%E6%80%BB%E6%98%AF%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E5%91%A2%E7%94%A8%E7%9A%84vmware-ubuntu.%E5%A6%82%E5%9B%BE"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">为啥我安装的虚拟机鼠标放在Linux界面再挪出去，大小写键盘总是自动切换呢？用的vmware ubuntu.如图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#vmware-tools%E5%AE%89%E8%A3%85%E8%BF%90%E8%A1%8C"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">vmware-tools安装运行</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%87%8D%E7%82%B9"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">重点</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BC%91%E7%9C%A0"><span class="post-toc-number">3.</span> <span class="post-toc-text">休眠</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#systemd-swap"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">systemd-swap</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BA"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">手动创建</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#systemd-boot%E5%92%8C-grub"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">systemd-boot和 grub</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#uefi%E5%90%AF%E5%8A%A8"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">UEFI启动</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BC%BC%E4%B9%8E%E6%88%91%E7%9A%84boot%E5%88%86%E5%8C%BA%E5%88%92%E5%88%86%E5%87%BA%E9%97%AE%E9%A2%98%E4%BA%86-efi%E6%97%A0%E6%B3%95%E6%89%BE%E5%88%B0s"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">似乎我的&#x2F;boot分区划分出问题了, efi无法找到s</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%86%E5%8C%BAlvm"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">分区lvm</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#lvm%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E8%A2%AB%E5%BC%95%E5%AF%BC"><span class="post-toc-number">3.5.1.</span> <span class="post-toc-text">lvm不能直接被引导?</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#boot%E5%88%86%E5%8C%BA%E7%8B%AC%E7%AB%8B%E5%88%86%E5%8C%BA%E7%9A%84%E6%84%8F%E4%B9%89"><span class="post-toc-number">3.5.2.</span> <span class="post-toc-text">boot分区独立分区的意义?</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="post-toc-number"></span> <span class="post-toc-text">使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%BA%90"><span class="post-toc-number">1.</span> <span class="post-toc-text">源</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pacman-%E5%8D%87%E7%BA%A7python-%E4%BC%BC%E4%B9%8E%E6%B2%A1%E5%88%A0%E6%8E%89%E6%97%A7%E5%86%85%E5%AE%B9"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">pacman 升级python, 似乎没删掉旧内容?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9B%B4%E6%96%B0python%E4%B9%8B%E5%90%8E-i3-sensible-terminal%E6%97%A0%E6%B3%95%E5%B7%A5%E4%BD%9C%E4%BA%86"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">更新python之后, i3-sensible-terminal无法工作了</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#timeout"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">timeout</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%86%85%E6%A0%B8%E5%BC%82%E5%B8%B8"><span class="post-toc-number">2.</span> <span class="post-toc-text">内核异常</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8D%A1%E5%9C%A8loading-initial-ramdisk"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">卡在loading initial ramdisk</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%89%93%E5%BC%80%E8%B0%83%E8%AF%95%E6%97%A5%E5%BF%97"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">打开调试日志</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%91%A8%E6%9C%9F%E5%86%85%E6%A0%B8%E5%8D%87%E7%BA%A7"><span class="post-toc-number">3.</span> <span class="post-toc-text">周期内核升级</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#terminal"><span class="post-toc-number">4.</span> <span class="post-toc-text">terminal</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#i3-sensible-terminal"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">i3-sensible-terminal</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE-shortcuts"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">快捷键 shortcuts</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BD%91%E7%BB%9C"><span class="post-toc-number">5.</span> <span class="post-toc-text">网络</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BE%93%E5%85%A5%E6%B3%95"><span class="post-toc-number">6.</span> <span class="post-toc-text">输入法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#kde%E6%9C%80%E7%A8%B3%E5%A6%A5"><span class="post-toc-number">7.</span> <span class="post-toc-text">kde最稳妥</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A1%8C%E9%9D%A2i3wm"><span class="post-toc-number">8.</span> <span class="post-toc-text">桌面:i3wm</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#i3lock"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">i3lock</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#urxvt"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">urxvt</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E9%BB%98%E8%AE%A4%E7%9A%84%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4"><span class="post-toc-number">8.2.1.</span> <span class="post-toc-text">默认的复制粘贴</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#unable-to-load-base-fontset"><span class="post-toc-number">8.2.2.</span> <span class="post-toc-text">unable to load base fontset</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9B%BE%E7%89%87%E5%92%8C%E5%A3%81%E7%BA%B8-feh"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">图片和壁纸 feh</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#hidpi7"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">HiDPI[^7]</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#xresources8"><span class="post-toc-number">8.5.</span> <span class="post-toc-text">.Xresources[^8]</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%80%E5%90%8E%E6%88%90%E5%8A%9F%E7%89%88%E6%9C%AC910"><span class="post-toc-number">8.6.</span> <span class="post-toc-text">最后成功版本[^9][^10]</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6-x11%E8%BF%9C%E7%A8%8B%E5%92%8C%E6%9C%AC%E5%9C%B0%E6%B8%B2%E6%9F%93%E4%B8%8D%E5%90%8C"><span class="post-toc-number">9.</span> <span class="post-toc-text">远程控制: x11远程和本地渲染不同?</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#manjaro"><span class="post-toc-number"></span> <span class="post-toc-text">manjaro</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#i3wm-%E4%BD%BF%E7%94%A8"><span class="post-toc-number"></span> <span class="post-toc-text">i3wm 使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%99%A8"><span class="post-toc-number">1.</span> <span class="post-toc-text">程序启动器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#dmenu"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">dmenu</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#wayland%E4%BB%8D%E6%9C%AA%E6%88%90%E7%86%9F"><span class="post-toc-number"></span> <span class="post-toc-text">Wayland仍未成熟</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#sway"><span class="post-toc-number">1.</span> <span class="post-toc-text">Sway</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%A9%B1%E5%8A%A8"><span class="post-toc-number"></span> <span class="post-toc-text">驱动</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number"></span> <span class="post-toc-text">Reference</span></a>
         </nav>
     </aside>
 
@@ -177,7 +172,7 @@ x11远程和本地渲染不同?</span></a></li></ol></li><li class="post-toc-ite
     <div class="post-card">
         <h1 class="post-card-title">arch体验</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-01-02 23:03:56" datetime="2021-01-02T15:03:56.000Z"  itemprop="datePublished">2021-01-02</time>
+            <time class="post-time" title="2021-01-02 23:03:56" datetime="2021-01-02T23:03:56.000Z"  itemprop="datePublished">2021-01-02</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -194,23 +189,14 @@ x11远程和本地渲染不同?</span></a></li></ol></li><li class="post-toc-ite
         <div class="post-content" id="post-content" itemprop="postContent">
             <h2 id="背景">背景</h2>
 <p>有点用腻了mbp的mac os系统的感觉,想换arch了.</p>
-<p>因为总觉得mac系统里好乱, 好多感知不到的空间管理. 而且终究只是unix,
-并不是linux.</p>
-<p>但是嘛, 都用了一段时间之后回来想想,
-最近我比较倾向于<code>arch</code>的原因主要是最近工作所需一直在用<code>linux</code>规范下的<code>systemd</code>控制下的<code>CentOS</code>,
-用的比较熟悉了, 对目录结构比较清楚了,
-而对于自己非常不熟悉的<code>freeBSD</code>基础的mac,
-有种不在自己控制内的感觉...</p>
-<p>现在想了想, 这其实不就是舒适区的问题吗?
-学习一下mac的目录结构和日志排查等, 其实也并不会有多费事,
-也并不会增加我记忆<code>unix</code>生态的混淆程度.</p>
-<p>哎,但是看笔记本的品控上来说,可能还是mac os让人比较省心了.
-至少售后给的新笔记本不会像xps那样经常出问题...</p>
+<p>因为总觉得mac系统里好乱, 好多感知不到的空间管理. 而且终究只是unix, 并不是linux.</p>
+<p>但是嘛, 都用了一段时间之后回来想想, 最近我比较倾向于<code>arch</code>的原因主要是最近工作所需一直在用<code>linux</code>规范下的<code>systemd</code>控制下的<code>CentOS</code>, 用的比较熟悉了, 对目录结构比较清楚了, 而对于自己非常不熟悉的<code>freeBSD</code>基础的mac, 有种不在自己控制内的感觉...</p>
+<p>现在想了想, 这其实不就是舒适区的问题吗? 学习一下mac的目录结构和日志排查等, 其实也并不会有多费事, 也并不会增加我记忆<code>unix</code>生态的混淆程度.</p>
+<p>哎,但是看笔记本的品控上来说,可能还是mac os让人比较省心了. 至少售后给的新笔记本不会像xps那样经常出问题...</p>
 <h2 id="硬件">硬件</h2>
 <h3 id="xpsarch推荐比较多的是这个但是因为品控问题不推荐的也是这个">XPS(arch推荐比较多的是这个,但是因为品控问题不推荐的也是这个)</h3>
 <p>什么电流音之类的,决定还是不选这个了.</p>
-<p>虽然好像XPS 7590 15寸或者13寸的直接支持hdmi
-2.0接口,不过品控还是太让人担心了.</p>
+<p>虽然好像XPS 7590 15寸或者13寸的直接支持hdmi 2.0接口,不过品控还是太让人担心了.</p>
 <h3 id="thinkpad-x1c">thinkpad x1c</h3>
 <p>emm, 似乎还行,但是触控板的体验还是比不上mac的应该</p>
 <h3 id="matebook">matebook</h3>
@@ -219,165 +205,106 @@ x11远程和本地渲染不同?</span></a></li></ol></li><li class="post-toc-ite
 <h1 id="安装踩坑">安装踩坑</h1>
 <h2 id="manjaro踩坑">manjaro踩坑</h2>
 <h3 id="bootloader一直没能正常使用"><code>bootloader</code>一直没能正常使用</h3>
-<p>参照[^3]这个带图片的安装过程终于安装成了.
-发现我直接选择第三种<code>systemd-boot</code>的引导,最后是看不到进入系统的东西的,可能兼容性上有问题?
-最后我额外安装了<code>Refind</code>这套引导,终于进入桌面了.</p>
+<p>参照[^3]这个带图片的安装过程终于安装成了. 发现我直接选择第三种<code>systemd-boot</code>的引导,最后是看不到进入系统的东西的,可能兼容性上有问题? 最后我额外安装了<code>Refind</code>这套引导,终于进入桌面了.</p>
 <h2 id="arch安装">arch安装</h2>
 <h3 id="todo">todo</h3>
 <p>大小写老师被自动切换了</p>
 <p>似乎是vmware 15.5这个版本的缺陷</p>
 <blockquote>
-<p>Temporary solution for Ubuntu guest which worked for me was just
-disabling the Caps Lock key all together with this</p>
+<p>Temporary solution for Ubuntu guest which worked for me was just disabling the Caps Lock key all together with this</p>
 </blockquote>
 <blockquote>
-<p>setxkbmap -option caps:none setxkbmap -option caps:none # (disable
-the caps lock key)</p>
+<p>setxkbmap -option caps:none setxkbmap -option caps:none # (disable the caps lock key)</p>
 </blockquote>
-<p>xdotool key Caps_Lock # (toggle caps lock) <a target="_blank" rel="noopener" href="https://communities.vmware.com/t5/VMware-Workstation-Pro/Caps-Lock-Issues-With-Upgrade/td-p/2285920">Caps
-Lock Issues With Upgrade - VMware Technology Network VMTN</a></p>
+<p>xdotool key Caps_Lock # (toggle caps lock) <a target="_blank" rel="noopener" href="https://communities.vmware.com/t5/VMware-Workstation-Pro/Caps-Lock-Issues-With-Upgrade/td-p/2285920">Caps Lock Issues With Upgrade - VMware Technology Network VMTN</a></p>
 <p>禁用这个按钮倒也是个方案, 反正我基本也不用.</p>
 <p>不过就怕他也影响宿主机, 那就很讨厌了.</p>
-<h3 id="为啥我安装的虚拟机鼠标放在linux界面再挪出去大小写键盘总是自动切换呢用的vmware-ubuntu.如图">为啥我安装的虚拟机鼠标放在Linux界面再挪出去，大小写键盘总是自动切换呢？用的vmware
-ubuntu.如图</h3>
-<p><a target="_blank" rel="noopener" href="https://tieba.baidu.com/p/4211342546">为啥我安装的虚拟机鼠标放在Linux界面再挪出去，大小写键盘总_虚拟机吧_百度贴吧</a>
-<a target="_blank" rel="noopener" href="https://blog.csdn.net/helen2977/article/details/82143556/">VMware虚拟机中大小写不停切换的问题_helen2977的博客-CSDN博客</a>
-好像无解</p>
+<h3 id="为啥我安装的虚拟机鼠标放在linux界面再挪出去大小写键盘总是自动切换呢用的vmware-ubuntu.如图">为啥我安装的虚拟机鼠标放在Linux界面再挪出去，大小写键盘总是自动切换呢？用的vmware ubuntu.如图</h3>
+<p><a target="_blank" rel="noopener" href="https://tieba.baidu.com/p/4211342546">为啥我安装的虚拟机鼠标放在Linux界面再挪出去，大小写键盘总_虚拟机吧_百度贴吧</a> <a target="_blank" rel="noopener" href="https://blog.csdn.net/helen2977/article/details/82143556/">VMware虚拟机中大小写不停切换的问题_helen2977的博客-CSDN博客</a> 好像无解</p>
 <h3 id="vmware-tools安装运行">vmware-tools安装运行</h3>
 <p>我之前应该是直接<code>pacman -Syy open-vmware-tools</code></p>
 <p>现在发现<code>vmware-tools</code>这个服务没能启动.</p>
 <p>好像搜到说是</p>
-<p><a target="_blank" rel="noopener" href="https://www.linuxquestions.org/questions/linux-general-1/automating-installation-of-vmware-tools-4175446206/">[SOLVED]
-Automating installation of vmware-tools</a></p>
-<p>实际上我装的是<code>open-vm-tools</code> ### open-vm-tools
-<code>vmtoolsd</code>这个服务似乎可以工作</p>
+<p><a target="_blank" rel="noopener" href="https://www.linuxquestions.org/questions/linux-general-1/automating-installation-of-vmware-tools-4175446206/">[SOLVED] Automating installation of vmware-tools</a></p>
+<p>实际上我装的是<code>open-vm-tools</code> ### open-vm-tools <code>vmtoolsd</code>这个服务似乎可以工作</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/darkula/article/details/107073762">VMware中的Manjaro启用复制粘贴_darkula的博客-CSDN博客</a></p>
 <blockquote>
-<p>Installation Install open-vm-tools. If the legacy vmhgfs shared
-folder module is desired, the open-vm-tools-dkmsAUR package must be
-installed (the new vmhgfs-fuse driver is included in open-vm-tools).
-Start and/or enable vmtoolsd.service and
-vmware-vmblock-fuse.service.</p>
+<p>Installation Install open-vm-tools. If the legacy vmhgfs shared folder module is desired, the open-vm-tools-dkmsAUR package must be installed (the new vmhgfs-fuse driver is included in open-vm-tools). Start and/or enable vmtoolsd.service and vmware-vmblock-fuse.service.</p>
 </blockquote>
 <blockquote>
-<p>Try to install gtkmm3 manually if it does not work properly. To
-enable copy and paste between host and guest gtkmm3 is required.</p>
+<p>Try to install gtkmm3 manually if it does not work properly. To enable copy and paste between host and guest gtkmm3 is required.</p>
 </blockquote>
-<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/VMware/Install_Arch_Linux_as_a_guest#Installation">VMware/Install
-Arch Linux as a guest - ArchWiki</a></p>
-<p>不能复制粘贴的时候,
-不知道为什么,执行下这个<code>vmware-user</code>就能用了.</p>
-<p><a target="_blank" rel="noopener" href="https://zzz.buzz/zh/2018/05/08/vmware-copy-paste-for-arch-linux-manjaro/">Arch
-Linux / Manjaro 配置 VMware copy/paste</a></p>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/VMware/Install_Arch_Linux_as_a_guest#Installation">VMware/Install Arch Linux as a guest - ArchWiki</a></p>
+<p>不能复制粘贴的时候, 不知道为什么,执行下这个<code>vmware-user</code>就能用了.</p>
+<p><a target="_blank" rel="noopener" href="https://zzz.buzz/zh/2018/05/08/vmware-copy-paste-for-arch-linux-manjaro/">Arch Linux / Manjaro 配置 VMware copy/paste</a></p>
 <p>vim内没开全局剪切板, 无法向外复制. cat处理吧.</p>
 <h3 id="重点">重点</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这里fdisk分区时, 及时将类型修改为EFI类型</span></span><br><span class="line"><span class="comment"># 否则会出现错误: cannot find a GRUB drive for </span></span><br><span class="line"></span><br><span class="line">mount /dev/mapper/VG_0-root /mnt</span><br><span class="line"><span class="built_in">mkdir</span> /mnt/boot</span><br><span class="line">mount /dev/sdb1 /mnt/boot</span><br><span class="line">swapon /dev/mapper/VG_0-swap</span><br><span class="line"></span><br><span class="line">timedatectl set-ntp <span class="literal">true</span></span><br><span class="line">vim /​etc/​pacman.d/​mirrorlist</span><br><span class="line">pacman -Syy</span><br><span class="line">pacstrap /mnt base base-devel linux linux-firmware man-db man-pages iwd lvm2 dhcpcd vim systemd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> arch-chroot /mnt</span><br><span class="line"></span><br><span class="line"><span class="built_in">ln</span> -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br><span class="line"></span><br><span class="line">/etc/locale.conf</span><br><span class="line">locale-gen</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line">/etc/mkinitcpio.conf</span><br><span class="line">HOOKS=(base systemd ... block sd-lvm2 filesystems)</span><br><span class="line"><span class="comment">#Initramfs</span></span><br><span class="line">mkinitcpio -P</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装grub</span></span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub</span><br><span class="line"><span class="comment"># 注意要挂载/boot/efi，见上面挂载boot分区那步</span></span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg</span><br><span class="line"></span><br><span class="line">这次</span><br><span class="line">useradd -m -G wheel cc</span><br><span class="line">passwd cc</span><br><span class="line">nano /etc/sudoers</span><br><span class="line">在 root ALL=(ALL) ALL 下面添加</span><br><span class="line">用户名 ALL=(ALL) ALL</span><br><span class="line">为你刚才创建的用户 添加sudo权限</span><br><span class="line"></span><br><span class="line">pacman -S xorg-server</span><br><span class="line">pacman -S i3-wm</span><br><span class="line"></span><br><span class="line"><span class="comment"># useradd的用户无法启动时, 安装一下这个, 创建一下自己这个用户的配置文件就好了.</span></span><br><span class="line">pacman -S xorg-xinit</span><br><span class="line"></span><br><span class="line">复制 /etc/X11/xinit/xinitrc 到～/.xinitrc。注释掉文件后面的最后的以下几行。</span><br><span class="line"></span><br><span class="line">twm &amp;</span><br><span class="line">xclock -geometry 50x50-1+1 &amp;</span><br><span class="line">xterm -geometry 80x50+494+51 &amp;</span><br><span class="line">xterm -geometry 80x20+494-0 &amp;</span><br><span class="line"><span class="built_in">exec</span> xterm -geometry 80x66+0+0 -name login</span><br><span class="line"></span><br><span class="line">然后添加i3启动命令</span><br><span class="line"></span><br><span class="line"><span class="built_in">exec</span> i3</span><br><span class="line"></span><br><span class="line">sudo pacman -S i3</span><br><span class="line">sudo pacman -S wqy-microhei adobe-source-code-pro-fonts</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># i3 Error: Status_command not found (exit 127) : linuxmint</span></span><br><span class="line">[\(1\) i3 Error: Status\_command not found \(<span class="built_in">exit</span> 127\) : linuxmint](https://www.reddit.com/r/linuxmint/comments/3f9k9s/i3_error_status_command_not_found_exit_127/)</span><br><span class="line">pacman -S i3status</span><br><span class="line"></span><br><span class="line"><span class="comment">#HIDPI</span></span><br><span class="line">[HiDPI \(简体中文\) \- ArchWiki](https://wiki.archlinux.org/index.php/HiDPI_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)<span class="comment">#%E9%9D%9E%E6%95%B4%E6%95%B0%E5%80%8D%E7%BC%A9%E6%94%BE%E4%B8%8B%E7%9A%84Bug)</span></span><br><span class="line"></span><br><span class="line">Simplified appliance containg one one-liner</span><br><span class="line"></span><br><span class="line"><span class="built_in">eval</span> $(cvt 2220 1250  60 |sed <span class="string">&#x27;s/Modeline/xrandr --newmode /g&#x27;</span>|sed -n <span class="string">&#x27;1!p&#x27;</span>)</span><br><span class="line"></span><br><span class="line">as a proper result resolution screen size aspect ratio might be afterwards reevaluated/adjusted, therefore find out the created resolution by xrand <span class="built_in">command</span> - appended <span class="keyword">in</span> the end of output,</span><br><span class="line"></span><br><span class="line">1) assign the resolution to a specific display -</span><br><span class="line"></span><br><span class="line">xrandr --addmode VGA-1 <span class="string">&quot;2224x1250_60.00&quot;</span></span><br><span class="line"></span><br><span class="line">2) output the desired resolution on the display</span><br><span class="line"></span><br><span class="line">xrandr --output VGA-1 --mode <span class="string">&quot;2224x1250_60.00&quot;</span></span><br><span class="line"></span><br><span class="line">To list all installed shells, run:</span><br><span class="line"></span><br><span class="line">$ chsh -l</span><br><span class="line">And to <span class="built_in">set</span> one as default <span class="keyword">for</span> your user <span class="keyword">do</span>:</span><br><span class="line"></span><br><span class="line">$ chsh -s full-path-to-shell</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ ! <span class="variable">$DISPLAY</span> &amp;&amp; <span class="variable">$XDG_VTNR</span> -eq 1 ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">exec</span> startx</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">yay-git.git</span><br><span class="line"></span><br><span class="line">makepkg -si</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置dhcpcd自动</span></span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> dhcpcd</span><br><span class="line"></span><br><span class="line">退出startx方式</span><br><span class="line">win+<span class="built_in">shift</span>+e退出桌面, 这个方式好像会卡住, 输入不来哦东西.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>按照这个终于过了. <a target="_blank" rel="noopener" href="https://shenyu.me/2020/04/11/arch-uefi-install.html">Arch Linux
-(UEFI with GPT) 安装 | 沈煜的博客</a></p>
+<p>按照这个终于过了. <a target="_blank" rel="noopener" href="https://shenyu.me/2020/04/11/arch-uefi-install.html">Arch Linux (UEFI with GPT) 安装 | 沈煜的博客</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33215865/article/details/90288997">ArchLinux图形界面安装与美化：i3+polybar_盐焗咸鱼的博客-CSDN博客_archlinux安装i3桌面</a></p>
 <h2 id="休眠">休眠</h2>
 <h3 id="systemd-swap">systemd-swap</h3>
 <blockquote>
-<p>Can we use this to enable hibernation? A: Nope as hibernation wants a
-persistent fs blocks and wants access to swap data directly from disk,
-this will not work on: swapfs</p>
+<p>Can we use this to enable hibernation? A: Nope as hibernation wants a persistent fs blocks and wants access to swap data directly from disk, this will not work on: swapfs</p>
 </blockquote>
 <p>emm, 不能用这个来做休眠用的swap.</p>
 <h3 id="手动创建">手动创建</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fallocate -l 16G /swapfile</span><br><span class="line"><span class="built_in">chmod</span> 600 /swapfile</span><br><span class="line">mkswap /swapfile</span><br><span class="line">swapon /swapfile</span><br><span class="line"></span><br><span class="line">filefrag -v /swapfile</span><br><span class="line">GRUB_CMDLINE_LINUX_DEFAULT=<span class="string">&quot;quiet resume=/dev/sda1 resume_offset=313344&quot;</span></span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg</span><br><span class="line">/etc/mkinitcpio.conf</span><br><span class="line">mkinitcpio -P</span><br></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="https://xzos.net/arch-linux-hibernation-into-swap-file/">Arch
-Linux 使用 Swap File 进行休眠 - xzOS</a> ## 安装vmware</p>
-<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/VMware_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)/Installing_Arch_as_a_guest_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">VMware
-(简体中文)/Installing Arch as a guest (简体中文) - ArchWiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://xzos.net/arch-linux-hibernation-into-swap-file/">Arch Linux 使用 Swap File 进行休眠 - xzOS</a> ## 安装vmware</p>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/VMware_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)/Installing_Arch_as_a_guest_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">VMware (简体中文)/Installing Arch as a guest (简体中文) - ArchWiki</a></p>
 <h3 id="systemd-boot和-grub">systemd-boot和 grub</h3>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20623053">systemd-boot和EFISTUB
-- 知乎</a> ### boot manager可以看到有我新建的grub,
-但是EFI似乎没法直接从硬盘启动?</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20623053">systemd-boot和EFISTUB - 知乎</a> ### boot manager可以看到有我新建的grub, 但是EFI似乎没法直接从硬盘启动?</p>
 <h3 id="uefi启动">UEFI启动</h3>
 <p>/etc/locale.gen ### UEFI和 grub什么关系?</p>
-<h4 id="似乎我的boot分区划分出问题了-efi无法找到s">似乎我的/boot分区划分出问题了,
-efi无法找到s</h4>
+<h4 id="似乎我的boot分区划分出问题了-efi无法找到s">似乎我的/boot分区划分出问题了, efi无法找到s</h4>
 <p>并不是EFI分区, 导致bootctl无法识别了.</p>
 <p>bootctl status可以帮助判定</p>
-<p><a target="_blank" rel="noopener" href="https://bbs.archlinux.org/viewtopic.php?id=229994">[SOLVED]
-EFI partition not detected / Installation / Arch Linux Forums</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.archlinux.org/viewtopic.php?id=229994">[SOLVED] EFI partition not detected / Installation / Arch Linux Forums</a></p>
 <p>grub-install --target=i386-pc /dev/sda 用legacy就尅引导了</p>
 <p>用uefi的反而麻烦, 必须分区时gpt符合efi的</p>
 <h3 id="分区lvm">分区lvm</h3>
-<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Installation_guide">Installation
-guide - ArchWiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Installation_guide">Installation guide - ArchWiki</a></p>
 <h4 id="lvm不能直接被引导">lvm不能直接被引导?</h4>
 <h4 id="boot分区独立分区的意义">boot分区独立分区的意义?</h4>
 <p>创建出来之后, 从哪里复制内容过来, 好像这个文档里都没有提啊s</p>
-<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Partitioning_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E6%A0%B9%E5%88%86%E5%8C%BA">Partitioning
-(简体中文) - ArchWiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Partitioning_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E6%A0%B9%E5%88%86%E5%8C%BA">Partitioning (简体中文) - ArchWiki</a></p>
 <p>/boot分区里的内容在哪里呢?</p>
 <p>使用过grub-config来往里面生成内容?</p>
 <p>mkinitcpio -P 似乎也能生成新的initramfs</p>
-<p>grub-install --target=x86_64-efi --efi-directory=/boot
---bootloader-id=grub<br>
+<p>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub<br>
 grub-mkconfig -o /boot/grub/grub.cfg</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/130445778">将已经存在的archlinux迁移到lvm
-- 知乎</a> #### initramfs选择?</p>
-<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/LVM_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LVM
-(简体中文) - ArchWiki</a> <a target="_blank" rel="noopener" href="https://www.cnblogs.com/unkownarea/p/6472461.html">archlinux安裝手记（Win10+Arch、GPT+UEFI、lvm）
-- 停止使用的账户 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/130445778">将已经存在的archlinux迁移到lvm - 知乎</a> #### initramfs选择?</p>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/LVM_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LVM (简体中文) - ArchWiki</a> <a target="_blank" rel="noopener" href="https://www.cnblogs.com/unkownarea/p/6472461.html">archlinux安裝手记（Win10+Arch、GPT+UEFI、lvm） - 停止使用的账户 - 博客园</a></p>
 <h1 id="使用">使用</h1>
 <h2 id="源">源</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman-mirrors -c China</span><br><span class="line">pacman -Syy</span><br><span class="line">pacman -Syu</span><br><span class="line">好像说是命令是pacman -Syyu</span><br><span class="line">pacman -Qi linux</span><br><span class="line">pacman -Qs 在已安装中查询</span><br><span class="line">pacman -Ss 在仓库中查询</span><br><span class="line">pacman -R 卸载</span><br><span class="line">pacman -Ru 循环卸载系统里不依赖的东西 </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="pacman-升级python-似乎没删掉旧内容">pacman 升级python,
-似乎没删掉旧内容?</h3>
+<h3 id="pacman-升级python-似乎没删掉旧内容">pacman 升级python, 似乎没删掉旧内容?</h3>
 <ul>
 <li>todo
 <ul>
-<li>从<code>3.8</code>升级到<code>3.9</code>,
-看了下<code>/usr/bin</code>下的确只有新的<code>python3.9</code>了,
-但是<code>/usr/lib64/</code>下还存在<code>3.8</code>的目录,
-是不是之前pip装的东西没有被自动卸载或者移植?</li>
+<li>从<code>3.8</code>升级到<code>3.9</code>, 看了下<code>/usr/bin</code>下的确只有新的<code>python3.9</code>了, 但是<code>/usr/lib64/</code>下还存在<code>3.8</code>的目录, 是不是之前pip装的东西没有被自动卸载或者移植?</li>
 </ul></li>
 </ul>
-<p>这是一个疑问句 &gt; 不要用 pip 管理 /usr 下的包，它会和 pacman
-打架。要么建 venv 在里边用 pip，要么不用 pip 只用 pacman。</p>
-<p>根据这个<a target="_blank" rel="noopener" href="https://bbs.archlinuxcn.org/viewtopic.php?id=10283">pacman
-安装的python包无法识别 / 应用程序与桌面环境 / Arch Linux 中文论坛</a>,
-是建议通过<code>venv</code>来管理python依赖的.</p>
-<h3 id="更新python之后-i3-sensible-terminal无法工作了">更新python之后,
-i3-sensible-terminal无法工作了</h3>
-<p>从<code>TTY2</code>执行了下<code>i3-sensible-terminal</code>,
-结果发现是<code>psutils</code>这个库没了,
-应该就是我刚才升级引起的了.</p>
-<p>怎么让pacman来安装包呢? <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman -Syy python-pip</span><br><span class="line">pacman -Syy python-six</span><br></pre></td></tr></table></figure>
-装完<code>pip</code>之后报没有<code>six</code>, 安装了下就能使用了.</p>
-<p>执行<code>terminator</code>,
-报<code>You need to install gobject, gtk, pango to run Terminator</code></p>
-<p>最后, 我也没找到怎么处理的办法,
-就把python3.8里的库复制到了python3.9的里...</p>
+<p>这是一个疑问句 &gt; 不要用 pip 管理 /usr 下的包，它会和 pacman 打架。要么建 venv 在里边用 pip，要么不用 pip 只用 pacman。</p>
+<p>根据这个<a target="_blank" rel="noopener" href="https://bbs.archlinuxcn.org/viewtopic.php?id=10283">pacman 安装的python包无法识别 / 应用程序与桌面环境 / Arch Linux 中文论坛</a>, 是建议通过<code>venv</code>来管理python依赖的.</p>
+<h3 id="更新python之后-i3-sensible-terminal无法工作了">更新python之后, i3-sensible-terminal无法工作了</h3>
+<p>从<code>TTY2</code>执行了下<code>i3-sensible-terminal</code>, 结果发现是<code>psutils</code>这个库没了, 应该就是我刚才升级引起的了.</p>
+<p>怎么让pacman来安装包呢? <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman -Syy python-pip</span><br><span class="line">pacman -Syy python-six</span><br></pre></td></tr></table></figure> 装完<code>pip</code>之后报没有<code>six</code>, 安装了下就能使用了.</p>
+<p>执行<code>terminator</code>, 报<code>You need to install gobject, gtk, pango to run Terminator</code></p>
+<p>最后, 我也没找到怎么处理的办法, 就把python3.8里的库复制到了python3.9的里...</p>
 <h3 id="timeout">timeout</h3>
-<p><a target="_blank" rel="noopener" href="https://bbs.archlinux.org/viewtopic.php?id=174752">[Solved]
-Connection time-out on installation (curl / iPv6 problem) / Installation
-/ Arch Linux Forums</a> 捣鼓了半天, 最后是因为我在Arch里默认开了代理,
-代理好像有问题了.</p>
+<p><a target="_blank" rel="noopener" href="https://bbs.archlinux.org/viewtopic.php?id=174752">[Solved] Connection time-out on installation (curl / iPv6 problem) / Installation / Arch Linux Forums</a> 捣鼓了半天, 最后是因为我在Arch里默认开了代理, 代理好像有问题了.</p>
 <h2 id="内核异常">内核异常</h2>
 <h3 id="卡在loading-initial-ramdisk">卡在loading initial ramdisk</h3>
 <blockquote>
-<p>There was a kernel update, some element of your initramfs wasn't
-successfully built and copied to your bootloader. Generally the output
-of mkinitcpio shows errors, chroot in and make it again. 执行
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkinitcpio</span><br><span class="line"><span class="comment"># 就会报出initramfs的错误.</span></span><br></pre></td></tr></table></figure> <a target="_blank" rel="noopener" href="https://www.reddit.com/r/archlinux/comments/58an6s/stuck_on_loading_initial_ramdisk/">(1)
-Stuck on Loading initial ramdisk : archlinux</a></p>
+<p>There was a kernel update, some element of your initramfs wasn't successfully built and copied to your bootloader. Generally the output of mkinitcpio shows errors, chroot in and make it again. 执行 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkinitcpio</span><br><span class="line"><span class="comment"># 就会报出initramfs的错误.</span></span><br></pre></td></tr></table></figure> <a target="_blank" rel="noopener" href="https://www.reddit.com/r/archlinux/comments/58an6s/stuck_on_loading_initial_ramdisk/">(1) Stuck on Loading initial ramdisk : archlinux</a></p>
 </blockquote>
 <h4 id="打开调试日志">打开调试日志</h4>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /boot/grub/grub.cfg</span><br><span class="line"><span class="comment"># 去除quiet和设置log_level=7,rd.log=all</span></span><br><span class="line"><span class="comment"># 奇怪,怎么没生效呢?</span></span><br></pre></td></tr></table></figure>
-<p>通过增加<code>set debug=all</code>和<code>set ignore_log_level=all</code>倒是生效了,
-看到了一些代码的执行记录. 但是倒是没看到Error信息</p>
-<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/General_troubleshooting#Boot_problems">General
-troubleshooting - ArchWiki</a></p>
+<p>通过增加<code>set debug=all</code>和<code>set ignore_log_level=all</code>倒是生效了, 看到了一些代码的执行记录. 但是倒是没看到Error信息</p>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/General_troubleshooting#Boot_problems">General troubleshooting - ArchWiki</a></p>
 <blockquote>
-<p>为其他不是当前正在运行的内核创建镜像，添加内核版本到命令行，
-可以在/usr/lib/modules目录查看支持的内核版本. <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mkinitcpio -p linux</span></span><br><span class="line">就会以当前安装的linux版本对/boot目录下的initramfs-linux.img进行再次生成了.</span><br></pre></td></tr></table></figure> 捣鼓了2天,
-换了个稳定版的内核就正常开机了. #### 进入reach target basic
-system之前的shell
-在<code>linux16</code>那行追加<code>rd.break=pre-trigger</code></p>
+<p>为其他不是当前正在运行的内核创建镜像，添加内核版本到命令行， 可以在/usr/lib/modules目录查看支持的内核版本. <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mkinitcpio -p linux</span></span><br><span class="line">就会以当前安装的linux版本对/boot目录下的initramfs-linux.img进行再次生成了.</span><br></pre></td></tr></table></figure> 捣鼓了2天, 换了个稳定版的内核就正常开机了. #### 进入reach target basic system之前的shell 在<code>linux16</code>那行追加<code>rd.break=pre-trigger</code></p>
 </blockquote>
 <p>在<code>linux16</code>这行追加<code>rd.debug</code>可以打出<code>initrd</code>中的<code>dracut</code>脚本的内容</p>
 <h2 id="周期内核升级">周期内核升级</h2>
@@ -391,16 +318,11 @@ system之前的shell
 <p>不知道为什么<code>alt+f</code>和<code>alt+b</code>没办法快速在单词之间跳</p>
 <p>这个快捷键是<code>emulator</code>的还是<code>shell</code>的呢?</p>
 <p>bash默认是启动了<code>emacs</code>模式的.</p>
-<p>哦, 好吧, 是<code>Super</code>key覆盖掉了<code>alt+f</code>这个操作,
-所以把<code>Super</code>key换成command也就可以了.</p>
-<p><a target="_blank" rel="noopener" href="https://www.reddit.com/r/i3wm/comments/bakkpg/can_i_completely_swap_the_alt_and_super_keys/">(1)
-Can I completely swap the Alt and Super keys? : i3wm</a></p>
+<p>哦, 好吧, 是<code>Super</code>key覆盖掉了<code>alt+f</code>这个操作, 所以把<code>Super</code>key换成command也就可以了.</p>
+<p><a target="_blank" rel="noopener" href="https://www.reddit.com/r/i3wm/comments/bakkpg/can_i_completely_swap_the_alt_and_super_keys/">(1) Can I completely swap the Alt and Super keys? : i3wm</a></p>
 <p><code>set $mod Mod4</code></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/alexandrebobkov/Archlabs-i3wm/blob/master/config">Archlabs-i3wm/config
-at master · alexandrebobkov/Archlabs-i3wm</a></p>
-<p>主要是我之前生成的配置文件里居然都是直接<code>Mod1 + Enter</code>之类的,
-而不是<code>$mod + Enter</code>,
-导致我直接<code>set $mod</code>没有效果.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/alexandrebobkov/Archlabs-i3wm/blob/master/config">Archlabs-i3wm/config at master · alexandrebobkov/Archlabs-i3wm</a></p>
+<p>主要是我之前生成的配置文件里居然都是直接<code>Mod1 + Enter</code>之类的, 而不是<code>$mod + Enter</code>, 导致我直接<code>set $mod</code>没有效果.</p>
 <h2 id="网络">网络</h2>
 <p>systemd-networkd 禁用ipv6 net.ipv6.conf.all.disable_ipv6 = 1</p>
 <h2 id="输入法">输入法</h2>
@@ -411,30 +333,21 @@ at master · alexandrebobkov/Archlabs-i3wm</a></p>
 <p>毫无疑问,我主要感兴趣的点就是能够尽量完全使用键盘来控制的方式.</p>
 <p>$mod + Enter 启动虚拟终端 $mod + A 焦点转义到父窗口上</p>
 <h3 id="i3lock">i3lock</h3>
-<p>歧义性好严重...没有看到输入密码的框,
-原来是因为默认就处在接收密码的状态下,
-<code>verifing</code>和<code>wrong</code>的状态就是密码验证的结果... ###
-登录桌面[deprecated]
-最后因为<code>vmware</code>里似乎<code>X11</code>的直接配置没能配置生效,
-导致sddm始终分辨率都是<code>800x600</code>,
-我最后还是选择使用<code>.xinitrc</code>来调用<code>xrandr</code>修改分辨率</p>
+<p>歧义性好严重...没有看到输入密码的框, 原来是因为默认就处在接收密码的状态下, <code>verifing</code>和<code>wrong</code>的状态就是密码验证的结果... ### 登录桌面[deprecated] 最后因为<code>vmware</code>里似乎<code>X11</code>的直接配置没能配置生效, 导致sddm始终分辨率都是<code>800x600</code>, 我最后还是选择使用<code>.xinitrc</code>来调用<code>xrandr</code>修改分辨率</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pacman -S sddm</span><br><span class="line">systemctl enable sddm #</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vim /etc/sddm.conf.d/hidpi.conf</span><br><span class="line"># 虽然我通过`pacman -Ql sddm`查到我装的位置是在`/usr/lib/sddm`里</span><br><span class="line">[Wayland]</span><br><span class="line">EnableHiDPI=true</span><br><span class="line"></span><br><span class="line">[X11]</span><br><span class="line">EnableHiDPI=true</span><br></pre></td></tr></table></figure>
 <h3 id="urxvt">urxvt</h3>
 <p>rxvt-unicode 不知道这个好不好用</p>
-<p><a target="_blank" rel="noopener" href="https://www.reddit.com/r/i3wm/comments/4f55fr/which_terminal_simulator_do_you_use_with_i3_and/">(1)
-Which terminal simulator do you use with i3, and why? : i3wm</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.reddit.com/r/i3wm/comments/4f55fr/which_terminal_simulator_do_you_use_with_i3_and/">(1) Which terminal simulator do you use with i3, and why? : i3wm</a></p>
 <p>urxvt 要支持hidpi, 还需要一些特殊配置. 先这样用吧. 已经挺好了.</p>
 <h4 id="默认的复制粘贴">默认的复制粘贴</h4>
 <p><code>Ctrl+alt+c/v</code></p>
 <h4 id="unable-to-load-base-fontset">unable to load base fontset</h4>
-<p>因为<code>HiDPI</code>, 所以增加了<code>pixelsize</code>的设置,
-结果无法启动了.</p>
+<p>因为<code>HiDPI</code>, 所以增加了<code>pixelsize</code>的设置, 结果无法启动了.</p>
 <p>看了下, 似乎是缺字体?</p>
 <h3 id="图片和壁纸-feh">图片和壁纸 feh</h3>
 <p>feh</p>
 <p>feh --bg-scale new.jpg</p>
-<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Feh_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">feh
-(简体中文) - ArchWiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Feh_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">feh (简体中文) - ArchWiki</a></p>
 <h3 id="hidpi7">HiDPI[^7]</h3>
 <p>看起来多屏高分屏支持有点费事, 暂时还是不捣鼓了.</p>
 <blockquote>
@@ -443,18 +356,13 @@ Which terminal simulator do you use with i3, and why? : i3wm</a></p>
 <p>这个的scale 和那个~/.Xresources的Xft.dpi=192区别?</p>
 <p>是不是xrandr修改了dpi之后, 修改指定程序的字体大小就行了?</p>
 <p><code>xrandr --dpi</code>这个好像是<code>xft.dpi</code>的更新的方案</p>
-<p>这个设置了以后, 标题栏的确hidpi了, 但是应用程序并没有,
-不管是Terminal还是chrome.</p>
+<p>这个设置了以后, 标题栏的确hidpi了, 但是应用程序并没有, 不管是Terminal还是chrome.</p>
 <h3 id="xresources8">.Xresources[^8]</h3>
-<p>Xft.dpi: 141 xrdb ~/.Xresources xrdb -merge ~/.Xresources xrdb -query
--all</p>
+<p>Xft.dpi: 141 xrdb ~/.Xresources xrdb -merge ~/.Xresources xrdb -query -all</p>
 <h3 id="最后成功版本910">最后成功版本[^9][^10]</h3>
 <p>最后其实还是按照wifi操作成功的.</p>
-<p>我在 .xinitrc中添加xrandr --output Virtual-1 --mode 2560x1600
-在.Xresources中添加 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Xft.dpi:  256</span><br><span class="line">export GDK_SCALE=2</span><br><span class="line">export GDK_DPI_SCALE=0.5</span><br><span class="line">export QT_AUTO_SCREEN_SCALE_FACTOR=1</span><br></pre></td></tr></table></figure>
-这次重启之后终于终端字体大小什么的都对了.</p>
-<h2 id="远程控制-x11远程和本地渲染不同">远程控制:
-x11远程和本地渲染不同?</h2>
+<p>我在 .xinitrc中添加xrandr --output Virtual-1 --mode 2560x1600 在.Xresources中添加 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Xft.dpi:  256</span><br><span class="line">export GDK_SCALE=2</span><br><span class="line">export GDK_DPI_SCALE=0.5</span><br><span class="line">export QT_AUTO_SCREEN_SCALE_FACTOR=1</span><br></pre></td></tr></table></figure> 这次重启之后终于终端字体大小什么的都对了.</p>
+<h2 id="远程控制-x11远程和本地渲染不同">远程控制: x11远程和本地渲染不同?</h2>
 <p>我看到的窗口和颜色不太一样啊,vnc</p>
 <h1 id="manjaro">manjaro</h1>
 <p>先用i3试试.</p>
@@ -464,38 +372,23 @@ x11远程和本地渲染不同?</h2>
 <h3 id="dmenu">dmenu</h3>
 <p>和<code>dmenu-manjaro</code>冲突</p>
 <h1 id="wayland仍未成熟">Wayland仍未成熟</h1>
-<p>目前来看,虽然Wayland还是在逐渐开发, 不过Xorg的成熟度还是远比其成熟,
-Wayland存在的问题稍多.</p>
+<p>目前来看,虽然Wayland还是在逐渐开发, 不过Xorg的成熟度还是远比其成熟, Wayland存在的问题稍多.</p>
 <h2 id="sway">Sway</h2>
-<p>等价于<code>i3wm</code>的管理器,不过这个没能做到<code>i3polybar</code>的程度,
-而且也始终是存在部分问题的. 所以如果要用arch,
-还是继续<code>Xorg</code>下吧. ## 开关机
-<code>shutdown -h now</code></p>
+<p>等价于<code>i3wm</code>的管理器,不过这个没能做到<code>i3polybar</code>的程度, 而且也始终是存在部分问题的. 所以如果要用arch, 还是继续<code>Xorg</code>下吧. ## 开关机 <code>shutdown -h now</code></p>
 <h1 id="驱动">驱动</h1>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/51linux/archive/2011/09/07/2169961.html">【openSUSE】软件源和软件搜索
---- 看了之后 受益匪浅 - 孙愚 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/51linux/archive/2011/09/07/2169961.html">【openSUSE】软件源和软件搜索 --- 看了之后 受益匪浅 - 孙愚 - 博客园</a></p>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/installation_guide">Installation
-guide - ArchWiki</a></li>
-<li><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/I3_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">i3
-(简体中文) - ArchWiki</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/BjarneCpp/article/details/95861978">Manjaro-architect
-安装指南_兴趣斗士的博客-CSDN博客_manjaro architect</a></li>
-<li><a target="_blank" rel="noopener" href="https://i3wm.org/docs/userguide.html#_default_keybindings">i3: i3
-User’s Guide</a></li>
-<li><a target="_blank" rel="noopener" href="https://jacksonpuppy.com/2019-07-21/xps13-linux.html">xps13(9370)
-Linux之路 · Kevin的笔记</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.reddit.com/r/i3wm/comments/630r1r/screen_lock_verifying/">screen
-lock / verifying : i3wm</a></li>
-<li><a target="_blank" rel="noopener" href="https://v2ex.com/t/338091">Linux 下， hipdi
-高分屏外接显示器显示怎么整啊？ - V2EX</a></li>
-<li><a target="_blank" rel="noopener" href="http://8u.hn.cn/linuxjc/12241.html">安装xdpyinfo在Linux
-Xresources中设置正确的屏幕DPI-教程-Linux系统学习</a></li>
-<li><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/HiDPI#X_Server">HiDPI
-- ArchWiki</a></li>
-<li><a target="_blank" rel="noopener" href="https://cyber.vodka/blog/hidpi-with-bare-i3-on-arch/">Fixing HIDPI
-on a bare i3 install (in Arch Linux btw)</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/installation_guide">Installation guide - ArchWiki</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/I3_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">i3 (简体中文) - ArchWiki</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/BjarneCpp/article/details/95861978">Manjaro-architect 安装指南_兴趣斗士的博客-CSDN博客_manjaro architect</a></li>
+<li><a target="_blank" rel="noopener" href="https://i3wm.org/docs/userguide.html#_default_keybindings">i3: i3 User’s Guide</a></li>
+<li><a target="_blank" rel="noopener" href="https://jacksonpuppy.com/2019-07-21/xps13-linux.html">xps13(9370) Linux之路 · Kevin的笔记</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.reddit.com/r/i3wm/comments/630r1r/screen_lock_verifying/">screen lock / verifying : i3wm</a></li>
+<li><a target="_blank" rel="noopener" href="https://v2ex.com/t/338091">Linux 下， hipdi 高分屏外接显示器显示怎么整啊？ - V2EX</a></li>
+<li><a target="_blank" rel="noopener" href="http://8u.hn.cn/linuxjc/12241.html">安装xdpyinfo在Linux Xresources中设置正确的屏幕DPI-教程-Linux系统学习</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/HiDPI#X_Server">HiDPI - ArchWiki</a></li>
+<li><a target="_blank" rel="noopener" href="https://cyber.vodka/blog/hidpi-with-bare-i3-on-arch/">Fixing HIDPI on a bare i3 install (in Arch Linux btw)</a></li>
 </ol>
 
         </div>
@@ -505,7 +398,7 @@ on a bare i3 install (in Arch Linux btw)</a></li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.855Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.762Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 

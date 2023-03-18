@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="最近刚入职，做的还比较简单，熟悉libvirt，把KVM镜像给压缩一下。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-07-09T13:39:49.000Z">
-<meta property="article:modified_time" content="2023-03-18T15:11:14.812Z">
+<meta property="article:published_time" content="2018-07-09T21:39:49.000Z">
+<meta property="article:modified_time" content="2023-03-18T18:56:54.754Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="KVM">
 <meta property="article:tag" content="libvirt">
@@ -139,7 +139,7 @@
         <h1 class="title">KVM虚拟机镜像压缩</h1>
         <h5 class="subtitle">
             
-                <time datetime="2018-07-09T13:39:49.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2018-07-09T21:39:49.000Z" itemprop="datePublished" class="page-time">
   2018-07-09
 </time>
 
@@ -165,7 +165,7 @@
     <div class="post-card">
         <h1 class="post-card-title">KVM虚拟机镜像压缩</h1>
         <div class="post-meta">
-            <time class="post-time" title="2018-07-09 21:39:49" datetime="2018-07-09T13:39:49.000Z"  itemprop="datePublished">2018-07-09</time>
+            <time class="post-time" title="2018-07-09 21:39:49" datetime="2018-07-09T21:39:49.000Z"  itemprop="datePublished">2018-07-09</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
@@ -183,13 +183,11 @@
             <p>最近刚入职，做的还比较简单，熟悉libvirt，把KVM镜像给压缩一下。</p>
 <span id="more"></span>
 <p>KVM主要硬盘镜像有qcow2和raw两种类型。</p>
-<p>qcow2格式是copy on
-write的，使用时才占用硬盘空间，而raw则是创建时即分配了。</p>
+<p>qcow2格式是copy on write的，使用时才占用硬盘空间，而raw则是创建时即分配了。</p>
 <p>使用<code>ll -h</code>和<code>du -h</code>可以看到实际分配的和磁盘占用的大小。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-img convert -f qcow2 -c -O qcow2 xx.qcow2 xx_compressed.qcow2</span><br></pre></td></tr></table></figure>
 <p>通过上述命令可以实现qcow2格式的压缩，但是无法更改硬盘初始创建时上限的大小。只有raw格式可以减小上限，一开始以为只有上限压缩了以后，才能把这样的镜像放到较小的硬盘分区里。</p>
-<p>首先尝试了 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">qemu-img convert -f qcow2 -O raw xxx.qcow2 xxx.raw</span><br><span class="line">qemu-img resize -f raw xxx.raw -10G</span><br><span class="line">qemu-img convert -f raw -O qcow2 xxx.raw xxx.qcow2</span><br></pre></td></tr></table></figure>
-但，的确就和其他博客里说的一样，这样会由于raw内部分区并不是顺序，而不是稀疏的，会导致破坏文件系统，如windows启动时就会导致蓝屏。</p>
+<p>首先尝试了 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">qemu-img convert -f qcow2 -O raw xxx.qcow2 xxx.raw</span><br><span class="line">qemu-img resize -f raw xxx.raw -10G</span><br><span class="line">qemu-img convert -f raw -O qcow2 xxx.raw xxx.qcow2</span><br></pre></td></tr></table></figure> 但，的确就和其他博客里说的一样，这样会由于raw内部分区并不是顺序，而不是稀疏的，会导致破坏文件系统，如windows启动时就会导致蓝屏。</p>
 <p>如果要这样做，就需要首先让系统分区进行压缩，如使用win7的磁盘管理进行压缩卷操作，亦或是使用gparted、libguestfs进行处理。</p>
 <p>这里有个问题，qcow2格式用<code>qemu-img info</code>看到的大小是3.7G，用raw格式也仅有7.8G左右，而在win7内部磁盘管理看到的空间占用却是11.2G。这里的不对称是因为文件系统格式的原因吗？</p>
 <p>一开始一直在尝试安装libguestfs，因为似乎<code>virt-resize</code>可以做到压缩上限，但是很可惜，内网环境yum安装依赖实在是太艰难了，在将CentOS安装包的iso镜像挂载上作本地源之后，还是存在一些依赖问题。折腾了快有2天时间，在supermin5上还是没能搞定。</p>
@@ -203,7 +201,7 @@ write的，使用时才占用硬盘空间，而raw则是创建时即分配了。
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-03-18T15:11:14.812Z" itemprop="dateUpdated">2023-03-18 23:11:14</time>
+    最后更新时间：<time datetime="2023-03-18T18:56:54.754Z" itemprop="dateUpdated">2023-03-18 18:56:54</time>
 </span><br>
 
 
