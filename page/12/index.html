@@ -150,6 +150,53 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-系列首作，所以只是引观众进行哲思"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-10-07 22:23:15" datetime="2017-10-07T22:23:15.000Z"  itemprop="datePublished">2017-10-07</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/thinking/">随想</a></li></ul>
+
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/10/07/%E7%B3%BB%E5%88%97%E9%A6%96%E4%BD%9C%EF%BC%8C%E6%89%80%E4%BB%A5%E5%8F%AA%E6%98%AF%E5%BC%95%E8%A7%82%E4%BC%97%E8%BF%9B%E8%A1%8C%E5%93%B2%E6%80%9D/">系列首作，所以只是引观众进行哲思</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        《全部成为F》，这可以说是比较棒的一部作品，不过也是有局限性的。
+    
+
+        <a href="/2017/10/07/%E7%B3%BB%E5%88%97%E9%A6%96%E4%BD%9C%EF%BC%8C%E6%89%80%E4%BB%A5%E5%8F%AA%E6%98%AF%E5%BC%95%E8%A7%82%E4%BC%97%E8%BF%9B%E8%A1%8C%E5%93%B2%E6%80%9D/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%85%A8%E9%83%A8%E6%88%90%E4%B8%BAF/" rel="tag">全部成为F</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%A8%E6%BC%AB/" rel="tag">动漫</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9C%9F%E8%B4%BA%E7%94%B0%E5%9B%9B%E5%AD%A3/" rel="tag">真贺田四季</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-「序列之争」最后30分钟太可惜"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -574,89 +621,6 @@ Computer Graphics将抽象的语义信息转化成图像(数据转换为图形)�
     <div class="post-footer">
         
 	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Qt/" rel="tag">Qt</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-git笔记"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-02-21 00:12:09" datetime="2017-02-21T00:12:09.000Z"  itemprop="datePublished">2017-02-21</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
-
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/02/21/git%E7%AC%94%E8%AE%B0/">git笔记</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        常用命令
-切换分支
-git reset --hard ## 查看操作历史，寻找之前记录的分支 git reflog ## 查找指定行的commit log git log -S "void ss()" /path/file
-查看未提交的文件修改
-1git show
-show not staged
-1git diff
-查看指定commit存在哪些分支
-1git branch -r --contains xxx
-查看被删除的文件相关的commit
-12git log --all -- src/mgr/PyModule.cc
-查看tag之间差异的commit
-1git log v12.2.12..v13.0.2 src/mgr
-tag功能
-如何找到tag是从哪个分支的哪个commit打出?
-子模块
-git subtree(第三方, 独立仓库子树合并)
-git submodule(独立的子仓库)
-
-.gitmodules修改为mirror地址
-git submodule sync
-git submodule init
-git submodule update
-
-或者 git submodule update --init --recursive
-添加git submodule
-123git submodule add &lt;url&gt; &lt;path&gt;git diff --cachedgit commit -m &quot;xxx&quot;
-submodule的submodule
-1git submodule update --init --recursive
-理论上这个可以, 那我编译时还触发了git clone的应该是因为代码并不是完全用submodule维持的关系了把?
-回滚. git reset --hard即可.
-git diff 与vscode对接
-git支持通过difftool对接一些外部插件
-123456789101112git config --global difftool.code.cmd &#x27;code --wait --diff $LOCAL $REMOTE&#x27;git config --global mergetool.code.cmd &#x27;code --wait $MERGED&#x27;git config --global -lgit difftool devgit difftool -t code devgit mergetool -t code dev
-潜在问题: 好像在difftool这个交互进程退出前, 会在dock上弹出很多个vscode的图标
-记录
-git的快照流是指什么？ (参见 Git 内部原理 来了解更多关于到底 .git 文件夹中包含了哪些文件的信息。) 事实上，如果你的服务器的磁盘坏掉了，你通常可以使用任何一个克隆下来的用户端来重建服务器上的仓库（虽然可能会丢失某些服务器端的挂钩设置，但是所有版本的数据仍在，详见 在服务器上搭建 Git ）。
-    
-
-        <a href="/2017/02/21/git%E7%AC%94%E8%AE%B0/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
 
     </div>
     

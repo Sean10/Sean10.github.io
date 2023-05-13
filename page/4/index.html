@@ -150,6 +150,54 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-ceph之编译时python3-6m符号表错误"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2020-12-02 14:22:56" datetime="2020-12-02T14:22:56.000Z"  itemprop="datePublished">2020-12-02</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2020/12/02/ceph%E4%B9%8B%E7%BC%96%E8%AF%91%E6%97%B6python3-6m%E7%AC%A6%E5%8F%B7%E8%A1%A8%E9%94%99%E8%AF%AF/">ceph之编译时python3.6m符号表错误</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        今天在编译ceph时, 发生了libpython3.6m.a: could not read symbols: Bad value的问题, 在这附近有一个疑似相关的具体符号表的提示.
+1/usr/binld: /usr/lib/python3.6/config-3.6m-x86_64-linux-gnu/libpython3.6m.a(abstract.o): relocation R_X8...
+    
+
+        <a href="/2020/12/02/ceph%E4%B9%8B%E7%BC%96%E8%AF%91%E6%97%B6python3-6m%E7%AC%A6%E5%8F%B7%E8%A1%A8%E9%94%99%E8%AF%AF/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-CLI转为http服务小探"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -613,64 +661,6 @@ rados层的聚合, 即在tier上的时候, 表现就是存在这个rados对象, 
     
 
         <a href="/2020/07/04/ceph%E4%B9%8Btier%E6%95%B0%E6%8D%AE%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tier/" rel="tag">tier</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81/" rel="tag">源码</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-ceph之tier效果收集"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2020-06-29 14:01:18" datetime="2020-06-29T14:01:18.000Z"  itemprop="datePublished">2020-06-29</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
-
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2020/06/29/ceph%E4%B9%8Btier%E6%95%88%E6%9E%9C%E6%94%B6%E9%9B%86/">ceph之tier效果收集</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        数据整理
-写入效果统计
-\[
-\frac{num\_write_{cache}}{num\_write_{cache} + num\_write_{base}}
-\]
-读取效果统计
-\[
-\frac{num\_read_{cache}}{num\_read_{cache} + num\_read_{base}}
-\]
-数据收集
-osd daemon tier perf
-实际还是pg的数据, ...
-    
-
-        <a href="/2020/06/29/ceph%E4%B9%8Btier%E6%95%88%E6%9E%9C%E6%94%B6%E9%9B%86/" class="post-more waves-effect waves-button">
             阅读全文…
         </a>
     </div>

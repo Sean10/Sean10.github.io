@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    
+    <title>ceph之L版本purged_snaps过多问题 | 行路中. | 脚踏实地</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ceph,snap">
+    <meta name="description" content="背景及初步定位 背景是通过perf捕获ceph-osd的cpu消耗, 发现在下述环节极高.  PG::_prepare_write_info  interval_set::operator&#x3D;&#x3D;  _Rb_tree_increment    由于找不到现场版本的debuginfo了, 因此姑且先推导一下. interset的&#x3D;&#x3D;, 对应是map的&#x3D;&#x3D;, _Rb_tree_increment初步定位应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph之L版本purged_snaps过多问题">
+<meta property="og:url" content="https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="行路中.">
+<meta property="og:description" content="背景及初步定位 背景是通过perf捕获ceph-osd的cpu消耗, 发现在下述环节极高.  PG::_prepare_write_info  interval_set::operator&#x3D;&#x3D;  _Rb_tree_increment    由于找不到现场版本的debuginfo了, 因此姑且先推导一下. interset的&#x3D;&#x3D;, 对应是map的&#x3D;&#x3D;, _Rb_tree_increment初步定位应">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-22T22:06:44.000Z">
+<meta property="article:modified_time" content="2023-05-13T17:34:12.691Z">
+<meta property="article:author" content="Sean10">
+<meta property="article:tag" content="ceph">
+<meta property="article:tag" content="snap">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Sean10</h5>
+          <a href="mailto:sean10reborn@gmail.com" title="sean10reborn@gmail.com" class="mail">sean10reborn@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/sean10" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ceph之L版本purged_snaps过多问题</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">ceph之L版本purged_snaps过多问题</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2023-03-22T22:06:44.000Z" itemprop="datePublished" class="page-time">
+  2023-03-22
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%83%8C%E6%99%AF%E5%8F%8A%E5%88%9D%E6%AD%A5%E5%AE%9A%E4%BD%8D"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景及初步定位</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%9A%E4%BD%8D%E5%88%B0purged_snaps%E5%90%8E"><span class="post-toc-number">2.</span> <span class="post-toc-text">定位到purged_snaps后</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#prepare_write_info%E7%9A%84-call-trace%E7%9A%84%E8%A7%A6%E5%8F%91%E9%80%BB%E8%BE%91"><span class="post-toc-number">2.0.1.</span> <span class="post-toc-text">_prepare_write_info的 call trace的触发逻辑?</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%AB%98%E7%89%88%E6%9C%AC%E4%BF%AE%E5%A4%8D%E4%BA%86%E8%AF%A5%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98"><span class="post-toc-number">3.</span> <span class="post-toc-text">高版本修复了该设计问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%9B%AE%E6%A0%87"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">目标</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%A7%A3%E8%AF%BBphase-1"><span class="post-toc-number">4.</span> <span class="post-toc-text">解读phase-1</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A2%B3%E7%90%86faq"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">梳理FAQ</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%A4%A7%E6%96%B9%E5%90%91%E6%A2%B3%E7%90%86"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">大方向梳理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%8D%87%E7%BA%A7%E6%9B%B4%E6%96%B0"><span class="post-toc-number">4.1.1.1.</span> <span class="post-toc-text">升级更新</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B%E4%B8%B2%E8%B5%B7%E6%9D%A5"><span class="post-toc-number">4.1.1.1.1.</span> <span class="post-toc-text">通信流程串起来</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E6%B5%8B%E8%AF%95%E5%9C%BA%E6%99%AF"><span class="post-toc-number">4.1.1.1.2.</span> <span class="post-toc-text">测试场景</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#mon%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8C%81%E4%B9%85%E5%8C%96%E7%9A%84%E6%95%88%E6%9E%9C-%E4%BB%A5%E5%8F%8A%E6%80%A7%E8%83%BD%E5%BD%B1%E5%93%8D"><span class="post-toc-number">4.1.1.2.</span> <span class="post-toc-text">mon更新数据库持久化的效果? 以及性能影响</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%89%88%E6%9C%AC%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%AE%9E%E7%8E%B0%E4%B8%AD-%E6%98%AF%E5%A6%82%E4%BD%95%E6%8C%81%E4%B9%85%E5%8C%96%E7%9A%84-%E4%B8%94%E9%83%BD%E5%9C%A8%E5%93%AA%E4%BA%9B%E5%9C%B0%E6%96%B9%E4%BD%BF%E7%94%A8%E5%88%B0"><span class="post-toc-number">4.1.1.3.</span> <span class="post-toc-text">12版本的设计实现中, 是如何持久化的? 且都在哪些地方使用到?</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#snaptrimmer%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="post-toc-number">4.1.1.3.1.</span> <span class="post-toc-text">SnapTrimmer状态机</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#snap_mapper"><span class="post-toc-number">4.1.1.3.2.</span> <span class="post-toc-text">snap_mapper</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#clones-clone_snaps"><span class="post-toc-number">4.1.1.3.3.</span> <span class="post-toc-text">clones clone_snaps</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#snapset"><span class="post-toc-number">4.1.1.3.4.</span> <span class="post-toc-text">snapSet</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#rbd-%E5%88%9B%E5%BB%BA%E5%92%8C%E5%88%A0%E9%99%A4%E5%BF%AB%E7%85%A7-%E6%97%B6%E9%97%B4%E9%95%BF-%E5%8E%9F%E5%9B%A0"><span class="post-toc-number">4.1.1.3.5.</span> <span class="post-toc-text">rbd 创建和删除快照 时间长 原因?</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#snapdir"><span class="post-toc-number">4.1.1.3.6.</span> <span class="post-toc-text">snapdir?</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#pg%E7%8A%B6%E6%80%81%E6%9C%BA%E5%92%8Cpgpoolupdate%E7%9A%84%E5%85%B3%E8%81%94"><span class="post-toc-number">4.1.1.3.7.</span> <span class="post-toc-text">pg状态机和PGPool::update的关联</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#snaptrim%E9%80%BB%E8%BE%91"><span class="post-toc-number">4.1.1.3.8.</span> <span class="post-toc-text">snaptrim逻辑</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%85%B3%E9%94%AE%E7%9A%84trim_object%E5%92%8Cget_next_object_to_trim"><span class="post-toc-number">4.1.1.3.9.</span> <span class="post-toc-text">关键的trim_object和get_next_object_to_trim</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#snaptrimmer%E8%BF%9B%E5%85%A5%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="post-toc-number">4.1.1.3.10.</span> <span class="post-toc-text">SnapTrimmer进入初始状态的条件?</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%89%88%E6%9C%AC%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%AD-%E5%88%9D%E6%AD%A5%E7%90%86%E8%A7%A3%E6%98%AF%E5%9C%A8mon%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%8C%81%E4%B9%85%E5%8C%96-%E9%82%A3osd%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0%E6%97%B6-%E6%98%AF%E4%BC%9A%E4%BA%A7%E7%94%9F%E4%B8%80%E6%9D%A1%E6%96%B0%E7%9A%84%E5%92%8Cmon%E9%80%9A%E4%BF%A1%E7%9A%84%E5%8D%8F%E8%AE%AE%E5%90%97"><span class="post-toc-number">4.1.1.4.</span> <span class="post-toc-text">13版本的设计中, 初步理解是在mon的数据库中持久化, 那osd需要用到时, 是会产生一条新的和mon通信的协议吗?</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#mds%E4%B8%AD%E4%B9%9F%E6%9C%89snapserver-%E4%B9%9F%E6%B6%89%E5%8F%8A%E8%AF%A5%E9%A1%B9-%E9%9C%80%E8%A6%81%E4%BA%86%E8%A7%A3%E8%AF%A5%E9%83%A8%E5%88%86%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8%E9%80%BB%E8%BE%91"><span class="post-toc-number">4.1.1.5.</span> <span class="post-toc-text">mds中也有SnapServer, 也涉及该项, 需要了解该部分中的使用逻辑</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#removed_snaps%E7%9A%84%E5%85%A5%E5%8F%A3%E6%B7%BB%E5%8A%A0%E5%9C%A8%E5%93%AA%E9%87%8C-%E6%98%AF%E6%80%8E%E4%B9%88%E5%8A%A0%E5%85%A5%E5%88%B0increment%E7%9A%84%E4%BA%8B%E5%8A%A1%E9%87%8C%E7%9A%84"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">removed_snaps的入口添加在哪里? 是怎么加入到increment的事务里的?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#removed_snaps-%E6%AE%8B%E7%95%99%E4%BB%A3%E8%A1%A8%E5%95%A5"><span class="post-toc-number">4.1.3.</span> <span class="post-toc-text">removed_snaps 残留代表啥?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#new_purged_snaps-%E5%AE%9E%E9%99%85%E6%89%A7%E8%A1%8C"><span class="post-toc-number">4.1.4.</span> <span class="post-toc-text">new_purged_snaps 实际执行?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#moncap%E9%87%8C%E6%8F%90%E5%88%B0%E4%BA%86%E5%BF%AB%E7%85%A7%E7%9A%84%E6%B3%A8%E9%87%8A"><span class="post-toc-number">4.1.5.</span> <span class="post-toc-text">moncap里提到了快照的注释?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#mds%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E7%9A%84%E5%BF%AB%E7%85%A7"><span class="post-toc-number">4.1.6.</span> <span class="post-toc-text">mds如何使用的快照?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%90%88%E5%85%A5%E8%BF%87%E7%A8%8B"><span class="post-toc-number">4.1.7.</span> <span class="post-toc-text">合入过程</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo%E8%A7%A3%E8%AF%BBphase-1.5"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">TODO:解读phase 1.5</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-ceph之purged-snaps多场景下问题"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ceph之L版本purged_snaps过多问题</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2023-03-22 22:06:44" datetime="2023-03-22T22:06:44.000Z"  itemprop="datePublished">2023-03-22</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="背景及初步定位">背景及初步定位</h1>
+<p>背景是通过perf捕获ceph-osd的cpu消耗, 发现在下述环节极高.</p>
+<ul>
+<li><code>PG::_prepare_write_info</code>
+<ul>
+<li>interval_set<snapid_t>::operator==
+<ul>
+<li><code>_Rb_tree_increment</code></li>
+</ul></snapid_t></li>
+</ul></li>
+</ul>
+<p>由于找不到现场版本的<code>debuginfo</code>了, 因此姑且先推导一下.</p>
+<p>interset的<code>==</code>, 对应是map的<code>==</code>, <code>_Rb_tree_increment</code>初步定位应该是 map的迭代器调用的?</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="keyword">operator</span>==(<span class="type">const</span> interval_set&amp; other) <span class="type">const</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> _size == other._size &amp;&amp; m == other.m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_Self&amp;</span><br><span class="line">operator++() _GLIBCXX_NOEXCEPT</span><br><span class="line">&#123;</span><br><span class="line">    _M_node = _Rb_tree_increment(_M_node);</span><br><span class="line">    <span class="keyword">return</span> *this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据上述Map的内部实现来看, 基本就是他了, 比较map, 根据下述stl实现来看, 确实是<code>operator==</code>产生的大量迭代</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//迭代器基类</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">__rb_tree_base_iterator</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_node_base::base_ptr base_ptr;</span><br><span class="line">  <span class="keyword">typedef</span> bidirectional_iterator_tag iterator_category;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="type">ptrdiff_t</span> difference_type;</span><br><span class="line"></span><br><span class="line">  base_ptr node;    <span class="comment">//节点基类类型的指针，将迭代器连接到RB-tree的节点</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">increment</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (node-&gt;right != <span class="number">0</span>) &#123;<span class="comment">//如果node右子树不为空，则找到右子树的最左子节点</span></span><br><span class="line">      node = node-&gt;right;</span><br><span class="line">      <span class="keyword">while</span> (node-&gt;left != <span class="number">0</span>)</span><br><span class="line">        node = node-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;<span class="comment">//如果node右子树为空，则找到第一个“该节点位于其左子树”的节点</span></span><br><span class="line">      base_ptr y = node-&gt;parent;</span><br><span class="line">      <span class="keyword">while</span> (node == y-&gt;right) &#123;</span><br><span class="line">        node = y;</span><br><span class="line">        y = y-&gt;parent;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (node-&gt;right != y)</span><br><span class="line">        node = y;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Map</span></span><br><span class="line">...</span><br><span class="line">      <span class="keyword">typedef</span> _Rb_tree&lt;key_type, value_type, _Select1st&lt;value_type&gt;,</span><br><span class="line">		       key_compare, _Pair_alloc_type&gt; _Rep_type;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/// The actual tree structure.</span></span><br><span class="line">      _Rep_type _M_t;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   *  @brief  Map equality comparison.</span></span><br><span class="line"><span class="comment">   *  @param  __x  A %map.</span></span><br><span class="line"><span class="comment">   *  @param  __y  A %map of the same type as @a x.</span></span><br><span class="line"><span class="comment">   *  @return  True iff the size and elements of the maps are equal.</span></span><br><span class="line"><span class="comment">   *</span></span><br><span class="line"><span class="comment">   *  This is an equivalence relation.  It is linear in the size of the</span></span><br><span class="line"><span class="comment">   *  maps.  Maps are considered equivalent if their sizes are equal,</span></span><br><span class="line"><span class="comment">   *  and if corresponding elements compare equal.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Key, <span class="keyword">typename</span> _Tp, <span class="keyword">typename</span> _Compare, <span class="keyword">typename</span> _Alloc&gt;</span><br><span class="line">    <span class="keyword">inline</span> <span class="type">bool</span></span><br><span class="line">    <span class="keyword">operator</span>==(<span class="type">const</span> map&lt;_Key, _Tp, _Compare, _Alloc&gt;&amp; __x,</span><br><span class="line">	       <span class="type">const</span> map&lt;_Key, _Tp, _Compare, _Alloc&gt;&amp; __y)</span><br><span class="line">    &#123; <span class="keyword">return</span> __x._M_t == __y._M_t; &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"># stl_tree.h</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">_Rb_tree</span></span><br><span class="line">...</span><br><span class="line">	<span class="keyword">friend</span> <span class="type">bool</span></span><br><span class="line">      <span class="keyword">operator</span>==(<span class="type">const</span> _Rb_tree&amp; __x, <span class="type">const</span> _Rb_tree&amp; __y)</span><br><span class="line">      &#123;</span><br><span class="line">		  <span class="keyword">return</span> __x.<span class="built_in">size</span>() == __y.<span class="built_in">size</span>()</span><br><span class="line">		  &amp;&amp; std::<span class="built_in">equal</span>(__x.<span class="built_in">begin</span>(), __x.<span class="built_in">end</span>(), __y.<span class="built_in">begin</span>());</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"># 根据[std::equal \- cppreference\.com](https:<span class="comment">//en.cppreference.com/w/cpp/algorithm/equal)可知, equal内的实现必然用到了`operator++` </span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">      _Self&amp;</span><br><span class="line">      <span class="keyword">operator</span>++() _GLIBCXX_NOEXCEPT</span><br><span class="line">      &#123;</span><br><span class="line">		_M_node = _Rb_tree_increment(_M_node);</span><br><span class="line">		<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      _Self</span><br><span class="line">      <span class="keyword">operator</span>++(<span class="type">int</span>) _GLIBCXX_NOEXCEPT</span><br><span class="line">      &#123;</span><br><span class="line">		_Self __tmp = *<span class="keyword">this</span>;</span><br><span class="line">		_M_node = _Rb_tree_increment(_M_node);</span><br><span class="line">		<span class="keyword">return</span> __tmp;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="定位到purged_snaps后">定位到purged_snaps后</h1>
+<p>ceph的快照删除官方文档如下, 因此<code>purged_snaps</code>高在业务场景很正常.</p>
+<blockquote>
+<p>SNAP REMOVAL To remove a snapshot, a request is made to the Monitor cluster to add the snapshot id to the list of purged snaps (or to remove it from the set of pool snaps in the case of pool snaps). In either case, the PG adds the snap to its snap_trimq for trimming.</p>
+<p>A clone can be removed when all of its snaps have been removed. In order to determine which clones might need to be removed upon snap removal, we maintain a mapping from snap to hobject_t using the SnapMapper.</p>
+<p>See PrimaryLogPG::SnapTrimmer, SnapMapper</p>
+<p>This trimming is performed asynchronously by the snap_trim_wq while the pg is clean and not scrubbing.</p>
+<p>The next snap in PG::snap_trimq is selected for trimming</p>
+<p>We determine the next object for trimming out of PG::snap_mapper. For each object, we create a log entry and repop updating the object info and the snap set (including adjusting the overlaps). If the object is a clone which no longer belongs to any live snapshots, it is removed here. (See PrimaryLogPG::trim_object() when new_snaps is empty.)</p>
+<p>We also locally update our SnapMapper instance with the object’s new snaps.</p>
+<p>The log entry containing the modification of the object also contains the new set of snaps, which the replica uses to update its own SnapMapper instance.</p>
+<p>The primary shares the info with the replica, which persists the new set of purged_snaps along with the rest of the info.</p>
+<p>RECOVERY Because the trim operations are implemented using repops and log entries, normal pg peering and recovery maintain the snap trimmer operations with the caveat that push and removal operations need to update the local SnapMapper instance. If the purged_snaps update is lost, we merely retrim a now empty snap.</p>
+</blockquote>
+<p>目前可以通过ceph pg 2.892 query 查到对应pg的purged_snaps, 足足有2412条, 确实数量很大, 对应的迭代高也看来合理.</p>
+<p>~~那剩下就是为啥有的osd 有这个的情况下cpu消耗不高了? ~~该问题可忽略, 后定位节点间cpu型号性能有差异, osd cpu消耗低的节点cpu性能确实更好.</p>
+<h3 id="prepare_write_info的-call-trace的触发逻辑"><code>_prepare_write_info</code>的 call trace的触发逻辑?</h3>
+<p>主要是<code>pglog</code>的正常IO处理流程</p>
+<p><a target="_blank" rel="noopener" href="https://ivanzz1001.github.io/records/post/ceph/2019/02/05/ceph-src-code-part14_1">ceph中PGLog处理流程 | Ivanzz</a></p>
+<h1 id="高版本修复了该设计问题">高版本修复了该设计问题</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">removed_snaps_queue [8f1~1,8f4~1]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>查看16版本环境, 发现好像是改成了removed_snaps_queue, 且purged_snaps在<code>pg query</code>里也看不到了.</p>
+<p>初步看, 虽然pg_info还比较<code>purged_snaps</code>, 但是这项大部分时间为空了. 即不存在该版本的问题了</p>
+<p>根据这条PR<a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/18276/commits">mon,osd,osdc: refactor snap trimming (phase 1) by liewegas · Pull Request #18276 · ceph/ceph</a>, 提到曾经设计在这里提到过 <a target="_blank" rel="noopener" href="https://pad.ceph.com/p/removing_removed_snaps/timeslider#4697">Ceph Etherpad 时间轴</a> (注意, 只有4697版本可以看, 之后2020年被人用了机翻.)</p>
+<p>在19年, 15版本分支中做了73条commit修改, <a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/28330">osd,mon: remove pg_pool_t::removed_snaps by liewegas · Pull Request #28330 · ceph/ceph (github.com)</a></p>
+<p>看<code>Phase 2和3: remove SnapSet::snaps</code>, 好像在17版本已经准备去除了?</p>
+<h2 id="目标">目标</h2>
+<blockquote>
+<ul>
+<li><p>snaps are per-pool, so we should annouce deletion via OSDMap</p></li>
+<li><p>successful purge is the intersection of all pool PGs purged_snaps</p></li>
+<li><p>once a pool has purged, we can remove it from removed_snaps AND purged_snaps.</p>
+<ul>
+<li>this should also be announced via the OSDMap</li>
+</ul></li>
+<li><p>mon and osd need the full removed set, but it can be global (and mostly read-only) once each pool has purged?</p></li>
+</ul>
+</blockquote>
+<ol type="1">
+<li>基于资源池的snap id信息, 通过osdmap公告</li>
+<li>成功的清理, 是所有池的pool pg上的purged_snaps的交集</li>
+<li>一旦池清理完毕, 可以从removed_snaps和purged_snaps去除该snap id.
+<ol type="1">
+<li>也应该通过osdmap公告</li>
+</ol></li>
+<li>mon和osd需要完整的removed快照集合, 一旦池清理完毕,就可以是全局完整和只读的</li>
+</ol>
+<p>主要差异总结:</p>
+<table>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>--</th>
+<th>planD</th>
+<th>planC</th>
+<th>planB</th>
+<th>planA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>osdmap相关</td>
+<td>仅维护当前正在删除和删除完正在purged的snap</td>
+<td>pg_pool_t增加recent_removed_snaps_lb_epoch, 维护该epoch后删除的snap列表</td>
+<td>pg_pool_t增加代表最早的deletion操作的removed_snaps_lb_epoch维护, new_purged_snaps维护在该epoch之后的</td>
+<td>只维护deleted_snaps</td>
+</tr>
+<tr class="even">
+<td>请求</td>
+<td>-</td>
+<td>请求参数中增加removed_snaps和purged_snaps的snapc</td>
+<td>请求参数中增加removed_snaps和purged_snaps的snapc</td>
+<td>维护一个序号, 仅当存在比这个序号低的snap信息, 才去访问old_purged_snaps, 否则忽略</td>
+</tr>
+<tr class="odd">
+<td>pginfo</td>
+<td>pginfo中维护removed_snaps和purged_snaps</td>
+<td>-</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>mon</td>
+<td>维护删除操作的epoch</td>
+<td>维护删除操作的epoch, 并负责根据定义的窗口大小更新osdmap的recent_removed_snaps</td>
+<td>维护删除操作的epoch, 定义一个时间周期参数, 满足该周期, 聚拢最早的删除的快照, 从而更新removed_snaps_lb_epoch</td>
+<td>每个周期(如100个osdmap)更新purged_snaps的快照interval_set</td>
+</tr>
+</tbody>
+</table>
+<h1 id="解读phase-1">解读phase-1</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">本次pr之前已增加了<span class="number">13</span>版本的逻辑, 保留了<span class="number">12</span>版本功能</span><br><span class="line"><span class="number">6e1</span>b7c4 osd/PG: use <span class="keyword">new</span> mimic osdmap structures <span class="keyword">for</span> removed, pruned snaps</span><br><span class="line"></span><br><span class="line">gh pr view <span class="number">18276</span> --json commits| jq <span class="string">&#x27;.commits[]|.oid , .messageHeadline&#x27;</span></span><br><span class="line">使用vscode正则替换`^([<span class="number">0</span><span class="number">-9</span>a-f]+)\s*\n`为`$<span class="number">1</span> `</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">c536d4c294ec1f1c8cac6ca44675d25cb361e4f2 osd/osd_types: note about removed_snaps hack</span><br><span class="line"><span class="meta"># add in the new seq, just to try to keep the interval_set contiguous</span></span><br><span class="line">c8bfe3fa53323c05f061ae01dba93574f4cf0747 osd/PG: share_pg_info shares past_itnervals, <span class="keyword">not</span> <span class="built_in">PastIntervals</span>()</span><br><span class="line"># 去除过度防御设计的PastInervals, 仅当peered之后才需要新建</span><br><span class="line"><span class="number">81</span>d63f2994db1d6cf9b48dc8e4f6b473e83ca520 osd/OSDMap: improve osdmap flag dumping in json</span><br><span class="line"># [重要]在osdmap里增加了flag_set的打印, 没看出`OSDMap::get_flag_set`这个函数起了什么作用, 还是对`flags`变量的操作.</span><br><span class="line">df7523b882c798f17ecda6d2c605feaccc8b2040 qa/suites/rados/singleton/all/thrash-eio: more whitelist</span><br><span class="line"><span class="meta"># qa日志白名单增加OBJECT_</span></span><br><span class="line">ea308ad54eb46782ec6197143bd5a5058026f4f0 include/interval_set: add <span class="built_in">get_end</span>() to iterator</span><br><span class="line"># [重要]增加通过begin+length获取结束的snapid的函数get_end</span><br><span class="line"><span class="number">3119</span>cf5ceea6253d1623a09e8716c29901b04d70 include/mempool: add flat_set alias   </span><br><span class="line"># [重要]未理解, 不过后面就被重构掉了, 不重要了</span><br><span class="line"><span class="number">1b</span>1eec29ae17677a3388404afa274515d9aa812d include/types: flat_set <span class="keyword">operator</span>&lt;&lt;            </span><br><span class="line"># [重要]TODO: 同上, 怀疑是某个下面要用的数据结构要用的?</span><br><span class="line">b9c5a243958997ab793636a80480ef04eb58d0ab osd/osd_types: SnapSet: remove <span class="built_in">get_first_snap_after</span>()        </span><br><span class="line"># [重要]删除指定快照后的一个快照的函数</span><br><span class="line">e89649dca590266de4e31ac50627052fabe9e658 mds/SnapServer: fix <span class="built_in">reset</span>()</span><br><span class="line"># [重要]将mds的osdmap SnapServer::reset_state这里pi-&gt;removed_snaps.<span class="built_in">range_end</span>()更正为snap_seq</span><br><span class="line"><span class="number">1f</span>133a2350afedff9e10e725ff23684aaefb43b9 mon/OSDMonitor: reset OSDMap state before decode     </span><br><span class="line"># [重要]OSDMonitor::update_from_paxos里在decode前增加重置, 应该是某个缺陷问题? </span><br><span class="line"><span class="number">37</span>c4affa25bc5462d83cdf21097ef1576150c429 mon/OSDMonitor: clear pending_metadata* in create_pending</span><br><span class="line"># [重要]和commit一样 , PaxosService::_active触发<span class="built_in">create_pending</span>()</span><br><span class="line"><span class="number">553048f</span>bf97af999783deb7e992c8ecfa5e55500 osd/OSDMap: track newly removed <span class="keyword">and</span> purged snaps in each epoch  </span><br><span class="line"># [关键]  增加了new_removed_snaps和new_purged_snaps, OSDMap::apply_incremental主要是new_removed_snaps会加入到removed_snaps_queue, new_purged_snaps里的会从removed_snaps_queue里去除</span><br><span class="line">还存在一个缺失点, 那就是这俩new_purged_snaps和new_removed_snaps的更新.</span><br><span class="line"><span class="number">9</span>d606c587e1f9d8dd2b9e5554bf56d97710c4be7 mon/OSDMonitor: record removed_snaps by epoch outside of the osdmap</span><br><span class="line"># [关键] </span><br><span class="line"><span class="keyword">typedef</span> interval_set&lt;</span><br><span class="line">    <span class="type">snapid_t</span>,</span><br><span class="line">    mempool::osdmap::flat_map&lt;<span class="type">snapid_t</span>,<span class="type">snapid_t</span>&gt;&gt; <span class="type">snap_interval_set_t</span>;</span><br><span class="line">这个结构是什么?</span><br><span class="line"></span><br><span class="line">OSDMonitor::encode_pending增加写入到osd的db里的make_snap_epoch_key</span><br><span class="line">prepare_remove_snaps里添加了待删除的snap到<span class="function">new_removed_snaps</span></span><br><span class="line"><span class="function">      <span class="title">if</span> <span class="params">(!pi.removed_snaps.contains(*q) &amp;&amp;</span></span></span><br><span class="line"><span class="params"><span class="function">	  (!pending_inc.new_pools.count(p-&gt;first) ||</span></span></span><br><span class="line"><span class="params"><span class="function">	   !pending_inc.new_pools[p-&gt;first].removed_snaps.contains(*q)))</span> </span>&#123;</span><br><span class="line">TODO:但是为什么是通过上面这个判定才添加是个问题, 没理解, 和new_pools有什么关系? new_pools在这里有什么指代含义?</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">49833</span>c3bb264949b8126796997a95a95b50af411 mon/OSDMonitor: share snaps removed during a map gap</span><br><span class="line"># [关键]  get_removed_snaps_range 根据传入的epoch版本, 从mon的db中读取写入的make_snap_epoch_key等</span><br><span class="line"># MOSDMap中增加gap_removed_snaps好像是用在当客户端需要获取比mon中存的removed_snaps更老的版本的时候用的? 但是好像还没看到哪里使用</span><br><span class="line"># 增加了MOSDMap兼容性的解析的compat_version标记</span><br><span class="line"><span class="number">38e96</span>ec2794d193f4a6cf6d5372d3b1c849ac4d2 mon/MgrStatMonitor: dump PGMapDigest at debug level <span class="number">20</span></span><br><span class="line"># [重要]增加了日志打印pgmap digest</span><br><span class="line"><span class="number">32</span>d7538a506be03b077da77095702b47f8150f34 osdc/Objecter: prune new_removed_snaps from active op snapc<span class="number">&#x27;</span>s</span><br><span class="line"># [重要]objecter定义了_prune_snapc, 在Objecter::_scan_requests和Objecter::handle_osd_map中触发</span><br><span class="line"># _prune_snapc主要是去除已经存在于new_removed_snaps中的snap id. 没看明白有啥特殊价值?</span><br><span class="line">b1b8fc67388e1b28d8adabcf241bfbca51db2dfd osdc/Objecter: rename _scan_requests force_resend -&gt; skipped_map</span><br><span class="line"># [重要]TODO: 变量重命名, 暂不理解</span><br><span class="line"><span class="number">192</span>a8dc7862fcbd532c6a11a5afcf1b9cb0a8c51 osdc/Objecter: apply removed_snaps from gap to in-flight requests</span><br><span class="line"># [重要]_scan_requests入参中增加gap_removed_snaps</span><br><span class="line"># Objecter::handle_osd_map和_scan_requests如果skipped_map=<span class="literal">true</span>, 修剪gap_removed_snaps</span><br><span class="line">a53ba7314c53e75d1e0b8a0edd29181db3c93863 osd,mon: add <span class="string">&#x27;nosnaptrim&#x27;</span> osd flag</span><br><span class="line"># [重要]添加nosnaptrim实现</span><br><span class="line"># SnapTrimmer状态机的can_trim增加flag判定</span><br><span class="line"># PrimaryLogPG::<span class="built_in">kick_snap_trim</span>()先检查flag</span><br><span class="line"><span class="meta"># boost::statechart::result PG::RecoveryState::Active::react(const ActMap&amp;)重构的状态机或者mark_clean会触发kick_snap_trim()</span></span><br><span class="line"><span class="number">345</span>d3b655a62f221e06187b67d53aeb5f7239062 osd/osd_types: add purged_snaps to <span class="type">pg_stat_t</span>       </span><br><span class="line"># [重要]见题知义</span><br><span class="line"><span class="number">6</span>df912b18b4c493c9a8f2e65ecd158f119c8c210 osd/PG: share purged_snaps with mgr at mimic    </span><br><span class="line"># [重要]设置osd_max_snap_prune_intervals_per_epoch默认<span class="number">100</span>, 并在PG::<span class="built_in">publish_stats_to_osd</span>()的<span class="type">pg_stat_t</span>中按该参数为上限填充purged_snaps项</span><br><span class="line"><span class="number">86f</span>0b811882de334f0d7e577b6c47bef6aba2422 mon/PGMap: add purged_snaps map to PGMapDigest                  </span><br><span class="line"># [关键]  PGMapDigest增加purged_snaps, 实现PGMap::<span class="built_in">calc_purged_snaps</span>(), 使用所有pg的<span class="type">pg_stat_t</span>里的purged_snaps合并出池的purged_snaps</span><br><span class="line"># PGMap::encode_digest中调用calc_purged_snaps</span><br><span class="line"># 增加mutex_lock, 实现with_mutable_pgmap</span><br><span class="line"><span class="meta"># mgr DaemonServer::send_report()使用with_mutable_pgmap</span></span><br><span class="line">e5f62fb8ac8a1ef79aa97361e83c796b0d94fc28 osd/PG: move debug_verify_cached_snaps check into PGPool::update     </span><br><span class="line"># [重要]PGPool::<span class="built_in">update</span>(CephContext *cct, OSDMapRef map) 增加context </span><br><span class="line"># osd_debug_verify_cached_snaps调整到update函数中 , 待理解</span><br><span class="line"><span class="number">33</span>c9907662ad5b504581b373c4f4e3b4b5a1cc63 osd/PG: some whitespace   </span><br><span class="line"># 字符格式化</span><br><span class="line">f04729cedee9c2c53dd56b952b6b2167ae392da1 osd/PG: <span class="keyword">break</span> out of Active AdvMap handler <span class="keyword">if</span> interval change</span><br><span class="line"># [重要]PG::RecoveryState::Active::<span class="built_in">react</span>(<span class="type">const</span> AdvMap&amp; advmap) 通过PastIntervals增加快速检查重新peer </span><br><span class="line"><span class="number">231</span>ec67b7a6d0ca228266cccd0ef53a77b5428e6 osd/PG: simplify replica purged_snaps update       </span><br><span class="line"># [重要]改为仅由主处理purged_snaps更新, 从只负责同步</span><br><span class="line"><span class="number">6e1</span>b7c4c14be575a554ffe1d6e71c0d6189486af osd/PG: use <span class="keyword">new</span> mimic osdmap structures <span class="keyword">for</span> removed, pruned snaps</span><br><span class="line"># [关键]  PGPool中, cached_removed_snaps和newly_removed_snaps只在<span class="number">12</span>版本使用</span><br><span class="line"># PG::activate中, <span class="number">12</span>版本snap_trimq = pool.cached_removed_snaps;</span><br><span class="line"># <span class="number">13</span>版本则使用get_removed_snaps_queue中的, 并去除pginfo的purged_snaps已包含的. 并将purged_snaps中且在removed_snaps中的替换掉原来的pginfo的purged_snaps. 这里的purged_snaps只放有可能还在removed_snaps队列中的.</span><br><span class="line"># PG::RecoveryState::Active::<span class="built_in">react</span>(<span class="type">const</span> AdvMap&amp; advmap)状态机增加<span class="number">13</span>版本处理逻辑</span><br><span class="line"># 遍历new_removed_snaps,  pg-&gt;snap_trimq增加不相交的部分的<span class="type">snap_interval_set_t</span>, 如果存在重复的部分, 设置bad为<span class="literal">true</span>. 如果出现重复就assert崩溃, 说明不可能重复. 设置pg-&gt;dirty_info = <span class="literal">true</span>; 和pg-&gt;dirty_big_info = <span class="literal">true</span>;</span><br><span class="line"># 遍历new_purged_snaps, 如果pg_info的purged_snaps中包含了该部分, 则去除</span><br><span class="line"># 如果存在交集, 和上文同样一起崩溃</span><br><span class="line"><span class="meta"># <span class="keyword">if</span> (pg-&gt;dirty_big_info) &#123;</span></span><br><span class="line">      <span class="comment">// share updated purged_snaps to mgr/mon so that we (a) stop reporting</span></span><br><span class="line">      <span class="comment">// purged snaps and (b) perhaps share more snaps that we have purged</span></span><br><span class="line">      <span class="comment">// but didn&#x27;t fit in pg_stat_t.</span></span><br><span class="line">      pg-&gt;<span class="built_in">publish_stats_to_osd</span>();</span><br><span class="line">      pg-&gt;<span class="built_in">share_pg_info</span>();</span><br><span class="line">    &#125;</span><br><span class="line"><span class="number">16</span>c5bcc0218069edcd5e16b8d17912d47b8e70b3 osd/osd_types: <span class="type">pg_pool_t</span>: add FLAG_&#123;SELFMANAGED,POOL&#125;_SNAPS flags</span><br><span class="line"># [重要]add selfmanaged_snaps ,而不是通过removed_snaps的空与否区分</span><br><span class="line">fd6a59ebf45a397e9530b9350ee46db99e70e5f8 mon/OSDMonitor: convert removed_snaps on first mimic map</span><br><span class="line"># [关键] PG增加last_require_osd_release, 针对<span class="number">12</span>升<span class="number">13</span>的第一次PG进入active状态机的响应, 跳过上面的检查崩溃逻辑. 进入下一次处理</span><br><span class="line"># OSDMonitor::<span class="built_in">encode_pending</span>( 增加 根据removed_snaps空设置pi.flags</span><br><span class="line"># 并设置new_removed_snaps以及mon中的key</span><br><span class="line"><span class="number">9607</span>a2db466835406d6fb73ad6776eccdf3a7d6c mon/OSDMonitor: prune purged snaps</span><br><span class="line"># [重要]osd实现`try_prune_purged_snaps`, 并在bluestore的key中存储`purged_snap_&#123;pool_id&#125;_&#123;snap_id的十六进制&#125;`的信息.</span><br><span class="line">f2d602acb8d8142119a89f17ccc28e7ee6a34be9 mon/OSDMonitor: propagate new_removed_snaps to other tiers</span><br><span class="line"># [重要] OSDMap::Incremental::propagate_snaps_to_tiers中将base的new_removed_snaps信息同步给tier池, 怎么看着是<span class="number">553048f</span>bf97af999783deb7e992c8ecfa5e55500 osd/OSDMap: track newly removed <span class="keyword">and</span> purged snaps in each epoch  这条后边的提交?</span><br><span class="line"><span class="number">8</span>c44dabe4b26bb2df77145f1b2227c87087f315e osd/PG: ignore purged_snaps inconsistencies <span class="keyword">for</span> now</span><br><span class="line"># [重要]注释了bad = <span class="literal">true</span>; 说明去除了上面的崩溃逻辑</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>TODO: 这里的15版本之前的兼容性是为了什么服务的呢?</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/commit/6e1b7c4c14be575a554ffe1d6e71c0d6189486af">osd/PG: use new mimic osdmap structures for removed, pruned snaps · ceph/ceph@6e1b7c4</a></p>
+<p>在开始pr前, 通过该修改调整了osdmap等的格式?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: luminous快照删除实现</span><br><span class="line">---</span><br><span class="line">sequenceDiagram</span><br><span class="line"></span><br><span class="line">client -&gt;&gt; mon: send remove snap</span><br><span class="line">mon -&gt;&gt; osd: send `OSDMap::newly_removed_snaps`</span><br><span class="line">osd -&gt;&gt; tp_peering: `snaptrimmer_state_machine snap_trimq`</span><br><span class="line">tp_peering -&gt;&gt; tp_peering: `pg_info_t::purged_snaps`</span><br><span class="line">tp_peering -&gt;&gt; osd: `OSDMap::cached_removed_snaps`</span><br><span class="line">osd -&gt;&gt; mon: `OSDMap::removed_snaps`</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: mimic设计</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sequenceDiagram</span><br><span class="line">client -&gt;&gt; mon: remove snap</span><br><span class="line">mon -&gt;&gt; osd: `OSDMap::new_removed_snaps`</span><br><span class="line">osd -&gt;&gt; pg: `OSDMap::new_removed_snaps-&gt;snap_trimq`</span><br><span class="line">%% 这里是每有一个成功删除就产生吗? 还是以什么为边界发送新的? 比如pg完成一次pg的?</span><br><span class="line">pg -&gt;&gt; osd: `pg_info_t::purged_snaps`</span><br><span class="line">osd -&gt;&gt; mon: `Mondb::gap_removed_snaps`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="梳理faq">梳理FAQ</h2>
+<h3 id="大方向梳理">大方向梳理</h3>
+<h4 id="升级更新">升级更新</h4>
+<ul>
+<li><ul>
+<li>OSDMontior.cc: 处理OSDMap::Increment
+<ul>
+<li>new_removed_snaps
+<ul>
+<li>处理mon数据库中的snap信息 OSD_SNAP_PREFIX</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>osdmap更新</p>
+<ul>
+<li><p>removed_snaps 归档</p></li>
+<li><p>removed_snap_queue中</p></li>
+<li><p>新增的newly_removed_snaps和newly_purged_snaps的维护</p></li>
+</ul></li>
+<li><p><code>PGPool::update(CephContext *cct, OSDMapRef map)</code></p>
+<ul>
+<li>new_removed_snaps</li>
+</ul></li>
+<li><p>PG::activate(</p>
+<ul>
+<li>13版本 snap_trimq 用removed_snaps_queue, 12版本继续用cached_removed_snaps</li>
+<li>13版本的话, 并将pg_info_t中的purged_snaps更新成当前仅需要放的部分, 不再维持那么多, 12版本维持不变.</li>
+</ul></li>
+<li><p>PG::publish_stats_to_osd()</p>
+<ul>
+<li>13版本后从pg_info_t中将purged_snaps更新到pg_stat_t中, 12版本的话, 该osd依旧不提供该信息</li>
+</ul></li>
+<li><p>PG::RecoveryState::Active::react(const AdvMap&amp; advmap)</p>
+<ul>
+<li>13版本则用新逻辑, 且如果该pg的上个版本last_require_osd_release是12, 则snap_trimq减去pg_info_t中的purged_snaps. TODO:这块持疑问, 是因为snap_trimq来源的地方复用?
+<ul>
+<li>12版本继续用newly_removed_snaps</li>
+</ul></li>
+</ul></li>
+<li><p>PGPool 初始化</p>
+<ul>
+<li>12版本, 需要构造cached_removed_snaps</li>
+</ul></li>
+<li><p>pg_info_t中的removed_snaps清理</p></li>
+<li><p>pg_stat_t中的removed_snaps维护</p></li>
+<li><p>涉及pg激活流程? 以及快照删除状态机的流程</p></li>
+</ul>
+<h5 id="通信流程串起来">通信流程串起来</h5>
+<ul>
+<li>pg_pool_t::removed_snaps 用在用户定义场景
+<ul>
+<li>unmanaged_snap
+<ul>
+<li>OSDMonitor::prepare_remove_snaps</li>
+<li>OSDMonitor::preprocess_remove_snaps</li>
+<li>pg_pool_t::add_unmanaged_snap</li>
+<li>pg_pool_t::remove_unmanaged_snap</li>
+<li>pg_pool_t::encode</li>
+<li>pg_pool_t::decode
+<ul>
+<li>const mempool::osdmap::map&lt;int64_t,pg_pool_t&gt;&amp; pools </li>
+<li>响应osdmap, 创建/删除快照, 确实会带来osdmap变更</li>
+</ul></li>
+<li>OSDMap::Incremental::propagate_snaps_to_tiers</li>
+</ul></li>
+<li>pool属性的全局snaps
+<ul>
+<li>pg_pool_t::build_removed_snaps
+<ul>
+<li>snap existence/non-existence defined by snaps[] and snap_seq</li>
+<li>当未生成removed_snaps时, 查询pg_pool_t-&gt;snaps, 遍历当前存在哪些快照, 生成该项</li>
+</ul></li>
+<li>pg_pool_t::maybe_updated_removed_snaps
+<ul>
+<li>PGPool::update</li>
+<li>pg_pool_t::add_snap</li>
+<li>pg_pool_t::remove_snap</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>PGPool::cached_removed_snaps // current removed_snaps set 应该是正在干活的
+<ul>
+<li>PGPool::update
+<ul>
+<li>PG::handle_advance_map(</li>
+<li>检测到当前osd内存里的cached_removed_snaps没有osdmap里的removed_snaps新了, 则更新cached_removed_snaps为新的removed_snaps, newly_removed_snaps为subtract后的差.
+<ul>
+<li>如果不是子集, 则直接更换cached_removed_snaps.</li>
+</ul></li>
+</ul></li>
+<li>PG::activate
+<ul>
+<li>作为主pg时, 设置snap_trimq为cached_removed_snaps, 并去除pg_info_t中的purged_snaps</li>
+<li>需要更新pglog时, 发送MOSDPGLog, 包括本pg的purged_snaps</li>
+</ul></li>
+<li>PG::handle_advance_map
+<ul>
+<li>开启调试选项osd_debug_verify_cached_snaps时, 从build_removed_snaps生成一次removed_snaps进行比较, 校验通过才能继续</li>
+</ul></li>
+</ul></li>
+<li>PGPool::newly_removed_snaps // newly removed in the last epoch 最新删除的
+<ul>
+<li>PG::RecoveryState::Active::react(const AdvMap&amp; advmap)
+<ul>
+<li>pg-&gt;snap_trimq.union_of(pg-&gt;pool.newly_removed_snaps);</li>
+<li>收到重构事件时, 检测到newly_removed_snap非空, 则合并到snap_trimq中. 从而用于干活</li>
+</ul></li>
+</ul></li>
+<li>pg_info_t::purged_snaps
+<ul>
+<li>pg_info_t::encode</li>
+<li>pg_info_t::decode</li>
+<li><code>bool operator==(const pg_info_t&amp; l, const pg_info_t&amp; r)</code></li>
+<li>PG::activate</li>
+<li><code>PG::split_into(pg_t child_pgid, PG *child, unsigned split_bits)</code></li>
+<li><code>PG::_prepare_write_info</code>
+<ul>
+<li>根据环境里看到dirty_big_info 应该为false</li>
+<li>在提供pg_info时, 临时将purged_snaps置空, encode完再还原 map&lt;string,bufferlist&gt; km;</li>
+</ul></li>
+<li>PG::read_info</li>
+<li>PG::filter_snapc</li>
+<li>PG::proc_primary_info
+<ul>
+<li>PG::RecoveryState::ReplicaActive::react(const MInfoRec&amp; infoevt) 重构恢复时, 更新pg_info_t的purged_snaps</li>
+</ul></li>
+<li>PGLog::merge_log(</li>
+<li>PrimaryLogPG::AwaitAsyncWork::react(const DoSnapWork&amp;)
+<ul>
+<li>pg_info_t中的purged_snaps 添加get_next_objects_to_trim的 snap_to_trim</li>
+<li>pg的snap_trimq清理掉snap_to_trim</li>
+</ul></li>
+</ul></li>
+<li>PGTransaction::ObjectOperation::updated_snaps </li>
+<li>PG::snap_mapper
+<ul>
+<li>PG::clear_object_snap_mapping</li>
+<li>PG::update_object_snap_mapping</li>
+<li>PG::update_object_snap_mapping</li>
+<li>PG::update_snap_map</li>
+<li><code>PG::_scan_snaps(ScrubMap &amp;smap)</code>
+<ul>
+<li>scrub的时候触发, 似乎只是校验快照元数据, 本身不起啥作用.</li>
+<li>TODO:scrub校验侧逻辑</li>
+</ul></li>
+<li>PrimaryLogPG::on_local_recover(</li>
+<li>PrimaryLogPG::AwaitAsyncWork::react(const DoSnapWork&amp;)</li>
+</ul></li>
+<li>snapset
+<ul>
+<li>legacy看着是12版本以下, 更早的时候的</li>
+</ul></li>
+<li>首先所有进程重启, 此时, 进程空间知道自身feature为13了
+<ul>
+<li>检测osdmap的继续走12版本逻辑</li>
+<li>检测HAVE_FEATURE的, 则都会进入新逻辑? 这里有问题?</li>
+</ul></li>
+<li>此时将require_osd_release更新为13
+<ul>
+<li>此时osdmap的也都触发新逻辑, 但是osd通信总有先后, 意味着存在13版本和12版本通信的情况. 此时怎么保障部崩溃?</li>
+<li>osd和mgr通信也是一点.
+<ul>
+<li>pg_stat_t</li>
+</ul></li>
+<li>pg状态机</li>
+<li>mon与osd通信的, 新的gap_removed_snaps的兼容性.</li>
+</ul></li>
+</ul>
+<h5 id="测试场景">测试场景</h5>
+<p>着重观察 升级后 * mgr与osd通信的pg_stat_t新增对象的解析 * mon与osd的历史gap_removed_snaps的处理 * 查询与新增写入 * pg_info_t转到pg_stat_t * osdmap/pg_stat_t/pg_info_t/MOSDMap的编解码</p>
+<p>稳定性 1. mgr升级后 1. 与低版本通信. 2. 全服务重启 3. 正常业务测试 2. mgr/mon升级后, 1. 与低版本通信 2. 全服务重启 3. 正常业务性能/功能接口测试 3. mgr/mon/osd局部升级后 1. 与低版本通信 2. 全服务重启 3. 正常业务性能/功能接口测试 4. mgr/mon/osd全部升级后 1. 与低版本通信 2. 全服务重启 3. 正常业务性能/功能接口测试 5. qa/unittest中, 是否存在相关测试集? 1. test_snap_mapper.cc 1. snaps 2. testPGLog.cc 1. pg_info_t中的purged_snaps</p>
+<h4 id="mon更新数据库持久化的效果-以及性能影响">mon更新数据库持久化的效果? 以及性能影响</h4>
+<h4 id="版本的设计实现中-是如何持久化的-且都在哪些地方使用到">12版本的设计实现中, 是如何持久化的? 且都在哪些地方使用到?</h4>
+<ul>
+<li>pg_pool_t::removed_snaps 用在用户定义场景
+<ul>
+<li>unmanaged_snap
+<ul>
+<li>OSDMonitor::prepare_remove_snaps</li>
+<li>OSDMonitor::preprocess_remove_snaps</li>
+<li>pg_pool_t::add_unmanaged_snap</li>
+<li>pg_pool_t::remove_unmanaged_snap</li>
+<li>pg_pool_t::encode</li>
+<li>pg_pool_t::decode</li>
+<li>OSDMap::Incremental::propagate_snaps_to_tiers</li>
+</ul></li>
+<li>pool属性的全局snaps
+<ul>
+<li>pg_pool_t::build_removed_snaps
+<ul>
+<li>snap existence/non-existence defined by snaps[] and snap_seq</li>
+<li>当未生成removed_snaps时, 查询pg_pool_t-&gt;snaps, 遍历当前存在哪些快照, 生成该项</li>
+</ul></li>
+<li>pg_pool_t::maybe_updated_removed_snaps
+<ul>
+<li>PGPool::update</li>
+<li>pg_pool_t::add_snap</li>
+<li>pg_pool_t::remove_snap</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>PGPool::cached_removed_snaps // current removed_snaps set 应该是正在干活的
+<ul>
+<li>PGPool::update
+<ul>
+<li>PG::handle_advance_map(</li>
+<li>检测到当前osd内存里的cached_removed_snaps没有osdmap里的removed_snaps新了, 则更新cached_removed_snaps为新的removed_snaps, newly_removed_snaps为subtract后的差.
+<ul>
+<li>如果不是子集, 则直接更换cached_removed_snaps.</li>
+</ul></li>
+</ul></li>
+<li>PG::activate
+<ul>
+<li>作为主pg时, 设置snap_trimq为cached_removed_snaps, 并去除pg_info_t中的purged_snaps</li>
+<li>需要更新pglog时, 发送MOSDPGLog, 包括本pg的purged_snaps</li>
+</ul></li>
+<li>PG::handle_advance_map
+<ul>
+<li>开启调试选项osd_debug_verify_cached_snaps时, 从build_removed_snaps生成一次removed_snaps进行比较, 校验通过才能继续</li>
+</ul></li>
+</ul></li>
+<li>PGPool::newly_removed_snaps // newly removed in the last epoch 最新删除的
+<ul>
+<li>PG::RecoveryState::Active::react(const AdvMap&amp; advmap)
+<ul>
+<li>pg-&gt;snap_trimq.union_of(pg-&gt;pool.newly_removed_snaps);</li>
+<li>收到重构事件时, 检测到newly_removed_snap非空, 则合并到snap_trimq中. 从而用于干活</li>
+</ul></li>
+</ul></li>
+<li>pg_info_t::purged_snaps
+<ul>
+<li>pg_info_t::encode</li>
+<li>pg_info_t::decode</li>
+<li><code>bool operator==(const pg_info_t&amp; l, const pg_info_t&amp; r)</code></li>
+<li>PG::activate</li>
+<li><code>PG::split_into(pg_t child_pgid, PG *child, unsigned split_bits)</code></li>
+<li><code>PG::_prepare_write_info</code>
+<ul>
+<li>根据环境里看到dirty_big_info 应该为false</li>
+<li>在提供pg_info时, 临时将purged_snaps置空, encode完再还原 map&lt;string,bufferlist&gt; km;</li>
+</ul></li>
+<li>PG::read_info</li>
+<li>PG::filter_snapc</li>
+<li>PG::proc_primary_info
+<ul>
+<li>PG::RecoveryState::ReplicaActive::react(const MInfoRec&amp; infoevt) 重构恢复时, 更新pg_info_t的purged_snaps</li>
+</ul></li>
+<li>PGLog::merge_log(</li>
+<li>PrimaryLogPG::AwaitAsyncWork::react(const DoSnapWork&amp;)
+<ul>
+<li>pg_info_t中的purged_snaps 添加get_next_objects_to_trim的 snap_to_trim</li>
+<li>pg的snap_trimq清理掉snap_to_trim</li>
+</ul></li>
+</ul></li>
+<li>PGTransaction::ObjectOperation::updated_snaps </li>
+<li>PG::snap_mapper
+<ul>
+<li>PG::clear_object_snap_mapping</li>
+<li>PG::update_object_snap_mapping</li>
+<li>PG::update_object_snap_mapping</li>
+<li>PG::update_snap_map</li>
+<li><code>PG::_scan_snaps(ScrubMap &amp;smap)</code>
+<ul>
+<li>scrub的时候触发, 似乎只是校验快照元数据, 本身不起啥作用.</li>
+<li>TODO:scrub校验侧逻辑</li>
+</ul></li>
+<li>PrimaryLogPG::on_local_recover(</li>
+<li>PrimaryLogPG::AwaitAsyncWork::react(const DoSnapWork&amp;)</li>
+</ul></li>
+<li>snapset
+<ul>
+<li>legacy看着是12版本以下, 更早的时候的</li>
+</ul></li>
+</ul>
+<h5 id="snaptrimmer状态机">SnapTrimmer状态机</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: SnapTrimmer</span><br><span class="line">---</span><br><span class="line">stateDiagram-v2</span><br><span class="line"></span><br><span class="line">state if_state &lt;&lt;choice&gt;&gt;</span><br><span class="line">state if_state2 &lt;&lt;choice&gt;&gt;</span><br><span class="line">state if_state3 &lt;&lt;choice&gt;&gt;</span><br><span class="line">state if_state4 &lt;&lt;choice&gt;&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	NotTrimming --&gt; if_state2: KickTrim</span><br><span class="line">	if_state2 --&gt; Trimming: pg active+clean+primary+no scrub</span><br><span class="line">	if_state2 --&gt; WaitScrub: pg scrub</span><br><span class="line">	Trimming --&gt; NotTrimming: Reset</span><br><span class="line">	Trimming --&gt; Trimming: KickTrim</span><br><span class="line">	WaitScrub --&gt; NotTrimming: Reset</span><br><span class="line">	WaitScrub --&gt; WaitScrub: KickTrim</span><br><span class="line">	WaitScrub --&gt; NotTrimming: ScrubComplete</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">state Trimming &#123;</span><br><span class="line">[*] --&gt; WaitReservation</span><br><span class="line">	WaitTrimTimer --&gt; if_state : SnapTrimTimerReady</span><br><span class="line">	if_state --&gt; AwaitAsyncWork: can_trim</span><br><span class="line">	if_state --&gt; NotTrimming: not can_trim</span><br><span class="line">	WaitRWLock --&gt; if_state3: TrimWriteUnblocked</span><br><span class="line">	if_state3 --&gt; AwaitAsyncWork: can_trim</span><br><span class="line">	if_state3 --&gt; NotTrimming: not can_trim</span><br><span class="line">	WaitRepops --&gt; if_state4: RepopsComplete</span><br><span class="line">	if_state4 --&gt; WaitTrimTimer: can_trim</span><br><span class="line">	if_state4 --&gt; NotTrimming: not can_trim</span><br><span class="line">	AwaitAsyncWork --&gt; NotTrimming: DoSnapWork and 干活</span><br><span class="line">	AwaitAsyncWork --&gt; WaitRepops</span><br><span class="line">	AwaitAsyncWork --&gt; WaitRWLock</span><br><span class="line">	WaitReservation --&gt; AwaitAsyncWork: SnapTrimReserved</span><br><span class="line">	WaitReservation --&gt; NotTrimming: not can_trim</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="snap_mapper">snap_mapper</h5>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * SnapMapper</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Manages two mappings:</span></span><br><span class="line"><span class="comment"> *  1) hobject_t -&gt; &#123;snapid&#125;</span></span><br><span class="line"><span class="comment"> *  2) snapid -&gt; &#123;hobject_t&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * We accomplish this using two sets of keys:</span></span><br><span class="line"><span class="comment"> *  1) OBJECT_PREFIX + obj.str() -&gt; encoding of object_snaps</span></span><br><span class="line"><span class="comment"> *  2) MAPPING_PREFIX + snapid_t + obj.str() -&gt; encoding of pair&lt;snapid_t, obj&gt;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The on disk strings and encodings are implemented in to_raw, to_raw_key,</span></span><br><span class="line"><span class="comment"> * from_raw, to_object_key.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The object -&gt; &#123;snapid&#125; mapping is primarily included so that the</span></span><br><span class="line"><span class="comment"> * SnapMapper state can be verified against the external PG state during</span></span><br><span class="line"><span class="comment"> * scrub etc.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The 2) mapping is arranged such that all objects in a particular</span></span><br><span class="line"><span class="comment"> * snap will sort together, and so that all objects in a pg for a</span></span><br><span class="line"><span class="comment"> * particular snap will group under up to 8 prefixes.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<h5 id="clones-clone_snaps">clones clone_snaps</h5>
+<h5 id="snapset">snapSet</h5>
+<blockquote>
+<p>If the head is deleted while there are still clones, a snapdir object is created instead to house the SnapSet.</p>
+</blockquote>
+<h5 id="rbd-创建和删除快照-时间长-原因">rbd 创建和删除快照 时间长 原因?</h5>
+<p>好像是mon响应慢了?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2023-04-24 11:34:36.966012 7faa90ff9700 10 librbd::ImageWatcher: 0x7faa7801b160 current lock owner: [9975878,140370134551008]</span><br><span class="line">2023-04-24 11:34:36.966015 7faa90ff9700 10 librbd::Watcher::C_NotifyAck 0x7faa78022960 finish: r=0</span><br><span class="line">2023-04-24 11:34:36.966237 7faacffff700 10 librados: finish completed notify (linger op 0x7faa800038a0), r = 0</span><br><span class="line">2023-04-24 11:34:36.966273 7faa90ff9700 20 librbd::watcher::Notifier: 0x7faa7801b1e0 handle_notify: r=0</span><br><span class="line">2023-04-24 11:34:36.966281 7faa90ff9700 20 librbd::watcher::Notifier: 0x7faa7801b1e0 handle_notify: pending=0</span><br><span class="line">2023-04-24 11:34:38.125463 7faa93fff700 10 monclient: _renew_subs</span><br><span class="line">2023-04-24 11:34:38.125478 7faa93fff700 10 monclient: _send_mon_message to mon.worker3 at 192.168.70.4:6789/0</span><br><span class="line">2023-04-24 11:34:38.171149 7faa90ff9700  5 librbd::SnapshotCreateRequest: 0x7faa80002ad0 handle_allocate_snap_id: r=0, snap_id=41321</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2023-04-24 11:48:28.274546 7f5f7325d700 10 mon.master1@0(leader).osd e35237 preprocess_query pool_op(create unmanaged snap pool 3 auid 0 tid 21 name  v0) v4 from client.10348311 192.168.70.1:0/3015903241                                                                                                                                                                                                 2023-04-24 11:48:28.274557 7f5f7325d700 20 is_capable service=osd command=osd pool op unmanaged-snap write on cap allow *                                                                             2023-04-24 11:48:28.274561 7f5f7325d700 20  allow so far , doing grant allow *                                                                                                                        2023-04-24 11:48:28.274562 7f5f7325d700 20  allow all                                                                                                                                                 2023-04-24 11:48:28.274565 7f5f7325d700  7 mon.master1@0(leader).osd e35237 prepare_update pool_op(create unmanaged snap pool 3 auid 0 tid 21 name  v0) v4 from client.10348311 192.168.70.1:0/3015903241                                                                                                                                                                                                   2023-04-24 11:48:28.274570 7f5f7325d700 10 mon.master1@0(leader).osd e35237 prepare_pool_op pool_op(create unmanaged snap pool 3 auid 0 tid 21 name  v0) v4     </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="snapdir">snapdir?</h5>
+<p>CEPH_SNAPDIR 说是通过clone保留了原始快照造出来的.</p>
+<h5 id="pg状态机和pgpoolupdate的关联">pg状态机和PGPool::update的关联</h5>
+<h5 id="snaptrim逻辑">snaptrim逻辑</h5>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">rbd::Shell::execute() --&gt; rbd::action::snap::execute_remove() --&gt; rbd::action::snap::do_remove_snap() --&gt; librbd::Image::snap_remove2() --&gt; librbd::snap_remove() --&gt; librbd::Operations&lt;librbd::ImageCtx&gt;::snap_remove() --&gt; Operations&lt;I&gt;::snap_remove() --&gt; librbd::Operations&lt;librbd::ImageCtx&gt;::execute_snap_remove() --&gt; librbd::operation::SnapshotRemoveRequest::send() --&gt; cls_client::snapshot_remove() --&gt; ... --&gt; 发送op给rbd_header对象所在的Primary OSD</span><br><span class="line"></span><br><span class="line">// OSD删除快照信息</span><br><span class="line">cls_rbd::snapshot_remove() --&gt; cls_cxx_map_remove_key() --&gt; ReplicatedPG::do_osd_ops(CEPH_OSD_OP_OMAPRMKEYS)</span><br><span class="line"></span><br><span class="line">// RBD客户端向Monitor发送删除快照的消息</span><br><span class="line">librbd::operation::SnapshotRemoveRequest::send() --&gt; SnapshotRemoveRequest&lt;I&gt;::send_release_snap_id() --&gt; Objecter::delete_selfmanaged_snap() --&gt; </span><br><span class="line">Objecter::pool_op_submit() --&gt; Objecter::_pool_op_submit() --&gt; MonClient::send_mon_message()</span><br><span class="line"></span><br><span class="line">// Monitor删除快照信息</span><br><span class="line">OSDMonitor::prepare_pool_op() --&gt; pg_pool_t::remove_unmanaged_snap() --&gt; pg_pool_t::removed_snaps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rbd::Shell::execute() --&gt; rbd::action::snap::execute_remove() --&gt; rbd::action::snap::do_remove_snap() --&gt; librbd::Image::snap_remove2() --&gt; librbd::snap_remove() --&gt; librbd::Operations&lt;librbd::ImageCtx&gt;::snap_remove() --&gt; Operations&lt;I&gt;::snap_remove() --&gt; librbd::Operations&lt;librbd::ImageCtx&gt;::execute_snap_remove() --&gt; librbd::operation::SnapshotRemoveRequest::send() --&gt; cls_client::snapshot_remove() --&gt; ... --&gt; 发送op给rbd_header对象所在的Primary OSD</span><br><span class="line"></span><br><span class="line">// OSD删除快照信息</span><br><span class="line">cls_rbd::snapshot_remove() --&gt; cls_cxx_map_remove_key() --&gt; ReplicatedPG::do_osd_ops(CEPH_OSD_OP_OMAPRMKEYS)</span><br><span class="line"></span><br><span class="line">// RBD客户端向Monitor发送删除快照的消息</span><br><span class="line">librbd::operation::SnapshotRemoveRequest::send() --&gt; SnapshotRemoveRequest&lt;I&gt;::send_release_snap_id() --&gt; Objecter::delete_selfmanaged_snap() --&gt; </span><br><span class="line">Objecter::pool_op_submit() --&gt; Objecter::_pool_op_submit() --&gt; MonClient::send_mon_message()</span><br><span class="line"></span><br><span class="line">// Monitor删除快照信息</span><br><span class="line">OSDMonitor::prepare_pool_op() --&gt; pg_pool_t::remove_unmanaged_snap() --&gt; pg_pool_t::removed_snaps</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://lovethegirl.github.io/2020/02/16/snaptrim_qos/">snaptrim中的qos | 李厅</a></p>
+<h5 id="关键的trim_object和get_next_object_to_trim">关键的trim_object和get_next_object_to_trim</h5>
+<p>这里应该是通过事务生成pglog里用的update_snaps设置snaps,然后正常pg逻辑里从pglog merge的? merge是直接merge的purged_snaps, 所以这里update的snaps是怎么更新成purged_snaps呢? 应该不是</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (r == -ENOENT) &#123;</span><br><span class="line">  <span class="comment">// Done!</span></span><br><span class="line">  <span class="built_in">ldout</span>(pg-&gt;cct, <span class="number">10</span>) &lt;&lt; <span class="string">&quot;got ENOENT&quot;</span> &lt;&lt; dendl;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">ldout</span>(pg-&gt;cct, <span class="number">10</span>) &lt;&lt; <span class="string">&quot;adding snap &quot;</span> &lt;&lt; snap_to_trim</span><br><span class="line">       &lt;&lt; <span class="string">&quot; to purged_snaps&quot;</span></span><br><span class="line">       &lt;&lt; dendl;</span><br><span class="line">  pg-&gt;info.purged_snaps.<span class="built_in">insert</span>(snap_to_trim);</span><br><span class="line">  pg-&gt;snap_trimq.<span class="built_in">erase</span>(snap_to_trim); </span><br></pre></td></tr></table></figure>
+<h5 id="snaptrimmer进入初始状态的条件">SnapTrimmer进入初始状态的条件?</h5>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">snap_trimmer_machine</span><br><span class="line"></span><br><span class="line">PGQueueable</span><br><span class="line">PGSnapTrim</span><br><span class="line"></span><br><span class="line">在AwaitAsyncWork 实例化的时候, 会queue_for_snap_trim</span><br><span class="line"></span><br><span class="line">boost::statechart::result PG::RecoveryState::Active::<span class="built_in">react</span>(<span class="type">const</span> ActMap&amp;) </span><br><span class="line"></span><br><span class="line">在RecoveryState</span><br><span class="line"></span><br><span class="line">应该是重构状态机理触发的</span><br><span class="line"></span><br><span class="line">重构状态机进入条件就是收到新的osdmap之类的</span><br><span class="line"></span><br><span class="line">是在tp_peering线程, peering_wq</span><br><span class="line"></span><br><span class="line">但是那个好像是常规状态机, 一旦进入干活, 还是tp_osd_tp干活</span><br><span class="line"></span><br><span class="line">PGQueueable , 是否跟这个有关?</span><br></pre></td></tr></table></figure>
+<h4 id="版本的设计中-初步理解是在mon的数据库中持久化-那osd需要用到时-是会产生一条新的和mon通信的协议吗">13版本的设计中, 初步理解是在mon的数据库中持久化, 那osd需要用到时, 是会产生一条新的和mon通信的协议吗?</h4>
+<ul>
+<li>pg_pool_t::removed_snaps
+<ul>
+<li>OSDMonitor::encode_pending(MonitorDBStore::TransactionRef t) 
+<ul>
+<li>第一次升级的时候, 将removed_snaps转换为new_removed_snaps , 并写入到mon数据库中</li>
+</ul></li>
+<li>OSDMonitor::preprocess_remove_snaps(MonOpRequestRef op)</li>
+<li>OSDMonitor::prepare_remove_snaps(MonOpRequestRef op)</li>
+<li>"tier add --force-nonempty"</li>
+<li>pg_pool_t::is_removed_snap(snapid_t s) const</li>
+<li>pg_pool_t::build_removed_snaps(interval_set<snapid_t>&amp; rs) const</snapid_t></li>
+<li>pg_pool_t::maybe_updated_removed_snaps(const interval_set<snapid_t>&amp; cached) const</snapid_t></li>
+<li>pg_pool_t::add_unmanaged_snap(uint64_t&amp; snapid)</li>
+<li>pg_pool_t::remove_unmanaged_snap(snapid_t s)</li>
+<li>pg_pool_t::encode(bufferlist&amp; bl, uint64_t features) const</li>
+<li>pg_pool_t::decode(bufferlist::iterator&amp; bl)</li>
+<li>OSDMap::Incremental::propagate_snaps_to_tiers(CephContext *cct,</li>
+<li><code>PGPool::update(CephContext *cct, OSDMapRef map)</code>
+<ul>
+<li>检测osdmap版本, 12版本旧逻辑, 13版本则清理掉12版本的newly_removed_snaps和cached_removed_snaps</li>
+</ul></li>
+<li>PG::activate
+<ul>
+<li>osdmap 12版本, snap_trimq继续使用cached_removed_snaps</li>
+<li>13版本, snap_trimq使用removed_snaps_queue</li>
+</ul></li>
+</ul></li>
+<li>pg_pool_t::new_removed_snaps
+<ul>
+<li>OSDMonitor::encode_pending(MonitorDBStore::TransactionRef t) </li>
+<li>OSDMonitor::prepare_remove_snaps(MonOpRequestRef op)</li>
+<li>OSDMonitor::prepare_pool_op(MonOpRequestRef op)</li>
+<li>OSDMap::Incremental::propagate_snaps_to_tiers(CephContext *cct</li>
+<li>OSDMap::Incremental::encode(bufferlist&amp; bl, uint64_t features) const</li>
+<li>OSDMap::Incremental::decode(bufferlist::iterator&amp; bl)</li>
+<li>OSDMap::apply_incremental(const Incremental &amp;inc)</li>
+<li>OSDMap::encode(bufferlist&amp; bl, uint64_t features) const</li>
+<li>OSDMap::decode(bufferlist::iterator&amp; bl)</li>
+<li>const mempool::osdmap::map&lt;int64_t,snap_interval_set_t&gt;&amp;</li>
+<li>PG::RecoveryState::Active::react(const AdvMap&amp; advmap)</li>
+<li><code>Objecter::_prune_snapc(</code></li>
+<li>get_new_removed_snaps()</li>
+</ul></li>
+<li>pg_pool_t::new_purged_snaps
+<ul>
+<li>OSDMonitor::encode_pending(MonitorDBStore::TransactionRef t)</li>
+<li>OSDMonitor::try_prune_purged_snaps()</li>
+<li>OSDMap::Incremental::encode(bufferlist&amp; bl, uint64_t features) const</li>
+<li>OSDMap::Incremental::decode(bufferlist::iterator&amp; bl)</li>
+<li>OSDMap::apply_incremental(const Incremental &amp;inc)</li>
+<li>OSDMap::encode(bufferlist&amp; bl, uint64_t features) const</li>
+<li>OSDMap::decode(bufferlist::iterator&amp; bl)</li>
+<li>get_new_purged_snaps()</li>
+<li>PG::RecoveryState::Active::react(const AdvMap&amp; advmap)</li>
+</ul></li>
+<li>removed_snaps_queue
+<ul>
+<li>OSDMonitor::encode_pending(MonitorDBStore::TransactionRef t)</li>
+<li>OSDMap::apply_incremental(const Incremental &amp;inc)</li>
+<li>OSDMap::encode(bufferlist&amp; bl, uint64_t features) const</li>
+<li>OSDMap::decode(bufferlist::iterator&amp; bl)</li>
+<li>get_removed_snaps_queue()</li>
+<li>PG::activate
+<ul>
+<li>osdmap版本大于13, 兼容</li>
+</ul></li>
+</ul></li>
+<li>PGMapDigest::purged_snaps
+<ul>
+<li>OSDMonitor::try_prune_purged_snaps()</li>
+<li>PGMapDigest::encode(bufferlist&amp; bl, uint64_t features) const</li>
+<li>PGMapDigest::decode(bufferlist::iterator&amp; p)</li>
+<li>PGMap::calc_purged_snaps()</li>
+</ul></li>
+<li>pg_stat_t::purged_snaps
+<ul>
+<li>pg_stat_t::encode(bufferlist &amp;bl) const</li>
+<li>pg_stat_t::decode(bufferlist::iterator &amp;bl)</li>
+<li><code>operator==(const pg_stat_t&amp; l, const pg_stat_t&amp; r)</code></li>
+</ul></li>
+<li>pg_info_t::purged_snaps
+<ul>
+<li>pg_info_t::encode(bufferlist &amp;bl) const</li>
+<li>pg_info_t::decode(bufferlist::iterator &amp;bl)</li>
+<li><code>operator==(const pg_info_t&amp; l, const pg_info_t&amp; r)</code></li>
+<li>PG::activate</li>
+<li>PG::split_into</li>
+<li>PG::publish_stats_to_osd()</li>
+<li><code>PG::_prepare_write_info</code></li>
+<li>PG::filter_snapc(vector<snapid_t> &amp;snaps)</snapid_t></li>
+<li>PG::proc_primary_info(ObjectStore::Transaction &amp;t, const pg_info_t &amp;oinfo)</li>
+<li>PG::RecoveryState::Active::react(const AdvMap&amp; advmap)</li>
+<li>PGLog::merge_log</li>
+<li>PrimaryLogPG::AwaitAsyncWork::react(const DoSnapWork&amp;)</li>
+</ul></li>
+<li>MOSDMap::mempool::osdmap::map&lt;int64_t,OSDMap::snap_interval_set_t&gt; gap_removed_snaps; 
+<ul>
+<li>encode_payload </li>
+<li>decode_payload</li>
+<li>OSDMonitor::send_incremental(
+<ul>
+<li><ul>
+<li>在osd启动阶段, 会需要从mon拿到指定版本之间的MOSDMap?</li>
+</ul></li>
+</ul></li>
+<li>OSDMonitor::get_removed_snaps_range
+<ul>
+<li>取决于first_committed和当前osdmap版本, 是不是比如trim或者compact的时候, 这个first_commited才会更改? 否则mon内存里其实一直存着所有的removed_snaps? 确实</li>
+</ul></li>
+<li><code>Objecter::_scan_requests(</code></li>
+<li>Objecter::handle_osd_map</li>
+<li>只有client和mgr的objecter客户端层, 这边一开始查下这个. osd干活的时候就不再查了.
+<ul>
+<li>客户端查到之后用作什么? 好像主要是剪枝, 确保客户端的请求的snapset不再包含该快照版本? 减少误判?
+<ul>
+<li>比如客户端拿到的id是旧的场景吗?</li>
+</ul></li>
+</ul></li>
+<li>什么时候通知mon更新这个?
+<ul>
+<li>由osdmap的版本更新, 收到osdmap中的new_removed_snaps和removed_snaps的时候</li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="mds中也有snapserver-也涉及该项-需要了解该部分中的使用逻辑">mds中也有SnapServer, 也涉及该项, 需要了解该部分中的使用逻辑</h4>
+<h3 id="removed_snaps的入口添加在哪里-是怎么加入到increment的事务里的">removed_snaps的入口添加在哪里? 是怎么加入到increment的事务里的?</h3>
+<p>OSDMonitor::prepare_remove_snaps</p>
+<p>MRemoveSnaps</p>
+<p>void pg_pool_t::remove_snap(snapid_t s) { assert(snaps.count(s)); snaps.erase(s); snap_seq = snap_seq + 1; }</p>
+<p>case POOL_OP_DELETE_SNAP: { snapid_t s = pp.snap_exists(m-&gt;name.c_str()); if (s) { pp.remove_snap(s); pending_inc.new_removed_snaps[m-&gt;pool].insert(s); changed = true; } } break;</p>
+<p>Objecter::delete_pool_snap</p>
+<h3 id="removed_snaps-残留代表啥">removed_snaps 残留代表啥?</h3>
+<h3 id="new_purged_snaps-实际执行">new_purged_snaps 实际执行?</h3>
+<p>PrimaryLogPG::kick_snap_trim()</p>
+<p>snap_trimq应该是干活的, 这块状态机基本上没咋改应该.</p>
+<h3 id="moncap里提到了快照的注释">moncap里提到了快照的注释?</h3>
+<h3 id="mds如何使用的快照">mds如何使用的快照?</h3>
+<h3 id="合入过程">合入过程</h3>
+<p>忽略, 看错了. * osdmap的decode, 需要feature识别...但是有差别, 在快照前应该还有个v功能. 初步理解, 还是需要引入mimic这个版本的feature标记. 才能区分是老osd? 能不能不引入mimic, 直接引入feature识别?</p>
+<p>SERVER_M 这个flag已经在了</p>
+<p>12这个patch需要转换下. 把SERVER_MIMIC换成 SERVER_M</p>
+<p>20这个patch需要查下pg_stat_t, 12版本是22, patch是23-&gt;24 涉及PR, 2条commit https://hub.nuaa.cf/ceph/ceph/pull/18058/commits</p>
+<p>a25221e</p>
+<p>结果这个修改, 立马就被重构掉了 <a target="_blank" rel="noopener" href="https://hub.nuaa.cf/ceph/ceph/commit/0230fe673396cc84b595ff2215546880bd77eb5b">osd_types.cc: don't store 32 least siognificant bits of state twice · ceph/ceph@0230fe6 · GitHub</a></p>
+<p>也是2条commit的PR <a target="_blank" rel="noopener" href="https://hub.nuaa.cf/ceph/ceph/pull/19965">osd_types.cc: reorder fields in serialized pg_stat_t by branch-predictor · Pull Request #19965 · ceph/ceph · GitHub</a></p>
+<p>ae7472f 0230fe6</p>
+<p>目前初步看到的障碍是 , 12版本 snaptrimq_len还在invalid后面, 13-14也做了一此reorder, 其实也兼容</p>
+<p>13版本是033d246 12版本是ca4413d</p>
+<p>所以为了满足12版本的兼容性?</p>
+<p>这里那12升13怎么保证兼容性?</p>
+<p>根据<a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/blob/nautilus/src/osd/osd_types.cc">ceph/osd_types.cc at nautilus · ceph/ceph · GitHub</a> 可以知道14和12是保证了兼容性的.</p>
+<p>pg_stat_t::decode(bufferlist::iterator &amp;bl)</p>
+<p>需要先合入osdmap增加的</p>
+<p>27d6f43</p>
+<p>中间0020左右, 手动把新的recovery_unfound给合入了, 暂时不知道为啥会合入这段, 手动合入了.osd_types.h的#define那段</p>
+<p>然后0028, 在pg_pool_t::encode增加了v改到27 0030, PGMapDigest&amp; get_digest 这个的修改依赖高版本将mon里的部分函数重构到mgr中的修改, 所以尝试性修改是维持不变. 根据12版本现状做处理</p>
+<p>编译通过, 实际运行 2023-04-12 14:43:11.981804 7f44f6d7d700 0 log_channel(cluster) log [DBG] : pgmap v10: 192 pgs: 165 active+clean, 18 peering, 9 unknown; 180GiB data, 415GiB used, 1.20TiB / 1.61TiB avail 2023-04-12 14:43:12.871023 7f44fdd8b700 -1 failed to decode message of type 87 v1: buffer::malformed_input: void object_stat_collection_t::decode(ceph::buffer::list::iterator&amp;) no longer understand old encoding version 2 &lt; 122 2023-04-12 14:43:13.866212 7f4500d91700 -1 failed to decode message of type 87 v1: buffer::malformed_input: void object_stat_collection_t::decode(ceph::buffer::list::iterator&amp;) no longer understand old encoding version 2 &lt; 122 2023-04-12 14:43:13.982740 7f44f6d7d700 4 OSD 0 is up, but has no stats 2023-04-12 14:43:13.982742 7f44f6d7d700 2 wc osd 3avail: 71955388378 2023-04-12 14:43:13.982744 7f44f6d7d700 2 wc osd 4avail: 86134315413 2023-04-12 14:43:13.982744 7f44f6d7d700 2 wc osd 5avail: 61272017967 2023-04-12 14:43:13.982748 7f44f6d7d700 4 OSD 0 is up, but has no stats 2023-04-12 14:43:13.982749 7f44f6d7d700 2 wc osd 1avail: 827202140267</p>
+<p>mgr无法处理osd发来的消息, 同理, osd上也有</p>
+<p>搜到个scrub的测试脚本?</p>
+<p>推荐的升级流程</p>
+<p>The upgrade order starts with managers, monitors, then other daemons.</p>
+<p>Each daemon is restarted only after Ceph indicates that the cluster will remain available.</p>
+<p>compatv确实是2, 但是小于25, 那个25哪来的? 还有header.version的6 哪来的?</p>
+<p>终于想起来了, mgr应该是没重新编译, mon也是</p>
+<p>编译mgr没问题 ,mon需要 把PGMonitor.cc这里的int32_t改成 uint64_t, 因为pg数据结构改了 mempool::pgmap::unordered_map&lt;uint64_t,int32_t&gt; num_pg_by_state;</p>
+<p>替换之后 , 崩在了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ceph version 12.2.12 (1436006594665279fe734b4c15d7e08c13ebd777) luminous (stable)</span><br><span class="line">1: (()+0xa73541) [0x55c718be4541]</span><br><span class="line">2: (()+0xf5d0) [0x7f88944635d0]</span><br><span class="line">3: (gsignal()+0x37) [0x7f8893484207]</span><br><span class="line">4: (abort()+0x148) [0x7f88934858f8]</span><br><span class="line">5: (__gnu_cxx::__verbose_terminate_handler()+0x165) [0x7f8893d937d5]</span><br><span class="line">6: (()+0x5e746) [0x7f8893d91746]</span><br><span class="line">7: (()+0x5e773) [0x7f8893d91773]</span><br><span class="line">8: (()+0x5e993) [0x7f8893d91993]</span><br><span class="line">9: (object_stat_collection_t::decode(ceph::buffer::list::iterator&amp;)+0x530) [0x55c7188ca990]</span><br><span class="line">10: (pg_stat_t::decode(ceph::buffer::list::iterator&amp;)+0x1e5) [0x55c7188d0da5]</span><br><span class="line">11: (pg_info_t::decode(ceph::buffer::list::iterator&amp;)+0x13a) [0x55c7188d149a]</span><br><span class="line">12: (PG::read_info(ObjectStore*, spg_t, coll_t const&amp;, ceph::buffer::list&amp;, pg_info_t&amp;, PastIntervals&amp;, unsigned char&amp;)+0x231) [0x55c71871d731]</span><br><span class="line">13: (PG::read_state(ObjectStore*, ceph::buffer::list&amp;)+0x7b) [0x55c718725efb]</span><br><span class="line">14: (OSD::load_pgs()+0x9b4) [0x55c718677334]</span><br><span class="line">15: (OSD::init()+0x2169) [0x55c718695ca9]</span><br><span class="line">16: (main()+0x2d07) [0x55c7185974a7]</span><br><span class="line">17: (__libc_start_main()+0xf5) [0x7f88934703d5]</span><br><span class="line">18: (()+0x4c65b3) [0x55c7186375b3]</span><br></pre></td></tr></table></figure>
+<p>找到问题了,pg_stat_t里 之前合并purged_snaps合并错了, 应该是环境里的osd被我之前误启动已经污染了, 暂时跳过升级的验证项</p>
+<p>先单纯验证功能</p>
+<p>osdmap里 removed_snaps_queue 和pg query看不到pg_info里有purged_snaps.</p>
+<p>好像是我新增的代码都没生效? 是要让他满足HAVE_FEATURES选项, 在OSDMap.cc里获取过程uint64_t OSDMap::get_encoding_features() const</p>
+<p>if (require_osd_release &lt; CEPH_RELEASE_MIMIC) { f &amp;= ~CEPH_FEATURE_SERVER_MIMIC; }</p>
+<p>monCommands.h里 require-osd-release需要增加 | mimic | | ----- | | 增加这段, 让她可以通过mimic</p>
+<pre><code>if (rel == osdmap.require_osd_release) &#123;
+  // idempotent
+  err = 0;
+  goto reply;
+&#125;
+assert(osdmap.require_osd_release &gt;= CEPH_RELEASE_LUMINOUS);
+if (rel == CEPH_RELEASE_MIMIC) &#123;
+  if (!osdmap.get_num_up_osds() &amp;&amp; sure != &quot;--yes-i-really-mean-it&quot;) &#123;
+    ss &lt;&lt; &quot;Not advisable to continue since no OSDs are up. Pass &quot;
+       &lt;&lt; &quot;--yes-i-really-mean-it if you really wish to continue.&quot;;
+    err = -EPERM;
+    goto reply;
+  &#125;
+  if ((!HAVE_FEATURE(osdmap.get_up_osd_features(), SERVER_MIMIC))
+       &amp;&amp; sure != &quot;--yes-i-really-mean-it&quot;) &#123;
+ss &lt;&lt; &quot;not all up OSDs have CEPH_FEATURE_SERVER_MIMIC feature&quot;;
+err = -EPERM;
+goto reply;
+  &#125;
+&#125; else &#123;
+  ss &lt;&lt; &quot;not supported for this release yet&quot;;
+  err = -EPERM;
+  goto reply;
+&#125;</code></pre>
+<p>CEPH_FEATURES_ALL 增加MIMIC, 否则osd被判定为低版本的</p>
+<p>合入了d9cd2d7 mon feature mimic的这个commit</p>
+<p>ceph mon feature set mimic --yes-i-really-mean-it</p>
+<p>目前没看到起到什么作用.</p>
+<p>ceph features可以忽略, 即便是16/17, 打出来都是叫luminous</p>
+<p>SIGNIFICANT_FEATURES 好像默认osdmap用的这个feature, 这里没加上MIMIC</p>
+<p>启动后, pg_info里确实没了, pg_stat_t里确实也没看到,</p>
+<p>] osd_snap / removed_epoch_1_00000f08 osd_snap / removed_epoch_39_00000f08 osd_snap / removed_epoch_39_00000f0b osd_snap / removed_epoch_39_00000f0e osd_snap / removed_epoch_39_00000f11 osd_snap / removed_epoch_39_00000f14 osd_snap / removed_epoch_39_00000f17 osd_snap / removed_epoch_39_00000f1a osd_snap / removed_epoch_39_00000f1d osd_snap / removed_epoch_39_00000f20 osd_snap / removed_epoch_39_00000f23 osd_snap / removed_epoch_39_00000f26 osd_snap / removed_epoch_39_00000f29 osd_snap / removed_epoch_39_00000f2c osd_snap / removed_epoch_39_00000f2f osd_snap / removed_epoch_39_00000f32 osd_snap / removed_epoch_39_00000f35 osd_snap / removed_epoch_39_00000f38 osd_snap / removed_epoch_39_00000f3b osd_snap / removed_epoch_39_00000f3e osd_snap / removed_epoch_39_00000f41 osd_snap / removed_epoch_39_00000f44 osd_snap / removed_epoch_39_00000f47 osd_snap / removed_epoch_39_00000f4a osd_snap / removed_epoch_39_00000f4d osd_snap / removed_epoch_39_00000f50 osd_snap / removed_epoch_39_00000f53 osd_snap / removed_epoch_39_00000f56 osd_snap / removed_epoch_39_00000f59 osd_snap / removed_epoch_39_00000f5c osd_snap / removed_epoch_39_00000f5f osd_snap / removed_epoch_39_00000f62 osd_snap / removed_epoch_39_00000f65 osd_snap / removed_epoch_39_00000f68 osd_snap / removed_epoch_39_00000f6b osd_snap / removed_epoch_39_00000f6e osd_snap / removed_epoch_39_00000f71 osd_snap / removed_epoch_39_00000f74 osd_snap / removed_epoch_39_00000f77 osd_snap / removed_epoch_39_00000f7a osd_snap / removed_epoch_39_00000f7d osd_snap / removed_epoch_39_00000f80 osd_snap / removed_epoch_39_00000f83 osd_snap / removed_epoch_39_00000f86 osd_snap / removed_epoch_39_00000f89 osd_snap / removed_epoch_39_00000f8c osd_snap / removed_epoch_39_00000f8f osd_snap / removed_epoch_39_00000f92 osd_snap / removed_epoch_39_00000f95 osd_snap / removed_epoch_39_00000f98 osd_snap / removed_epoch_39_00000f9b</p>
+<ol type="1">
+<li>看上去removed_snaps是生效了, 但是pg_stat_t里的purged_snaps好像没工作</li>
+<li>osdmap的removed_snaps_queue确实工作了, 但是旧的removed_snaps里的好像没清理掉.</li>
+</ol>
+<h2 id="todo解读phase-1.5">TODO:解读phase 1.5</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">41c24a13261222cc76f45a51ba213d83f566fc81 osd: remove luminous compat code <span class="keyword">for</span> removed_snaps</span><br><span class="line">713d48eff06a84aee8c98c9fed39696546e411b3 osd/osd_types: remove build_removed_snaps(), maybe_update_removed_sna…</span><br><span class="line">248fe11dd25a98f82eda6af5ef91956f9131209c mon/OSDMonitor: remove support <span class="keyword">for</span> pre-mimic conversion</span><br><span class="line">04b946d9131973ada2913bef057c447c41e675d1 mon/OSDMonitor: remove pre-mimic snap behavior support</span><br><span class="line">99970bb795d61fc1691e7846bd583e602f23b4d6 mon: drop mon_debug_no_require_mimic</span><br><span class="line">58c4c8fc8ef9f85c3efdd31740f2a91054258b08 osd: move snap_interval_set_t to osd_types</span><br><span class="line">e963ee6039a29def026d90100e2ca5454b658649 osd/PeeringState: removed pre-mimic removed snap tracking</span><br><span class="line">b59a25d9c985e414e3015c76f3fd84a1525afe3c osd/PG: drop pre-mimic snap_trimq code</span><br><span class="line">9b6acc2caddc235436aa1f0d6ae6d955a12dc769 osd/PeeringState: drop some mimic conditionals</span><br><span class="line">3f9c28823aafc6b970eefba1455a26df98563536 mon/OSDMonitor: avoid is_removed_snap()</span><br><span class="line">cabc48c40332875e8827f4f0e6dbde9ab7e9fd7a osd/PrimaryLogPG: use osdmap removed_snaps_queue <span class="keyword">for</span> snap trimming</span><br><span class="line">a6f85089c0d0213481c8038f57820d3d31cf9ebd osd/PrimaryLogPG: find_object_context: trust SnapSet<span class="string">&#x27;s clone_snaps</span></span><br><span class="line"><span class="string">25b690fe06c261648564e3e0428f2003a85b07ca messages/MRemoveSnaps: int -&gt; int32_t on encoded type</span></span><br><span class="line"><span class="string">8c0c63c7e1b4e8eeb23622ac5cf58dcec3e575c6 mds/SnapServer: int -&gt; int32_t for encoded type</span></span><br><span class="line"><span class="string">b1a5bff4a888d69bc783d8ffae855c639fb98969 osd/PrimaryLogPG: make best effort to sanitize clones on copy-from</span></span><br><span class="line"><span class="string">c88d860dcef695124ae0d7af72b8e3046ee4bc41 osd/PrimaryLogPG: trim_objects: only filter SnapSet::snaps for pre-oc…</span></span><br><span class="line"><span class="string">096449813272af262be27baf4205eaf3c542b78d osd/PrimaryLogPG: only filter SnapSet::snaps for flush for pre-octopu…</span></span><br><span class="line"><span class="string">a362fedc81ab5ae76149397b2b1544206568ea9f osd/PrimaryLogPG: change fabrication of promoted clone snaps</span></span><br><span class="line"><span class="string">f43d2147896c22a25ebe3c05296a1debbbeaea4f osd/osd_types: SnapSet::get_ssc_as_of: use clone_snaps</span></span><br><span class="line"><span class="string">8f714e2ba6944f15764739f9ea9f3863d31defd1 osd/osd_types: mark SnapSet::snaps as legacy</span></span><br><span class="line"><span class="string">de5d3f6a0ad2d63744fa3accb022da7896f87cc4 mon/OSDMonitor: only maintain pg_pool_t::removed_snaps for pre-octopus</span></span><br><span class="line"><span class="string">d7c343eebff1b40bb7f0ecb7ca91ca2d10ed3c2f osd/PrimaryLogPG: only maintain SnapSet::snaps for pre-octopus compat</span></span><br><span class="line"><span class="string">f58f5cfc5197e283bb1b1b0f234a6133b9a7feaa osd/PrimaryLogPG: use get_ssc_as_of for snapc for flushing clones</span></span><br><span class="line"><span class="string">419251a401f58c78fabe006cd978a968bb6c8087 ceph_test_rados_api_tier_pp: fix osd version checks</span></span><br><span class="line"><span class="string">7fe43cc4e4652a5cda6e2b789220c16677cf2582 ceph_test_rados: stop doing long object names</span></span><br><span class="line"><span class="string">b945de141f3a97efd339ee82f1ccd2caeae3a40f mon/OSDMonitor: only update removed_snaps when pre-octopus</span></span><br><span class="line"><span class="string">fa7655351c61d36b189131d7e3e8107605fdf54b mon/OSDMonitor: make snap removal handle dups safely</span></span><br><span class="line"><span class="string">d056372e7bd50c9755e5fc866fcc6e02e9dcc63c vstart.sh: wait for mgr volume module to start up</span></span><br><span class="line"><span class="string">dcc8b6b28a0b18bb4d7043bf7bdec751dfa3f05f vstart.sh: remove useless auth add for osds</span></span><br><span class="line"><span class="string">75edd21c4572c833450baf7e9d68a8feec7d33e4 vnewosd.sh: add script to add a new osd to an existing vstart</span></span><br><span class="line"><span class="string">bc4c31a439a2cd201d89538fd519feefeb2aeb34 mon/PaxosService: add C_ReplyOp</span></span><br><span class="line"><span class="string">7eeee5b49bf67ccd197820a692472a6707e97074 CMakeLists: include &#x27;</span>cephfs<span class="string">&#x27; (which includes libcephfs) in &#x27;</span>vstart<span class="string">&#x27; t…</span></span><br><span class="line"><span class="string">ab405ab56036ad44f79e36f65031585a86b1e967 mds/SnapServer: handle MRemoveSnaps acks from mon</span></span><br><span class="line"><span class="string">e457b73075b63433a63f6ddbf945555f2573a5ee mon/OSDMonitor: send MRemoveSnaps back to octopus MDS</span></span><br><span class="line"><span class="string">ec4cd082617b88ccb61ca74205cf38fa27b43b5e mon/OSDMonitor: use structured binding for prepare_remove_snaps</span></span><br><span class="line"><span class="string">e8a359814cf533bbb4064b1bd27d40c6d7bff629 osd/SnapMapper: document stored keys and values</span></span><br><span class="line"><span class="string">14fdb52c50c018c6580fc0a1115495875ebb1a9e mon/OSDMonitor: document osd snap metadata format</span></span><br><span class="line"><span class="string">84bea65d3e3b4c5bf04591700f8da8e99e7a1bc2 osd/SnapMapper: include poolid in snap index</span></span><br><span class="line"><span class="string">94ebe0eab968068c29fdffa1bfe68c72122db633 osd: adjust snapmapper keys on first start as octopus</span></span><br><span class="line"><span class="string">a12d80a8137a47743996d89379e63cf80d005ae3 mon/OSDMonitor: lookup_pruned_snap -&gt; lookup_purged_snap</span></span><br><span class="line"><span class="string">441f42b8add06304df331b655b75da9b3a491cd8 mon/OSDMonitor: fix lookup_purged_snap implementation</span></span><br><span class="line"><span class="string">19a590e11494d33477442a4f749852c38b111a74 mon/OSDMonitor: make_snap_key -&gt; make_removed_snap_key, make_purged_s…</span></span><br><span class="line"><span class="string">c0f362434560ea773350b5677365d7eed83c2c42 mon/OSDMonitor: refactor snap key and value helpers</span></span><br><span class="line"><span class="string">c0233801a8bd78ce44e6bbf8baab1eae73e9fa5c mon/OSDMonitor: generalize/refactor lookup_*_snap</span></span><br><span class="line"><span class="string">1e7718c37c5ebbc98d4c3caec91d71a99f5c0982 mon/OSDMonitor: move (removed, purged) snap update into a helper</span></span><br><span class="line"><span class="string">acd7e903d3eb7745e92dbcbf2b851a77d0dc1929 mon/OSDMonitor: make &#123;removed,purged&#125;_snap storage more efficient</span></span><br><span class="line"><span class="string">61d8407514da8ce68d0bed18ff5c4cbe512cdf01 osd/osd_types: clean up initial values for OSDSuperblock</span></span><br><span class="line"><span class="string">3217ca77cbd683a0f5d918c4cadb0cf5a149eacc osd/osd_types: add purged_snaps_last to OSDSuperblock</span></span><br><span class="line"><span class="string">847dc5fb78a6abe1ae0e010645e905fa833c16bb mon/OSDMonitor: make_snap_epoch_key -&gt; make_removed_snap_epoch_key</span></span><br><span class="line"><span class="string">47fb89c072b63202ba61e9c8bcd411816af2701b mon/OSDMonitor: record purged_snaps for each epoch</span></span><br><span class="line"><span class="string">4e5093cee357c79672991d1899d30dcbe22810ac mon/OSDMonitor: record pre-octopus purged snaps with first octopus map</span></span><br><span class="line"><span class="string">7315d3fdba0ab917fc2b01d1d7ae99220fcbcf43 mon/OSDMonitor: add messages to get past purged_snaps</span></span><br><span class="line"><span class="string">87b539c2b65c80a105e1c374ff88cb69b571686f osd: record purged_snaps when we store new maps</span></span><br><span class="line"><span class="string">81f7edc6bda47fce626abfc861b268c61c6a26bd osd: sync old purged_snaps on startup after upgrade or osd creation</span></span><br><span class="line"><span class="string">8d9a27f5ea9d860f2c407346b8b7ef7b99afcbce ceph_test_rados_api_snapshots_pp: (partial) test to reproduce stray c…</span></span><br><span class="line"><span class="string">7628474723489d9bb5ef97e35a2e102a8ae04d63 osd/PrimaryLogPG: always remove the snap we are trimming</span></span><br><span class="line"><span class="string">6192fb60313d42761a2ff59d2dee5581a68d6139 osd: implement scrub_purged_snaps command</span></span><br><span class="line"><span class="string">a1f649c2e763eb21c47f013e1bf8b6ae24700359 mds/SnapServer: make not about pre-octopus compat code</span></span><br><span class="line"><span class="string">d3d06bcd7c1230e8f4d49a0dafa7b32d3860f39a osdc/Objecter: don&#x27;</span>t worry about gap_removed_snaps from map gaps</span><br><span class="line">bc0553147b229855def6da92e4dd2b58a32ba9ad mon/OSDMonitor: <span class="keyword">do</span> not bother reporting gaps <span class="keyword">in</span> removed_snaps</span><br><span class="line">d831abeae1688a18eb446dd1a63eb6ed94f45d81 mon/OSDMonitor: record snap removal <span class="built_in">seq</span> as purged</span><br><span class="line">6b26fcd1bdd8910cb2dbd84fe342cd65be2a70ec mon/OSDMonitor: fix bug <span class="keyword">in</span> try_prune_purged_snaps</span><br><span class="line">e4aed74cd4799d922b8cba2d65996b7cbe90cab5 osd/OSDMap: add last_purged_snaps_stamp to osd_xinfo_t</span><br><span class="line">a03e8ab662559b395380864980bfec7958585a53 osd: record last_purged_snaps_scrub <span class="keyword">in</span> superblock</span><br><span class="line">ab475cda08ff7cf872d342caa5680a97973dc535 osd: <span class="built_in">log</span> purged_snaps scrub to cluster <span class="built_in">log</span></span><br><span class="line">4f4dedb8d62bcafb3c698f35ab374b7a4d72ed88 osd: report last_purged_snaps_scrub as part of beacon</span><br><span class="line">85ddc1a0345c24487f85103dd6a4b9a4dad87e2b mon/OSDMonitor: record last_purged_snaps_scrub from beacon to osdmap</span><br><span class="line">0d10e63d8d158ec503aab42a8b8f16997e8a8a87 ceph_test_rados_api_snapshots_pp: drop unnecessary assert</span><br><span class="line">fc2a96638ddec2a9e1f5e16045adb71e816bc8c5 osd/OSDMap: SERVER_OCTOPUS feature bit is now significant</span><br><span class="line">647cfb460371b2f3255160d73d7432d41fcc0b9f osd: move scrub_purged_snaps to helper</span><br><span class="line">5b0ed6ff9e10fbbe70c789796099223a38996401 osd: automatically scrub purged_snaps every deep scrub interval</span><br><span class="line">adacc20046c5f3a96b59df3fe01f9764e8437156 ceph_test_rados_api_tier_pp: tolerate ENOENT or success from deleted …</span><br><span class="line">b17850a6653f2f5870907ee54c72955735ffc84a</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2023-05-13T17:34:12.691Z" itemprop="dateUpdated">2023-05-13 17:34:12</time>
+</span><br>
+
+
+        
+        欢迎评论~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sean10.github.io">
+            <img src="/img/avatar.jpg" alt="Sean10">
+            Sean10
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/snap/" rel="tag">snap</a></li></ul>
+
+
+            
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<div class="addthis_sharing_toolbox"></div>
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/&title=《ceph之L版本purged_snaps过多问题》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/&title=《ceph之L版本purged_snaps过多问题》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ceph之L版本purged_snaps过多问题》 — 行路中.&url=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2022/10/30/%E8%81%94%E8%B0%83%E9%9B%86%E6%88%90%E8%B4%A8%E9%87%8F%E5%B0%8F%E6%80%9D/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">联调集成质量小思</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <!-- <script src="//code.bdstatic.com/npm/leancloud-storage@latest/dist/av-min.js"></script> -->
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "yNexbxJmshSneppnaoo3Bd6Y-gzGzoHsz",
+            appKey: "FyxT8MxDPHbu8mQSapgjEMPC",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Sean10 &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/&title=《ceph之L版本purged_snaps过多问题》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/&title=《ceph之L版本purged_snaps过多问题》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ceph之L版本purged_snaps过多问题》 — 行路中.&url=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57108c0b91bea817"></script>
+
+<script src="/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</body>
+</html>

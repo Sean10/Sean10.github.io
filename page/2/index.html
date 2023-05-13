@@ -150,6 +150,56 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-python日志模块初探"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2021-08-13 19:28:12" datetime="2021-08-13T19:28:12.000Z"  itemprop="datePublished">2021-08-13</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2021/08/13/python%E6%97%A5%E5%BF%97%E6%A8%A1%E5%9D%97%E5%88%9D%E6%8E%A2/">python日志模块初探</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        标准
+支持的日志等级
+SyslogHandler的syslog协议部分主要遵循RFC5424.
+在安装了systemd和rsyslog的设备上, 如果启用了syslog协议, 日志一般会先经由systemd-journald管控的/dev/log套接字, 由rsyslog从systemd-journald的socket中读取日志, 而后根据rsyslog的过滤器写入到/var/log/me...
+    
+
+        <a href="/2021/08/13/python%E6%97%A5%E5%BF%97%E6%A8%A1%E5%9D%97%E5%88%9D%E6%8E%A2/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/library/" rel="tag">library</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-ceph之docker内crimson编译"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -199,7 +249,7 @@
         </li>
     
         <li class="post-list-item fade">
-            <article id="post-ceph之luminous-github版本编译undefined-reference"
+            <article id="post-ceph之luminous-github版本编译"
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
@@ -217,7 +267,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2021/05/15/ceph%E4%B9%8Bluminous-github%E7%89%88%E6%9C%AC%E7%BC%96%E8%AF%91undefined-reference/">ceph之luminous_github版本编译undefined_reference</a>
+      <a class="post-title-link" href="/2021/05/15/ceph%E4%B9%8Bluminous-github%E7%89%88%E6%9C%AC%E7%BC%96%E8%AF%91/">ceph之luminous_github版本编译问题整理</a>
     </h3>
   
 
@@ -227,11 +277,12 @@
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        主要问题是从svn下载的最新版的liminous分支, 编译时报这个错误
-1234567891011121314151617181920undefined reference to OSD::HeartbeatInfo::HEARTBEAT_MAX_CONN``这条修复了这个问题[osd: make OSD::HEARTBEAT\_MAX\_CONN inline by tchaikov ·...
+        luminous 早起记录
+主要问题是从svn下载的最新版的luminous分支, 编译时报这个错误
+1234567891011121314151617181920undefined reference to OSD::HeartbeatInfo::HEARTBEAT_MAX_CONN``这条修复了这个问题[osd: make OSD::HEARTBEAT\_MAX\_CONN inline...
     
 
-        <a href="/2021/05/15/ceph%E4%B9%8Bluminous-github%E7%89%88%E6%9C%AC%E7%BC%96%E8%AF%91undefined-reference/" class="post-more waves-effect waves-button">
+        <a href="/2021/05/15/ceph%E4%B9%8Bluminous-github%E7%89%88%E6%9C%AC%E7%BC%96%E8%AF%91/" class="post-more waves-effect waves-button">
             阅读全文…
         </a>
     </div>
@@ -602,61 +653,6 @@ SWIM是通过Gossip实现的Membership保持协议，也就是维护分布式系
     <div class="post-footer">
         
 	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/arch/" rel="tag">arch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-ceph之ansible理解"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2021-02-18 19:36:07" datetime="2021-02-18T19:36:07.000Z"  itemprop="datePublished">2021-02-18</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
-
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2021/02/18/ceph%E4%B9%8Bansible%E7%90%86%E8%A7%A3/">ceph之ansible理解</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        理解
-大家最受影响的就是一半时间开发, 一半时间运维的这个问题. 利用一个成熟的配置文件, 快速部署起自己需要的环境, 而不是一步步通过页面控制点击, 这是一个很省力的事情. 将运维中与部署相关的事情通过一些成熟的模板化的配置文件来提供, 最好不过了.
-ansible比较大的几个优点
-
-由于是开源框架, 基于ansible的针对其他开源软件的配套代价较多
-
-比如集成钉钉等
-
-配置文件化管理部...
-    
-
-        <a href="/2021/02/18/ceph%E4%B9%8Bansible%E7%90%86%E8%A7%A3/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible/" rel="tag">ansible</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
 
     </div>
     
