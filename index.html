@@ -150,6 +150,60 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-cephalocon2023之ceph_performance_tuning"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2023-05-08 21:09:38" datetime="2023-05-08T21:09:38.000Z"  itemprop="datePublished">2023-05-08</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/">cephalocon2023之ceph performance tuning:from bluestore to rbd -Mark Nelson, Clyso GmbH</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        Ceph Performance Tuning: From Bluestore to RBD - Mark Nelson, Clyso GmbH - YouTube
+推荐性能优化时使用工具
+当前性能测试, 60个osd, 450W 随机4K读, 平均75K每个osd.
+
+                
+                    
+                    
+  ...
+    
+
+        <a href="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cephalocon/" rel="tag">cephalocon</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-ceph之purged-snaps多场景下问题"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -180,17 +234,7 @@
     
         背景及初步定位
 背景是通过perf捕获ceph-osd的cpu消耗, 发现在下述环节极高.
-
-PG::_prepare_write_info
-
-interval_set::operator==
-
-_Rb_tree_increment
-
-
-
-由于找不到现场版本的debuginfo了, 因此姑且先推导一下.
-interset的==, 对应是map的==, _Rb_tree_increment初步...
+123--10.64%--PG::_prepare_write_info	--10.02%--interval_set&lt;snapid_t, std::map&lt;snapid_t, snapid_t, std::less&lt;snapid_t&gt;, std::allocator&lt;s...
     
 
         <a href="/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/" class="post-more waves-effect waves-button">
@@ -518,7 +562,12 @@ Orchestrator CL...
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        定义上, 高可用其实分为以下几种.
+        高可用的目标
+
+提升平均无故障间隔（MTTF）
+缩短平均修复时间（MTTR）
+
+定义上, 高可用其实分为以下几种.
 
 冗余
 
@@ -530,7 +579,7 @@ Orchestrator CL...
 
 熔断
 
-熔断更多指检测到连续故障, 让后续的也先拦截掉, 避免无法提供服务但依旧冲击服务压力. 检测到恢复之后再自愈那种. ceph-osd假设重构降级了, 这个情况下业务io继续打下来, 这个时候应该是阻塞, 而并没有通过熔断中断io. 但是如...
+熔断更多指检测到连续故障, 让后续的也先拦截掉, 避免无法提供服务但依旧冲击服务压力. 检测到恢复之后再自愈那种. ceph-osd假设重构降级了, 这个情况...
     
 
         <a href="/2021/11/27/%E9%AB%98%E5%8F%AF%E7%94%A8%E5%88%9D%E7%90%86%E8%A7%A3/" class="post-more waves-effect waves-button">
@@ -652,59 +701,6 @@ wxbackup导出ios设备
     <div class="post-footer">
         
 	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ffmpeg/" rel="tag">ffmpeg</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wechat/" rel="tag">wechat</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-IO路径流向初探"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2021-09-08 11:59:38" datetime="2021-09-08T11:59:38.000Z"  itemprop="datePublished">2021-09-08</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
-
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2021/09/08/IO%E8%B7%AF%E5%BE%84%E6%B5%81%E5%90%91%E5%88%9D%E6%8E%A2/">IO路径流向初探</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        todo
-ceph-fuse是如何将系统调用注册成自己的程序的呢?
-
-libcephfs 是ceph-fuse通信的内核模块
-ceph-fuse来处理真实的逻辑
-本文提到为了系统实现概念的统一性、设计的一致性以及层次抽象与共用，操作系统将iscsi协议对接到scsi中间层。这种实现对性能的损失有多大？如果我们在device-mapper之下实现又会怎么样
-https://www.kernel...
-    
-
-        <a href="/2021/09/08/IO%E8%B7%AF%E5%BE%84%E6%B5%81%E5%90%91%E5%88%9D%E6%8E%A2/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%98%E5%82%A8/" rel="tag">存储</a></li></ul>
 
     </div>
     
