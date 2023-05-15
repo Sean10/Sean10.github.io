@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="背景及初步定位 背景是通过perf捕获ceph-osd的cpu消耗, 发现在下述环节极高. 123--10.64%--PG::_prepare_write_info	--10.02%--interval_set&lt;snapid_t, std::map&lt;snapid_t, snapid_t, std::less&lt;snapid_t&gt;, std::allocator&lt;std:">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515175306896.png">
+<meta property="og:image" content="https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/image-20230515175306896.png">
 <meta property="article:published_time" content="2023-03-22T22:06:44.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.199Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.228Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="snap">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sean10.github.io/.io//image-20230515175306896.png">
+<meta name="twitter:image" content="https://sean10.github.io/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/image-20230515175306896.png">
     
         <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
     
@@ -199,13 +199,7 @@
 <p>根据上述Map的内部实现来看, 基本就是他了, 比较map, 根据下述stl实现来看, 确实是<code>operator==</code>产生的大量迭代</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//迭代器基类</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">__rb_tree_base_iterator</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_node_base::base_ptr base_ptr;</span><br><span class="line">  <span class="keyword">typedef</span> bidirectional_iterator_tag iterator_category;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="type">ptrdiff_t</span> difference_type;</span><br><span class="line"></span><br><span class="line">  base_ptr node;    <span class="comment">//节点基类类型的指针，将迭代器连接到RB-tree的节点</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">increment</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (node-&gt;right != <span class="number">0</span>) &#123;<span class="comment">//如果node右子树不为空，则找到右子树的最左子节点</span></span><br><span class="line">      node = node-&gt;right;</span><br><span class="line">      <span class="keyword">while</span> (node-&gt;left != <span class="number">0</span>)</span><br><span class="line">        node = node-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;<span class="comment">//如果node右子树为空，则找到第一个“该节点位于其左子树”的节点</span></span><br><span class="line">      base_ptr y = node-&gt;parent;</span><br><span class="line">      <span class="keyword">while</span> (node == y-&gt;right) &#123;</span><br><span class="line">        node = y;</span><br><span class="line">        y = y-&gt;parent;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (node-&gt;right != y)</span><br><span class="line">        node = y;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Map</span></span><br><span class="line">...</span><br><span class="line">      <span class="keyword">typedef</span> _Rb_tree&lt;key_type, value_type, _Select1st&lt;value_type&gt;,</span><br><span class="line">		       key_compare, _Pair_alloc_type&gt; _Rep_type;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/// The actual tree structure.</span></span><br><span class="line">      _Rep_type _M_t;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   *  @brief  Map equality comparison.</span></span><br><span class="line"><span class="comment">   *  @param  __x  A %map.</span></span><br><span class="line"><span class="comment">   *  @param  __y  A %map of the same type as @a x.</span></span><br><span class="line"><span class="comment">   *  @return  True iff the size and elements of the maps are equal.</span></span><br><span class="line"><span class="comment">   *</span></span><br><span class="line"><span class="comment">   *  This is an equivalence relation.  It is linear in the size of the</span></span><br><span class="line"><span class="comment">   *  maps.  Maps are considered equivalent if their sizes are equal,</span></span><br><span class="line"><span class="comment">   *  and if corresponding elements compare equal.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Key, <span class="keyword">typename</span> _Tp, <span class="keyword">typename</span> _Compare, <span class="keyword">typename</span> _Alloc&gt;</span><br><span class="line">    <span class="keyword">inline</span> <span class="type">bool</span></span><br><span class="line">    <span class="keyword">operator</span>==(<span class="type">const</span> map&lt;_Key, _Tp, _Compare, _Alloc&gt;&amp; __x,</span><br><span class="line">	       <span class="type">const</span> map&lt;_Key, _Tp, _Compare, _Alloc&gt;&amp; __y)</span><br><span class="line">    &#123; <span class="keyword">return</span> __x._M_t == __y._M_t; &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"># stl_tree.h</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">_Rb_tree</span></span><br><span class="line">...</span><br><span class="line">	<span class="keyword">friend</span> <span class="type">bool</span></span><br><span class="line">      <span class="keyword">operator</span>==(<span class="type">const</span> _Rb_tree&amp; __x, <span class="type">const</span> _Rb_tree&amp; __y)</span><br><span class="line">      &#123;</span><br><span class="line">		  <span class="keyword">return</span> __x.<span class="built_in">size</span>() == __y.<span class="built_in">size</span>()</span><br><span class="line">		  &amp;&amp; std::<span class="built_in">equal</span>(__x.<span class="built_in">begin</span>(), __x.<span class="built_in">end</span>(), __y.<span class="built_in">begin</span>());</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"># 根据[std::equal \- cppreference\.com](https:<span class="comment">//en.cppreference.com/w/cpp/algorithm/equal)可知, equal内的实现必然用到了`operator++` </span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">      _Self&amp;</span><br><span class="line">      <span class="keyword">operator</span>++() _GLIBCXX_NOEXCEPT</span><br><span class="line">      &#123;</span><br><span class="line">		_M_node = _Rb_tree_increment(_M_node);</span><br><span class="line">		<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      _Self</span><br><span class="line">      <span class="keyword">operator</span>++(<span class="type">int</span>) _GLIBCXX_NOEXCEPT</span><br><span class="line">      &#123;</span><br><span class="line">		_Self __tmp = *<span class="keyword">this</span>;</span><br><span class="line">		_M_node = _Rb_tree_increment(_M_node);</span><br><span class="line">		<span class="keyword">return</span> __tmp;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="包含debuginfo后">包含debuginfo后</h3>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515175306896.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/03/22/ceph%E4%B9%8Bpurged-snaps%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E9%97%AE%E9%A2%98/image-20230515175306896.png" class="">
 <h1 id="定位到purged_snaps后">定位到purged_snaps后</h1>
 <p>ceph的快照删除官方文档如下, 因此<code>purged_snaps</code>高在业务场景很正常.</p>
 <blockquote>
@@ -256,11 +250,11 @@
 <p>主要差异总结:</p>
 <table>
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -618,8 +612,8 @@
 <li>OSDMonitor::prepare_remove_snaps(MonOpRequestRef op)</li>
 <li>"tier add --force-nonempty"</li>
 <li>pg_pool_t::is_removed_snap(snapid_t s) const</li>
-<li>pg_pool_t::build_removed_snaps(interval_set<snapid_t>&amp; rs) const</snapid_t></li>
-<li>pg_pool_t::maybe_updated_removed_snaps(const interval_set<snapid_t>&amp; cached) const</snapid_t></li>
+<li>pg_pool_t::build_removed_snaps(interval_set<snapid_t>&amp; rs) const</li>
+<li>pg_pool_t::maybe_updated_removed_snaps(const interval_set<snapid_t>&amp; cached) const</li>
 <li>pg_pool_t::add_unmanaged_snap(uint64_t&amp; snapid)</li>
 <li>pg_pool_t::remove_unmanaged_snap(snapid_t s)</li>
 <li>pg_pool_t::encode(bufferlist&amp; bl, uint64_t features) const</li>
@@ -697,7 +691,7 @@
 <li>PG::split_into</li>
 <li>PG::publish_stats_to_osd()</li>
 <li><code>PG::_prepare_write_info</code></li>
-<li>PG::filter_snapc(vector<snapid_t> &amp;snaps)</snapid_t></li>
+<li>PG::filter_snapc(vector<snapid_t> &amp;snaps)</li>
 <li>PG::proc_primary_info(ObjectStore::Transaction &amp;t, const pg_info_t &amp;oinfo)</li>
 <li>PG::RecoveryState::Active::react(const AdvMap&amp; advmap)</li>
 <li>PGLog::merge_log</li>
@@ -827,7 +821,7 @@ goto reply;
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.199Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.228Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

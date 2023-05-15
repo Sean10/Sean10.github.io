@@ -28,16 +28,16 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="论文   可扩展弱一致性感染型进程组成员协议 进程组的成员关系协议  可伸缩性 弱一致性 感染性  用于分布式系统中进程的健康检测或者说错误检测 SWIM是通过Gossip实现的Membership保持协议，也就是维护分布式系统节点的状态  成员资格协议  成员资格协议的可伸缩型和执行效率主要由以下几个方面确定： 完备性：是不是每个失效的进程最终都能够检测到？ 失效节点的检测速度：一个节点失效到它">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sean10.github.io/.io//SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-16-19.png">
-<meta property="og:image" content="https://sean10.github.io/.io//SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-56-27.png">
+<meta property="og:image" content="https://sean10.github.io/2021/04/06/SWIM%E5%8D%8F%E8%AE%AE/SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-16-19.png">
+<meta property="og:image" content="https://sean10.github.io/2021/04/06/SWIM%E5%8D%8F%E8%AE%AE/SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-56-27.png">
 <meta property="article:published_time" content="2021-04-06T23:07:08.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.115Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.152Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="分布式">
 <meta property="article:tag" content="论文">
 <meta property="article:tag" content="gossip">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sean10.github.io/.io//SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-16-19.png">
+<meta name="twitter:image" content="https://sean10.github.io/2021/04/06/SWIM%E5%8D%8F%E8%AE%AE/SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-16-19.png">
     
         <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
     
@@ -191,7 +191,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h1 id="论文">论文 <Scalable weakly-consistent infection-style process group membership protocol></Scalable></h1>
+            <h1 id="论文">论文 <Scalable Weakly-consistent Infection-style process group Membership protocol></h1>
 <blockquote>
 <p>可扩展弱一致性感染型进程组成员协议</p>
 <p>进程组的成员关系协议</p>
@@ -219,13 +219,7 @@
 <p>T’: 协议周期，2次探测的时间间隔 k: k个节点 该协议中，若Mi检测Mj状态，则先发一个ping包到Mj，若Mj未在超时时间内ack，则Mi随机选择k个节点，发送间接探测ping-req包，k个节点如Mh收到ping-req请求，将会ping Mj并将结果返回给Mi。若任意一个ping-req返回Mj存活，则Mj存活。</p>
 <p>上述过程，包含3个round-trip的网络过程，Mi-&gt;Mj, Mi-&gt;Mh, Mh-&gt;Mj，所以T’ 要大于3个超时；如T’=1s, timeout=200ms</p>
 </blockquote>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//SWIM协议_2021-04-06-22-16-19.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2021/04/06/SWIM%E5%8D%8F%E8%AE%AE/SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-16-19.png" class="">
 <p>这里故障监测, 也存在一篇论文讲到<code>[SRDS 2004] The Phi Accrual Failure Detector</code>讲到可以通过概率模型来判断都次未响应后到底该节点是否已经离线, 还是只是网络波动缘由导致. 这个还挺可靠的, 的确某个设备的链路存在波动问题时, 常常代表他的响应会是长期离线的.</p>
 <blockquote>
 <ol type="1">
@@ -238,13 +232,7 @@
 <blockquote>
 <p>当Mi检测到Mj失败，会利用IP多播等方式，发送一条 failed(Mj) 的消息，收到消息的Node，会把Mj从本地Node表中踢除。</p>
 </blockquote>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//SWIM协议_2021-04-06-22-56-27.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2021/04/06/SWIM%E5%8D%8F%E8%AE%AE/SWIM%E5%8D%8F%E8%AE%AE_2021-04-06-22-56-27.png" class="">
 <h1 id="思考">思考</h1>
 <p>所以理论上, 基于这个的linux集群网络稳定性监控机制应该是有的吧.</p>
 <h1 id="reference">Reference</h1>
@@ -262,7 +250,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.115Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.152Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

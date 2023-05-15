@@ -29,7 +29,7 @@
 <meta property="og:description" content="配置 配置了一个CentOS 8的容器, 执行下以下内容 123456WITH_SEASTAR&#x3D;true .&#x2F;install-deps.shmkdir build &amp;&amp; cd build# 以下这步官网里没提, 导致失败的.# . &#x2F;opt&#x2F;rh&#x2F;gcc-toolset-9&#x2F;enablecmake -DWITH_SEASTAR&#x3D;ON -DWITH_MGR_DASHBOARD_FRO">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-23T09:21:25.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.199Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.228Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="docker">
@@ -207,13 +207,13 @@
 <p>好像缺失的<code>lz4</code>的库?</p>
 <p>姑且试了下, 好像是<code>/usr/lib64/pkgconfig/lz4.pc</code>不存在,但是实际上<code>/usr/lib64/pkgconfig/liblz4.pc</code>存在, 我做了个软链, 过了第一个, 但是后面还是报了上面这条报错.</p>
 <p>--debug-output</p>
-<p>CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:273 (message): The package name passed to <code>find_package_handle_standard_args</code> (LZ4) does<br>
-not match the name of the calling package (lz4). This can lead to problems<br>
-in calling code that expects <code>find_package</code> result variables (e.g.,<br>
-<code>_FOUND</code>) to follow a certain pattern.<br>
-Call Stack (most recent call first): cmake/modules/Findlz4.cmake:30 (find_package_handle_standard_args)<br>
-src/CMakeLists.txt:335 (_find_package) src/seastar/cmake/SeastarDependencies.cmake:98 (find_package)<br>
-src/seastar/CMakeLists.txt:330 (seastar_find_dependencies)<br>
+<p>CMake Warning (dev) at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:273 (message): The package name passed to <code>find_package_handle_standard_args</code> (LZ4) does<br />
+not match the name of the calling package (lz4). This can lead to problems<br />
+in calling code that expects <code>find_package</code> result variables (e.g.,<br />
+<code>_FOUND</code>) to follow a certain pattern.<br />
+Call Stack (most recent call first): cmake/modules/Findlz4.cmake:30 (find_package_handle_standard_args)<br />
+src/CMakeLists.txt:335 (_find_package) src/seastar/cmake/SeastarDependencies.cmake:98 (find_package)<br />
+src/seastar/CMakeLists.txt:330 (seastar_find_dependencies)<br />
 This warning is for project developers. Use -Wno-dev to suppress it.</p>
 <h3 id="could-not-find-lz4-missing-lz4_library">Could NOT find LZ4 (missing: LZ4_LIBRARY)</h3>
 <p>好像是<code>FindPackageHandleStandardArgs</code>这个函数是类似<code>find_package</code>的.</p>
@@ -262,7 +262,7 @@ This warning is for project developers. Use -Wno-dev to suppress it.</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.199Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.228Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

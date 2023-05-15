@@ -29,7 +29,7 @@
 <meta property="og:description" content="1https:&#x2F;&#x2F;movie.douban.com&#x2F;j&#x2F;new_search_subjects?sort&#x3D;T&amp;range&#x3D;0,10&amp;tags&#x3D;%E5%89%A7%E6%83%85&amp;start&#x3D;10 像这种json获取的链接，倒是没有cookie的要求，即便多线程爬取几百页也没有被ban.  之前直接使用了rq任务队列，导致不知道该怎么写多线程了。 暂时先重新用自带的qu">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-03-09T20:54:27.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.283Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.304Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="爬虫">
@@ -189,10 +189,10 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <!-- 由于造轮子这件事有些占用时间了，暂时还是切换到寻找最新的轮子进行个性化parse规则的方法了。 -->
-<hr>
+<hr />
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://movie.douban.com/j/new_search_subjects?sort=T&amp;range=0,10&amp;tags=%E5%89%A7%E6%83%85&amp;start=10</span><br></pre></td></tr></table></figure>
 <p>像这种json获取的链接，倒是没有cookie的要求，即便多线程爬取几百页也没有被ban.</p>
-<hr>
+<hr />
 <p>之前直接使用了rq任务队列，导致不知道该怎么写多线程了。</p>
 <p>暂时先重新用自带的queue写写看多线程。</p>
 <p>目前20个线程爬取10页约200个评论，耗时8.98秒,不过这里固定一个ip测试立马就被ban了。</p>
@@ -200,16 +200,16 @@
 <p>稍稍追加了一下header,然后用多进程跑起来了……真的伤心，用的其他的再复杂的框架反而失败了，协程也遭遇各式各样的难题，暂时还是用多进程拿下数据吧。</p>
 <p>明明使用了可用的代理，但是被ban的却还有我的真实ip，经过测试，和代码无关，是代理问题。透明代理相比高匿代理是否会导致真实ip被ban还没有测试过。</p>
 <p>在aiohttp中试图使用https代理时，才意识到https代理像贡献者说的那样没有必要，在V站讨论中，可以看到HTTPS代理仅仅是起到在客户端到代理端之间进行SSL认证的功能，与访问https还是http网站完全没有关系。</p>
-<hr>
+<hr />
 <p>在没有用redis持久化时，想到 布隆过滤器似乎也需要持久化，查了一些，似乎基于redis或者pickle序列化持久化都是可选的，但是在找官方文档的时候看到这么一句。</p>
 <blockquote>
 <p>Since this package natively uses mmap files, no serialization is needed. Therefore, if you have to do a lot of moving between disks etc, this module is an obvious win.</p>
 </blockquote>
 <p>mmap是什么文件</p>
-<hr>
+<hr />
 <p>在用charles测试抓包的过程中遭遇了SSLError(SSLError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:777)'),))问题,似乎与python requests对charles ssl认证有关。</p>
 <p>从charles保存根证书导入python requests即可。</p>
-<hr>
+<hr />
 <h1 id="参考资料">参考资料</h1>
 <ol type="1">
 <li>(requests charles SSL)[https://www.charlesproxy.com/documentation/using-charles/ssl-certificates/]</li>
@@ -226,7 +226,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.283Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.304Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

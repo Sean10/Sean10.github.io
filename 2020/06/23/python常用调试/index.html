@@ -28,18 +28,18 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="Python常用调试方式  pdb 1python3 -m pdb xxx.py  break 或 b 设置断点 设置断点 continue 或 c 继续执行程序 list 或 l 查看当前行的代码段 step 或 s 进入函数 return 或 r 执行代码直到从当前函数返回 exit 或 q 中止并退出 next 或 n 执行下一行 pp 打印变量的值 help 帮助   批量执行输出 123">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sean10.github.io/.io//2020-06-23-15-09-34.png">
-<meta property="og:image" content="https://sean10.github.io/.io//2020-06-23-17-50-47.png">
-<meta property="og:image" content="https://sean10.github.io/.io//2020-06-23-17-54-19.png">
-<meta property="og:image" content="https://sean10.github.io/.io//2020-06-23-17-55-52.png">
-<meta property="og:image" content="https://sean10.github.io/.io//2020-06-23-17-56-32.png">
+<meta property="og:image" content="https://sean10.github.io/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-15-09-34.png">
+<meta property="og:image" content="https://sean10.github.io/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-17-50-47.png">
+<meta property="og:image" content="https://sean10.github.io/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-17-54-19.png">
+<meta property="og:image" content="https://sean10.github.io/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-17-55-52.png">
+<meta property="og:image" content="https://sean10.github.io/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-17-56-32.png">
 <meta property="article:published_time" content="2020-06-23T20:17:08.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.251Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.276Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="debug">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sean10.github.io/.io//2020-06-23-15-09-34.png">
+<meta name="twitter:image" content="https://sean10.github.io/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-15-09-34.png">
     
         <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
     
@@ -194,7 +194,7 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h1 id="python常用调试方式"><code>Python</code>常用调试方式</h1>
-<hr>
+<hr />
 <h2 id="pdb">pdb</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m pdb xxx.py</span><br></pre></td></tr></table></figure>
 <ul>
@@ -208,89 +208,59 @@
 <li>pp 打印变量的值</li>
 <li>help 帮助</li>
 </ul>
-<hr>
+<hr />
 <h3 id="批量执行输出">批量执行输出</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(Pdb) commands 1</span><br><span class="line">(com) p some_variable</span><br><span class="line">(com) p another</span><br><span class="line">(com) end</span><br><span class="line">(Pdb) c</span><br><span class="line"><span class="comment"># 会打印出some_variable和another</span></span><br></pre></td></tr></table></figure>
-<hr>
+<hr />
 <h3 id="侵入式断点">侵入式断点</h3>
 <h4 id="断点">断点</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pdb</span><br><span class="line">pdb.set_trace()</span><br></pre></td></tr></table></figure>
 <h4 id="条件断点">条件断点</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> a &gt; <span class="number">0</span>:</span><br><span class="line">    <span class="keyword">if</span> a == <span class="number">15</span>:</span><br><span class="line">        <span class="built_in">print</span>(a)</span><br><span class="line">        pdb.set_trace()</span><br></pre></td></tr></table></figure>
-<hr>
+<hr />
 <h3 id="条件断点-1">条件断点</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># b(reak) [([filename:]lineno | function) [, condition]]</span></span><br><span class="line">b temp.py:<span class="number">13</span>, a == <span class="number">15</span></span><br></pre></td></tr></table></figure>
-<hr>
+<hr />
 <h3 id="多线程调试">多线程调试</h3>
 <p>pdb原生不支持多线程调试，但是基于这个开发的不少第三方库支持, 可能rpdb？详见下述</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://wiki.python.org/moin/PythonDebuggingTools">PythonDebuggingTools - Python Wiki</a></li>
 </ul>
 <p>稍后讲下<code>pycharm</code>多线程调试</p>
-<hr>
+<hr />
 <h2 id="pycharm常用">pycharm常用</h2>
 <h3 id="条件断点-2">条件断点</h3>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//2020-06-23-15-09-34.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<hr>
+<img src="/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-15-09-34.png" class="">
+<hr />
 <h3 id="多线程调试-1">多线程调试</h3>
 <p>pycharm是开发了pydevd这个插件来完成的远程调试、多线程调试的功能</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//2020-06-23-17-50-47.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<hr>
+<img src="/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-17-50-47.png" class="">
+<hr />
 <h2 id="健壮的logging机制">健壮的logging机制</h2>
 <p>对于代码量一大，手动gdb肯定不方便，又不像二进制程序会出现coredump，所以gdb的<code>backtrace</code>经常需要用来排查段错误。</p>
 <p>日志才是最主要的排查手段，通过等级控制，打开debug日志复现一次，日志足够详细就能直接定位到问题行。如果不够详细，就需要补充了。</p>
-<hr>
+<hr />
 <h3 id="example">Example</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> logging.handlers <span class="keyword">import</span> RotatingFileHandler</span><br><span class="line"></span><br><span class="line">log_path = <span class="string">&quot;./res/a.log&quot;</span></span><br><span class="line">logger = logging.getLogger(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">logger.setLevel(logging.DEBUG)</span><br><span class="line">fh = RotatingFileHandler(log_path, maxBytes=<span class="number">200000</span>, backupCount=<span class="number">7</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">fh.setLevel(logging.INFO)</span><br><span class="line">console = logging.StreamHandler()</span><br><span class="line">console.setLevel(logging.DEBUG)</span><br><span class="line">fomatter = logging.Formatter(<span class="string">&#x27;%(asctime)s\t%(module)s\t%(message)s&#x27;</span>, <span class="string">&#x27;%Y-%m-%d %H:%M:%S&#x27;</span>)</span><br><span class="line">fh.setFormatter(fomatter)</span><br><span class="line">console.setFormatter(fomatter)</span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(console)</span><br></pre></td></tr></table></figure>
-<hr>
+<hr />
 <h2 id="远程同步">远程同步</h2>
 <ul>
 <li>vscode: sftp</li>
 <li>pycharm: deployment</li>
 </ul>
-<hr>
+<hr />
 <h3 id="vscodesftp">vscode:sftp</h3>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//2020-06-23-17-54-19.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<hr>
+<img src="/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-17-54-19.png" class="">
+<hr />
 <h4 id="example-1">Example</h4>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Profile Name&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;host&quot;</span><span class="punctuation">:</span> <span class="string">&quot;name_of_remote_host&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ftp&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;port&quot;</span><span class="punctuation">:</span> <span class="number">21</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;secure&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;username&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;remotePath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/public_html/project&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password&quot;</span><span class="punctuation">,</span>  </span><br><span class="line">    <span class="attr">&quot;uploadOnSave&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-<hr>
+<hr />
 <h3 id="基于pycharm的deployment">基于pycharm的deployment</h3>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//2020-06-23-17-55-52.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<hr>
+<img src="/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-17-55-52.png" class="">
+<hr />
 <h4 id="配置">配置</h4>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//2020-06-23-17-56-32.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<hr>
+<img src="/2020/06/23/python%E5%B8%B8%E7%94%A8%E8%B0%83%E8%AF%95/2020-06-23-17-56-32.png" class="">
+<hr />
 <h2 id="参考文档">参考文档</h2>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/pdb.html">pdb — The Python Debugger — Python 3.8.3 documentation</a></li>
@@ -307,7 +277,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.251Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.276Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

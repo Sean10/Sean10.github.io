@@ -211,7 +211,7 @@
 <p>this has been unacceptable.</p>
 <table style="width:8%;">
 <colgroup>
-<col style="width: 8%">
+<col style="width: 8%" />
 </colgroup>
 <tbody>
 <tr class="odd">
@@ -250,7 +250,7 @@
 </tbody>
 </table>
 <p>wsgi协议</p>
-<hr>
+<hr />
 <h2 id="字节协议">字节协议</h2>
 <p>没找到为什么，python socket建立服务器的时候，浏览器始终接收不到数据，接收到也显示不出来，不明白为什么</p>
 <p>chrome和safari不显示，但是firefox显示了，先用firefox,以后再想这几个之间的区别</p>
@@ -274,7 +274,7 @@
 <p>python并发</p>
 <p>从threading到multiprocess，再到concurrent.future支持</p>
 <p>jsessionid似乎是j2ee的东西</p>
-<hr>
+<hr />
 <p>beautifulSoup的对象，如何打印出来，他的子对象tag对象没有text方法</p>
 <p>常见的反爬策略主要有：</p>
 <p>IP限制</p>
@@ -310,11 +310,11 @@
 <p>其包含特殊的好几十个font标签且是一个个嵌套的代码，导致无法Beautifulsoup无法解析html，后来把对应嵌套的font标签删除掉，才可以正常解析。</p>
 <p>相关python代码为：</p>
 <h1 id="handle-special-case-for-httpblog.sina.com.cnsblog_5058502a01017j3j.html">handle special case for http://blog.sina.com.cn/s/blog_5058502a01017j3j.html</h1>
-<p>processedHtml = processedHtml.replace('<font color="#6D4F19"><font color="#7AAF5A"><font color="#7AAF5A"><font color="#6D4F19"><font color="#7AAF5A"><font color="#7AAF5A">', ""); processedHtml = processedHtml.replace("", "");</font></font></font></font></font></font></p>
+<p>processedHtml = processedHtml.replace('<font COLOR="#6D4F19"><font COLOR="#7AAF5A"><font COLOR="#7AAF5A"><font COLOR="#6D4F19"><font COLOR="#7AAF5A"><font COLOR="#7AAF5A">', ""); processedHtml = processedHtml.replace("</FONT></FONT></FONT></FONT></FONT></FONT>", "");</p>
 <p>遇到其他类似的问题，也可以去删除或替换出错代码，即可解决问题。</p>
 <p>不过需要说明的是，很多时候，你未必很容易就找到出错的代码。</p>
 <p>想要找到出错的代码，更多的时候，需要你一点点调试，一点点的删除看似可疑的一些html源码，然后最终才能定位到出错的代码，然后删除掉后，才可以正常工作的。</p>
-<hr>
+<hr />
 <p>uri资源文件如何获取，似乎有格式</p>
 <p>似乎是jquery自带的延迟加载技术</p>
 <p>像淘宝或者京东这样的APP页面上有很多图片,当我们滑到下一屏时下一屏的图片才会加载,这就采用了图片懒加载的方式.</p>
@@ -323,11 +323,13 @@
 <p>但是如果是用base64的，在dom里属性就消失不见了</p>
 <p>针对decode base64编码的图片比较慢的问题,我们可以选择使用canvas来加速.当向canvas发出绘画命令时,浏览器直接将指令发到图形加速器而不需要开发者更多的干预,硬件图形加速器则以难以执行的运算速度实时绘画和渲染图形.因此,我们可以使用canvas来渲染base64编码后的图片</p>
 <p>Inlined Placeholder Image To reduce the amount of request you can use data uri images as the placeholder.</p>
-<p><img src="/.io//gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-src="original.jpg" width="1024" height="768"></p>
+<p><img src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="
+     data-src="original.jpg"
+     width="1024" height="768" /></p>
 <p>最后解析出来的base64居然不是图片，也是怪奇怪的</p>
 <p>http://api.nicodic.jp/</p>
 <p>豆瓣获取url还是非常简单的，就是被403了，明天再看了吧，还有个数据库连接池多线程的问题需要试试。</p>
-<hr>
+<hr />
 <p>python的json.dumps方法默认会输出成这种格式"",。</p>
 <p>要输出中文需要指定ensure_ascii参数为False.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = json.dump(jsonData,targetFile,ensure_ascii=False,indent=4)</span><br></pre></td></tr></table></figure>

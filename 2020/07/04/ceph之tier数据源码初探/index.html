@@ -29,7 +29,7 @@
 <meta property="og:description" content="理解 rados实现思路 TODO: rados对象相比一个文件, 其实差别就在于rados对象自带了offset位置的概念. 并不存在太多其他的元数据信息. 所以基本可以忽略rados对象的元数据信息? onode等可能不行? rados层的聚合, 即在tier上的时候, 表现就是存在这个rados对象, 但是这个rados对象只被识别出几K实际写入的对象大小. 而如果是聚合拼接时, 则意味着,">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-04T21:07:29.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.231Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.256Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="源码">
 <meta property="article:tag" content="ceph">
@@ -391,7 +391,7 @@
 <p><a target="_blank" rel="noopener" href="https://tracker.ceph.com/projects/ceph/repository/revisions/b9ec7e64b7f59a92343ddc095e0a6b6c0dc50bfb">Revision b9ec7e64 - osd: add proxy write perf counter Signed-off-by: Zhiqiang Wang &lt;zhiqiang.wan... - Ceph - Ceph</a></p>
 <p>tracker单里咋也啥都没有呢?那他们怎么决定的呢?</p>
 <p>在这个提交里增加的计数器.这个是直接提交在master分支里的了...哎</p>
-<p>int PrimaryLogPG::do_osd_ops(OpContext *ctx, vector<OSDOp>&amp; ops)</OSDOp></p>
+<p>int PrimaryLogPG::do_osd_ops(OpContext *ctx, vector<OSDOp>&amp; ops)</p>
 <p>write这边是尝试写,或者跟tier有关的都会进行计数</p>
 <p>而read这边则是读一些元数据信息会触发读计数</p>
 <p>这样的话,write和read数据就没有那么准确了.</p>
@@ -405,7 +405,7 @@
 <p><a target="_blank" rel="noopener" href="https://github.com/Mirantis/ceph/commit/1d8429de57c07a739ee6b58ba3de35874e7d85c0">osd/OSDMap: get_up_osd_features() · Mirantis/ceph@1d8429d</a></p>
 <p>age Weil authored and Yan, Zheng committed on Dec 29, 2013</p>
 <p>struct osd_xinfo_t {</p>
-<p>变量在osdMap这个class里 mempool::osdmap::vector<osd_xinfo_t> osd_xinfo;</osd_xinfo_t></p>
+<p>变量在osdMap这个class里 mempool::osdmap::vector<osd_xinfo_t> osd_xinfo;</p>
 <h3 id="pg-stats">pg stats</h3>
 <h3 id="pool-stat方向">pool stat方向</h3>
 <p>dump时用的iops_wr和iops_rd</p>
@@ -431,8 +431,8 @@
   uint64_t evict_slop = (float) evict_target * cct-&gt;_conf-&gt;osd_agent_slop;</code></pre></li>
 <li>agent_choose_mode</li>
 </ul>
-<p>这次新增了flush_high<br>
-&gt; commit 8f6056aebbabcbe236d332f546d075e06a14c0ca &gt; Author: MingXin Liu <a href="mailto:mingxin.liu@kylin-cloud.com" class="email">mingxin.liu@kylin-cloud.com</a> &gt; Date: Thu May 28 14:33:10 2015 +0800 &gt; &gt; Osd: revise agent_choose_mode() to track the flush mode &gt;<br>
+<p>这次新增了flush_high<br />
+&gt; commit 8f6056aebbabcbe236d332f546d075e06a14c0ca &gt; Author: MingXin Liu <a href="mailto:mingxin.liu@kylin-cloud.com" class="email">mingxin.liu@kylin-cloud.com</a> &gt; Date: Thu May 28 14:33:10 2015 +0800 &gt; &gt; Osd: revise agent_choose_mode() to track the flush mode &gt;<br />
 &gt; Signed-off-by: Mingxin Liu <a href="mailto:mingxinliu@ubuntukylin.com" class="email">mingxinliu@ubuntukylin.com</a> &gt; Reviewed-by: Li Wang <a href="mailto:liwang@ubuntukylin.com" class="email">liwang@ubuntukylin.com</a> &gt; Suggested-by: Nick Fisk <a href="mailto:nick@fisk.me.uk" class="email">nick@fisk.me.uk</a></p>
 <p>commit c9daf8e5ea401f5bc2aafd4025991fb4903ffcd4 Author: Sage Weil <a href="mailto:sage@inktank.com" class="email">sage@inktank.com</a> Date: Mon Jan 27 17:57:53 2014 -0800</p>
 <pre><code>osd/ReplicatedPG: add slop to agent mode selection
@@ -569,7 +569,7 @@ missing anything ?</li>
 <p><a target="_blank" rel="noopener" href="https://ceph-users.ceph.narkive.com/roHS8cpX/ssds-for-journals-vs-ssds-for-a-cache-tier-which-is-better#post1">[ceph-users] SSDs for journals vs SSDs for a cache tier, which is better?</a></p>
 <h1 id="reference">Reference</h1>
 <ol type="1">
-<li><ceph源码分析></ceph源码分析></li>
+<li><ceph源码分析></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/CSND_PAN/article/details/78743426">Ceph 学习——OSD读写流程与源码分析（一）_SEU_PAN的博客-CSDN博客_primarylogpg</a></li>
 <li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/61311797/what-is-the-best-size-for-cache-tier-in-ceph">openstack - What is the best size for cache tier in Ceph? - Stack Overflow</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.shunzi.tech/post/ceph-tiring-cache-optimization/">Ceph Tiring Cache 调优 | Elvis Zhang</a></li>
@@ -583,7 +583,7 @@ missing anything ?</li>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.231Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.256Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

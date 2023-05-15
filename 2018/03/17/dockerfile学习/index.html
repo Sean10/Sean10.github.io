@@ -29,7 +29,7 @@
 <meta property="og:description" content="现在装的环境有点多了，一不留神就会改动了其他工具使用的环境，这种环境下学下docker可以保障运行环境的一致性。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-03-17T20:06:44.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.231Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.256Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
 <p>在docker run时，最后的命令行参数是会和dockerfile中的RUN, CMD, ENTRYPOINT相关的。</p>
 <p>RUN是在Build时运行的，先于CMD和ENTRYPOINT。Build完成了，RUN也运行完成后，再运行CMD或者ENTRYPOINT。</p>
 <p>比如这个，最后的bash会覆盖CMD指定的命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 7777:8888 -v /Users/sean10/Code/LSTM-Sentiment-Analysis:/LSTM-Sentiment-Analysis -it tensorflow/tensorflow:1.1.0-py3 bash</span><br></pre></td></tr></table></figure></p>
-<hr>
+<hr />
 <h1 id="todo">todo</h1>
 <ul>
 <li>docker如何使用相对路径的文件内?</li>
@@ -227,7 +227,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.231Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.256Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

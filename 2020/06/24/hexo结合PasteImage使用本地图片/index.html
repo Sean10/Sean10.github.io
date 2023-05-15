@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="背景 最近发现用外部OSS图床，在本地处理归档文件资源时，不是那么的方便。且自己用的腾讯云COS的上传插件没做对剪切板中图片上传的功能，导致每次粘贴图片都得多一步去获取文件的绝对路径或者选中文件。 然后发现vs code有个Paste Image的插件可以做到直接将剪切板的图片放到本地指定相对路径的功能。 但是对于发布到github page上的文章呢，图片资源怎么才能使用相对路径呢？ 就发现he">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sean10.github.io/.io//hexo%E7%BB%93%E5%90%88PasteImage%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87_2020-06-24-00-47-39.png">
+<meta property="og:image" content="https://sean10.github.io/2020/06/24/hexo%E7%BB%93%E5%90%88PasteImage%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/hexo%E7%BB%93%E5%90%88PasteImage%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87_2020-06-24-00-47-39.png">
 <meta property="article:published_time" content="2020-06-24T00:46:35.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.231Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.260Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="hexo">
 <meta property="article:tag" content="vs code">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sean10.github.io/.io//hexo%E7%BB%93%E5%90%88PasteImage%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87_2020-06-24-00-47-39.png">
+<meta name="twitter:image" content="https://sean10.github.io/2020/06/24/hexo%E7%BB%93%E5%90%88PasteImage%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/hexo%E7%BB%93%E5%90%88PasteImage%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87_2020-06-24-00-47-39.png">
     
         <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
     
@@ -208,17 +208,11 @@
 </ol></li>
 </ol>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-  var endPos = link.lastIndexOf(&#x27;.&#x27;);</span></span><br><span class="line"><span class="addition">+  var endPos = link.length-1;</span></span><br></pre></td></tr></table></figure>
-<p>原始的<code>md</code>文件中的图片路径依旧可以用正常的相对路径<code>![](hexo结合PasteImage使用本地图片/hexo结合PasteImage使用本地图片_2020-06-24-00-47-39.png)</code>， 在<code>hexo g</code>时生成的文件中的图片资源路径会被这个插件自动转换成url后静态文件相对于静态文件根目录的绝对路径。</p>
+<p>原始的<code>md</code>文件中的图片路径依旧可以用正常的相对路径<code>&#123;% asset_img "hexo结合PasteImage使用本地图片_2020-06-24-00-47-39.png" "" %&#125;</code>， 在<code>hexo g</code>时生成的文件中的图片资源路径会被这个插件自动转换成url后静态文件相对于静态文件根目录的绝对路径。</p>
 <h2 id="pasteimage配置">PasteImage配置</h2>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.namePrefix&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;currentFileNameWithoutExt&#125;_&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.defaultName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YMMDDHHmmss&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;currentFileDir&#125;/$&#123;currentFileNameWithoutExt&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.basePath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;currentFileDir&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pasteImage.forceUnixStyleSeparator&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 <h3 id="图示配置如下">图示配置如下</h3>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//hexo结合PasteImage使用本地图片_2020-06-24-00-47-39.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2020/06/24/hexo%E7%BB%93%E5%90%88PasteImage%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/hexo%E7%BB%93%E5%90%88PasteImage%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87_2020-06-24-00-47-39.png" class="">
 <h2 id="reference">Reference</h2>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="http://www.itomtan.com/2017/09/29/the-problem-when-use-post-asset-folder/">Hexo开启post_asset_folder后, 安装hexo-asset-image,不起作用的问题 | Tomtan's Blog</a></li>
@@ -232,7 +226,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.231Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.260Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

@@ -29,7 +29,7 @@
 <meta property="og:description" content="使用qt信号槽时，始终no such slots，原因是我没有在槽函数的类中使用Q_OBJECT MACRO 这个的原因是什么呢？ 在类声明的开始位置必须加上Q_OBJECT语句，这条语句是不可缺少的，它将告诉编译器在编译之前必须先应用 moc工具进行扩展 这个时候先执行qmake，再build 开了一个refresh信号的线程，但是一使用emit signalRefresh就爆出系统错误 &amp;gt">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-06-15T16:42:46.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.115Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.152Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Qt">
@@ -190,18 +190,18 @@
             <p>使用qt信号槽时，始终no such slots，原因是我没有在槽函数的类中使用Q_OBJECT MACRO 这个的原因是什么呢？ 在类声明的开始位置必须加上Q_OBJECT语句，这条语句是不可缺少的，它将告诉编译器在编译之前必须先应用 moc工具进行扩展 这个时候先执行qmake，再build</p>
 <p>开了一个refresh信号的线程，但是一使用emit signalRefresh就爆出系统错误 &gt;:-1: error: symbol(s) not found for architecture x86_64 &gt;:-1: error: linker command failed with exit code 1 (use -v to see invocation)</p>
 <p>这个错误经常会出现</p>
-<hr>
+<hr />
 <p>c++跨文件或跨类传输变量参数是通过在对应文件声明类，然后调用该类获得参数的函数</p>
 <p>但是qt里我一旦这样做，就会出现上面那个系统错误。</p>
-<hr>
+<hr />
 <p>普通形参加不加const限定符对实参没有影响，引用形参和指针形参前面没有const限定符时，实参必须是非const的，而前面有const限定符时对实参也没有什么影响。</p>
 <p>为什么会出现这种情况？</p>
 <p>原因在于实参的传递方式不同，函数中的形参是普通形参的时，函数只是操纵的实参的副本，而无法去修改实参，实参会想，你形参反正改变不了我的值，那么你有没有const还有什么意义吗？引用形参和指针形参就下不同了，函数是对实参直接操纵，没有const的形参时实参的值是可以改变的，这种情况下怎能用函数来操纵const实参呢。</p>
-<hr>
+<hr />
 <p>ui文件似乎必须要建一个类通过setupUI才能使用 主要需要新建一个dialog来show就可以了</p>
 <table style="width:10%;">
 <colgroup>
-<col style="width: 9%">
+<col style="width: 9%" />
 </colgroup>
 <tbody>
 <tr class="odd">
@@ -210,21 +210,21 @@
 </tbody>
 </table>
 <p>QT的close没有反应，似乎要使用事件循环</p>
-<hr>
+<hr />
 <p>setAttribute (Qt::WA_DeleteOnClose); 这个明明是解决内存泄露问题，为什么可以关闭窗口呢，而close却做不到</p>
-<hr>
+<hr />
 <p>qVector输入之后，造成implicitly deleted because base class "QObject" has a deleted copy constructor</p>
-<hr>
+<hr />
 <p>Qt 资源文件，可以通过添加qrc来实现路径的操作 但是 //路径这里存在问题，为什么添加了qrc之后依旧不需要前缀就可以使用了呢？ 明明理论上说要":/db/user.db" 但只是"user.db"就可以使用了</p>
-<hr>
+<hr />
 <p>始终不能调用数据库，原因是我没有使用query.finish，以及建表语法出现了错误。</p>
-<hr>
+<hr />
 <p>事件似乎和信号有点相似，又有点不同。</p>
-<hr>
+<hr />
 <p>事件是一个新的概念，与信号不一样。</p>
 <table style="width:7%;">
 <colgroup>
-<col style="width: 6%">
+<col style="width: 6%" />
 </colgroup>
 <tbody>
 <tr class="odd">
@@ -243,16 +243,16 @@
 </table>
 <p>把databaseControl设置继承QObject就出现编译不过的问题</p>
 <p>就是上面的link错误，不过更复杂</p>
-<hr>
+<hr />
 <p>遇到这个错误error: member function not viable this argument has type const 但是我一时忘了怎么解决的了</p>
-<hr>
+<hr />
 <p>call to implicitly-deleted copy constructor</p>
 <p>/Users/sean10/Qt/5.8/clang_64/lib/QtCore.framework/Headers/qlist.h:461: error: call to implicitly-deleted copy constructor of 'centralAirConditioner' current-&gt;v = new T(<em>reinterpret_cast&lt;T</em>&gt;(src-&gt;v)); ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 遇到这个错误，发现又是因为继承了基类QObject的原因</p>
-<hr>
+<hr />
 <p>暂时设计了从multithread发送信号到databaseControl,暂时没能测试出数据是否发送成功</p>
 <table style="width:7%;">
 <colgroup>
-<col style="width: 6%">
+<col style="width: 6%" />
 </colgroup>
 <tbody>
 <tr class="odd">
@@ -264,13 +264,13 @@
 </tbody>
 </table>
 <p>稍后添加对于开关机的容错措施 数据锁尚未添加</p>
-<hr>
+<hr />
 <p>优先设置spinBox的lowtem会导致workTemperature变成这个lowTem,明明是满足他的约束的 噢，可能是因为spinBox一开始是0，没有设置，当有了约束之后，自动变成了18，满足了值变动，所以导致初始化被覆盖了。</p>
-<hr>
+<hr />
 <p>tcp粘包问题： 怎么分也需要双方组织一个比较好的包结构，所以一般可能会在头加一个数据长度之类的包，以确保接收。</p>
 <table style="width:7%;">
 <colgroup>
-<col style="width: 6%">
+<col style="width: 6%" />
 </colgroup>
 <tbody>
 <tr class="odd">
@@ -279,19 +279,19 @@
 </tbody>
 </table>
 <p>connectToHost似乎是mac的问题，大大的windows执行就没有问题。</p>
-<hr>
+<hr />
 <p>找到每次修改完工作温度，室温就顺便同步的原因了，是因为信号问题，每发送一个SignalSendRequest就执行了9次SendRequest. 但是没有找到有多次connect的函数啊。</p>
 <p>即便是用了uniqueConnection还是执行了多次。</p>
 <p>找到问题了，有另外一个函数不停发送了signal，定时发送</p>
-<hr>
+<hr />
 <p>第二次从控机开机，主控机上没有再显示出那台从控机状态？ why?</p>
 <h2 id="还有解决粘包问题">还有解决粘包问题</h2>
 <p>把室温用电子时钟模式展示出来</p>
-<hr>
+<hr />
 <p>可以使用doxygen来进行根据注释生成文档</p>
 <p>/** * 要输出成文档的注释 */</p>
 <p>或者 //!</p>
-<hr>
+<hr />
 <p>qmake project 变量使用</p>
 <p>一个pro生成多个app似乎现在不行了，只能通过subdirs来实现了？</p>
 <p>通过$$PWD来导入公用包</p>
@@ -350,7 +350,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.115Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.152Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

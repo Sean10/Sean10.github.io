@@ -29,7 +29,7 @@
 <meta property="og:description" content="ceph df主要得到的是global以及每个pool的used以及max_available.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-24T20:04:33.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.199Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.228Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="存储">
@@ -217,7 +217,7 @@
 </ul>
 </blockquote>
 <p>所以在这个版本中将之前版本中存在的多种容量统计给分类了.</p>
-<p>pool级别分为 * stored(old bytes used) 逻辑空间占用量, 主要针对的是写入多少, 不考虑由于<code>COW</code>引起的实际占用量较小 * store_nromalized = pool_stat.get_user_bytes(raw_used_rate, per_pool) * store_stats.data_stored / raw_used_rate * Bluestore.cc * res_statfs-&gt;data_stored += l.length * 传统模式 stats.sum.num_bytes + stats.sum.num_bytes_hit_set_archive; * 12版本好像没加命中集归档的容量 * 12版本这里直接拿的<code>sum.num_bytes</code> * 通过ceph report可以看到资源池的这个统计 * stored_raw(old raw bytes used) 用户使用的总容量, 包含所有osd除去降级的(这个应该是带副本的吧) * pool_stat.get_user_bytes(1.0, per_pool) * 这里应该是统计store_stats.data_stored的时候一些down的osd就不统计了, 所以为1.0的<code>raw_used_rate</code>. * new bytes used 实际这个资源池里的OSD分配的空间大小(这里应该是不包含其他资源池因为复用osd占用的空间吧?) * pool_stat.get_allocated_bytes * store_stats.allocated;<br>
+<p>pool级别分为 * stored(old bytes used) 逻辑空间占用量, 主要针对的是写入多少, 不考虑由于<code>COW</code>引起的实际占用量较小 * store_nromalized = pool_stat.get_user_bytes(raw_used_rate, per_pool) * store_stats.data_stored / raw_used_rate * Bluestore.cc * res_statfs-&gt;data_stored += l.length * 传统模式 stats.sum.num_bytes + stats.sum.num_bytes_hit_set_archive; * 12版本好像没加命中集归档的容量 * 12版本这里直接拿的<code>sum.num_bytes</code> * 通过ceph report可以看到资源池的这个统计 * stored_raw(old raw bytes used) 用户使用的总容量, 包含所有osd除去降级的(这个应该是带副本的吧) * pool_stat.get_user_bytes(1.0, per_pool) * 这里应该是统计store_stats.data_stored的时候一些down的osd就不统计了, 所以为1.0的<code>raw_used_rate</code>. * new bytes used 实际这个资源池里的OSD分配的空间大小(这里应该是不包含其他资源池因为复用osd占用的空间吧?) * pool_stat.get_allocated_bytes * store_stats.allocated;<br />
 * compress_bytes_used compress的数据 , 分配的空间大小(包含副本/EC的开销), 也就是说除去副本数就是用户数据实际在设备里存储吧 * statfs.data_compressed_allocated * comprress_under_bytes compress的用户数据大小? * statfs.compressed_original</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">diagraph calltrace &#123;</span><br><span class="line">  Monitor::handle_command -&gt; mgrstatmon()-&gt;dump_cluster_stats</span><br><span class="line">  Monitor::handle_command -&gt; mgrstatmon()-&gt;dump_pool_stats -&gt; PGMapDigest::dump_pool_stats_full -&gt; pool_stat_t &amp;stat = pg_pool_sum.at(pool_id)</span><br><span class="line">  pool_stat_t &amp;stat = pg_pool_sum.at(pool_id) -&gt; pool_stat.get_allocated_bytes</span><br><span class="line">  pool_stat_t &amp;stat = pg_pool_sum.at(pool_id) -&gt; store_nromalized = pool_stat.get_user_bytes(raw_used_rate, per_pool)</span><br><span class="line">  pool_stat_t &amp;stat = pg_pool_sum.at(pool_id) -&gt; pool_stat.get_used_bytes(1.0, per_pool)</span><br><span class="line">  pool_stat_t &amp;stat = pg_pool_sum.at(pool_id) -&gt; statfs.data_compressed_allocated</span><br><span class="line">  pool_stat_t &amp;stat = pg_pool_sum.at(pool_id) -&gt; statfs.compressed_original</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">pool_stat_t</span> &#123;</span><br><span class="line">  <span class="type">object_stat_collection_t</span> stats;</span><br><span class="line">  <span class="type">store_statfs_t</span> store_stats;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -461,7 +461,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.199Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.228Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

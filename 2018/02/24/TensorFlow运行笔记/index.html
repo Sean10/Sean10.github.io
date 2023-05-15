@@ -190,14 +190,14 @@
             <p>为了防止环境问题，所以使用了docker配置的TensorFlow环境，</p>
 <span id="more"></span>
 <p>为了防止万一被收录，论文查重问题，这篇之前一直没发布。</p>
-<hr>
+<hr />
 <h1 id="部署">部署</h1>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker pull tensorflow/tensorflow</span><br><span class="line">docker run -it tensorflow/tensorflow bash</span><br><span class="line"></span><br><span class="line">发现这个仓库只能在1.1版本下跑，重新下载了个</span><br><span class="line">docker pull tensorflow/tensorflow:1.1.0-py3</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA</p>
 </blockquote>
 <p>一开始在使用tf.Session()时就报了这个错误。暂时没理会。</p>
-<hr>
+<hr />
 <p>但是对docker 不那么熟悉，不知道代码和数据应该存在哪个位置，在那还是决定代码通过volume挂载到docker内。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 7777:8888 --name=tensorflow_sean10 -v /Users/sean10/Code/LSTM-Sentiment-Analysis:/LSTM-Sentiment-Analysis -it tensorflow/tensorflow  bash</span><br><span class="line"></span><br><span class="line">这个版本tensorflow支持python3</span><br><span class="line">docker run -p 7777:8888 --name=tensorflow_sean10_py3 -v /Users/sean10/Code/LSTM-Sentiment-Analysis:/LSTM-Sentiment-Analysis -it tensorflow/tensorflow:latest-py3  bash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker ps -a -l</span><br><span class="line">docker rm $container_id</span><br><span class="line">docker rmi $image_id</span><br><span class="line">docker stop tensorflow_sean10_1.1.0_py3</span><br><span class="line">docker start -i tensorflow_sean10_1.1.0_py3</span><br><span class="line"></span><br><span class="line">docker attach tensorflow_sean10_1.1.0_py3</span><br><span class="line">docker exec -t -i tensorflow_sean10_1.1.0_py3 bash</span><br><span class="line"></span><br><span class="line">docker run -p 7777:8888 -v /Users/sean10/Code/LSTM-Sentiment-Analysis:/LSTM-Sentiment-Analysis -it tensorflow/tensorflow:1.1.0-py3 bash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>对运行中的docker进行网络映射 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker port tensorflow_sean10_1.1.0_py3</span><br><span class="line">docker inspect tensorflow_sean10_1.1.0_py3 | grep IPAddress</span><br><span class="line"></span><br><span class="line">pfctl</span><br></pre></td></tr></table></figure></p>
@@ -205,14 +205,14 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook --no-browser --ip=0.0.0.0 --allow-root</span><br><span class="line"></span><br><span class="line">想要再次获取</span><br><span class="line">docker exec -it &lt;docker_container_name&gt;</span><br><span class="line">jupyter notebook list</span><br></pre></td></tr></table></figure>
 <p>然后在主机浏览器内访问<code>http://localhost:7777?token=xxxxxf</code></p>
 <p>然后运行代码时，显示已经使用了python3的内核，但实际运行弹出的错误来源始终是python2.7，查到的说是默认的tensorflow image只有python2.7安装了tensorflow包，需要pull python3-latest版本才行。的确更换后就可以了……</p>
-<hr>
+<hr />
 <p>jupyter默认没有配置自动wrap,</p>
 <p>创建~/.jupyter/nbconfig/notebook.json配置文件，追加这一段 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;MarkdownCell&quot;: &#123;</span><br><span class="line">    &quot;cm_config&quot;: &#123;</span><br><span class="line">      &quot;lineWrapping&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;CodeCell&quot;: &#123;</span><br><span class="line">    &quot;cm_config&quot;: &#123;</span><br><span class="line">      &quot;lineWrapping&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
-<hr>
+<hr />
 <p><code>No module named ipykernel</code></p>
 <p>jupyter install 后 无法找到ipykernel_launcher</p>
 <p>解决方法： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip3 install pykernel</span><br><span class="line">python -m ipykernel install --user</span><br></pre></td></tr></table></figure></p>
-<hr>
+<hr />
 <h1 id="tensorflow错误记录">Tensorflow错误记录</h1>
 <h2 id="输入维度错误">输入维度错误</h2>
 <blockquote>
@@ -240,7 +240,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">传统RNN</span><br><span class="line">loss:4.7681885 acc:0.51</span><br><span class="line">loss:1.3538479 acc:0.48</span><br><span class="line">loss:1.7510027 acc:0.4825</span><br><span class="line">loss:1.2965189 acc:0.5175</span><br><span class="line">loss:0.8639291 acc:0.4725</span><br><span class="line">loss:0.7651406 acc:0.48</span><br><span class="line">loss:0.5035551 acc:0.4725</span><br><span class="line">loss:0.7856639 acc:0.5125</span><br><span class="line">loss:0.41615644 acc:0.535</span><br><span class="line">loss:0.63352686 acc:0.515</span><br><span class="line">loss:0.8058832 acc:0.5125</span><br><span class="line">loss:0.715534 acc:0.5225</span><br><span class="line">loss:0.58976775 acc:0.49</span><br><span class="line">loss:0.6922045 acc:0.4875</span><br><span class="line">loss:0.6963689 acc:0.5225</span><br><span class="line">loss:0.6474119 acc:0.48</span><br><span class="line">loss:0.6436865 acc:0.4725</span><br><span class="line">loss:0.79238504 acc:0.4925</span><br><span class="line">loss:0.63156253 acc:0.535</span><br><span class="line">loss:0.6858673 acc:0.51</span><br><span class="line">loss:0.65090233 acc:0.52</span><br><span class="line">answer</span><br></pre></td></tr></table></figure>
 <p>模型暂时和原本的初版差别不大，训练集也还是原本的随机出的，测试集顺序理论上应该没有影响才对</p>
 <p>就是上面那个weight和bias复用的问题……我定义在def model里了，导致reuse根本没有可以存下来</p>
-<hr>
+<hr />
 <h1 id="tf.truncated_normal">tf.truncated_normal()</h1>
 <p>这个函数产生正太分布，均值和标准差自己设定。这是一个截断的产生正太分布的函数，就是说产生正太分布的值如果与均值的差值大于两倍的标准差，那就重新生成。</p>
 <h1 id="bi-lstm实现">bi-lstm实现</h1>
@@ -286,7 +286,7 @@
 <li><a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow/issues/14897">A bug in tensorflow r1.4 when applying MultiRNNCell</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/dennybritz/cnn-text-classification-tf/issues/71">Add precision and recall summaries</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/appleml/article/details/58647585">tensorflow中precision,recall和F1</a></li>
-<li><a href></a></li>
+<li><a href=""></a></li>
 </ol>
 
         </div>

@@ -29,7 +29,7 @@
 <meta property="og:description" content="关于shell内的圆括号的问题，圆括号不是本来就在shell中作与操作吗，为什么还要用转义符转义才能在find中用？ 难道说如果不用转义符，其优先级会更高？导致会报错误？姑且先这么记吧。 check: 括号中的命令将会新开一个子shell顺序执行，所以括号中的变量不能够被脚本余下的部分使用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-06-27T14:36:03.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.115Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.156Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="Unix">
@@ -190,72 +190,72 @@
             <p>关于shell内的圆括号的问题，圆括号不是本来就在shell中作与操作吗，为什么还要用转义符转义才能在find中用？ 难道说如果不用转义符，其优先级会更高？导致会报错误？姑且先这么记吧。</p>
 <p>check: 括号中的命令将会新开一个子shell顺序执行，所以括号中的变量不能够被脚本余下的部分使用</p>
 <span id="more"></span>
-<hr>
+<hr />
 <h6 id="检索目录src以及其子孙目录中的所有文件名后缀为.c和.h文件查找哪些文件中含有字符串tpdu并列出在这文件中的行号">检索目录src以及其子孙目录中的所有文件名后缀为.c和.h文件，查找哪些文件中含有字符串TPDU，并列出在这文件中的行号。</h6>
 <p>答：使用find命令和grep命令。find命令可以在指定的目录树 中查找满足某个条件的文件或目录，并对查找到的满足条件的对象执行一个动作。指定查找条件为“文件名后缀为.c和.h”，动作为“查找哪些文件中含有字符串TPDU，并列出在这文件中的行号”，分别是find的-name和-exec选项。完整的命令为：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find src –name &quot;*.[ch]&quot; –exec grep –n TPDU &#123;&#125; /dev/null \;</span><br></pre></td></tr></table></figure>
 <p>这里是将grep的数据输出到/dev/null作为垃圾处理吧，但不用&gt;重定向符了？</p>
-<hr>
+<hr />
 <h6 id="统计出由用户liu创建并且正在运行的进程数目">统计出由用户liu创建并且正在运行的进程数目。</h6>
 <p>答：使用ps命令列表出系统中所有进程，过滤后仅保留用户liu创建的进程（用grep），每个进程占一行，用wc命令统计一共有多少行即可。 <code>ps –ef | grep liu | wc –l</code></p>
 <p>这里我感觉也可以用<code>ps -ef -u liu | wc -l</code>来替换吧，但是跑出来结果却不同，看来是进程创建者和使用者不同概念，-u只能检索出使用者。</p>
-<hr>
+<hr />
 <h6 id="去掉文件list.txt中的所有空行所谓空行指行内不含有任何除空格之外的字符存为新文件list-new.txt">去掉文件list.txt中的所有空行(所谓空行指：行内不含有任何除空格之外的字符)，存为新文件list-new.txt。</h6>
 <p>答：使用grep命令可以用正则表达式对文本文件过滤，-v选项用于筛选掉能匹配指定正则表达式的行，描述一个空行的正则表达式为<code>^ *$</code>，即：从行首开始(^)，有零个到多个空格<code>( *)</code>，然后是行尾<code>($)</code>，命令为： <code>grep –v ’^ *$’ list.txt &gt; list-new.txt</code></p>
 <p>为什么我<code>man grep</code>得到的是--invert-match，显示不匹配的部分呢？，grep实际使用中不需要-v就能识别正则吧。</p>
-<hr>
+<hr />
 <p>增量备份 <code>cp -ur test test.bak</code> 不过我实际操作找不到-u，google用的人也不多，都用rsync</p>
-<hr>
+<hr />
 <h6 id="linux文件权限设计为简单的三级控制用户liu对用户sun的文件data.txt要么具有全部的读权限要么不可以读因此没有办法限制liu只对文件的指定部分读">LINUX文件权限设计为简单的三级控制，用户liu对用户sun的文件data.txt要么具有全部的读权限，要么不可以读。因此，没有办法限制liu只对文件的指定部分读。</h6>
 <p>答：错误。可以利用SUID权限，用户sun将文件data.txt的读写权限设置为rw-------，由文件所有者sun自己编写程序以实现对文件的访问，程序中的访问当然可以限制只对文件的指定部分读，但是该程序文件的属性应当为rws--x--x，用户liu只有执行这个可程序程序文件才能实现对文件data.txt的访问。</p>
-<hr>
+<hr />
 <p>查看僵尸进程 <code>ps -ef | grep defunct | wc -l</code></p>
-<hr>
+<hr />
 <p>查看进程表表项上限 MacOS下据说写在proc_internal.h中的PID上限是99999，下限是100. 而Linux下32位似乎是32768.</p>
 <p>参考资料：http://blog.csdn.net/gatieme/article/details/51058797</p>
-<hr>
+<hr />
 <h6 id="linux操作系统被设计得非常健壮所以程序在运行过程中不会产生死锁">Linux操作系统被设计得非常健壮，所以程序在运行过程中不会产生死锁。</h6>
 <p>答：错误。像信号量等，Linux仅给出了一组信号量操作的机制，如果应用程序设计的多个进程之间对信号量的操作处置不当，仍然可能导致死锁。操作系统没有办法检测出应用进程之间的逻辑操作不正确产生的死锁。使用管道等其他的进程之间通信的系统调用，也可能产生死锁。</p>
-<hr>
+<hr />
 <h6 id="windows用户使用命令行命令ftp从linux下载文件ftas.c即使没有病毒破坏成功下载结束后下载的文件与原文件也有可能在文件大小字节数上不符">Windows用户使用命令行命令ftp从Linux下载文件ftas.c，即使没有病毒破坏，成功下载结束后，下载的文件与原文件也有可能在文件大小（字节数）上不符。</h6>
 <p>答：正确。这种情况是可能存在的， FTP支持ASCII方式和BINARY方式的文件传输。前者会把数据文件理解为文本文件，会在通信的两个机器之间进行文本文件格式的转换。LINUX和Windows对文本文件的定义方式不同，Windows行间保留“换行”和“回车”两个字符，但是LINUX行间仅包括“换行”一个字符。所以在使用ASCII方式在Windows和Linux间交换文件可能会导致下载的文件与原文件在文件大小（字节数）上不符的情况。</p>
-<hr>
+<hr />
 <h6 id="关于文本文件处理的实用程序都有哪些这些程序都有哪些共同的特点为什么要这样设计这些命令">关于文本文件处理的实用程序都有哪些？这些程序都有哪些共同的特点？为什么要这样设计这些命令？</h6>
 <p>答：关于文本文件处理的实用程序有很多，如：head，tail，sort，grep，wc，cat，od，sed，awk，等等。 这些程序的共同特点是：每个小程序的功能设置简洁；当不指定处理对象时从标准输入获取处理数据；当指定文件名时，从指定的文件中获取处理数据，而且允许指定多于一个的文件名；处理结果在标准输出文件中输出。 这样设计这些命令的原因是：可以利用系统提供的输入、输出重定向和管道，连接和组合多个命令，提供灵活又丰富的使用功能；允许指定多于一个的文件作为处理对象可以和shell 的文件名通配符替换功能配合使用。体现了“策略和机制相分离”的设计理念。系统设计不复杂却可以提供强大的功能。</p>
-<hr>
+<hr />
 <p>正则表达式中，一些配对的元字符使用转义时，只需要对开始的一个转义即可。</p>
 <blockquote>
 <p>比如与开方括号 [ 对应的闭方括号 ]，与开花括号 { 对应的闭花括号 } ，这两个字符是否元字符，需要依据具体正则表达式的情况确定，我们以闭方括号]的情况为例（}的情况与此类似）：如果之前能找到与之对应的元字符开方括号[，则]作为元字符出现，否则，作为普通字符出现。</p>
 </blockquote>
-<hr>
+<hr />
 <p>正则表达式里，使用圆括号时，为什么前面必须要加<code>\</code>转义，变成<code>\(s+\)</code>这样呢？</p>
 <p><strong>(4) 将格式为“日-月-年”的日期数据，如：18-06-2010，替换为“年.月.日”格式，如：2010.06.18</strong> <code>s/\([0-9][0-9]*\)-\([0-9][0-9]*\)-\([0-9][0-9]*\)/\3.\2.\1/</code></p>
-<hr>
+<hr />
 <p>正则表达式里，<code>[0-9][0-9]*</code>和<code>[0-9]+</code>有什么区别？</p>
-<hr>
+<hr />
 <p>记得有一个命令执行以后，整个终端的字符显示会全部错乱，似乎是ASCII序列被打乱了？</p>
 <p>好像是执行了一个重定向操作？</p>
 <p>并不是，是执行了一个cat命令，打印出一个二进制文件到终端，而这个二进制文件中某个字段可能刚好和某个命令相同，执行出来导致系统字符乱码。</p>
-<hr>
+<hr />
 <h6 id="select系统调用的主要作用是什么">select系统调用的主要作用是什么？</h6>
 <p>答：使得用户进程可同时等待多个事件发生 用户进程告知内核多个事件，某一个或多个事件发生时select返回，否则，进程睡眠等待。例如：告知内核在rfds集合中的任何文件描述符“读准备好”，或在wfds集合中的任何文件描述符“写准备好”，或在efds集合中的任何文件描述符有“异常情况”发生，或者超时时间tm指定的时间间隔到。</p>
-<hr>
+<hr />
 <h6 id="下列的脚本程序从键盘输入三个整数abc并且求出abc的值">**下列的脚本程序从键盘输入三个整数A,B,C，并且求出A*(B+C)的值。</h6>
 <p>在划线出填入适当的内容，完成整个程序。显式地标出你所添加的命令中必须有的空格和转义字符，并解释为什么必须这些空格和转义。** <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">echo –n ”Input A:”; read A</span><br><span class="line">echo –n ”Input B:”; read B</span><br><span class="line">echo –n ”Input C:”; read C</span><br><span class="line">V=                         </span><br><span class="line">echo ”A*(B+C)=$V”</span><br></pre></td></tr></table></figure> 答：<code>expr $A  \*  \(  $B  +  $C  \)</code> 由于星号和圆括号属于shell的元字符，所以前面增加反斜线，阻止shell对元字符的处理，而是将这些符号直接传递给expr命令。上述命令一共需要6个空格，空格起单词分界线的作用。如果丢失了相应的空格，expr命令将无法得到正确的参数输入，导致expr无法按预期的功能工作。</p>
-<hr>
+<hr />
 <ol start="10" type="1">
 <li>写出一段完整的C语言程序，使用fork()系统调用，创建两个子进程，第一个子进程打印HELLO后立刻终止，第二个子进程打印WELCOME后立刻终止，父进程等待两个子进程都终止后，打印BYE然后终止。 答：程序如下： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">	int sv;</span><br><span class="line">	if (fork() == 0) &#123;</span><br><span class="line">		printf(”HELLO\n”);</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">	if (fork() == 0) &#123;</span><br><span class="line">		printf(”WELCOME\n”);</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">	wait(&amp;sv);</span><br><span class="line">	wait(&amp;sv);</span><br><span class="line">	printf(”BYE\n”);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 这里的sv是接收fork的子进程返回的结果，作为子进程的结束。</li>
 </ol>
-<hr>
+<hr />
 <p><code>int execlp(const char * file,const char * arg,……);</code></p>
 <p>execlp的第一个参数是用来在PATH或者路径中查找可执行文件，第二个参数是作为显示的进程名，我设置为aaa，则在<code>ps -ef | grep test</code>中可以查看到这个名字。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">	execlp(&quot;ls&quot;, &quot;test&quot;, &quot;-al&quot;,(char*)0); //最后一个0是形同NULL,表示数组的结束</span><br><span class="line">	// for(int i = 0;i &lt; 1;i++)</span><br><span class="line">	// &#123;</span><br><span class="line">		printf(&quot;argv[0]:%s\n&quot;, argv[0]);</span><br><span class="line">		printf(&quot;argv[1]:%s\n&quot;, argv[1]);</span><br><span class="line">		printf(&quot;argv[2]:%s\n&quot;, argv[2]);</span><br><span class="line">	// &#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我这样写执行结果和将第二个参数设置为ls是一样的，只是在查看进程时，名字显示为第二个</p>
-<hr>
+<hr />
 <p>管道完整程序： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">	int fd[2], sv;</span><br><span class="line">	pipe(fd);</span><br><span class="line">	//fd[0] = open(&quot;out.txt&quot;,O_RDONLY);</span><br><span class="line">	//fd[1] = open(&quot;out.txt&quot;, O_WRONLY);</span><br><span class="line">	if(fork() == 0)</span><br><span class="line">	&#123;</span><br><span class="line">		dup2(fd[1],1);</span><br><span class="line">		close(fd[1]);</span><br><span class="line">		close(fd[0]);</span><br><span class="line">		execlp(&quot;ls&quot;, &quot;test&quot;, &quot;-al&quot;,(char*)0);</span><br><span class="line">	&#125;else if(fork() == 0)</span><br><span class="line">	&#123;</span><br><span class="line">		dup2(fd[0], 0);</span><br><span class="line">		close(fd[1]);</span><br><span class="line">		close(fd[0]);</span><br><span class="line">		//execlp(&quot;ls&quot;, &quot;test2&quot;, &quot;-l&quot;, (char*)0);</span><br><span class="line">		execlp(&quot;grep&quot;, &quot;MtGrep&quot;, &quot;javaw&quot;, (char*)0);</span><br><span class="line">	&#125;</span><br><span class="line">	close(fd[1]);</span><br><span class="line">	close(fd[0]);</span><br><span class="line">	wait(&amp;sv);</span><br><span class="line">	wait(&amp;sv);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
 <h6 id="linux-执行命令-先搜索path而windows先搜索当前目录-区别原因">linux 执行命令 先搜索Path，而windows先搜索当前目录 区别原因？</h6>
 <p>考虑到安全问题，如果本地路径下自己写的程序的操作是类似<code>rm -rf /</code>，那就没救了</p>
-<hr>
+<hr />
 <h6 id="linux-.操作和.-操作区别">linux ./操作和. 操作区别</h6>
 <p>./操作是fork一个子进程执行 . 操作就是用当前的进程直接执行 ---</p>
 <h6 id="linux-如何显示出-所有的命令行参数与选项"><strong>linux 如何显示出 所有的命令行参数与选项</strong></h6>
@@ -268,7 +268,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.115Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.156Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

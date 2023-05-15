@@ -28,16 +28,16 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="本篇主要是把旧文重新整理一下. 定位 目前已经为唯一的非自研的开源对接ceph的, 已将grafana嵌入.  监控&#x2F;告警  支持大部分想看到的数据  实施方面, 对接cephadm?  那是否对接ceph-ansible?  不对接, 但是ceph-ansible似乎也对接了cephadm, 作为cephadm的上层统一管理?  ceph-orch的能力?  Orchestrator CLI —">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sean10.github.io/.io//ceph%E4%B9%8Bdashboard_2021-12-02-16-03-44.png">
-<meta property="og:image" content="https://sean10.github.io/.io//ceph%E4%B9%8Bdashboard_2021-12-02-16-40-00.png">
-<meta property="og:image" content="https://sean10.github.io/.io//ceph%E4%B9%8Bdashboard_2021-12-02-16-40-35.png">
+<meta property="og:image" content="https://sean10.github.io/2021/12/02/ceph%E4%B9%8Bdashboard/ceph%E4%B9%8Bdashboard_2021-12-02-16-03-44.png">
+<meta property="og:image" content="https://sean10.github.io/2021/12/02/ceph%E4%B9%8Bdashboard/ceph%E4%B9%8Bdashboard_2021-12-02-16-40-00.png">
+<meta property="og:image" content="https://sean10.github.io/2021/12/02/ceph%E4%B9%8Bdashboard/ceph%E4%B9%8Bdashboard_2021-12-02-16-40-35.png">
 <meta property="article:published_time" content="2021-12-02T19:26:04.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.195Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.224Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="dashboard">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sean10.github.io/.io//ceph%E4%B9%8Bdashboard_2021-12-02-16-03-44.png">
+<meta name="twitter:image" content="https://sean10.github.io/2021/12/02/ceph%E4%B9%8Bdashboard/ceph%E4%B9%8Bdashboard_2021-12-02-16-03-44.png">
     
         <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
     
@@ -231,13 +231,7 @@
 <p>另外dashboard/的许可证是否确实是LGPL? 或者AGPL, 导致无法使用?</p>
 <p><code>Free software (LGPL 2.1).</code>所以修改是必须遵守的, 要拆分Python和js框架, 不太确认.</p>
 <p>grafana在21年修改为AGPL3.0, Grafana 8版本以前还是<code>Apache 2.0</code>可以使用</p>
-<p>初步来看, 是支持<code>cephadm</code>提供的所有能力. <figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//ceph之dashboard_2021-12-02-16-03-44.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure></p>
+<p>初步来看, 是支持<code>cephadm</code>提供的所有能力. <img src="/2021/12/02/ceph%E4%B9%8Bdashboard/ceph%E4%B9%8Bdashboard_2021-12-02-16-03-44.png" class=""></p>
 <h2 id="api来源">API来源</h2>
 <blockquote>
 <p>The dashboard module’s backend code uses the CherryPy framework and implements a custom REST API.</p>
@@ -247,25 +241,13 @@
 <p>osd的实施界面, 计划仿2004</p>
 <p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/dev/cephadm/design/storage_devices_and_osds/">Storage Devices and OSDs Management Workflows — Ceph Documentation</a> 这里的设计也是类2004那种, 需要手动指定db,wal的. 2020年9月时的设计, 目前未更新.</p>
 <p>目前的, 看到的主要是将cephadm集成入dashboard</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//ceph之dashboard_2021-12-02-16-40-00.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//ceph之dashboard_2021-12-02-16-40-35.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2021/12/02/ceph%E4%B9%8Bdashboard/ceph%E4%B9%8Bdashboard_2021-12-02-16-40-00.png" class="">
+<img src="/2021/12/02/ceph%E4%B9%8Bdashboard/ceph%E4%B9%8Bdashboard_2021-12-02-16-40-35.png" class="">
 <p>根据service来看, 是将所有进程同等管理?</p>
 <p>SUSE的文档基本足够了<a target="_blank" rel="noopener" href="https://documentation.suse.com/ses/7/html/ses-all/dashboard-about.html">About the Ceph Dashboard | Administration and Operations Guide | SUSE Enterprise Storage 7</a> RH也是这个界面的文档<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/dev/cephadm/design/storage_devices_and_osds/">Storage Devices and OSDs Management Workflows — Ceph Documentation</a> ceph-ansible似乎也对接了cephadm. 具体还没看</p>
 <h1 id="运行一个带cephadm的dashboard">运行一个带cephadm的dashboard</h1>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">MON=1 MGR=1 OSD=3 MDS=1 ../src/vstart.sh -d -n -x --cephadm -i 0.0.0.0</span><br><span class="line"></span><br><span class="line">0.0.0.0不行, 因为这里还设置mon的绑定ip.</span><br><span class="line"></span><br><span class="line"><span class="comment"># cephadm需要asyncssh</span></span><br><span class="line">pip3 install asyncssh</span><br><span class="line"><span class="comment"># 配置ssh免密</span></span><br><span class="line"><span class="built_in">cd</span> ~/.ssh/ &amp;&amp; ssh-keygen  </span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/id_rsa</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_host</span><br><span class="line"><span class="comment"># cephadm需要部署docker或者podman</span></span><br><span class="line">dnf install docker-ce</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ceph config <span class="built_in">set</span> mgr mgr/dashboard/server_addr 0.0.0.0</span><br><span class="line">ceph mgr module <span class="built_in">disable</span> dashboard</span><br><span class="line">ceph mgr module <span class="built_in">enable</span> dashboard</span><br></pre></td></tr></table></figure>
-<hr>
+<hr />
 <p>以下为旧文, 当时针对<code>Luminous</code>版本分析</p>
 <h2 id="luminous版本局限功能">Luminous版本局限功能</h2>
 <h3 id="health">health</h3>
@@ -473,7 +455,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.195Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.224Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

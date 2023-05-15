@@ -21,39 +21,39 @@
     
     
     <meta name="keywords" content="ceph,cephalocon">
-    <meta name="description" content="Ceph Performance Tuning: From Bluestore to RBD - Mark Nelson, Clyso GmbH - YouTube 推荐性能优化时使用工具 当前性能测试, 60个osd, 450W 随机4K读, 平均75K每个osd.">
+    <meta name="description" content="Ceph Performance Tuning: From Bluestore to RBD - Mark Nelson, Clyso GmbH - YouTube 推荐性能优化时使用工具 当前性能测试, 60个osd, 450W 随机4K读, 平均75K每个osd.  硬件性能如何很关键, 测试过程中升级驱动解决了nvme Q8持续运行性能波动显著下降问题  pg数量对性能影响  随机读, 每个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="cephalocon2023之ceph performance tuning:from bluestore to rbd -Mark Nelson, Clyso GmbH">
 <meta property="og:url" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/index.html">
 <meta property="og:site_name" content="行路中.">
-<meta property="og:description" content="Ceph Performance Tuning: From Bluestore to RBD - Mark Nelson, Clyso GmbH - YouTube 推荐性能优化时使用工具 当前性能测试, 60个osd, 450W 随机4K读, 平均75K每个osd.">
+<meta property="og:description" content="Ceph Performance Tuning: From Bluestore to RBD - Mark Nelson, Clyso GmbH - YouTube 推荐性能优化时使用工具 当前性能测试, 60个osd, 450W 随机4K读, 平均75K每个osd.  硬件性能如何很关键, 测试过程中升级驱动解决了nvme Q8持续运行性能波动显著下降问题  pg数量对性能影响  随机读, 每个">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515222026337.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515221944597.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515222236661.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515223230217.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515225613901.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515225758658.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515225852139.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515225941620.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515230134777.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515230219222.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515230402733.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515230716172.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515231529585.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515231753863.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515232152813.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515232734740.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515232835377.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515233244520.png">
-<meta property="og:image" content="https://sean10.github.io/.io//image-20230515233426305.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515222026337.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515221944597.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515222236661.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515223230217.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515225613901.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515225758658.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515225852139.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515225941620.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515230134777.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515230219222.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515230402733.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515230716172.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515231529585.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515231753863.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515232152813.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515232734740.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515232835377.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515233244520.png">
+<meta property="og:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515233426305.png">
 <meta property="article:published_time" content="2023-05-08T21:09:38.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.119Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.156Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="ceph">
 <meta property="article:tag" content="cephalocon">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sean10.github.io/.io//image-20230515222026337.png">
+<meta name="twitter:image" content="https://sean10.github.io/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515222026337.png">
     
         <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
     
@@ -210,158 +210,62 @@
             <h2 id="ceph-performance-tuning-from-bluestore-to-rbd---mark-nelson-clyso-gmbh---youtube"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=7D5Bgd5TuYw&amp;list=PLrBUGiINAakPd9nuoorqeOuS9P9MTWos3&amp;index=37">Ceph Performance Tuning: From Bluestore to RBD - Mark Nelson, Clyso GmbH - YouTube</a></h2>
 <h4 id="推荐性能优化时使用工具">推荐性能优化时使用工具</h4>
 <h4 id="当前性能测试-60个osd-450w-随机4k读-平均75k每个osd.">当前性能测试, 60个osd, 450W 随机4K读, 平均75K每个osd.</h4>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515222026337.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515222026337.png" class="">
 <h4 id="硬件性能如何很关键-测试过程中升级驱动解决了nvme-q8持续运行性能波动显著下降问题">硬件性能如何很关键, 测试过程中升级驱动解决了nvme Q8持续运行性能波动显著下降问题</h4>
-<p><img src="/.io//image-20230515221944597.png"></p>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515221944597.png" class="">
 <h4 id="pg数量对性能影响">pg数量对性能影响</h4>
-<p><img src="/.io//image-20230515222236661.png"></p>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515222236661.png" class="">
 <h5 id="随机读-每个osd-8192360409.6个pg-相比正常理解里的100-差挺多的">随机读, 每个osd <code>8192*3/60=409.6</code>个pg, 相比正常理解里的100, 差挺多的</h5>
 <h5 id="随机写-每个osd2048360102.4-倒是正常">随机写, 每个osd<code>2048*3/60=102.4</code> , 倒是正常</h5>
 <h4 id="为什么pg数量有效">为什么pg数量有效?</h4>
 <p>pg数少时的效果似乎与蒙特卡洛算法有关?</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515223230217.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515223230217.png" class="">
 <blockquote>
 <p>Random distributions look clumpy at low samples counts. Higher PG counts results in a more even workload and data distribution across OSDs. The new primary workload balancer being developed by Josh Salomon and Laura Flores will attempt to improve the distribution even at low PG counts.</p>
 <p>Is distribution quality the only explanation for the performance differences though?</p>
 </blockquote>
 <p>主pg的均衡, 有助于在pg数少时提高性能.</p>
 <h4 id="如pg争用是pg数外影响性能的一点">如pg争用是pg数外影响性能的一点</h4>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515225613901.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515225613901.png" class="">
 <h3 id="其他有趣的样例">其他有趣的样例</h3>
 <h4 id="cephfs在多mds-通过动态子树分区得到了不错的效果">cephfs在多mds, 通过动态子树分区得到了不错的效果</h4>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515225758658.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515225852139.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515225941620.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515225758658.png" class="">
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515225852139.png" class="">
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515225941620.png" class="">
 <h4 id="rbd-snap-trimming">RBD Snap Trimming</h4>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515230134777.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515230134777.png" class="">
 <p>似乎是在shared-blob上做了一些努力, 碎片整理等? 以及不用遍历所有的元数据了.</p>
-<p><img src="/.io//image-20230515230219222.png"></p>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515230219222.png" class="">
 <h4 id="osd-threading">OSD Threading</h4>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515230402733.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515230402733.png" class="">
 <blockquote>
 <p>Why does performance level off, then drop, as the number of threads per shard increases? A key point is that there is only 1 messenger thread in this test. With more messenger threads, the effect diminishes.</p>
 <p>shard_lock contention? Possibly. We might spend too much time in notify_one / notify_all with relation to the wait_lock. More testing needed.</p>
 </blockquote>
 <p>主要是msgr线程数也需要考虑匹配. 具体原因还需要更多实验.</p>
 <h4 id="pglogrocksdb-interaction">PGLog/RocksDB Interaction</h4>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515230716172.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515230716172.png" class="">
 <p>主要集中在下述2个场景, 针对2个的冲突, 修改了一些rocksdb逻辑, 会在reef版本上车.</p>
 <h6 id="针对kv-sync-我们期望尽可能小的memtable内部实现的跳表-减少此时rocksdb为了保序消耗的大量cpu">针对kv sync, 我们期望尽可能小的memtable(内部实现的跳表), 减少此时rocksdb为了保序消耗的大量cpu,</h6>
 <h6 id="针对pg-log写入到rocksdb-head-log-pg-log本身是期望尽可能短存在的一个东西-我们不期望触发rocksdb的compact被压缩-因此期望内存使用越大越好-使用了big-buffer-期望在flush-memtable时-这些pg-log已经被标注tombstone-已经可以删除-无需写入数据库.-无需落盘">针对pg log写入到rocksdb head log, pg log本身是期望尽可能短存在的一个东西, 我们不期望触发rocksdb的compact被压缩, 因此期望内存使用越大越好, 使用了big buffer, 期望在flush memtable时, 这些pg log已经被标注tombstone, 已经可以删除, 无需写入数据库. 无需落盘</h6>
 <h5 id="bluestore-wal-prototype">bluestore WAL prototype</h5>
-<p>期望能达成无需使用rocksdb的 head log, 初步看到效果单OSD 12W <figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515231529585.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure></p>
+<p>期望能达成无需使用rocksdb的 head log, 初步看到效果单OSD 12W <img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515231529585.png" class=""></p>
 <h4 id="rocksdb-tombstones">RocksDB Tombstones</h4>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515231753863.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515231753863.png" class="">
 <p>可能会出现一个情况, 由于迭代大量的删除墓碑, 可能导致osd 心跳超时</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515232152813.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515232152813.png" class="">
 <h5 id="range-deletion-仅需要一次删除大量场景下有效-4-5年前实验时效果不好-听说最近有改进-还没关注">range deletion 仅需要一次删除大量场景下有效, 4-5年前实验时效果不好, 听说最近有改进, 还没关注</h5>
 <h5 id="限制搜索和扫描范围-目前使用有效">限制搜索和扫描范围, 目前使用有效</h5>
 <h5 id="强制周期压缩sst-对磁盘压力大-且存在引起心跳超时风险.-mark开发的一个小pr-wip-kvrocksdbstore-improved-rocksdb-settings-and-tombstone-behavior-by-markhpc-pull-request-47221-cephceph">强制周期压缩sst, 对磁盘压力大, 且存在引起心跳超时风险. mark开发的一个小PR <a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/47221/files">[WIP] kv/RocksDBStore: Improved RocksDB Settings and Tombstone behavior by markhpc · Pull Request #47221 · ceph/ceph</a></h5>
 <p>逻辑比较简单, 只是迭代过程中, 看到一定数量的墓碑, 然后设置了强制压缩条件, 则触发压缩.</p>
 <h6 id="在digital-ocean使用过程中-对延时有了极大的优化效果.">在Digital Ocean使用过程中, 对延时有了极大的优化效果.</h6>
 <p>这个图片是DO提供的, 看延时应该是个非常大压力的hdd集群, 60s 延时</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515232734740.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515232734740.png" class="">
 <h5 id="david-orman团队在云上运行了一个非常大的集群-使用了rocksdb的ttl来使用刚才那个patch-磁盘利用率从90-95下降到20-25">David Orman团队在云上运行了一个非常大的集群, 使用了rocksdb的TTL来使用刚才那个patch, 磁盘利用率从90-95%下降到20-25%</h5>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515232835377.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515232835377.png" class="">
 <h4 id="总结">总结</h4>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515233244520.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//image-20230515233426305.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515233244520.png" class="">
+<img src="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/image-20230515233426305.png" class="">
 <h4 id="提问">提问</h4>
 <h5 id="自动化调优控制memtables-size-是否有助于pglogrocksdb-interaction问题">自动化调优控制memtables size 是否有助于PGLog/RocksDB Interaction问题?</h5>
 <p>只修改memtable size 会导致性能下降</p>
@@ -376,7 +280,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.119Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.156Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

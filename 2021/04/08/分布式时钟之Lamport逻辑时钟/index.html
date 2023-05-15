@@ -28,16 +28,16 @@
 <meta property="og:site_name" content="行路中.">
 <meta property="og:description" content="背景 在看到这篇论文之前, 我所知道的只是linux上自带的时间戳和ntp协议, 以及内核里有一个每次开机启动时开始记录的monotonic clock可以用来保障时间一定是连续的. 但是对于分布式设备之间怎么判断互相的时间先后性, 这块是未知的. 比如针对leader节点发送一次自己的认证失效时间, 假如自己的物理时间戳比那个时间还早, 但真实世界的时间戳已经超期了, 到底是按失效还是有效来进">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sean10.github.io/.io//%E5%88%86%E5%B8%83%E5%BC%8F%E6%97%B6%E9%92%9F%E4%B9%8BLamport%E9%80%BB%E8%BE%91%E6%97%B6%E9%92%9F_2021-04-10-22-22-30.png">
+<meta property="og:image" content="https://sean10.github.io/2021/04/08/%E5%88%86%E5%B8%83%E5%BC%8F%E6%97%B6%E9%92%9F%E4%B9%8BLamport%E9%80%BB%E8%BE%91%E6%97%B6%E9%92%9F/%E5%88%86%E5%B8%83%E5%BC%8F%E6%97%B6%E9%92%9F%E4%B9%8BLamport%E9%80%BB%E8%BE%91%E6%97%B6%E9%92%9F_2021-04-10-22-22-30.png">
 <meta property="article:published_time" content="2021-04-08T19:50:07.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.275Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.296Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="分布式">
 <meta property="article:tag" content="论文">
 <meta property="article:tag" content="摘录">
 <meta property="article:tag" content="时钟">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sean10.github.io/.io//%E5%88%86%E5%B8%83%E5%BC%8F%E6%97%B6%E9%92%9F%E4%B9%8BLamport%E9%80%BB%E8%BE%91%E6%97%B6%E9%92%9F_2021-04-10-22-22-30.png">
+<meta name="twitter:image" content="https://sean10.github.io/2021/04/08/%E5%88%86%E5%B8%83%E5%BC%8F%E6%97%B6%E9%92%9F%E4%B9%8BLamport%E9%80%BB%E8%BE%91%E6%97%B6%E9%92%9F/%E5%88%86%E5%B8%83%E5%BC%8F%E6%97%B6%E9%92%9F%E4%B9%8BLamport%E9%80%BB%E8%BE%91%E6%97%B6%E9%92%9F_2021-04-10-22-22-30.png">
     
         <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
     
@@ -208,13 +208,7 @@
 <p>已经获得资源授权的进程，必须在资源分配给其他进程之前释放掉它； 资源请求必须按照请求发生的顺序进行授权； 在获得资源授权的所有进程最终释放资源后，所有的资源请求必须都已经被授权了。 首先我们假设，对于任意的两个进程Pi和Pj，它们之间传递的消息是按照发送顺序被接收到的, 并且所有的消息最终都会被接收到。每个进程会维护一个它自己的对其他所有进程都不可见的请求队列。我们假设该请求队列初始时刻只有一个消息（T0:P0）资源请求，P0代表初始时刻获得资源授权的那个进程，T0小于任意时钟初始值</p>
 <p>为请求该项资源，进程Pi发送一个（Tm:Pi）资源请求（请求锁）消息给其他所有进程，并将该消息放入自己的请求队列，在这里Tm代表了消息的时间戳 当进程Pj收到（Tm:Pi）资源请求消息后，将它放到自己的请求队列中，并发送一个带时间戳的确认消息给Pi。(注：如果Pj已经发送了一个时间戳大于Tm的消息，那就可以不发送) 释放该项资源（释放锁）时，进程Pi从自己的消息队列中删除所有的（Tm:Pi）资源请求，同时给其他所有进程发送一个带有时间戳的Pi资源释放消息 当进程Pj收到Pi资源释放消息后，它就从自己的消息队列中删除所有的（Tm:Pi）资源请求 当同时满足如下两个条件时，就将资源分配（锁占用）给进程Pi： 按照全序关系排序后，（Tm:Pi）资源请求排在它的请求队列的最前面 i已经从所有其他进程都收到了时间戳&gt;Tm的消息</p>
 </blockquote>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/.io//分布式时钟之Lamport逻辑时钟_2021-04-10-22-22-30.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<img src="/2021/04/08/%E5%88%86%E5%B8%83%E5%BC%8F%E6%97%B6%E9%92%9F%E4%B9%8BLamport%E9%80%BB%E8%BE%91%E6%97%B6%E9%92%9F/%E5%88%86%E5%B8%83%E5%BC%8F%E6%97%B6%E9%92%9F%E4%B9%8BLamport%E9%80%BB%E8%BE%91%E6%97%B6%E9%92%9F_2021-04-10-22-22-30.png" class="">
 <p>按照大佬说的, 这个其实算得上是分布式一致性算法的雏形. 每次请求都带上一个逻辑时间戳.</p>
 <h1 id="reference">Reference</h1>
 <ol type="1">
@@ -228,7 +222,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.275Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.296Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 

@@ -29,7 +29,7 @@
 <meta property="og:description" content="背景 有点用腻了mbp的mac os系统的感觉,想换arch了. 因为总觉得mac系统里好乱, 好多感知不到的空间管理. 而且终究只是unix, 并不是linux. 但是嘛, 都用了一段时间之后回来想想, 最近我比较倾向于arch的原因主要是最近工作所需一直在用linux规范下的systemd控制下的CentOS, 用的比较熟悉了, 对目录结构比较清楚了, 而对于自己非常不熟悉的freeBSD基础">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-02T23:03:56.000Z">
-<meta property="article:modified_time" content="2023-05-15T15:43:23.119Z">
+<meta property="article:modified_time" content="2023-05-15T16:18:23.156Z">
 <meta property="article:author" content="Sean10">
 <meta property="article:tag" content="arch">
 <meta property="article:tag" content="laptop">
@@ -271,7 +271,7 @@
 <p>/boot分区里的内容在哪里呢?</p>
 <p>使用过grub-config来往里面生成内容?</p>
 <p>mkinitcpio -P 似乎也能生成新的initramfs</p>
-<p>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub<br>
+<p>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub<br />
 grub-mkconfig -o /boot/grub/grub.cfg</p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/130445778">将已经存在的archlinux迁移到lvm - 知乎</a> #### initramfs选择?</p>
 <p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/LVM_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LVM (简体中文) - ArchWiki</a> <a target="_blank" rel="noopener" href="https://www.cnblogs.com/unkownarea/p/6472461.html">archlinux安裝手记（Win10+Arch、GPT+UEFI、lvm） - 停止使用的账户 - 博客园</a></p>
@@ -398,7 +398,7 @@ grub-mkconfig -o /boot/grub/grub.cfg</p>
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2023-05-15T15:43:23.119Z" itemprop="dateUpdated">2023-05-15 15:43:23</time>
+    最后更新时间：<time datetime="2023-05-15T16:18:23.156Z" itemprop="dateUpdated">2023-05-15 16:18:23</time>
 </span><br>
 
 
