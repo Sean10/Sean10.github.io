@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    
+    <title>(施工中)cephalocon2023之bluestore_v2 | 行路中. | 脚踏实地</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ceph,cephalocon">
+    <meta name="description" content="TODO: 找到对应的PR, 从而将口语化难以理解的内容转换为正确的描述. BlueStore V2 - an Evolutionary Step Forward - Adam Kupczyk, IBM &amp; Mark Nelson, Clyso GmbH - YouTube 规划  filestore 在 Pacific 和 Quincy 中被弃用，在 Reef 中被完全移除 bluest">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(施工中)cephalocon2023之bluestore_v2">
+<meta property="og:url" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/index.html">
+<meta property="og:site_name" content="行路中.">
+<meta property="og:description" content="TODO: 找到对应的PR, 从而将口语化难以理解的内容转换为正确的描述. BlueStore V2 - an Evolutionary Step Forward - Adam Kupczyk, IBM &amp; Mark Nelson, Clyso GmbH - YouTube 规划  filestore 在 Pacific 和 Quincy 中被弃用，在 Reef 中被完全移除 bluest">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605001725199.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605002203809.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605002916484.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605223109447.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605230023123.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605231141918.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605231910797.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605232046896.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605232526896.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605232631386.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605233420073.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607000449662.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607003039066.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607003834775.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004132912.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004147763.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004359702.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004853151.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004919347.png">
+<meta property="og:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607005041276.png">
+<meta property="article:published_time" content="2023-06-05T00:16:06.000Z">
+<meta property="article:modified_time" content="2023-06-07T02:18:55.712Z">
+<meta property="article:author" content="Sean10">
+<meta property="article:tag" content="ceph">
+<meta property="article:tag" content="cephalocon">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605001725199.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Sean10</h5>
+          <a href="mailto:sean10reborn@gmail.com" title="sean10reborn@gmail.com" class="mail">sean10reborn@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/sean10" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">(施工中)cephalocon2023之bluestore_v2</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">(施工中)cephalocon2023之bluestore_v2</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2023-06-05T00:16:06.000Z" itemprop="datePublished" class="page-time">
+  2023-06-05
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#bluestore-v2---an-evolutionary-step-forward---adam-kupczyk-ibm-mark-nelson-clyso-gmbh---youtube"><span class="post-toc-number">1.</span> <span class="post-toc-text">BlueStore V2 - an Evolutionary Step Forward - Adam Kupczyk, IBM &amp; Mark Nelson, Clyso GmbH - YouTube</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E8%A7%84%E5%88%92"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">规划</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%88%90%E7%86%9F-vs-%E5%8F%98%E9%9D%A9"><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">成熟 vs 变革</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%AA%E8%BF%98%E4%BC%9A%E9%95%BF%E6%9C%9F%E9%98%BB%E5%A1%9E%E6%88%91%E4%BB%AC%E7%9A%84bug%E5%8D%95"><span class="post-toc-number">1.0.3.</span> <span class="post-toc-text">3个还会长期阻塞我们的bug单</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%85%B3%E4%BA%8Eonode%E7%9A%84%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0-%E5%85%B3%E4%BA%8Eonode%E7%9A%84%E7%BC%93%E5%AD%98%E7%9A%84assert-sigsegv"><span class="post-toc-number">1.0.3.1.</span> <span class="post-toc-text">关于Onode的引用计数, 关于Onode的缓存的assert SIGSEGV</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#rocksdb-checksum-mismatch"><span class="post-toc-number">1.0.3.2.</span> <span class="post-toc-text">rocksdb checksum mismatch</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#direct-vs-buffed"><span class="post-toc-number">1.0.3.2.1.</span> <span class="post-toc-text">1. direct vs buffed</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#section"><span class="post-toc-number">1.0.3.2.2.</span> <span class="post-toc-text">2.</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#bluefs-enospc"><span class="post-toc-number">1.0.4.</span> <span class="post-toc-text">blueFS ENOSPC</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">目录</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#free-disc-space-fragmentation"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">free disc space fragmentation</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#stupid-%E5%88%86%E9%85%8D%E5%99%A8"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">stupid 分配器</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#bitmap-%E5%88%86%E9%85%8D%E5%99%A8"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">bitmap 分配器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#how-much-fragments-there-is"><span class="post-toc-number">1.2.2.1.</span> <span class="post-toc-text">how much fragments there is?</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#block-cache"><span class="post-toc-number">1.2.2.2.</span> <span class="post-toc-text">block cache</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#iterations"><span class="post-toc-number">1.2.2.3.</span> <span class="post-toc-text">iterations</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#collection_list-specifially"><span class="post-toc-number">1.2.2.4.</span> <span class="post-toc-text">collection_list specifially</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#spillover-revert"><span class="post-toc-number">1.2.2.5.</span> <span class="post-toc-text">spillover revert</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#mounting-bluestore-ro"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">Mounting bluestore RO</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#to-improve-cd"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">To improve (CD)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#defragmentation"><span class="post-toc-number">1.2.5.</span> <span class="post-toc-text">Defragmentation</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#lazy-compression"><span class="post-toc-number">1.2.6.</span> <span class="post-toc-text">Lazy Compression</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#custom-wal"><span class="post-toc-number">1.2.7.</span> <span class="post-toc-text">custom WAL</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#improve-deferred"><span class="post-toc-number">1.2.8.</span> <span class="post-toc-text">improve Deferred</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#new-deferred"><span class="post-toc-number">1.2.9.</span> <span class="post-toc-text">New Deferred</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-cephalocon2023之bluestore-v2"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">(施工中)cephalocon2023之bluestore_v2</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2023-06-05 00:16:06" datetime="2023-06-05T00:16:06.000Z"  itemprop="datePublished">2023-06-05</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>TODO: 找到对应的PR, 从而将口语化难以理解的内容转换为正确的描述.</p>
+<h2 id="bluestore-v2---an-evolutionary-step-forward---adam-kupczyk-ibm-mark-nelson-clyso-gmbh---youtube"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FVUoGw6kY5k">BlueStore V2 - an Evolutionary Step Forward - Adam Kupczyk, IBM &amp; Mark Nelson, Clyso GmbH - YouTube</a></h2>
+<h4 id="规划">规划</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605001725199.png" class="">
+<p>filestore 在 Pacific 和 Quincy 中被弃用，在 Reef 中被完全移除</p>
+<p>bluestore目前暂不知道什么时候会移出, 但是期望是将来seastore能够替代他. 也许会发生一些不可预料的新内容让他变得更好.</p>
+<h4 id="成熟-vs-变革">成熟 vs 变革</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605002203809.png" class="">
+<p>目前, 根据tracker和telemetry的统计, bluestore已经成熟了. 目前进入维护阶段</p>
+<p>其中telemetry提供的错误会进入tracker队列的顶端. 而一些只提了单子, 但没有信息的单子就暂时没有办法处理.</p>
+<p>更进一步的, 则是在bluestore的performance meeting例会和头脑风暴例会上进行讨论.</p>
+<h4 id="个还会长期阻塞我们的bug单">3个还会长期阻塞我们的bug单</h4>
+<h5 id="关于onode的引用计数-关于onode的缓存的assert-sigsegv">关于Onode的引用计数, 关于Onode的缓存的assert SIGSEGV</h5>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605002916484.png" class="">
+<p>关于Onode的引用计数, 关于Onode的缓存. 很恼人, 不过不够critical, osd自动重启后数据没问题.</p>
+<p>问题点 * 引用技术为0时自动清理, 很多版本中都很普遍而且我们甚至无法向后移植它. * 在Octopus版本中, 在引入技术为2时, 我们需要额外的操作. * 除了引用计数外, 还存活在了缓存中. 如果被pinned, 无法修改他. 只有unpined才能修改, 但是unpin依赖lock.</p>
+<p>这个问题花了9条PR, 其中4条真的进入的后续版本, 直到Igor真的解决了, 但不是从技术上解决的.</p>
+<p>做了个从缓存中lazy unpining的功能. 所以可以使他正常工作.</p>
+<p>我们之所以不能回滚掉他, 是因为基于他有太多内容已经变更. 如果有个解决方案, 我们会考虑, 但是Pacific和Quincy版本的解决方案将有所不同.</p>
+<h5 id="rocksdb-checksum-mismatch">rocksdb checksum mismatch</h5>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605223109447.png" class="">
+<p>rocksdb损坏后, 没有办法还原时, OSD只能重新部署, 没有办法绕过他. 有两个原因</p>
+<h6 id="direct-vs-buffed">1. direct vs buffed</h6>
+<p>问题来源非常早, 来源于linux manual中说的不应该同时使用direct和buffered mode.</p>
+<p>我们没有这么做, 但是我们保证打开同一个设备, 但永远不会使用read buffered和read direct读取同一个block device. 除了bluefs log.</p>
+<p>这个让我们付出了代价, 当你重启设备/osd, 他启动的非常快时, 你可能无法取得你刚才写到bluefs log上的数据. 其中一些对rocksdb表的更新,</p>
+<p>结果是我们在Nuatilus中引入了另一个问题, 我们修改了bluestore和bluefs只建传输的内存的部分. 目前为止这部分是不可见的.</p>
+<p>TODO: 暂未找到这条PR的单子.</p>
+<h6 id="section">2.</h6>
+<h4 id="bluefs-enospc">blueFS ENOSPC</h4>
+<p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/48854">os/bluestore: enable 4K allocation unit for BlueFS by ifed01 · Pull Request #48854 · ceph/ceph</a></p>
+<p>这个问题今年刚在master分支修复, 会backport到pacific分支, 但尚未完毕, 值得关注.</p>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605230023123.png" class="">
+<p>具体指代的是block 上仍有空间, 但是碎片化, 没有能提供给bluefs的满足对齐要求的空间.</p>
+<p>这个问题最早在luminous版本, 我们做了个<code>flip-flop</code>触发器, 在block和bluefs之间<code>gifting</code>和<code>reclaiming</code>数据, 1M对齐显然是可怕的, 因此我们选择了64K 的chunk. 这部分持续了很久, 最终我们现在有个支持4K对齐的bluefs.</p>
+<p>可能有人会问为什么设置一个4K的bluefs chunk 需要这个久. 这是个好问题.</p>
+<p>最早创造bluefs的时候, 有一个bluefs启动的4K的超级块. 当启动时, 从一个4K扇区读取重放日志. 如果chunks大小很大, 你的log就不可能会非常大.</p>
+<p>但是如果是4K大小的chunks, logs就很有可能被用尽. 很快就可以得到非常零碎的bluefs log. 因此,4k大小时, 只是不适合那个大小.</p>
+<p>所以现在, 通过<code>special trampoline multi-stage booting of bluefs log</code>可以实现了(待理解, 暂未在PR中找到解释的关键词), 性能在大量碎片时当然不太好, 但是不会再失败了. 不再会有半夜因多个osd bluefs空间不足被叫起来, 不得不去迁移数据的情况.</p>
+<h3 id="目录">目录</h3>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605231141918.png" class="">
+<p>为什么这些很重要, 因为这样我们就有更多时间去给bluestore添加新功能.</p>
+<p>这里有一张完整功能规划的图. 这些如果实现了将提供巨大的质量改进. 其中有一些次要优先级, 但是简单一些的.</p>
+<h3 id="free-disc-space-fragmentation">free disc space fragmentation</h3>
+<h4 id="stupid-分配器">stupid 分配器</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605231910797.png" class="">
+<p>早期我们引入了stupid 分配器, 实际上这个名字我觉得不太好, 功能很简单表现也很不错.</p>
+<p>在我们测试过程中发现他创建了很多碎片, 可用空间碎片化之后, 只能期望你的新对象也是碎片化的, 自然性能就会下降, 甚至会导致bluefs内部空间也无法回收.</p>
+<p>一般在性能下降之前, bluefs就会告诉你空间不足了.</p>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605232046896.png" class="">
+<p>这是个现实中的例子, 可能是你们中的一个集群.</p>
+<p>在固定地点长期运行之后的图</p>
+<p>这个图不是截断的, 就是19个allocation unit. 会看到长期运行之后, 大部分对象都在少数分配单元中.</p>
+<p>这张图表达的不是对数也不是线性刻度, 单纯表达的有数量级差异.</p>
+<p>之所以这样说, 是因为当时用户需要我们从no space的情况下将数据救回来.</p>
+<h4 id="bitmap-分配器">bitmap 分配器</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605232526896.png" class="">
+<p>然后, 如果你想要你的对象分段像这样连续, 选择bitmap分配器. 但是你的对象会像下面这样, 所以最终并没有性能提升</p>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605232631386.png" class="">
+<h5 id="how-much-fragments-there-is">how much fragments there is?</h5>
+<p>我们真的不知道, 因为有个基于分片数量的wired碎片打分. 这个确实告诉了你bluefs的内部空间条件, 不过现在他不再有用.</p>
+<p>所以我们需要一张直方图.不过即便我们有碎片, 也并不是很明显有多少成本. 如果你正在运行RBD, 你是以4MB的块以某种方式碎片化. 他们在不同的时间被覆盖. 如果RBD的对面正在运行任何文件系统, 仍旧是没问题.</p>
+<p>如果chunks代表不同的文件, 只要不发生同时读取他们的事情, 你仍旧不会受到碎片的影响.</p>
+<p>TODO: why?</p>
+<p>当然Romin会抱怨, 在scrub的时候, 所有的对象都是red, 会拖慢scrub的速度.</p>
+<p>我认为从这个过程中, 我们会得到一个感觉, 也许应该只修复真正热点的对象的碎片化.</p>
+<p>待会会有张关于碎片的幻灯片.</p>
+<p>现在让我讲下其他的主题 #### rocksdb</p>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230605233420073.png" class="">
+<h5 id="block-cache">block cache</h5>
+<p>当我们合并rocksdb给bluestore时, 我们实现了我们自己的block cache , 因为我们需要内存管理. 现在我们的block cache和其他的cache之间循环,这部分要感谢Mark Nelson, 目前这部分是个非常好的动态过程, 对于最热点地区的goals和gifts是最令人难忘的.</p>
+<p>但是似乎有些东西在和block cache运作时令人感到strinky(恶臭的). 在一些情况下我们似乎并没有真正使用block cache , 但是莫名其妙的提供大量相等于Block cache数量的linux page cache可以解决性能问题.</p>
+<p>所以要么是我们错误的实现了它, 我们只是缓存了它, 然后我们并没有在rocksdb想要时, 给回它.</p>
+<p>亦或是其他的一些错误导致我们无法归还它. 这个问题已经很长时间了.</p>
+<h5 id="iterations">iterations</h5>
+<p>为什么block cache非常重要呢? 因为如果不缓存数据, 迭代是慢的. 并且在rocksdb中迭代可能会花很多时间, 并且很多人抱怨甚至到了试图删除空的collection的度. 这个是删除PG的最后一步, 它最后一次尝试遍历只是为了检查是否真的是空的. 当所有内容被删除时, 有很多墓碑, 这些只是thmb stones, 但它仍然需要花很多时间来做这个.</p>
+<p>em, 我听到一个好消息, 我认为是时候承认Corey Snyder在改进迭代器方面迈出了非常好的一步.</p>
+<p>因为他的一条PR, 使用range iterators, 在大部分场景下, 可以把事情分开进行.</p>
+<h5 id="collection_list-specifially">collection_list specifially</h5>
+<p>但如果我们遇到迭代器问题, 我们可能会使用collection_list 的方案来解决它.</p>
+<p>不过暂时还不知道怎么去做他, 不颠覆当前的架构.</p>
+<p>因为我们当前确实从把所有内容放在一个地方并使用rocksdb迭代中收益良多.</p>
+<p>也许其中一个解决方案可能是用speedb替换rocksbd. speedb有一个模式, 他们告知了我, 我也测试了一下, 姑且让我们假设它正常工作, 当你区分了key 流和 value 流, 它能够做什么?</p>
+<p>如果我们把他用在onode collection, 即便我们只有某个范围内的墓碑, 它会是个非常短的表. 它只包含名称, 而名称在rocksdb中可以被很好的压缩. 所以它应该会快得多. 当然这还只是个想法</p>
+<h5 id="spillover-revert">spillover revert</h5>
+<p>另一个spliiover revert. 溢出是我们很不喜欢的一种情况, 但你有一个非常慢的HDD, 你用nvme/ssd的一部分来给他备份. 这不是一个很好的组合,</p>
+<p>然后没有空间放你的rocksdb的meta, 它必须使用hdd上的临时空间, 这个不会出问题. 只是非常慢, 问题发生在当他只是个过渡性质的溢出. 因为如果你空间真的多于容量, 那没有什么可以解决的. 但是如果你压缩一个db刚好比你的数据库空间一半大一点. 它可能会溢出到慢速设备, 并且它会在那停留很长一段时间. 因为如果它碰巧是一个非常深的压缩, 影响了很多层级. 你的新SSd文件将驻留很长时间, 而溢出恢复只是简单的从慢速设备移动回来到db的概念.</p>
+<p>正如你们所知, bluefs files可以驻留在这些设备中的任何一个上, 只是物理上执行复制并切换extents到新的形状上, 这部分没问题.</p>
+<p>棘手的部分是如何做出复制什么的决定, 这很困难. 因为我们没有跟踪, 并不区分hot SST tables ,也许叫做SSD tables. 亦或是我期望的情况, 甚至可能是某些部分的一部分SSD tables很热, 与此同时其他表很慢. 但我们可能会忽略它, 只是为了简化一些其他的东西.</p>
+<h4 id="mounting-bluestore-ro">Mounting bluestore RO</h4>
+<p>可能有人会问, 为什么这里会有这个深奥的功能</p>
+<p>因为任何原因, bluestore失败时, 你想要救回一些PG数据, 真的很难使用ceph-objectstore-tool来做到这件事.</p>
+<p>举例来说, 你进入了一个真的没有空间继续写的情况下, rocksdb需求更多空间, 而你的设备确实没有了. 你不能用ceph-objectstore-tool去挂载rocksdb, 并解压导出数据.</p>
+<p>因为bluestore期望<code>待定名字</code>完成所有pending压缩, 不同的权限等等. 所以你被困在了这个点上, 只是想做一点点修改.</p>
+<p>所以你想得到一个只读的bluestore, 只需要保持冻结状态, 可以加载到内存里, 在内存里的rocksdb, 从而可以将数据提取到另一个osd的superblock中.</p>
+<p>我期望这件事不会发生在你们身上, 但是确实发生在了很多人身上.</p>
+<p>OSD无法启动, 因为OSD写入的第一个对象是OSD超级块,因为对于他来说, 选中它知道他自己的状态并继续是需要的. 有一些技术可以恢复, 不过这部分还是相对困难的, 成功率不是100%. 现在OSD 超级块, 再次感谢Igor, 将位于多个地方, 包括rocksdb本身, 并且代码也变了, 对象通常处在磁盘开头的对象, 现在也可能存在不同的地方. 在大多数环境中, 超级块都处于磁盘头, 因为它需要占用第一个分配单元, 并且它总是被更新, 且他很小. 它总是进入不同的权限路线, 所以它只是被覆盖了, 难怪osd开头的任何损坏都会引起osd的超级块崩溃.</p>
+<p>一个我最喜欢的例子是, 你如何下放一个功能, 很长时间以来真的不可能挂载bluestore 2次, 我们使用flock, 管理资源独占锁来实现挂载bluestore 2次. 但当容器化的时候, 它就变得无用了. 因为容器化环境也区分了那些锁, 所以如果你有一个讨厌的情况, 你尝试运行你的容器2次, 你得到它, 并且你的超级块损坏了, 因为其中一个覆盖了第二个, 这也是一个问题我们已经解决了的.</p>
+<p>我现在除了locking之外, 我们还使用了额外的方式.</p>
+<p>为什么不使用内核级特殊处理, 是因为打开块设备独占, 对于其他所有块设备的工作方式梧桐, 我无法打破它. 如果有人能够打破那个保护, 麻烦告知我.</p>
+<p>TODO: osd启动时有peek_meta, 不知道是不是这个</p>
+<h4 id="to-improve-cd">To improve (CD)</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607000449662.png" class="">
+<p>在CD中, 我们需要清理的, mount/umount顺序是一点, 我们存放可配置的地方bluefs, rocksdb ,RO, 关闭/打开, 读分配. 现在可以简称 free list的清理.</p>
+<p>以及Greg实现的一个非常好的功能, 删除rocksdb关于分配的升级. 所以我们现在节省了很多时间在kv sync thread上, 不更新位置.</p>
+<p>我真正想做的事一对对检查, 我不知道admin socket 最有可能或者不同的类型, 对我来说, 就是这样, 好奇我需要看看我的元数据是什么样的, 我希望能在运行时关联它, 我不想运行一些调试登记的bluestore只是为了看看对象在磁盘上是如何结构化的, 此时所有osd不得不回复我.</p>
+<p>我自己的笔记, 我感兴趣的事我的SharedBlobs是如何拆分, 等等.</p>
+<p>和运行时检查相同, 但是也区分在线或者撩闲. 当然runtime cache/buffers 现在基本上更好, 也很有价值对于碎片化的报告.</p>
+<p>我想要直方图, 以及分裂的热点区域是什么, 碎片化的可能成本是多少.</p>
+<h4 id="defragmentation">Defragmentation</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607003039066.png" class="">
+<p>所以这部分是接下来碎片化最有可能完成的事情, 它将包括自由空间的碎片和应该可以再一次运行中完成的对象, 我们正在考虑使用一种算法来迭代的提供一些迭代改进, 我们不希望一个全局的操作来操作OSD每周半小时, 期望它内联的运行, 或者如果我们提供更好的分配器和更好的策略, 我们跳过他, 新的OSD对于现有的部署不会那么碎片化, 也许我们在想, 对于本地化分配会有所帮助. 意味着, 吸纳关系那改一下, 你把可用磁盘空间分配给某些区域, 如果你需要空间, 你想要获得接近分配大小的卡攻坚, 但是你真的想要接近这个对象的空间爱你, 你已经知道对象的所有其他数据, 是否相信他不是这种情况, 我们只是在分配时, 我们不知道请求它的对象在哪里. 我们的想法是即便对于spinner, 如果有个相同的cyliner, 我们仍然大体上还可以紧挨着他.</p>
+<p>当然, 对于固态的策略并没有真正发挥作用, 更重要的是落盘可能不是以正确的顺序, 而是由于无论硬盘内部的架构如何, 你都可以一口气读到他.</p>
+<p>以及如何做一些额外特别的scrub优化的一部分来完成, 事实上我们不知道.</p>
+<p>目前我们正在和GSoC合作, 我们会创建一个模拟器, 尽可能模拟一些工作集. 想看到运行成年累月之后的垃圾数据之后的表现.</p>
+<p>因为很不想bluestore代码对于实验不够好. 你只有实现模拟器才能让我们有可能以最小的成本来测试不同的分配器或则和不同的策略.</p>
+<p>最后一个是碰巧针对HDD, 我有一个问题如何通过微调来预测实际延时.</p>
+<p>这是一种模式允许你, 构造删除很多数据, 只更新元数据的集群, 当我想要看看我的硬盘在一年的数据碎片化之后的表现, 我只需要切换模式, 插入真实设备, 他就会执行真实操作, 这样就可以作为真实的长时间运行后的测试工具.</p>
+<h4 id="lazy-compression">Lazy Compression</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607003834775.png" class="">
+<p>我们可能会抛弃当前的数据结构, 摆脱我们目前的所有缺陷, 并让他离线.</p>
+<p>这样我们可以平衡你想要让他使用多少cpu, 选择只有冷数据进行压缩, 这样我们就不再会遇到那种奇怪的情况, 我们应该使用3个分配单元, 但是实际却使用了6个. 这是我们内部组织blob的方式. 这对我们来说更好. 而且在适应之后, 来自前面那一部分的模拟器应该能够给我们预测使用惰性压缩有多好.</p>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004132912.png" class="">
+<h4 id="custom-wal">custom WAL</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004147763.png" class="">
+<p>然后以一个额外的概念, 来自Igor. 这是一个自定义WAL, 意味着我们删除了当前场景, rocksdb正在实现一个headlock , 我们在这里有延时. 在这条竖线后面, 我们可以通知用户事务已经结束. <img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004359702.png" class=""></p>
+<p>我们可以修改它, 并提供我们自己的WAL日志, 我们在kvsync线程总并行处理主表, 同时我们也可以压缩他. 我们队数据做了一个fdat, 所以他更早的匹配, 是为了发出事务最终完成的信号, 取决于这里写操作可以像读其他任何我可能错的内容一样执行.</p>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004853151.png" class="">
+<p>这个概念是为了进一步减少经过rocksdb的数据量. 我们将为PG log创建一个特殊通道,而不是像当前那样讲PG log更新作为新的简直更新到rocksdb中, 每个他们都会写入一些特殊的环形对象, 也许带有一个写headlock. 目前这部分还没有决定, 但我们会卸载掉那个关键的东西,</p>
+<h4 id="improve-deferred">improve Deferred</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607004919347.png" class="">
+<p>因为我想大家都知道kvsync线程是个关键的部分. 在bluestore中产生延时.</p>
+<p>这是个简单的解释, 我们当前的默认机制太粗糙了, 想象一下, 你追加到你已经写了一些数据的对象, 你追加数据, 现在有一个扇区需要被替换, 但是那个进入了不同的机制, 但是所有其他的只是分配, 这是讲不通的. 因为如果你有spinner, 意味着你必须访问2个地方. 但是实际上你可以只访问其中一个地方</p>
+<h4 id="new-deferred">New Deferred</h4>
+<img src="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/image-20230607005041276.png" class="">
+<p>毫无疑问, 这是一个完全不同的东西, 我们正在考虑制作一个新的延迟机制. 不进保留在rocksdb中derred的对象, 那部分应该只保留一部分时间, 不然会不得不被rocksdb写入SST, 产生巨大的写惩罚, 我们想保留一个特殊的延时缓存, 并添加一个长期使用的快速分区, 这样你就可以有10/20/50G的数据, 将你的数据缓存在一个慢速设备中, 我们将允许保留它, 只在有一些迭代过程时, 才触发清理. 这样有序的进行, 好的部分是缓存的任何对象都指向已经分配到某处扇区, 所以没有注入什么奇怪的逻辑.</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2023-06-07T02:18:55.712Z" itemprop="dateUpdated">2023-06-07 02:18:55</time>
+</span><br>
+
+
+        
+        欢迎评论~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sean10.github.io">
+            <img src="/img/avatar.jpg" alt="Sean10">
+            Sean10
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cephalocon/" rel="tag">cephalocon</a></li></ul>
+
+
+            
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<div class="addthis_sharing_toolbox"></div>
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/&title=《(施工中)cephalocon2023之bluestore_v2》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/&title=《(施工中)cephalocon2023之bluestore_v2》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《(施工中)cephalocon2023之bluestore_v2》 — 行路中.&url=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2023/05/08/cephalocon2023%E4%B9%8Bceph_performance_tuning/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">cephalocon2023之ceph performance tuning:from bluestore to rbd -Mark Nelson, Clyso GmbH</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <!-- <script src="//code.bdstatic.com/npm/leancloud-storage@latest/dist/av-min.js"></script> -->
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "yNexbxJmshSneppnaoo3Bd6Y-gzGzoHsz",
+            appKey: "FyxT8MxDPHbu8mQSapgjEMPC",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Sean10 &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/&title=《(施工中)cephalocon2023之bluestore_v2》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/&title=《(施工中)cephalocon2023之bluestore_v2》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《(施工中)cephalocon2023之bluestore_v2》 — 行路中.&url=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://sean10.github.io/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57108c0b91bea817"></script>
+
+<script src="/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</body>
+</html>
