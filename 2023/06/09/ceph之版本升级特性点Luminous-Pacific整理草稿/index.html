@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    
+    <title>ceph之版本升级特性点Luminous_Pacific整理草稿 | 行路中. | 脚踏实地</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ceph,upgrade">
+    <meta name="description" content="背景 主要是针对rbd-&gt;openstack相关, 所以cephfs&#x2F;rgw&#x2F;dashboard等其他的特性相关的几乎都跳过了. 仅整理了rbd及以下模块, 从luminous以后到pacific为止的. 性能相关 Pacific 16.2.0 RADOS  Pacific introduces :ref:bluestore-rocksdb-sharding, which reduces d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph之版本升级特性点Luminous_Pacific整理草稿">
+<meta property="og:url" content="https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/index.html">
+<meta property="og:site_name" content="行路中.">
+<meta property="og:description" content="背景 主要是针对rbd-&gt;openstack相关, 所以cephfs&#x2F;rgw&#x2F;dashboard等其他的特性相关的几乎都跳过了. 仅整理了rbd及以下模块, 从luminous以后到pacific为止的. 性能相关 Pacific 16.2.0 RADOS  Pacific introduces :ref:bluestore-rocksdb-sharding, which reduces d">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-09T23:19:04.000Z">
+<meta property="article:modified_time" content="2023-06-09T15:20:18.822Z">
+<meta property="article:author" content="Sean10">
+<meta property="article:tag" content="ceph">
+<meta property="article:tag" content="upgrade">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Sean10</h5>
+          <a href="mailto:sean10reborn@gmail.com" title="sean10reborn@gmail.com" class="mail">sean10reborn@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/sean10" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ceph之版本升级特性点Luminous_Pacific整理草稿</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">ceph之版本升级特性点Luminous_Pacific整理草稿</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2023-06-09T23:19:04.000Z" itemprop="datePublished" class="page-time">
+  2023-06-09
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%80%A7%E8%83%BD%E7%9B%B8%E5%85%B3"><span class="post-toc-number">2.</span> <span class="post-toc-text">性能相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#pacific"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Pacific</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">16.2.0</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#octopus"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Octopus</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-1"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">15.2.15</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-2"><span class="post-toc-number">2.2.2.</span> <span class="post-toc-text">15.2.0</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#nautilus"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">Nautilus</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-3"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">14.2.22</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-4"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">14.2.8</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-5"><span class="post-toc-number">2.3.3.</span> <span class="post-toc-text">14.2.0</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#mimic"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">Mimic</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-6"><span class="post-toc-number">2.4.1.</span> <span class="post-toc-text">13.2.0</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%85%B6%E4%BB%96%E5%8A%9F%E8%83%BD%E6%80%A7"><span class="post-toc-number">3.</span> <span class="post-toc-text">其他功能性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-7"><span class="post-toc-number">3.0.1.</span> <span class="post-toc-text">16.2.11</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-8"><span class="post-toc-number">3.0.2.</span> <span class="post-toc-text">16.2.2</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-9"><span class="post-toc-number">3.0.3.</span> <span class="post-toc-text">16.2.0</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-10"><span class="post-toc-number">3.0.4.</span> <span class="post-toc-text">15.2.15</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-11"><span class="post-toc-number">3.0.5.</span> <span class="post-toc-text">14.2.22</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-12"><span class="post-toc-number">3.0.6.</span> <span class="post-toc-text">14.2.5</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-13"><span class="post-toc-number">3.0.7.</span> <span class="post-toc-text">14.2.3</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-14"><span class="post-toc-number">3.0.8.</span> <span class="post-toc-text">13.2.7</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-15"><span class="post-toc-number">3.0.9.</span> <span class="post-toc-text">13.2.0</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#openstack-%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="post-toc-number">4.</span> <span class="post-toc-text">Openstack 的差异</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#nova"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">nova</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-16"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">27.0</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#zed"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">Zed</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#yoga"><span class="post-toc-number">4.1.3.</span> <span class="post-toc-text">Yoga</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#wallaby"><span class="post-toc-number">4.1.4.</span> <span class="post-toc-text">Wallaby</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#victoria"><span class="post-toc-number">4.1.5.</span> <span class="post-toc-text">Victoria</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ussuri"><span class="post-toc-number">4.1.6.</span> <span class="post-toc-text">ussuri</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#train"><span class="post-toc-number">4.1.7.</span> <span class="post-toc-text">train</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#mitaka"><span class="post-toc-number">4.1.8.</span> <span class="post-toc-text">Mitaka</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cinder"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">cinder</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#unreleased"><span class="post-toc-number">4.2.1.</span> <span class="post-toc-text">unreleased</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#yoga-1"><span class="post-toc-number">4.2.2.</span> <span class="post-toc-text">Yoga</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#wallaby-1"><span class="post-toc-number">4.2.3.</span> <span class="post-toc-text">Wallaby</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#victoria-1"><span class="post-toc-number">4.2.4.</span> <span class="post-toc-text">Victoria</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#redhat-enterprise-storage"><span class="post-toc-number">5.</span> <span class="post-toc-text">RedHat Enterprise Storage</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-17"><span class="post-toc-number">5.0.1.</span> <span class="post-toc-text">6</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-18"><span class="post-toc-number">5.0.2.</span> <span class="post-toc-text">5</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-19"><span class="post-toc-number">5.0.3.</span> <span class="post-toc-text">4</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#section-20"><span class="post-toc-number">5.0.4.</span> <span class="post-toc-text">3</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-ceph之版本升级特性点Luminous-Pacific整理草稿"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ceph之版本升级特性点Luminous_Pacific整理草稿</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2023-06-09 23:19:04" datetime="2023-06-09T23:19:04.000Z"  itemprop="datePublished">2023-06-09</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="背景">背景</h1>
+<p>主要是针对rbd-&gt;openstack相关, 所以cephfs/rgw/dashboard等其他的特性相关的几乎都跳过了. 仅整理了rbd及以下模块, 从luminous以后到pacific为止的.</p>
+<h1 id="性能相关">性能相关</h1>
+<h2 id="pacific">Pacific</h2>
+<h3 id="section">16.2.0</h3>
+<p>RADOS</p>
+<ul>
+<li>Pacific introduces :ref:<code>bluestore-rocksdb-sharding</code>, which reduces disk space requirements.</li>
+<li>Ceph now provides QoS between client I/O and background operations via the mclock scheduler.</li>
+</ul>
+<p>RBD</p>
+<ul>
+<li>A new persistent write-back cache is available. The cache operates in a log-structured manner, providing full point-in-time consistency for the backing image. It should be particularly suitable for PMEM devices. <a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/43772">pacific: librbd/cache/pwl: persistant cache backports by ideepika · Pull Request #43772 · ceph/ceph</a></li>
+</ul>
+<h2 id="octopus">Octopus</h2>
+<h3 id="section-1">15.2.15</h3>
+<ul>
+<li>The default value of <code>osd_client_message_cap</code> has been set to 256, to provide better flow control by limiting maximum number of in-flight client requests.</li>
+</ul>
+<p>https://hub.nuaa.cf/ceph/ceph/pull/42616</p>
+<p>https://docs.google.com/spreadsheets/d/1dwKcxFKpAOWzDPekgojrJhfiCtPgiIf8CGGMG1rboRU/edit#gid=0</p>
+<p>这里的实测结论居然是256比较好? 还没细看.</p>
+<h3 id="section-2">15.2.0</h3>
+<p>RADOS</p>
+<ul>
+<li>Objects can now be brought in sync during recovery by copying only the modified portion of the object, reducing tail latencies during recovery. <a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/21722">osd: partial recovery strategy based on PGLog by mslovy · Pull Request #21722 · ceph/ceph</a></li>
+<li>BlueStore has received several improvements and performance updates, including improved accounting for "omap" (key/value) object data by pool, improved cache memory management, and a reduced allocation unit size for SSD devices. (Note that by default, the first time each OSD starts after upgrading to octopus it will trigger a conversion that may take from a few minutes to a few hours, depending on the amount of stored "omap" data.)</li>
+<li>Snapshot trimming metadata is now managed in a more efficient and scalable fashion.</li>
+</ul>
+<p>RBD</p>
+<ul>
+<li>Clone operations now preserve the sparseness of the underlying RBD image.
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/27999">librbd: clone copy-on-write operations should preserve sparseness by trociny · Pull Request #27999 · ceph/ceph</a></li>
+</ul></li>
+</ul>
+<h2 id="nautilus">Nautilus</h2>
+<h3 id="section-3">14.2.22</h3>
+<ul>
+<li><p>This release sets <code>bluefs_buffered_io</code> to true by default to improve performance for metadata heavy workloads. Enabling this option has been reported to occasionally cause excessive kernel swapping under certain workloads. Currently, the most consistent performing combination is to enable bluefs_buffered_io and disable system level swap.</p></li>
+<li><p>The default value of <code>bluestore_cache_trim_max_skip_pinned</code> has been increased to 1000 to control memory growth due to onodes.</p></li>
+</ul>
+<h3 id="section-4">14.2.8</h3>
+<ul>
+<li>The default value of <code>bluestore_min_alloc_size_ssd</code> has been changed to 4K to improve performance across all workloads. &gt; https://github.com/ceph/ceph/pull/32998 &gt; <a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/30698">common/options: Set bluestore min_alloc size to 4K by markhpc · Pull Request #30698 · ceph/ceph</a> &gt; &gt; &gt; I'm not sure that having 4K min_alloc_size for both ssd and spinner is a good choice. From my benchmarks 4K MAS is undoubtedly beneficial in all-flash setupы only. It shows performance boost for certain small R/W scenarios and no regression for other ones<br />
+&gt; When main device is rotational performance boost is observed for a minor selection of 4K R/W scenarios. But other scenarios suffer from pretty large performance degradation. &gt; &gt; See columns B &amp; C, rows 20-36 at<br />
+&gt; <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1xXbheoGwgyaLBc389TFo1vUyz9LjshI83_bW8zBYWl8/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1xXbheoGwgyaLBc389TFo1vUyz9LjshI83_bW8zBYWl8/edit?usp=sharing</a><br />
+&gt; So my suggestion is to tune bluestore_min_alloc_size_ssd only &gt;</li>
+</ul>
+<h3 id="section-5">14.2.0</h3>
+<ul>
+<li>The NUMA node for OSD daemons can easily be monitored via the <code>ceph osd numa-status</code> command, and configured via the <code>osd_numa_node</code> config option. <a target="_blank" rel="noopener" href="https://tracker.ceph.com/issues/42411">Bug #42411: nautilus:osd: network numa affinity not supporting subnet port - RADOS - Ceph</a></li>
+</ul>
+<h2 id="mimic">Mimic</h2>
+<h3 id="section-6">13.2.0</h3>
+<ul>
+<li><p><em>RADOS</em>:</p>
+<ul>
+<li>An <em>async recovery</em> feature reduces the tail latency of requests when the OSDs are recovering from a recent failure. https://github.com/ceph/ceph/pull/19811</li>
+<li>OSD preemption of scrub by conflicting requests reduces tail latency. (12版本已有, 2017年的修改)
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/18971">osd/PG: allow scrub preemption by liewegas · Pull Request #18971 · ceph/ceph</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="其他功能性">其他功能性</h1>
+<h3 id="section-7">16.2.11</h3>
+<ul>
+<li><p>Trimming of PGLog dups is now controlled by the size instead of the version. This fixes the PGLog inflation issue that was happening when the on-line (in OSD) trimming got jammed after a PG split operation. Also, a new off-line mechanism has been added: ceph-objectstore-tool got trim-pg-log-dups op that targets situations where OSD is unable to boot due to those inflated dups. If that is the case, in OSD logs the “You can be hit by THE DUPS BUG” warning will be visible. Relevant tracker: <a target="_blank" rel="noopener" href="https://tracker.ceph.com/issues/53729">https://tracker.ceph.com/issues/53729</a></p></li>
+<li><p>RBD: rbd device unmap command gained --namespace option. Support for namespaces was added to RBD in Nautilus 14.2.0 and it has been possible to map and unmap images in namespaces using the image-spec syntax since then but the corresponding option available in most other commands was missing. rados namespaces can be used to provide isolation between rados clients within a pool. For example, a client could only have full permissions on a namespace specific to them. This makes using a different rados client for each tenant feasible, which is particularly useful for rbd where many different tenants are accessing their own rbd images. 即主要用途其实算是更精细的权限控制? 确保底层即便拿到其他用户的权限, 也因为namespace无法使用?</p></li>
+</ul>
+<h3 id="section-8">16.2.2</h3>
+<ul>
+<li>Cephadm now supports an <em>ingress</em> service type that provides load balancing and HA (via haproxy and keepalived on a virtual IP) for RGW service (see <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/cephadm/services/rgw/#orchestrator-haproxy-service-spec">High availability service for RGW</a>). (The experimental <em>rgw-ha</em> service has been removed.)</li>
+</ul>
+<h3 id="section-9">16.2.0</h3>
+<ul>
+<li>Official <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/mgr/ceph_api/#mgr-ceph-api">Ceph RESTful API</a>:
+<ul>
+<li>OpenAPI v3 compliant.<br />
+</li>
+<li>Stability commitment starting from Pacific release.</li>
+<li>Versioned via HTTP <code>Accept</code> header (starting with v1.0).</li>
+<li>Thoroughly tested (&gt;90% coverage and per Pull Request validation).</li>
+<li>Fully documented.</li>
+</ul></li>
+<li>Security (multiple enhancements and fixes resulting from a pen testing conducted by IBM):</li>
+</ul>
+<p>Account lock-out after a configurable number of failed log-in attempts.</p>
+<p>Improved cookie policies to mitigate XSS/CSRF attacks.</p>
+<p>Reviewed and improved security in HTTP headers.</p>
+<p>Sensitive information reviewed and removed from logs and error messages.</p>
+<p>TLS 1.0 and 1.1 support disabled.</p>
+<p>Debug mode when enabled triggers HEALTH_WARN.</p>
+<ul>
+<li>CLAY CODE PLUGIN
+<ul>
+<li>ec池, 故障修复时, 可以减少对带宽的占用.</li>
+<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code-clay/#:~:text=CLAY%20code%20plugin%20CLAY%20%28short%20for%20coupled-layer%29%20codes,IO%20when%20a%20failed%20node%2FOSD%2Frack%20is%20being%20repaired.">CLAY code plugin — Ceph Documentation</a></li>
+</ul></li>
+</ul>
+<p>SPECIFYING EXPECTED POOL SIZE 支持多池共用osd, 做健康检查, 感知是否使用超过该池原定使用空间上限, 会有warning信息. ceph osd pool set {pool-name} recovery_priority {value} rbd 性能监控 - Image live-migration feature has been extended to support external data sources. Images can now be instantly imported from local files, remote files served over HTTP(S) or remote S3 buckets in <code>raw</code> (<code>rbd export v1</code>) or basic <code>qcow</code> and <code>qcow2</code> formats. Support for <code>rbd export v2</code> format, advanced QCOW features and <code>rbd export-diff</code> snapshot differentials is expected in future releases.</p>
+<ul>
+<li>Initial support for client-side encryption has been added. This is based on LUKS and in future releases will allow using per-image encryption keys while maintaining snapshot and clone functionality -- so that parent image and potentially multiple clone images can be encrypted with different keys.</li>
+<li><ul>
+<li>A Windows client is now available in the form of <code>librbd.dll</code> and <code>rbd-wnbd</code> (Windows Network Block Device) daemon. It allows mapping, unmapping and manipulating images similar to <code>rbd-nbd</code>.</li>
+</ul></li>
+<li><ul>
+<li>librbd API now offers quiesce/unquiesce hooks, allowing for coordinated snapshot creation.</li>
+</ul></li>
+<li>A new library is available, libcephsqlite. It provides a SQLite Virtual File System (VFS) on top of RADOS. The database and journals are striped over RADOS across multiple objects for virtually unlimited scaling and throughput only limited by the SQLite client. Applications using SQLite may change to the Ceph VFS with minimal changes, usually just by specifying the alternate VFS. We expect the library to be most impactful and useful for applications that were storing state in RADOS omap, especially without striping which limits scalability.
+<ul>
+<li>提供了基本的数据库</li>
+</ul></li>
+<li>重构有了预计时间?</li>
+<li>提供了静默rbd的hook接口
+<ul>
+<li>rbd device --device-type nbd map --quiesce --quiesce-hook ${QUIESCE_HOOK}<br />
+</li>
+<li>看了下16版本有提供rbd quiesce 逻辑, 针对snap create时可以主动block rbd块的io, 并提供静默io前后的hook. 没找着有写测试/使用样例, 不过rbd-nbd那边有写用例, 可以提供脚本做前置/后置检查.</li>
+</ul></li>
+</ul>
+<h3 id="section-10">15.2.15</h3>
+<ul>
+<li>A new ceph-erasure-code-tool has been added to help manually recover an object from a damaged PG.</li>
+</ul>
+<h3 id="section-11">14.2.22</h3>
+<ul>
+<li>A <code>--max &lt;n&gt;</code> option is available with the <code>osd ok-to-stop</code> command to provide up to N OSDs that can be stopped together without making PGs unavailable.</li>
+</ul>
+<p>msgr2下的arm/x86不兼容修复 * A long-standing bug that prevented 32-bit and 64-bit client/server interoperability under msgr v2 has been fixed. In particular, mixing armv7l (armhf) and x86_64 or aarch64 servers in the same cluster now works.</p>
+<h3 id="section-12">14.2.5</h3>
+<p>OSD:</p>
+<ul>
+<li><p>A new OSD daemon command, 'dump_recovery_reservations', reveals the recovery locks held (in_progress) and waiting in priority queues.</p></li>
+<li><p>A health warning is now generated if the average osd heartbeat ping time exceeds a configurable threshold for any of the intervals computed. The OSD computes 1 minute, 5 minute and 15 minute intervals with average, minimum and maximum values. New configuration option <code>mon_warn_on_slow_ping_ratio</code> specifies a percentage of <code>osd_heartbeat_grace</code> to determine the threshold. A value of zero disables the warning. New configuration option <code>mon_warn_on_slow_ping_time</code> specified in milliseconds over-rides the computed value, causes a warning when OSD heartbeat pings take longer than the specified amount. A new admin command, <code>ceph daemon mgr.# dump_osd_network [threshold]</code>, will list all connections with a ping time longer than the specified threshold or value determined by the config options, for the average for any of the 3 intervals. Another new admin command, <code>ceph daemon osd.# dump_osd_network [threshold]</code>, will do the same but only including heartbeats initiated by the specified OSD</p></li>
+<li><p>Ceph will now issue health warnings if daemons have recently crashed. Ceph has been collecting crash reports since the initial Nautilus release, but the health alerts are new. To view new crashes (or all crashes, if you've just upgraded)::</p>
+<p>ceph crash ls-new</p>
+<p>To acknowledge a particular crash (or all crashes) and silence the health warning::</p>
+<p><code>ceph crash archive &lt;crash-id&gt;</code> ceph crash archive-all</p></li>
+</ul>
+<h3 id="section-13">14.2.3</h3>
+<ul>
+<li>The RGW <code>num_rados_handles</code> has been removed. If you were using a value of <code>num_rados_handles</code> greater than 1, multiply your current <code>objecter_inflight_ops</code> and <code>objecter_inflight_op_bytes</code> parameters by the old <code>num_rados_handles</code> to get the same throttle behavior.</li>
+</ul>
+<h3 id="section-14">13.2.7</h3>
+<p>MDS:</p>
+<blockquote>
+<p>Cache trimming is now throttled. Dropping the MDS cache via the <code>"ceph tell mds.&lt;foo&gt; cache drop"</code> command or large reductions in the cache size will no longer cause service unavailability.</p>
+</blockquote>
+<h3 id="section-15">13.2.0</h3>
+<ul>
+<li><p>The monitor daemon uses significantly less disk space when undergoing recovery or rebalancing operations.</p></li>
+<li><p><em>CephFS</em>:</p>
+<ul>
+<li>Snapshots are now stable when combined with multiple MDS daemons.</li>
+</ul></li>
+</ul>
+<h1 id="openstack-的差异">Openstack 的差异</h1>
+<p>对nfs的使用支持如何?</p>
+<p>Wallaby对应Mimic-Pacific</p>
+<p>rocky到2023.1后面那个版本</p>
+<p>当前业务已升级到train版本, 局部还在N版本</p>
+<h2 id="nova">nova</h2>
+<h3 id="section-16">27.0</h3>
+<h3 id="zed">Zed</h3>
+<h3 id="yoga">Yoga</h3>
+<h3 id="wallaby">Wallaby</h3>
+<ul>
+<li><p>The Hyper-V driver can now attach Cinder RBD volumes. The minimum requirements are Ceph 16 (Pacific) and Windows Server 2016.</p></li>
+<li><p>The Hyper-V virt driver can now attach Cinder RBD volumes.</p></li>
+</ul>
+<h3 id="victoria">Victoria</h3>
+<ul>
+<li><p>New <code>[glance]/enable_rbd_download</code> config option was introduced. The option allows for the configuration of direct downloads of Ceph hosted glance images into the libvirt image cache via rbd when <code>[glance]/enable_rbd_download= True</code> and <code>[glance]/rbd_user</code>, <code>[glance]/rbd_pool</code>, <code>[glance]/rbd_connect_timeout</code>, <code>[glance]/rbd_ceph_conf</code> are correctly configured.</p></li>
+<li><p>Added params <code>[libvirt]/rbd_destroy_volume_retries</code>, defaulting to 12, and <code>[libvirt]/rbd_destroy_volume_retry_interval</code>, defaulting to 5, that Nova will use when trying to remove a volume from Ceph in a retry loop that combines these parameters together. Thus, maximum elapsing time is by default 60 seconds.</p></li>
+<li><p>Nova tries to remove a volume from Ceph in a retry loop of 10 attempts at 1 second intervals, totaling 10 seconds overall - which, due to 30 second ceph watcher timeout, might result in intermittent object removal failures on Ceph side (<a target="_blank" rel="noopener" href="https://bugs.launchpad.net/nova/+bug/1856845">bug 1856845</a>). Setting default values for <code>[libvirt]/rbd_destroy_volume_retries</code> to 12 and <code>[libvirt]/rbd_destroy_volume_retry_interval</code> to 5, now gives Ceph reasonable amount of time to complete the operation successfully.</p></li>
+<li><p>The libvirt RBD image backend module can now handle a Glance multistore environment where multiple RBD clusters are in use across a single Nova/Glance deployment, configured as independent Glance stores. In the case where an instance is booted with an image that does not exist in the RBD cluster that Nova is configured to use, Nova can ask Glance to copy the image from whatever store it is currently in to the one that represents its RBD cluster. To enable this feature, set <code>[libvirt]/images_rbd_glance_store_name</code> to tell Nova the Glance store name of the RBD cluster it uses.</p></li>
+<li><p>Glance multistore configuration with multiple RBD backends is now supported within Nova for libvirt RBD-backed images using <code>[libvirt]/images_rbd_glance_store_name</code> configuration option.</p></li>
+</ul>
+<h3 id="ussuri">ussuri</h3>
+<ul>
+<li>Nova now has a config option called <code>[workarounds]/never_download_image_if_on_rbd</code> which helps to avoid pathological storage behavior with multiple ceph clusters. Currently, Nova does <em>not</em> support multiple ceph clusters properly, but Glance can be configured with them. If an instance is booted from an image residing in a ceph cluster other than the one Nova knows about, it will silently download it from Glance and re-upload the image to the local ceph privately for that instance. Unlike the behavior you expect when configuring Nova and Glance for ceph, Nova will continue to do this over and over for the same image when subsequent instances are booted, consuming a large amount of storage unexpectedly. The new workaround option will cause Nova to refuse to do this download/upload behavior and instead fail the instance boot. It is simply a stop-gap effort to allow unsupported deployments with multiple ceph clusters from silently consuming large amounts of disk space.</li>
+</ul>
+<h3 id="train">train</h3>
+<ul>
+<li><p>The reporting for bytes available for RBD has been enhanced to accomodate <a target="_blank" rel="noopener" href="http://docs.ceph.com/docs/luminous/start/hardware-recommendations/#hard-disk-drives">unrecommended</a> Ceph deployments where multiple OSDs are running on a single disk. The new reporting method takes the number of configured replicas into consideration when reporting bytes available.</p></li>
+<li><p>The libvirt driver’s RBD imagebackend no longer supports setting force_raw_images to False. Setting force_raw_images = False and images_type = rbd in nova.conf will cause the nova compute service to refuse to start. To fix this, set force_raw_images = True. This change was required to fix the <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/nova/+bug/1816686">bug 1816686</a>.</p>
+<p>Note that non-raw cache image files will be removed if you set force_raw_images = True and images_type = rbd now.</p>
+<ul>
+<li>A new <code>[libvirt]/rbd_connect_timeout</code> configuration option has been introduced to limit the time spent waiting when connecting to a RBD cluster via the RADOS API. This timeout currently defaults to 5 seconds.</li>
+</ul>
+<p>This aims to address issues reported in <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/nova/+bug/1834048">bug 1834048</a> where failures to initially connect to a RBD cluster left the nova-compute service inoperable due to constant RPC timeouts being hit. ### stein</p></li>
+<li><p>Adds support for extending RBD attached volumes using the libvirt network volume driver. ### rocky The <code>[workarounds]/ensure_libvirt_rbd_instance_dir_cleanup</code> configuration option has been introduced. This can be used by operators to ensure that instance directories are always removed during cleanup within the Libvirt driver while using <code>[libvirt]/images_type = rbd</code>. This works around known issues such as <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/nova/+bug/1414895">bug 1414895</a> when cleaning up after an evacuation and <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/nova/+bug/1761062">bug 1761062</a> when reverting from an instance resize.</p></li>
+</ul>
+<p>Operators should be aware that this workaround only applies when using the libvirt compute driver and rbd images_type as enabled by the following configuration options:</p>
+<ul>
+<li><p><code>[DEFAULT]/compute_driver = libvirt</code></p></li>
+<li><p><code>[libvirt]/images_type = rbd</code> ### queens</p></li>
+<li><p>Nova now requires Ceph/librados &gt;= 11.1.0 if running under Python 3 with the RBD image backend for the libvirt driver. Requirements for Python 2 users or users using a different backend remain unchanged.</p></li>
+</ul>
+<p>QEMU 2.6.0 and Libvirt 2.2.0 allow LUKS encrypted RAW files, block devices and network devices (such as rbd) to be decrypted natively by QEMU. If qemu &gt;= 2.6.0 and libvirt &gt;= 2.2.0 are installed and the volume encryption provider is ‘luks’, the libvirt driver will use native QEMU decryption for encrypted volumes. The libvirt driver will generate a secret to hold the LUKS passphrase for unlocking the volume and the volume driver will use the secret to generate the required encryption XML for the disk. QEMU will then be able to read from and write to the encrypted disk natively, without the need of os-brick encryptors.</p>
+<h3 id="mitaka">Mitaka</h3>
+<ul>
+<li>When RBD is used for ephemeral disks and image storage, make snapshot use Ceph directly, and update Glance with the new location. In case of failure, it will gracefully fallback to the “generic” snapshot method. This requires changing the typical permissions for the Nova Ceph user (if using authx) to allow writing to the pool where vm images are stored, and it also requires configuring Glance to provide a v2 endpoint with direct_url support enabled (there are security implications to doing this). See <a target="_blank" rel="noopener" href="http://docs.ceph.com/docs/master/rbd/rbd-openstack/">http://docs.ceph.com/docs/master/rbd/rbd-openstack/</a> for more information on configuring OpenStack with RBD.</li>
+</ul>
+<h2 id="cinder">cinder</h2>
+<h3 id="unreleased">unreleased</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1997980">Bug #1997980</a>: RBD: Fixed failure to update rbd image features for multi-attach when features = 0. ### 2023.1</li>
+<li>RBD driver: Sets the Ceph cluster FSID as the default value for the <code>rbd_secret_uuid</code> configuration option.</li>
+<li><ul>
+<li>RBD driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1960206">bug #1960206</a>: Fixed <code>total_capacity</code> reported by the driver to the scheduler on Ceph clusters that have renamed the <code>bytes_used</code> field to <code>stored</code>. (e.g., <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/nautilus/releases/nautilus/#upgrade-compatibility-notes">Nautilus</a>).</li>
+</ul></li>
+<li>RBD Driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1957073">bug #1957073</a>: Fixed snapshot deletion failure when its volume doesn’t exist. ### Zed</li>
+<li>RBD driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1942210">bug #1942210</a>: When creating a volume from a snapshot, the operation could fail due to an uncaught exception being raised during a check to see if the backend Ceph installation supported the clone v2 API. The driver now handles this situation gracefully.
+<ul>
+<li>librbd , 12就支持了. 但是kernel要3.11才支持, 所以我们的是应该没支持的.</li>
+</ul></li>
+</ul>
+<h3 id="yoga-1">Yoga</h3>
+<ul>
+<li><p>When the Ceph backup driver is used for the backup service, restoring a backup to a volume created on a non-RBD backend fails. The cinder team has developed a fix but decided to do more thorough testing before including it in a release. When ready, the solution is expected to be backported to a future release in the Yoga series. The issue is being tracked as <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1895035">Bug #1895035</a>.</p></li>
+<li><p><strong>RBD driver: Enable Ceph V2 Clone API and Ceph Trash auto purge</strong></p>
+<p>In light of the fix for RBD driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1941815">bug #1941815</a>, we want to bring the following information to your attention.</p>
+<p>Using the v2 clone format for cloned volumes allows volumes with dependent images to be moved to the trash - where they remain until purged - and allow the RBD driver to postpone the deletion until the volume has no dependent images. Configuring the trash purge is recommended to avoid wasting space with these trashed volumes. Since the Ceph Octopus release, the trash can be configured to automatically purge on a defined schedule. See the <code>rbd trash purge schedule</code> commands in the <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/octopus/man/8/rbd/">rbd manpage</a>.</p></li>
+<li><p>RBD driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1941815">bug #1941815</a>: Fixed deleting volumes with snapshots/volumes in the ceph trash space.</p></li>
+<li><p>RBD driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1916843">bug #1916843</a>: Fixed rpc timeout when backing up RBD snapshot. We no longer flatten temporary volumes and snapshots.</p></li>
+<li><p>RBD driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1947518">bug #1947518</a>: Corrected a regression caused by the fix for <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1931004">Bug #1931004</a> that was attempting to access the glance images RBD pool with write privileges when creating a volume from an image. ### Xena</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1931004">Bug #1931004</a>: Fixed use of incorrect stripe unit in RBD image clone causing volume-from-image to fail when using raw images backed by Ceph.</p></li>
+</ul>
+<h3 id="wallaby-1">Wallaby</h3>
+<ul>
+<li>Added new Ceph iSCSI driver rbd_iscsi. This new driver is derived from the rbd driver and allows all the same features as the rbd driver. The only difference is that volume attachments are done via iSCSI.</li>
+</ul>
+<p>已知问题 - <strong>Anomalies with encrypted volumes</strong></p>
+<pre><code>For the most part, users are happy with the cinder feature [Volume encryption supported by the key manager](https://docs.openstack.org/cinder/wallaby/configuration/block-storage/volume-encryption.html). There are, however, some edge cases that have revealed bugs that you and your users should be aware of.
+
+First, some background. The Block Storage API supports the creation of volumes in gibibyte (GiB) units. When a volume of a non-encrypted volume type of size _n_ is created, the volume contains _n_ GiB of usable space. When a volume of an encrypted type is requested, however, the volume contains less than _n_ GiB of usable space because the encryption metadata that must be stored within that volume in order for the volume to be usable consumes an amount of the otherwise usable space.
+
+Although the encryption metadata consumes less than 1% of the volume, suppose that a user wants to retype a volume of a non-encrypted type to an encrypted type of the same size. If the non-encrypted volume is “full”, we are in the position of trying to fit 101% of its capacity into the encrypted volume, which is not possible under the current laws of physics, and the retype should fail (see [Known Issues](https://docs.openstack.org/cinder/wallaby/configuration/block-storage/volume-encryption.html) for volume encryption in the cinder documentation).
+
+(Note that whether a volume should be considered “full”, even if it doesn’t contain exactly _n_ GiB of data for an _n_ GiB volume, can depend upon the storage backend technology used.)
+
+A similar situation can arise when a user creates a volume of an encrypted volume type from an image in Glance. If the image happens to be sized very close to the gibibyte boundary given by the requested volume size, the operation may fail if the image data plus the encryption metadata exceeds the requested volume size.
+
+So far, the behavior isn’t anomalous; it’s basically what you’d expect once you are aware that the encryption metadata must be stored in the volume and that it consumes some space.
+
+We recently became aware of the following anomalies, however, when using the current RBD driver with a Ceph storage backend.
+
+-   When creating an encrypted volume from an image in Glance that was created from a non-encrypted volume uploaded as an image, or an image that just happens to be sized very close to the gibibyte boundary given by the requested volume size, the space consumed by the encryption header may not leave sufficient space for the data contained in the image. In this case, the data is silently truncated to fit within the requested volume size.
+    
+-   Similarly, when creating an encrypted volume from a snapshot of an encrypted volume, if the amount of data in the original volume at the time the snapshot was created is very close to the gibibyte boundary given by the volume’s size, it is possible for the data in the new volume to be silently truncated.
+    
+
+Not to put too fine a point on it, silent truncation is worse than failure, and the Cinder team will be addressing these issues in the next release. Additionally (as if that isn’t bad enough!), we suspect that the above anomalies will also occur when using volume encryption with NFS-based storage backends, though this has not yet been reported or confirmed.</code></pre>
+<ul>
+<li><p>RBD driver: Prior to this release, the Cinder project did not have a statement concerning what versions of Ceph are supported by Cinder. We hereby announce that:</p>
+<ul>
+<li><p>For a given OpenStack release, Cinder supports the current Ceph active stable releases plus the two prior releases.</p></li>
+<li><p>For any OpenStack release, it is expected that the versions of the Ceph client and server are in alignment.</p></li>
+</ul>
+<p>The <a target="_blank" rel="noopener" href="https://docs.openstack.org/cinder/latest/configuration/block-storage/drivers/ceph-rbd-volume-driver.html">Ceph RADOS Block Device (RBD)</a> driver documentation has been updated to reflect this policy and explains it in more detail.</p></li>
+<li><p>Ceph/RBD volume backends will now assume exclusive cinder pools, as if they had <code>rbd_exclusive_cinder_pool = true</code> in their configuration.</p>
+<p>This helps deployments with a large number of volumes and prevent issues on deployments with a growing number of volumes at the small cost of a slightly less accurate stats being reported to the scheduler.</p></li>
+<li><p>RBD driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1907964">bug #1907964</a>: Add support for fast-diff on backup images stored in Ceph. Provided fast-diff is supported by the backend it will automatically be enabled and used. With fast-diff enabled, the generation of diffs between images and snapshots as well as determining the actual data usage of a snapshot is speed up significantly.</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1913449">Bug 1913449</a>: Fix RBD driver _update_volume_stats() failing when using Ceph Pacific python rados libraries. This failed because we were passing a str instead of bytes to cluster.mon_command()</p></li>
+<li><p>Ceph/RBD: Fix cinder taking a long time to start for Ceph/RBD backends. (<a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1704106">Related-Bug #1704106</a>)</p></li>
+<li><p>Ceph/RBD: Fix Cinder becoming non-responsive and stats gathering taking longer that its period. (<a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1704106">Related-Bug #1704106</a>)</p></li>
+<li><p><strong>Supported Ceph versions</strong></p>
+<p>The Cinder project wishes to clarify its policy concerning what versions of Ceph are supported by Cinder.</p>
+<ul>
+<li><p>For a given OpenStack release, Cinder supports the current Ceph active stable releases plus the two prior releases.</p></li>
+<li><p>For any OpenStack release, it is expected that the versions of the Ceph client and server are in alignment.</p></li>
+</ul>
+<p>The <a target="_blank" rel="noopener" href="https://docs.openstack.org/cinder/latest/configuration/block-storage/drivers/ceph-rbd-volume-driver.html">Ceph RADOS Block Device (RBD)</a> driver documentation has been updated to reflect this policy and explains it in more detail.</p></li>
+<li><p>RBD driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1898918">Bug #1898918</a>: Fix thread block caused by the flatten operation during cloning a volume. Now the flatten operation is executed in a different thread.</p></li>
+<li><p>RBD driver <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1901241">bug #1901241</a>: Fixed an issue where decreasing the <code>rbd_max_clone_depth</code> configuration option would prevent volumes that had already exceeded that depth from being cloned.</p></li>
+</ul>
+<h3 id="victoria-1">Victoria</h3>
+<ul>
+<li><p>RBD driver: the <code>rbd_keyring_conf</code> configuration option, which was deprecated in the Ussuri release, has been removed. If it is present in a configuration file, its value will silently be ignored. For more information, see <a target="_blank" rel="noopener" href="https://wiki.openstack.org/wiki/OSSN/OSSN-0085">OSSN-0085</a>: Cinder configuration option can leak secret key from Ceph backend.</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1828386">Bug #1828386</a>: Fix the bug that a volume retyped from another volume type to a replicated or multiattach type cannot have replication or multiattach enabled in rbd driver.</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1873738">Bug #1873738</a>: RBD Driver: Added cleanup for residue destination file if the copy image to encrypted volume operation fails. ### Ussuri</p></li>
+<li><p>RBD driver: support added for reverting a volume to the most recent snapshot taken.</p>
+<p>Please be aware of the following known issues with this operation and the Ceph storage backend:</p>
+<ul>
+<li><p>Rolling back a volume to a snapshot overwrites the current volume with the data from the snapshot, and the time it takes to complete this operation increases with the size of the volume.</p>
+<p>It is faster to create a new volume from a snapshot. You may wish to recommend this option to your users whose use cases do not strictly require revert-to-snapshot.</p></li>
+<li><p>The efficiency of revert-to-snapshot is also dependent upon the Ceph storage backend in use, namely, whether or not BlueStore is being used in your Ceph installation.</p></li>
+</ul>
+<p>Please consult the Ceph documentation for details.</p>
+<ul>
+<li>Fix volume migration fails in the same ceph RBD pool. <a target="_blank" rel="noopener" href="https://bugs.launchpad.net/cinder/+bug/1871524">Bug 1871524</a>. ### Train</li>
+</ul></li>
+<li><p>Catch argument exceptions when configuring multiattach for rbd volumes. This allows multiattach images with flags already set to continue instead of raising an exception and failing.</p></li>
+<li><p>Rbd replication secondary device could set different user and keyring with primary cluster. Secondary secret_uuid value is configed in libvirt secret, and libvirtd using secondary secret reconnect to secondary cluster after Cinder failover host.</p></li>
+<li><p>Fixed issue where all Ceph RBD backups would be incremental after the first one. The driver now honors whether <code>--incremental</code> is specified or not. ### stein</p></li>
+<li><p>RBD driver has added multiattach support. It should be noted that replication and multiattach are mutually exclusive, so a single RBD volume can only be configured to support one of these features at a time. Additionally, RBD image features are not preserved which prevents a volume being retyped from multiattach to another type. This limitation is temporary and will be addressed soon.</p></li>
+<li><p>Add support for deferred deletion in the RBD volume driver. ## glance</p></li>
+</ul>
+<p>除Newton版本全部没有cephfs/rbd/cephfs关键词日志</p>
+<h1 id="redhat-enterprise-storage">RedHat Enterprise Storage</h1>
+<p><a target="_blank" rel="noopener" href="https://access.redhat.com/support/policy/updates/ceph-storage">Red Hat Ceph Storage Life Cycle - Red Hat Customer Portal</a></p>
+<h3 id="section-17">6</h3>
+<p>应该是17版本</p>
+<p><a target="_blank" rel="noopener" href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/6.0/html/release_notes/enhancements">Chapter 3. New features Red Hat Ceph Storage 6.0 | Red Hat Customer Portal</a></p>
+<ul>
+<li><strong>Compression on-wire with msgr2 protocol is now available</strong></li>
+<li><strong><code>librbd</code> plugin named persistent write log cache to reduce latency</strong>
+<ul>
+<li>With this release, the new <code>librbd</code> plugin named Persistent Write Log Cache (PWL) provides a persistent, fault-tolerant write-back cache targeted with SSD devices. It greatly reduces latency and also improves performance at low <code>io_depths</code>. This cache uses a log-ordered write-back design which maintains checkpoints internally, so that writes that get flushed back to the cluster are always crash consistent. Even if the client cache is lost entirely, the disk image is still consistent; but the data will appear to be stale.</li>
+<li>意思是</li>
+</ul></li>
+</ul>
+<p>这个是在quincy版本才支持的. 所以这个版本还是太新了. * - The allocation metadata is removed from RocksDB and now performs a full destage of the allocator object with the OSD allocation. - With cache age binning, older onodes might be assigned a lower priority than the hot workload data. See the <a target="_blank" rel="noopener" href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/6/html-single/administration_guide/#ceph-bluestore_admin"><em>Ceph BlueStore</em></a> for more details.</p>
+<p>不看6了...</p>
+<h3 id="section-18">5</h3>
+<p>应该是15或者16</p>
+<p>只支持容器化集群</p>
+<p>bluestore支持了4K粒度, With this release, the default value of BlueStore’s <code>min_alloc_size</code> for SSDs and HDDs is 4 KB. This enables better use of space with no impact on performance.</p>
+<p><strong>Sharding of RocksDB database using column families is supported</strong></p>
+<p>rbd</p>
+<p><strong>Improved librbd small I/O performance</strong></p>
+<p>Previously, in an NVMe based Ceph cluster, there were limitations in the internal threading architecture resulting in a single librbd client struggling to achieve more than 20K 4KiB IOPS.</p>
+<p>With this release, librbd is switched to an asynchronous reactor model on top of the new ASIO-based neorados API thereby increasing the small I/O throughput potentially by several folds and reducing latency.</p>
+<p><strong>Built in schedule for purging expired RBD images</strong></p>
+<p>Previously, the storage administrator could set up a cron-like job for the <code>rbd trash purge</code> command.</p>
+<p>With this release, the built-in schedule is now available for purging expired RBD images. The <code>rbd trash purge schedule add</code> and the related commands can be used to configure the RBD trash to automatically purge expired images based on a defined schedule.</p>
+<p>See the <a target="_blank" rel="noopener" href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/5/html-single/block_device_guide/#defining-an-automatic-trash-purge-schedule_block"><em>Defining an automatic trash purge schedule</em></a> section in the <em>Red Hat Ceph Storage Block Device Guide</em> for more information.</p>
+<p>支持内建的trash周期清理等逻辑.</p>
+<p><strong>Overriding read-from-replica policy in librbd clients is supported</strong></p>
+<p><strong>Online re-sparsification of RBD images</strong></p>
+<p>Previously, reclaiming space for image extents that are zeroed and yet fully allocated in the underlying OSD object store was highly cumbersome and error prone. With this release, the new <code>rbd sparsify</code> command can now be used to scan the image for chunks of zero data and deallocate the corresponding ranges in the underlying OSD object store.</p>
+<p><strong>ocf:ceph:rbd cluster resource agent supports namespaces</strong></p>
+<p>Previously, it was not possible to use ocf:ceph:rbd cluster resource agent for images that exist within a namespace.</p>
+<p>With this release, the new <code>pool_namespace</code> resource agent parameter can be used to handle images within the namespace.</p>
+<p><strong>RBD images can be imported instantaneously</strong></p>
+<p>With the <code>rbd import</code> command, the new image becomes available for use only after it is fully populated.</p>
+<p>With this release, the image live-migration feature is extended to support external data sources and can be used as an alternative to <code>rbd import</code>. The new image can be linked to local files, remote files served over HTTP(S) or remote Amazon S3-compatible buckets in <code>raw</code>, <code>qcow</code> or <code>qcow2</code> formats and becomes available for use immediately. The image is populated as a background operation which can be run while it is in active use.</p>
+<p><strong>Snapshot-based mirroring of RBD images</strong></p>
+<p>The journal-based mirroring provides fine-grained crash-consistent replication at the cost of double-write penalty where every update to the image is first recorded to the associated journal before modifying the actual image.</p>
+<p>With this release, in addition to journal-based mirroring, snapshot-based mirroring is supported. It provides coarse-grained crash-consistent replication where the image is mirrored using the mirror snapshots which can be created manually or periodically with a defined schedule. This is supported by all clients and requires a less stringent recovery point objective (RPO).</p>
+<h3 id="section-19">4</h3>
+<p>看起来是13</p>
+<p>bluestore稳定</p>
+<p><strong>Asynchronous recovery for non-acting OSD sets</strong> Previously, recovery with Ceph was a synchronous process by blocking write operations to objects until those objects were recovered. In this release, the recovery process is now asynchronous by not blocking write operations to objects only in the non-acting set of OSDs. This new feature requires having more than the minimum number of replicas, as to have enough OSDs in the non-acting set.</p>
+<p>The new configuration option, <code>osd_async_recovery_min_cost</code>, controls how much asynchronous recovery to do. The default value for this option is <code>100</code>. A higher value means asynchronous recovery will be less, whereas a lower value means asynchronous recovery will be more.</p>
+<p><strong>Introduction of <code>diskprediction</code> module</strong></p>
+<p><strong>Erasure coding for Ceph Block Device</strong></p>
+<p><strong>RBD performance monitoring and metrics gathering tools</strong></p>
+<p><strong>Cloned images can be created from non-primary images</strong></p>
+<p>Creating cloned child RBD images from mirrored non-primary parent image is now supported. Previously, cloning of mirrored images was only supported for primary images. When cloning golden images for virtual machines, this restriction prevented the creation of new cloned images from the golden non-primary image. This update removes this restriction, and cloned images can be created from non-primary mirrored images.</p>
+<p><strong>Segregating RBD images within isolated namespaces within the same pool</strong></p>
+<p>RBD images can now be segregated within isolated namespaces within the same pool. When using Ceph Block Devices directly without a higher-level system, such as OpenStack or OpenShift Container Storage, it was not possible to restrict user access to specific RBD images. When combined with CephX capabilities, users can be restricted to specific pool namespaces to restrict access to RBD images.</p>
+<p><strong>Moving RBD images between different pools within the same cluster</strong></p>
+<p>This version of Red Hat Ceph Storage adds the ability to move RBD images between different pools within the same cluster. For details, see the <a target="_blank" rel="noopener" href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/4/html-single/block_device_guide/#moving-images-between-pools_block"><em>Moving images between pools</em></a> section in the <em>Block Device Guide</em> for Red Hat Ceph Storage 4.</p>
+<p><strong>Long-running RBD operations can run in the background</strong></p>
+<p>Long-running RBD operations, such as image removal or cloned image flattening, can now be scheduled to run in the background. RBD operations that involve iterating over every backing RADOS object for the image can take a long time depending on the size of the image. When using the CLI to perform one of these operations, the <code>rbd</code> CLI is blocked until the operation is complete. These operations can now be scheduled to run by the Ceph Manager as a background task by using the <code>ceph rbd task add</code> commands. The progress of these tasks is visible on the Ceph dashboard as well as by using the CLI.</p>
+<h3 id="section-20">3</h3>
+<p>Red Hat Ceph Storage 3 这个比较像是12</p>
+<p><a target="_blank" rel="noopener" href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3.3/html/release_notes/enhancements">Chapter 3. New features Red Hat Ceph Storage 3.3 | Red Hat Customer Portal</a></p>
+<p>ceph-ansible</p>
+<p><strong>The new <code>device_class</code> Ansible configuration option</strong></p>
+<p>With the <code>device_class`feature, you can alleviate post deployment configuration by updating the `groups_vars/osd.yml</code> file in the desired layout. This feature offers you multi-backend support by avoiding to comment out sections after deploying Red Hat Ceph Storage.</p>
+<p><strong>The default BlueStore and BlueFS allocator is now <code>bitmap</code></strong></p>
+<p><strong>New <code>omap</code> usage statistics per PG and OSD</strong></p>
+<p><strong>Listing RADOS objects in a specific PG</strong>  </p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2023-06-09T15:20:18.822Z" itemprop="dateUpdated">2023-06-09 15:20:18</time>
+</span><br>
+
+
+        
+        欢迎评论~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sean10.github.io">
+            <img src="/img/avatar.jpg" alt="Sean10">
+            Sean10
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/upgrade/" rel="tag">upgrade</a></li></ul>
+
+
+            
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<div class="addthis_sharing_toolbox"></div>
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/&title=《ceph之版本升级特性点Luminous_Pacific整理草稿》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/&title=《ceph之版本升级特性点Luminous_Pacific整理草稿》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ceph之版本升级特性点Luminous_Pacific整理草稿》 — 行路中.&url=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2023/06/05/cephalocon2023%E4%B9%8Bbluestore-v2/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">(施工中)cephalocon2023之bluestore_v2</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <!-- <script src="//code.bdstatic.com/npm/leancloud-storage@latest/dist/av-min.js"></script> -->
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "yNexbxJmshSneppnaoo3Bd6Y-gzGzoHsz",
+            appKey: "FyxT8MxDPHbu8mQSapgjEMPC",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Sean10 &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/&title=《ceph之版本升级特性点Luminous_Pacific整理草稿》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/&title=《ceph之版本升级特性点Luminous_Pacific整理草稿》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ceph之版本升级特性点Luminous_Pacific整理草稿》 — 行路中.&url=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://sean10.github.io/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57108c0b91bea817"></script>
+
+<script src="/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</body>
+</html>
