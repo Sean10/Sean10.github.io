@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    
+    <title>ceph之快照的应用一致性初探 | 行路中. | 脚踏实地</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ceph,consistency,snapshot">
+    <meta name="description" content="以下讨论都是基于存储系统上的, 主要描述的为对块存储进行快照. 根据目前理解, 应用一致性可以粗分为  基于时间点的快照  没有明确的一致性等级支持  支持崩溃一致性的快照(Crash-consistent backup) 应用一致性快照. (Application-consistent backup) (包含内存中pending IO)  包含内存(pending IO)的快照  (存在大量停机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph之快照的应用一致性初探">
+<meta property="og:url" content="https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="行路中.">
+<meta property="og:description" content="以下讨论都是基于存储系统上的, 主要描述的为对块存储进行快照. 根据目前理解, 应用一致性可以粗分为  基于时间点的快照  没有明确的一致性等级支持  支持崩溃一致性的快照(Crash-consistent backup) 应用一致性快照. (Application-consistent backup) (包含内存中pending IO)  包含内存(pending IO)的快照  (存在大量停机">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-11T23:52:15.000Z">
+<meta property="article:modified_time" content="2023-06-11T16:29:46.384Z">
+<meta property="article:author" content="Sean10">
+<meta property="article:tag" content="ceph">
+<meta property="article:tag" content="consistency">
+<meta property="article:tag" content="snapshot">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Sean10</h5>
+          <a href="mailto:sean10reborn@gmail.com" title="sean10reborn@gmail.com" class="mail">sean10reborn@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/sean10" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ceph之快照的应用一致性初探</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">ceph之快照的应用一致性初探</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2023-06-11T23:52:15.000Z" itemprop="datePublished" class="page-time">
+  2023-06-11
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%82%B9%E7%9A%84%E5%BF%AB%E7%85%A7%E4%B8%8D%E4%B8%80%E5%AE%9A%E4%B8%80%E8%87%B4%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="post-toc-number">1.</span> <span class="post-toc-text">基于时间点的快照(不一定一致&#x2F;不一致)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%94%AF%E6%8C%81%E5%B4%A9%E6%BA%83%E4%B8%80%E8%87%B4%E6%80%A7%E7%9A%84%E5%BF%AB%E7%85%A7"><span class="post-toc-number">2.</span> <span class="post-toc-text">支持崩溃一致性的快照</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8C%85%E5%90%AB%E5%86%85%E5%AD%98pending-io%E7%9A%84%E5%BF%AB%E7%85%A7"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">包含内存(pending IO)的快照</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#mirror%E7%9A%84%E5%90%8C%E6%AD%A5%E6%8A%80%E6%9C%AF%E7%9A%84%E5%BF%AB%E7%85%A7"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">mirror的同步技术的快照</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%BF%AB%E7%85%A7"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">应用一致性快照</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#rbd%E7%9A%84%E7%94%A8%E4%BE%8B"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">rbd的用例</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#ceph-rbd%E5%86%85%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">ceph rbd内的实现</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%B9%E6%A1%88%E6%AF%94%E8%BE%83"><span class="post-toc-number">3.</span> <span class="post-toc-text">方案比较</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#reference"><span class="post-toc-number"></span> <span class="post-toc-text">Reference</span></a>
+        </nav>
+    </aside>
+
+
+<article id="post-ceph之快照的应用一致性初探"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ceph之快照的应用一致性初探</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2023-06-11 23:52:15" datetime="2023-06-11T23:52:15.000Z"  itemprop="datePublished">2023-06-11</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>以下讨论都是基于存储系统上的, 主要描述的为对块存储进行快照.</p>
+<p>根据目前理解, 应用一致性可以粗分为</p>
+<ul>
+<li>基于时间点的快照
+<ul>
+<li>没有明确的一致性等级支持</li>
+</ul></li>
+<li>支持崩溃一致性的快照(Crash-consistent backup)</li>
+<li>应用一致性快照. (Application-consistent backup) (包含内存中pending IO)
+<ul>
+<li>包含内存(pending IO)的快照
+<ul>
+<li>(存在大量停机时间)</li>
+</ul></li>
+<li>mirror的同步技术的, 包含pending IO</li>
+<li>较通用的实现方案
+<ul>
+<li>(存在少量停机时间, 主要取决于内存缓了多少?)</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="基于时间点的快照不一定一致不一致">基于时间点的快照(不一定一致/不一致)</h2>
+<p>很简单粗暴, 不管是否有 pending IO, 直接保存当前的硬盘状态, 做COW/ROW链接, 完成快照.</p>
+<h2 id="支持崩溃一致性的快照">支持崩溃一致性的快照</h2>
+<blockquote>
+<p>采用崩溃一致性的备份来恢复云服务器，在数据恢复后，由于没有保证数据库事务的一致性，通常需要依赖数据自身的保护机制做自动的日志回滚，数据才能正常启动，数据是恢复到离备份时间点最近的一个一致性状态，相比应用一致性备份的恢复，RPO（Recovery Point Objective，指的是最多可能丢失的数据的时长）会更大，RTO（Recovery Time Objective 指的是从灾难发生到整个系统恢复正常所需要的最大时长）也更长。</p>
+</blockquote>
+<p>基本上表达的一种实现方式可能就是会建多个快照, 然后会识别多个快照内业务的可用性, 无法通过数据库/文件系统修复工具回滚继续提供服务, 则去触发下一个快照. 直到找到一个能用的快照? ## 应用一致性快照. (Application-consistent backup)</p>
+<h3 id="包含内存pending-io的快照">包含内存(pending IO)的快照</h3>
+<p>以qemu和qcow2为例, qcow2支持内存快照, 但是是依赖于虚拟机先由qemu控制进入paused状态的. 这部分一般由于内存一般划的比较大, 内存完整写入, 一般比较慢. 停机时间特别长, 一般都是不太能接受的. 虽然应用一致性确实保障了.</p>
+<h3 id="mirror的同步技术的快照">mirror的同步技术的快照</h3>
+<p>TODO: 这个暂时还支持猜想, 还没去细找是否有基于这类实现的.</p>
+<p>诸如drbd/rbd mirror等, 本身除了这个业务本身, 还提供了其他设备进行备份, 其实应该算得上是备份技术了. 它确实能保障应用一致性, 但是其实是双活了. 针对快照时间点, 是在对端做flush, 然后创建快照了.</p>
+<p>这个快照点, 基本上可以是在mirror对端按事件进行冻结, 然后flush, 然后创建快照了. 对本端无影响.</p>
+<h3 id="应用一致性快照">应用一致性快照</h3>
+<p>按照目前的认知, 这个可能是目前用的比较多的方案.</p>
+<p>主要就是在创建快照前和后分别提供了一个hook接口. 针对文件系统类具有一定的通用约束的, 可以直接默认使用<code>fsfreeze</code> 类的偏通用的接口完成静默, 然后再进行对应的pending IO的持久化.</p>
+<p>非文件系统类业务, 则需要上层业务自己去触发了, 就是根据对应的数据库开发对应的持久化方式, 完成快照的一致性保障. 如果是明确指定类型的数据库, 可能还能直接配合对应的方案做自动化检测和识别去完成对应数据库内的持久化快照, 无需用户自己实现.</p>
+<p>不过当客户机上是windows 时, 则直接可以通过VSS来实现应用一致性快照. 无需开发介入了.</p>
+<p>看到阿里云的文档里也写的很清楚, 如下表格.</p>
+<table>
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 55%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>说明</th>
+<th>实现方式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>应用一致性快照</td>
+<td>应用一致性快照在快照创建时刻备份内存数据及正在进行中的数据库事务，保证应用系统数据和数据库事务的一致性。通过应用一致性快照，没有数据的损坏及丢失，避免数据库启动时日志回滚，确保应用处于一致性的启动状态。<br/>应用一致性快照以标签APPConsistent:True标识。</td>
+<td>根据操作系统类型，实现方式如下：<br/>Windows：通过卷影复制服务VSS（Volume Shadow Copy Service）实现。<br/>Linux：通过执行自定义Shell脚本（需要您根据应用自行编写脚本）实现。应用一致性的效果，由您自己编写的脚本负责保证。</td>
+</tr>
+<tr class="even">
+<td>文件系统一致性快照</td>
+<td>如果开启应用一致性功能，但不满足相关条件，系统将会为您创建文件系统一致性快照。<br/>文件系统一致性确保在快照创建时刻同步文件系统内存和磁盘信息，冻结文件系统写操作，使得文件系统处于一致性的状态。通过文件系统一致性快照，可以避免操作系统在重启后进行chkdsk或fsck等磁盘检查修复操作。<br/>文件系统一致性快照以标签FsConsistent:True标识。</td>
+<td>根据操作系统类型，实现方式如下：<br/>Windows：如果无Windows操作系统上特定应用的VSS Writer参与时，默认创建的为文件系统一致性。<br/>Linux：如果无对应的应用脚本，默认创建的为文件系统一致性。</td>
+</tr>
+</tbody>
+</table>
+<p>看到阿里云的描述, 基本就知道了, 也是通过由用户自身的shell脚本内的行为来完成在创建快照前内存缓存持久化到硬盘, 确保硬盘此刻是完整的. 文件系统侧则通过默认的fsfreeze等通用方案来进行持久化.</p>
+<h4 id="rbd的用例">rbd的用例</h4>
+<blockquote>
+<p>If the volume contains a file system, the file system should be in an internally consistent state before a snapshot is taken. Snapshots taken without write quiescing could need an fsck pass before they are mounted again. To quiesce I/O you can use fsfreeze command. See the fsfreeze(8) man page for more details.</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/quincy/rbd/rbd-snapshot/">Snapshots — Ceph Documentation</a></p>
+<p>rbd的文档里已经提供了fsfreeze的方案.</p>
+<h4 id="ceph-rbd内的实现">ceph rbd内的实现</h4>
+<p>ceph在16版本librbd提供了<code>quiesce</code>能力, 主要描述的就是在创建快照前和后分别提供了一个hook接口.</p>
+<p>然后暴露给上层用户, 可能就比较完善了.</p>
+<ul>
+<li>rbd device --device-type nbd map --quiesce --quiesce-hook ${QUIESCE_HOOK}<br />
+
+<ul>
+<li>看了下16版本有提供rbd quiesce 逻辑, 针对snap create时可以主动block rbd块的io, 并提供静默io前后的hook. 没找着有写测试/使用样例, 不过rbd-nbd那边有写用例, 可以提供脚本做前置/后置检查.</li>
+</ul></li>
+<li>PR: <a target="_blank" rel="noopener" href="https://github.com/idryomov/ceph/commit/269f4d233a17cffc774897660cf60f1b0acf077e">librbd: API for quiesce callbacks · idryomov/ceph@269f4d2</a></li>
+<li>commit: <a target="_blank" rel="noopener" href="https://github.com/idryomov/ceph/commit/269f4d233a17cffc774897660cf60f1b0acf077e">librbd: API for quiesce callbacks · idryomov/ceph@269f4d2</a></li>
+</ul>
+<h2 id="方案比较">方案比较</h2>
+<p>参考</p>
+<table>
+<thead>
+<tr class="header">
+<th>Operation</th>
+<th>timebased (inconsistent)</th>
+<th>Crash-consistent</th>
+<th>Application-consistent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Consistent point in time backup of files</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>Application consistency</td>
+<td>No</td>
+<td>yes</td>
+<td>Yes</td>
+</tr>
+<tr class="odd">
+<td>Aware of in memory and pending I/O</td>
+<td>No</td>
+<td>no</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>Requires no special steps for application data restore</td>
+<td>No</td>
+<td>yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h1 id="reference">Reference</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.alibabacloud.com/help/zh/elastic-compute-service/latest/create-application-consistent-snapshots-by-using-ecs-sdk-for-go">通过Go SDK创建应用一致性快照</a></li>
+<li><a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/100341">云备份技术解析 （三）应用一致性备份-云社区-华为云</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ubackup.com/enterprise-backup/application-consistent-backups.html">What is Application Consistent Backup and How to Achieve It</a></li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2023-06-11T16:29:46.384Z" itemprop="dateUpdated">2023-06-11 16:29:46</time>
+</span><br>
+
+
+        
+        欢迎评论~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sean10.github.io">
+            <img src="/img/avatar.jpg" alt="Sean10">
+            Sean10
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/consistency/" rel="tag">consistency</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/snapshot/" rel="tag">snapshot</a></li></ul>
+
+
+            
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<div class="addthis_sharing_toolbox"></div>
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/&title=《ceph之快照的应用一致性初探》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/&title=《ceph之快照的应用一致性初探》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ceph之快照的应用一致性初探》 — 行路中.&url=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2023/06/09/ceph%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E7%89%B9%E6%80%A7%E7%82%B9Luminous-Pacific%E6%95%B4%E7%90%86%E8%8D%89%E7%A8%BF/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">ceph之版本升级特性点Luminous_Pacific整理草稿</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <!-- <script src="//code.bdstatic.com/npm/leancloud-storage@latest/dist/av-min.js"></script> -->
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "yNexbxJmshSneppnaoo3Bd6Y-gzGzoHsz",
+            appKey: "FyxT8MxDPHbu8mQSapgjEMPC",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Sean10 &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/&title=《ceph之快照的应用一致性初探》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/&title=《ceph之快照的应用一致性初探》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ceph之快照的应用一致性初探》 — 行路中.&url=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://sean10.github.io/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57108c0b91bea817"></script>
+
+<script src="/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</body>
+</html>
