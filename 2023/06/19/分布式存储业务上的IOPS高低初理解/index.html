@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    
+    <title>分布式存储业务上的IOPS高低初理解 | 行路中. | 脚踏实地</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ceph">
+    <meta name="description" content="背景 目前也算是在分布式存储领域折腾了有一些时间了, 虽然还是比较入门的程度. 偶然又看到在讨论分布式存储与 集中式存储 应用场景的文档, 回想起来, 做个草草的初步思考. 性能评估要注意延时 最早的时候, 我给领导汇报测试数据时, 总是拿着跑bench时只管把depth往上加的最终数据汇报, 只要能看到IOPS上涨, 就继续加. 当时理解为理解为集群的性能是以depth跑满, 比如把集群的cpu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式存储业务上的IOPS高低初理解">
+<meta property="og:url" content="https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="行路中.">
+<meta property="og:description" content="背景 目前也算是在分布式存储领域折腾了有一些时间了, 虽然还是比较入门的程度. 偶然又看到在讨论分布式存储与 集中式存储 应用场景的文档, 回想起来, 做个草草的初步思考. 性能评估要注意延时 最早的时候, 我给领导汇报测试数据时, 总是拿着跑bench时只管把depth往上加的最终数据汇报, 只要能看到IOPS上涨, 就继续加. 当时理解为理解为集群的性能是以depth跑满, 比如把集群的cpu">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/image-20230619230310523.png">
+<meta property="article:published_time" content="2023-06-19T22:07:10.000Z">
+<meta property="article:modified_time" content="2023-06-19T15:18:24.502Z">
+<meta property="article:author" content="Sean10">
+<meta property="article:tag" content="ceph">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/image-20230619230310523.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Sean10</h5>
+          <a href="mailto:sean10reborn@gmail.com" title="sean10reborn@gmail.com" class="mail">sean10reborn@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/sean10" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">分布式存储业务上的IOPS高低初理解</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">分布式存储业务上的IOPS高低初理解</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2023-06-19T22:07:10.000Z" itemprop="datePublished" class="page-time">
+  2023-06-19
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%83%8C%E6%99%AF"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%80%A7%E8%83%BD%E8%AF%84%E4%BC%B0%E8%A6%81%E6%B3%A8%E6%84%8F%E5%BB%B6%E6%97%B6"><span class="post-toc-number">2.</span> <span class="post-toc-text">性能评估要注意延时</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E7%9A%84%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7%E4%BD%93%E7%8E%B0%E5%9C%A8%E5%93%AA%E5%91%A2"><span class="post-toc-number">3.</span> <span class="post-toc-text">分布式存储的可扩展性体现在哪呢</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%A6%81%E6%B3%A8%E6%84%8F%E5%A4%9A%E5%8D%B7%E5%B9%B6%E5%8F%91%E6%B5%8B%E8%AF%95%E6%97%B6%E5%8D%95%E5%8D%B7%E7%9A%84%E6%80%A7%E8%83%BD%E5%92%8C%E5%BB%B6%E6%97%B6%E6%89%8D%E6%98%AF%E9%9B%86%E7%BE%A4%E7%A8%B3%E5%AE%9A%E7%9A%84%E6%80%A7%E8%83%BD%E5%92%8C%E5%BB%B6%E6%97%B6"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">要注意多卷并发测试时单卷的性能和延时才是集群稳定的性能和延时</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-分布式存储业务上的IOPS高低初理解"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">分布式存储业务上的IOPS高低初理解</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2023-06-19 22:07:10" datetime="2023-06-19T22:07:10.000Z"  itemprop="datePublished">2023-06-19</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="背景">背景</h1>
+<p>目前也算是在分布式存储领域折腾了有一些时间了, 虽然还是比较入门的程度.</p>
+<p>偶然又看到在讨论分布式存储与 集中式存储 应用场景的文档, 回想起来, 做个草草的初步思考.</p>
+<h1 id="性能评估要注意延时">性能评估要注意延时</h1>
+<p>最早的时候, 我给领导汇报测试数据时, 总是拿着跑<code>bench</code>时只管把<code>depth</code>往上加的最终数据汇报, 只要能看到IOPS上涨, 就继续加. 当时理解为理解为集群的性能是以depth跑满, 比如把集群的<code>cpu</code>或者硬盘的<code>util</code>用尽, 出现了硬件或者源码锁的逻辑瓶颈为止, 以该结论来作为集群水平汇报. 看上去数据确实挺美好, 看着至少也有业界的水准了的样子.</p>
+<p>但是这里其实当时忽略了延时的因素, 延时应该如何理解呢?</p>
+<p>这里的理解方式, 就是<code>p99</code>,<code>p90</code>等划分一个比例的延时, 要低于指定值, 比如<code>5ms</code>内, 这个情况下的IOPS才是一定程度上用户有机会发挥出来的.</p>
+<p>为什么我说是有机会呢? 因为这里还存在一个问题, <code>depth</code>是否真的用户能跑出来?</p>
+<p>诸如数据库或者自己开发的代码, 队列深度以及压力, 一般情况下能达到8/16已经算是比较可以的了.</p>
+<p>所以实际上, 比如以<code>ceph</code>为例, 假设我现在3节点各3 <code>ssd</code>, rbd跑出了<code>2W IOPS</code>性能, 还需要细分, 延时是多少, 如果是<code>3ms</code>, 则代表我单队列深度时, IOPS只有<code>333</code>, 8队列深度时, 此时底层物理盘利用率尚未达到瓶颈, 则可以达到<code>2664 IOPS</code>.</p>
+<p>而<code>2664 IOPS</code> 一般是无法满足数据库类业务的, 比如说某个现场的一组客户需求, 需要平均<code>5000 IOPS</code>, <code>boost 15000 IOPS</code> , 该数据是在<code>psync 16队列深度下跑出的</code>, 即基本可以换算为需要<code>937.5 IOPS</code>, 即<code>1.06ms</code>. 这个量级基本上是SATA固态的裸盘性能了.</p>
+<p>从需求反推, 可以得知这个延时数量级, 只有当我们使用集中式存储的技术(诸如RAID, 且不能是EC类), 或是采用了<code>nvme</code>这类物理延时十位数微秒级别的硬件, 分布式存储才有希望可以满足这类用户的需求.</p>
+<p>所以, 换句话说. 我们评估一个集群的实际可用性能时, 往往需要考虑用户的实际使用场景, 如果技术上可以做到, 肯定是最好像裸盘的硬件规格一样, 报出的延时和IOPS, 基本上是队列深度<code>2-8</code>就能跑出的水平, 从而完全可以保障任意用户都能够取得满足需求的性能.</p>
+<p>以腾讯云的数据为例, <img src="/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/image-20230619230310523.png" class=""></p>
+<p>我的一块100G的云硬盘, 1.3ms, 6000 IOPS</p>
+<table>
+<thead>
+<tr class="header">
+<th>队列深度</th>
+<th>IOPS</th>
+<th>延时(ms)</th>
+<th>延时(p999)</th>
+<th>延时(p99)</th>
+<th>延时(p90)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>713</td>
+<td>1.3</td>
+<td>146</td>
+<td>81</td>
+<td>26</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1495</td>
+<td>1.3</td>
+<td>146</td>
+<td>75</td>
+<td>23</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>2828</td>
+<td>1.4</td>
+<td>146</td>
+<td>77</td>
+<td>25</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>6042</td>
+<td>1.3</td>
+<td>130</td>
+<td>73</td>
+<td>24</td>
+</tr>
+</tbody>
+</table>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/document/product/362/2353">云硬盘 云硬盘类型-产品简介-文档中心-腾讯云</a></p>
+<p>上面这组数据可以得到的一个推论是, 底层存储能够给予QoS稳定提供<code>1.3ms</code>延时, 并且可以支持极大的队列深度.</p>
+<h1 id="分布式存储的可扩展性体现在哪呢">分布式存储的可扩展性体现在哪呢</h1>
+<p>主要就体现在, 提供了稳定的<code>1.3ms</code>延时后, 横向继续加设备,能够不停给这个集群扩充, 让往这个集群申请资源的业务, 能够几近无上限的扩展.</p>
+<h2 id="要注意多卷并发测试时单卷的性能和延时才是集群稳定的性能和延时">要注意多卷并发测试时单卷的性能和延时才是集群稳定的性能和延时</h2>
+<p>在实际使用<code>luminous</code>, 尚未引入<code>QoS</code>的版本的<code>ceph</code>中会发现, 一个集群只跑单卷时, 16队列比如能提供<code>4000 IOPS</code>, 当<code>2-&gt;4-&gt;8-&gt;16</code>个卷并发时, 平均单卷的性能降到<code>3000</code>, 直到最终可能就<code>1000</code>不到.</p>
+<p>TODO: 按照我目前的理解, 这个问题的关键点可能主要是集中在锁抢占或者说op之间排队出队的顺序之类的问题? QoS可能可以缓解这个问题. 亦或是<code>rocksdb</code>的一些解决长尾延时问题的技术也有所帮助? 这部分暂未投入了解了.</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2023-06-19T15:18:24.502Z" itemprop="dateUpdated">2023-06-19 15:18:24</time>
+</span><br>
+
+
+        
+        欢迎评论~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sean10.github.io">
+            <img src="/img/avatar.jpg" alt="Sean10">
+            Sean10
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li></ul>
+
+
+            
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<div class="addthis_sharing_toolbox"></div>
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/&title=《分布式存储业务上的IOPS高低初理解》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/&title=《分布式存储业务上的IOPS高低初理解》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《分布式存储业务上的IOPS高低初理解》 — 行路中.&url=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2023/06/11/ceph%E4%B9%8B%E5%BF%AB%E7%85%A7%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%9D%E6%8E%A2/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">ceph之快照的应用一致性初探</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <!-- <script src="//code.bdstatic.com/npm/leancloud-storage@latest/dist/av-min.js"></script> -->
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "yNexbxJmshSneppnaoo3Bd6Y-gzGzoHsz",
+            appKey: "FyxT8MxDPHbu8mQSapgjEMPC",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Sean10 &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/&title=《分布式存储业务上的IOPS高低初理解》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/&title=《分布式存储业务上的IOPS高低初理解》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《分布式存储业务上的IOPS高低初理解》 — 行路中.&url=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://sean10.github.io/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57108c0b91bea817"></script>
+
+<script src="/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</body>
+</html>

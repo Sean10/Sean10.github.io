@@ -150,6 +150,55 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-systemd之systemd-tty-ask-password-agent卡住-md"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2021-04-10 23:47:41" datetime="2021-04-10T23:47:41.000Z"  itemprop="datePublished">2021-04-10</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2021/04/10/systemd%E4%B9%8Bsystemd-tty-ask-password-agent%E5%8D%A1%E4%BD%8F-md/">systemd之systemd-tty-ask-password-agent卡住.md</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        背景
+这个问题其实之前遇到的还挺多的, 简单来说, 就是某个A服务启动B服务, 但是B服务又必须等待另一个服务启动完毕(比如A服务), 产生了一定的死锁. 而在ps的进程表中看到的就是systemd-tty-ask-password-agent这样一个agent进程卡住. 一般查一下当前卡住的service和他依赖的after,before的几个服务, 就知道了, 一般就是循环死锁了.
+具体...
+    
+
+        <a href="/2021/04/10/systemd%E4%B9%8Bsystemd-tty-ask-password-agent%E5%8D%A1%E4%BD%8F-md/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/service/" rel="tag">service</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/systemd/" rel="tag">systemd</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-分布式时钟之向量时钟"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -615,55 +664,6 @@ ansible比较大的几个优点
     <div class="post-footer">
         
 	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ygo/" rel="tag">ygo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%8E%8B/" rel="tag">游戏王</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-vscode之markdown引用zotero参考文献"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2021-01-17 16:40:53" datetime="2021-01-17T16:40:53.000Z"  itemprop="datePublished">2021-01-17</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
-
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2021/01/17/vscode%E4%B9%8Bmarkdown%E5%BC%95%E7%94%A8zotero%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE/">vscode之markdown引用zotero参考文献</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        需求
-我的主要需求, 只是当我需要写引用时, 排序能够自动调整,而不是我手动去填写数字. 如果能够让最后的参考文献也能够像用Latex时一样自动生成就更好不过了.
-初步的一个思路是, 因为我主要需要的是纯文本, 然后在使用hexo-render-pandoc生成为网页时, 能够把索引给使用上. 预计是在使用pandoc的生成过程中, 将markdown文件中的引用的key给转换成对应的索引....
-    
-
-        <a href="/2021/01/17/vscode%E4%B9%8Bmarkdown%E5%BC%95%E7%94%A8zotero%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vscode/" rel="tag">vscode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zotero/" rel="tag">zotero</a></li></ul>
 
     </div>
     
