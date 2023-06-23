@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    
+    <title>fio之iolog初探 | 行路中. | 脚踏实地</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="ceph,fio">
+    <meta name="description" content="replay的iolog解读 有2种可供回放的格式  blkparse的bin文件, 支持的比较多 纯文本的iolog格式, 常用v2和v3  正常使用bin文件的方式如下 采集 12blktrace &#x2F;dev&#x2F;sdb1 blkparse sdb1 -d dd.bin &gt;&#x2F;dev&#x2F;null replay io 1234fio --direct&#x3D;1 --read_iolog&#x3D;&quot;dd.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fio之iolog初探">
+<meta property="og:url" content="https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="行路中.">
+<meta property="og:description" content="replay的iolog解读 有2种可供回放的格式  blkparse的bin文件, 支持的比较多 纯文本的iolog格式, 常用v2和v3  正常使用bin文件的方式如下 采集 12blktrace &#x2F;dev&#x2F;sdb1 blkparse sdb1 -d dd.bin &gt;&#x2F;dev&#x2F;null replay io 1234fio --direct&#x3D;1 --read_iolog&#x3D;&quot;dd.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/image-20230624005415769.png">
+<meta property="article:published_time" content="2023-06-23T23:38:24.000Z">
+<meta property="article:modified_time" content="2023-06-23T16:56:15.821Z">
+<meta property="article:author" content="Sean10">
+<meta property="article:tag" content="ceph">
+<meta property="article:tag" content="fio">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/image-20230624005415769.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="行路中." href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Sean10</h5>
+          <a href="mailto:sean10reborn@gmail.com" title="sean10reborn@gmail.com" class="mail">sean10reborn@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/sean10" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">fio之iolog初探</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">fio之iolog初探</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2023-06-23T23:38:24.000Z" itemprop="datePublished" class="page-time">
+  2023-06-23
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#replay%E7%9A%84iolog%E8%A7%A3%E8%AF%BB"><span class="post-toc-number">1.</span> <span class="post-toc-text">replay的iolog解读</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%87%87%E9%9B%86"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">采集</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#replay-io"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">replay io</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#iolog%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="post-toc-number"></span> <span class="post-toc-text">iolog使用方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#fio-trace-file-format"><span class="post-toc-number">1.</span> <span class="post-toc-text">fio Trace file format</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A0%B7%E4%BE%8B%E5%A6%82%E4%B8%8B"><span class="post-toc-number">2.</span> <span class="post-toc-text">样例如下</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#iolog%E5%9F%BA%E4%BA%8Emagic%E8%A7%A3%E6%9E%902%E7%B1%BB%E6%A0%BC%E5%BC%8F"><span class="post-toc-number"></span> <span class="post-toc-text">iolog基于magic解析2类格式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%90%84%E5%A4%A7%E8%AF%84%E6%B5%8B%E8%A7%84%E8%8C%83%E7%9A%84%E6%B5%8B%E8%AF%95%E9%9B%86"><span class="post-toc-number"></span> <span class="post-toc-text">各大评测规范的测试集</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ceph%E4%B9%8Brbd"><span class="post-toc-number"></span> <span class="post-toc-text">ceph之rbd</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#iolog%E4%B8%ADaction%E5%AF%B9%E5%BA%94%E7%9A%84rbd%E6%8E%A5%E5%8F%A3"><span class="post-toc-number">1.</span> <span class="post-toc-text">iolog中action对应的rbd接口</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%87%87%E7%94%A8librbd%E7%94%A8%E6%88%B7%E6%80%81%E6%8E%A5%E5%8F%A3%E8%AE%BF%E9%97%AE%E6%97%B6-%E5%A6%82%E4%BD%95%E5%9B%9E%E6%94%BE"><span class="post-toc-number">2.</span> <span class="post-toc-text">采用librbd用户态接口访问时, 如何回放?</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#faq"><span class="post-toc-number"></span> <span class="post-toc-text">FAQ</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#fio%E7%9A%84iolog-%E5%92%8Cblktracelttng%E6%8D%95%E8%8E%B7%E5%88%B0%E7%9A%84bin%E6%96%87%E4%BB%B6%E5%B7%AE%E5%BC%82%E6%98%AF%E4%BB%80%E4%B9%88"><span class="post-toc-number">1.</span> <span class="post-toc-text">fio的iolog 和blktrace&#x2F;lttng捕获到的bin文件差异是什么?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91blkparse%E5%BE%97%E5%88%B0%E7%9A%84bin%E6%96%87%E4%BB%B6%E6%98%AF%E5%89%8D%E5%85%AB%E4%BD%8D%E6%98%AF7407-6561-%E8%80%8C%E4%B8%8D%E6%98%AF%E9%82%A3%E4%B8%AA%E4%BB%A3%E7%A0%81%E4%B8%AD%E7%9A%840xffffff00%E5%91%A2"><span class="post-toc-number">2.</span> <span class="post-toc-text">为什么我blkparse得到的bin文件是前八位是7407 6561, 而不是那个代码中的0xffffff00呢</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#linux---how-to-make-fio-replay-a-trace-with-multiple-thread---stack-overflow"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">linux - How to make FIO replay a trace with multiple thread - Stack Overflow</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-fio之iolog初探"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">fio之iolog初探</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2023-06-23 23:38:24" datetime="2023-06-23T23:38:24.000Z"  itemprop="datePublished">2023-06-23</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/pro/">专业</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="replay的iolog解读">replay的iolog解读</h2>
+<p>有2种可供回放的格式</p>
+<ul>
+<li><code>blkparse</code>的<code>bin</code>文件, 支持的比较多</li>
+<li>纯文本的<code>iolog</code>格式, 常用<code>v2</code>和<code>v3</code></li>
+</ul>
+<p>正常使用bin文件的方式如下</p>
+<h3 id="采集">采集</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blktrace /dev/sdb1 </span><br><span class="line">blkparse sdb1 -d dd.bin &gt;/dev/null</span><br></pre></td></tr></table></figure>
+<h3 id="replay-io">replay io</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fio --direct=1 --read_iolog=<span class="string">&quot;dd.bin&quot;</span> --replay_redirect=/dev/sdc1  --name=replay --replay_no_stall=1 --numjobs=1 --ioengine=libaio --iodepth=32</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fio --read_iolog=../bb.bin --filename=fio-rand-read --name=a</span><br></pre></td></tr></table></figure>
+<h1 id="iolog使用方式">iolog使用方式</h1>
+<p>目前初步实验来看, 多个job的时候, 最好让不同job的<code>write_log</code> 文件独立, 否则可能存在因同时追加写入冲突, 导致部分格式错误.</p>
+<p>然后得到独立的<code>iolog</code>文件后, 再使用<code>fio --read_iolog="&lt;file1&gt;:&lt;file2&gt;" --merge_blktrace_file="&lt;output_file&gt;"</code>来进行多个job文件的合并</p>
+<p>然后就可以正常使用1个<code>iolog</code>文件进行read_log测试了.</p>
+<h2 id="fio-trace-file-format">fio Trace file format</h2>
+<p>rbd引擎生成的<code>iolog</code>是v2协议</p>
+<p>文件头指定<code>fio version 2 iolog</code></p>
+<p>然后声明<code>job</code>对应的<code>action</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename action</span><br></pre></td></tr></table></figure>
+<ul>
+<li>add</li>
+<li>open</li>
+<li>close</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename action offset length</span><br></pre></td></tr></table></figure>
+<ul>
+<li>action
+<ul>
+<li>wait</li>
+<li>read</li>
+<li>write</li>
+<li>sync</li>
+<li>datasync</li>
+<li>trim</li>
+</ul></li>
+</ul>
+<h2 id="样例如下">样例如下</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">fio version 2 iolog</span><br><span class="line">rbd_13.0.0 add</span><br><span class="line">rbd_13.0.0 open</span><br><span class="line">rbd_13.0.0 write 893865984 4096</span><br><span class="line">rbd_13.0.0 write 9905799168 4096</span><br><span class="line">rbd_13.0.0 write 6045495296 4096</span><br><span class="line">rbd_13.0.0 write 5778386944 4096</span><br><span class="line">rbd_13.0.0 write 9706029056 4096</span><br><span class="line">rbd_13.0.0 write 1973067776 4096</span><br><span class="line">rbd_13.0.0 write 3528716288 4096</span><br><span class="line">rbd_13.0.0 write 6849687552 4096</span><br><span class="line">rbd_13.0.0 write 2277048320 4096</span><br><span class="line">rbd_13.0.0 write 7225700352 4096</span><br><span class="line">rbd_13.0.0 write 5898452992 4096</span><br><span class="line">rbd_13.0.0 write 5612314624 4096</span><br><span class="line">rbd_13.0.0 write 10423967744 4096</span><br><span class="line">rbd_13.0.0 write 8727756800 4096</span><br><span class="line">rbd_13.0.0 write 5164285952 4096</span><br><span class="line">rbd_13.0.0 write 4583624704 4096</span><br><span class="line">rbd_13.0.0 write 4850122752 4096</span><br><span class="line">rbd_13.0.0 write 86384640 4096</span><br><span class="line">rbd_13.0.0 write 6490755072 4096</span><br><span class="line">rbd_13.0.0 write 7782293504 4096</span><br><span class="line">rbd_13.0.0 write 122646528 4096</span><br><span class="line">rbd_13.0.0 write 8404697088 4096</span><br><span class="line">rbd_13.0.0 write 1540767744 4096</span><br><span class="line">rbd_13.0.0 write 206385152 4096</span><br><span class="line">rbd_13.0.0 write 9246814208 4096</span><br><span class="line">rbd_13.0.0 write 2709151744 4096</span><br><span class="line">rbd_13.0.0 write 7710785536 4096</span><br><span class="line">rbd_13.0.0 write 2957721600 4096</span><br><span class="line">rbd_13.0.0 write 7532285952 4096</span><br><span class="line">rbd_13.0.0 write 52547584 4096</span><br><span class="line">rbd_13.0.0 write 4910313472 4096</span><br><span class="line">rbd_13.0.0 write 4400508928 4096</span><br><span class="line">rbd_13.0.0 write 1650491392 4096</span><br><span class="line">rbd_13.0.0 write 2253017088 4096</span><br><span class="line">rbd_13.0.0 write 8878170112 4096</span><br><span class="line">rbd_13.0.0 write 7537848320 4096</span><br><span class="line">rbd_13.0.0 write 9147822080 4096</span><br><span class="line">rbd_13.0.0 write 4819779584 4096</span><br><span class="line">rbd_13.0.0 write 907501568 4096</span><br><span class="line">rbd_13.0.0 write 3035762688 4096</span><br><span class="line">rbd_13.0.0 write 7090388992 4096</span><br><span class="line">rbd_13.0.0 write 5126242304 4096</span><br><span class="line">rbd_13.0.0 write 6447304704 4096</span><br><span class="line">rbd_13.0.0 write 6967037952 4096</span><br><span class="line">rbd_13.0.0 write 4684316672 4096</span><br><span class="line">rbd_13.0.0 write 4559695872 4096 </span><br></pre></td></tr></table></figure>
+<h1 id="iolog基于magic解析2类格式">iolog基于<code>magic</code>解析2类格式</h1>
+<p>较直观</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># iolog.c</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">init_iolog</span><span class="params">(<span class="keyword">struct</span> thread_data *td)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">bool</span> ret;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (td-&gt;o.read_iolog_file) &#123;</span><br><span class="line">		<span class="type">int</span> need_swap;</span><br><span class="line">		<span class="type">char</span> * fname = get_name_by_idx(td-&gt;o.read_iolog_file, td-&gt;subjob_number);</span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * Check if it&#x27;s a blktrace file and load that if possible.</span></span><br><span class="line"><span class="comment">		 * Otherwise assume it&#x27;s a normal log file and load that.</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		<span class="keyword">if</span> (is_blktrace(fname, &amp;need_swap)) &#123;</span><br><span class="line">			td-&gt;io_log_blktrace = <span class="number">1</span>;</span><br><span class="line">			ret = init_blktrace_read(td, fname, need_swap);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			td-&gt;io_log_blktrace = <span class="number">0</span>;</span><br><span class="line">			ret = init_iolog_read(td, fname);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">free</span>(fname);</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta"># blktrace.c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Check if this is a blktrace binary data file. We read a single trace</span></span><br><span class="line"><span class="comment"> * into memory and check for the magic signature.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">is_blktrace</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *filename, <span class="type">int</span> *need_swap)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">blk_io_trace</span> <span class="title">t</span>;</span></span><br><span class="line">	<span class="type">int</span> fd, ret;</span><br><span class="line"></span><br><span class="line">	fd = open(filename, O_RDONLY);</span><br><span class="line">	<span class="keyword">if</span> (fd &lt; <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	ret = read(fd, &amp;t, <span class="keyword">sizeof</span>(t));</span><br><span class="line">	close(fd);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (ret &lt; <span class="number">0</span>) &#123;</span><br><span class="line">		perror(<span class="string">&quot;read blktrace&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (ret != <span class="keyword">sizeof</span>(t)) &#123;</span><br><span class="line">		log_err(<span class="string">&quot;fio: short read on blktrace file\n&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ((t.magic &amp; <span class="number">0xffffff00</span>) == BLK_IO_TRACE_MAGIC) &#123;</span><br><span class="line">		*need_swap = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * Maybe it needs to be endian swapped...</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	t.magic = fio_swap32(t.magic);</span><br><span class="line">	<span class="keyword">if</span> ((t.magic &amp; <span class="number">0xffffff00</span>) == BLK_IO_TRACE_MAGIC) &#123;</span><br><span class="line">		*need_swap = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="各大评测规范的测试集">各大评测规范的测试集</h1>
+<p><a target="_blank" rel="noopener" href="http://iotta.snia.org/">SNIA - Storage Networking Industry Association: IOTTA Repository Home</a></p>
+<p>从这里可以下载到对应的iolog.bin的replay文件.</p>
+<h1 id="ceph之rbd">ceph之rbd</h1>
+<h2 id="iolog中action对应的rbd接口">iolog中action对应的rbd接口</h2>
+<p>分别对应哪些rbd接口呢?</p>
+<ul>
+<li>add
+<ul>
+<li>无</li>
+</ul></li>
+<li>open
+<ul>
+<li>rbd_open</li>
+</ul></li>
+<li>close
+<ul>
+<li>没用, 只是设置个标签</li>
+<li>当关闭引擎的时候触发fio_rbd_cleanup, 再调用底层shutdown</li>
+</ul></li>
+<li>action
+<ul>
+<li>wait
+<ul>
+<li>fio iolog内自己实现</li>
+</ul></li>
+<li>read
+<ul>
+<li>rbd_aio_read</li>
+</ul></li>
+<li>write
+<ul>
+<li>rbd_aio_write</li>
+</ul></li>
+<li>sync
+<ul>
+<li>rbd_aio_flush</li>
+</ul></li>
+<li>datasync
+<ul>
+<li>无</li>
+</ul></li>
+<li>trim
+<ul>
+<li>rbd_aio_discard</li>
+</ul></li>
+</ul></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">static int ipo_special(struct thread_data *td, struct io_piece *ipo)</span><br><span class="line">&#123;</span><br><span class="line">	struct fio_file *f;</span><br><span class="line">	int ret;</span><br><span class="line"></span><br><span class="line">	/*</span><br><span class="line">	 * Not a special ipo</span><br><span class="line">	 */</span><br><span class="line">	if (ipo-&gt;ddir != DDIR_INVAL)</span><br><span class="line">		return 0;</span><br><span class="line"></span><br><span class="line">	f = td-&gt;files[ipo-&gt;fileno];</span><br><span class="line"></span><br><span class="line">	if (ipo-&gt;delay)</span><br><span class="line">		iolog_delay(td, ipo-&gt;delay);</span><br><span class="line">	if (fio_fill_issue_time(td))</span><br><span class="line">		fio_gettime(&amp;td-&gt;last_issue, NULL);</span><br><span class="line">	switch (ipo-&gt;file_action) &#123;</span><br><span class="line">	case FIO_LOG_OPEN_FILE:</span><br><span class="line">		if (td-&gt;o.replay_redirect &amp;&amp; fio_file_open(f)) &#123;</span><br><span class="line">			dprint(FD_FILE, &quot;iolog: ignoring re-open of file %s\n&quot;,</span><br><span class="line">					f-&gt;file_name);</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">		ret = td_io_open_file(td, f);</span><br><span class="line">		if (!ret)</span><br><span class="line">			break;</span><br><span class="line">		td_verror(td, ret, &quot;iolog open file&quot;);</span><br><span class="line">		return -1;</span><br><span class="line">	case FIO_LOG_CLOSE_FILE:</span><br><span class="line">		td_io_close_file(td, f);</span><br><span class="line">		break;</span><br><span class="line">	case FIO_LOG_UNLINK_FILE:</span><br><span class="line">		td_io_unlink_file(td, f);</span><br><span class="line">		break;</span><br><span class="line">	case FIO_LOG_ADD_FILE:</span><br><span class="line">		/*</span><br><span class="line">		 * Nothing to do</span><br><span class="line">		 */</span><br><span class="line">		break;</span><br><span class="line">	default:</span><br><span class="line">		log_err(&quot;fio: bad file action %d\n&quot;, ipo-&gt;file_action);</span><br><span class="line">		break;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">static enum fio_q_status fio_rbd_queue(struct thread_data *td,</span><br><span class="line">				       struct io_u *io_u)</span><br><span class="line">&#123;</span><br><span class="line">	struct rbd_data *rbd = td-&gt;io_ops_data;</span><br><span class="line">	struct fio_rbd_iou *fri = io_u-&gt;engine_data;</span><br><span class="line">	int r = -1;</span><br><span class="line"></span><br><span class="line">	fio_ro_check(td, io_u);</span><br><span class="line"></span><br><span class="line">	fri-&gt;io_seen = 0;</span><br><span class="line">	fri-&gt;io_complete = 0;</span><br><span class="line"></span><br><span class="line">	r = rbd_aio_create_completion(fri, _fio_rbd_finish_aiocb,</span><br><span class="line">						&amp;fri-&gt;completion);</span><br><span class="line">	if (r &lt; 0) &#123;</span><br><span class="line">		log_err(&quot;rbd_aio_create_completion failed.\n&quot;);</span><br><span class="line">		goto failed;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if (io_u-&gt;ddir == DDIR_WRITE) &#123;</span><br><span class="line">		r = rbd_aio_write(rbd-&gt;image, io_u-&gt;offset, io_u-&gt;xfer_buflen,</span><br><span class="line">					 io_u-&gt;xfer_buf, fri-&gt;completion);</span><br><span class="line">		if (r &lt; 0) &#123;</span><br><span class="line">			log_err(&quot;rbd_aio_write failed.\n&quot;);</span><br><span class="line">			goto failed_comp;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125; else if (io_u-&gt;ddir == DDIR_READ) &#123;</span><br><span class="line">		r = rbd_aio_read(rbd-&gt;image, io_u-&gt;offset, io_u-&gt;xfer_buflen,</span><br><span class="line">					io_u-&gt;xfer_buf, fri-&gt;completion);</span><br><span class="line"></span><br><span class="line">		if (r &lt; 0) &#123;</span><br><span class="line">			log_err(&quot;rbd_aio_read failed.\n&quot;);</span><br><span class="line">			goto failed_comp;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; else if (io_u-&gt;ddir == DDIR_TRIM) &#123;</span><br><span class="line">		r = rbd_aio_discard(rbd-&gt;image, io_u-&gt;offset,</span><br><span class="line">					io_u-&gt;xfer_buflen, fri-&gt;completion);</span><br><span class="line">		if (r &lt; 0) &#123;</span><br><span class="line">			log_err(&quot;rbd_aio_discard failed.\n&quot;);</span><br><span class="line">			goto failed_comp;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; else if (io_u-&gt;ddir == DDIR_SYNC) &#123;</span><br><span class="line">		r = rbd_aio_flush(rbd-&gt;image, fri-&gt;completion);</span><br><span class="line">		if (r &lt; 0) &#123;</span><br><span class="line">			log_err(&quot;rbd_flush failed.\n&quot;);</span><br><span class="line">			goto failed_comp;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		dprint(FD_IO, &quot;%s: Warning: unhandled ddir: %d\n&quot;, __func__,</span><br><span class="line">		       io_u-&gt;ddir);</span><br><span class="line">		r = -EINVAL;</span><br><span class="line">		goto failed_comp;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return FIO_Q_QUEUED;</span><br><span class="line">failed_comp:</span><br><span class="line">	rbd_aio_release(fri-&gt;completion);</span><br><span class="line">failed:</span><br><span class="line">	io_u-&gt;error = -r;</span><br><span class="line">	td_verror(td, io_u-&gt;error, &quot;xfer&quot;);</span><br><span class="line">	return FIO_Q_COMPLETED;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="采用librbd用户态接口访问时-如何回放">采用librbd用户态接口访问时, 如何回放?</h2>
+<ol type="1">
+<li>rbd map映射出来, 读取接口</li>
+<li>lttng用户态采集</li>
+</ol>
+<p>这里方案2社区有样例 ### lttng采集</p>
+<p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/quincy/rbd/rbd-replay/">RBD Replay — Ceph Documentation</a></p>
+<p>Capture the trace. Make sure to capture pthread_id context: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p traces</span><br><span class="line">lttng create -o traces librbd</span><br><span class="line">lttng enable-event -u <span class="string">&#x27;librbd:*&#x27;</span></span><br><span class="line">lttng add-context -u -t pthread_id</span><br><span class="line">lttng start</span><br><span class="line"><span class="comment"># run RBD workload here</span></span><br><span class="line">lttng stop</span><br><span class="line"></span><br><span class="line"><span class="comment"># Process the trace with rbd-replay-prep:</span></span><br><span class="line"></span><br><span class="line">rbd-replay-prep traces/ust/uid/*/* replay.bin</span><br><span class="line"><span class="comment"># Replay the trace with rbd-replay. Use read-only until you know it’s doing what you want:</span></span><br><span class="line"></span><br><span class="line">rbd-replay --read-only replay.bin</span><br></pre></td></tr></table></figure></p>
+<p>这里的<code>rbd-replay</code>代码基本上就是单独解析的<code>lttng</code>采集到的埋点格式了</p>
+<img src="/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/image-20230624005415769.png" class="">
+<h1 id="faq">FAQ</h1>
+<h2 id="fio的iolog-和blktracelttng捕获到的bin文件差异是什么">fio的iolog 和blktrace/lttng捕获到的bin文件差异是什么?</h2>
+<p>两种格式, fio代码里针对两种格式分别处理, 通过解析文件头, 是否是blktrace来判断触发哪种解析.</p>
+<h2 id="为什么我blkparse得到的bin文件是前八位是7407-6561-而不是那个代码中的0xffffff00呢">为什么我<code>blkparse</code>得到的<code>bin</code>文件是前八位是<code>7407 6561</code>, 而不是那个代码中的<code>0xffffff00</code>呢</h2>
+<h3 id="linux---how-to-make-fio-replay-a-trace-with-multiple-thread---stack-overflow"><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/40298513/how-to-make-fio-replay-a-trace-with-multiple-thread">linux - How to make FIO replay a trace with multiple thread - Stack Overflow</a></h3>
+<p>fio不支持多线程回放. 只能是用<code>merge-blktrace-file</code>合并后再进行处理.</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2023-06-23T16:56:15.821Z" itemprop="dateUpdated">2023-06-23 16:56:15</time>
+</span><br>
+
+
+        
+        欢迎评论~
+        
+    </div>
+    
+    <footer>
+        <a href="https://sean10.github.io">
+            <img src="/img/avatar.jpg" alt="Sean10">
+            Sean10
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/" rel="tag">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fio/" rel="tag">fio</a></li></ul>
+
+
+            
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<div class="addthis_sharing_toolbox"></div>
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/&title=《fio之iolog初探》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/&title=《fio之iolog初探》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《fio之iolog初探》 — 行路中.&url=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2023/06/19/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%9A%E5%8A%A1%E4%B8%8A%E7%9A%84IOPS%E9%AB%98%E4%BD%8E%E5%88%9D%E7%90%86%E8%A7%A3/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">分布式存储业务上的IOPS高低初理解</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <!-- <script src="//code.bdstatic.com/npm/leancloud-storage@latest/dist/av-min.js"></script> -->
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "yNexbxJmshSneppnaoo3Bd6Y-gzGzoHsz",
+            appKey: "FyxT8MxDPHbu8mQSapgjEMPC",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Sean10 &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/&title=《fio之iolog初探》 — 行路中.&pic=https://sean10.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/&title=《fio之iolog初探》 — 行路中.&source=笔记 随笔" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《fio之iolog初探》 — 行路中.&url=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/&via=https://sean10.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://sean10.github.io/2023/06/23/fio%E4%B9%8Biolog%E5%88%9D%E6%8E%A2/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57108c0b91bea817"></script>
+
+<script src="/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</body>
+</html>
